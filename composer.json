@@ -1,0 +1,11 @@
+{
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/dindigital/din"
+    }
+  ],
+  "require": {
+    "dindigital/din": "dev-master"
+  }
+}

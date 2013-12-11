@@ -1,0 +1,16 @@
+<table border="1" width="100%">
+  <tr>
+    <th>ID</th>
+    <th>Título</th>
+    <th>Descrição</th>
+    <th>Inc Data</th>
+  </tr>
+  <?php foreach ( $data['agenda'] as $row ): ?>
+    <tr>
+      <td><?php echo $row['id_agenda']; ?></td>
+      <td><?php echo $row['titulo']; ?></td>
+      <td><?php echo $row['descricao']; ?></td>
+      <td><?php echo $row['inc_data']; ?></td>
+    </tr>
+  <?php endforeach; ?>
+</table>
