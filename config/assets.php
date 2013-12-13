@@ -18,20 +18,20 @@ return array(
         'adm_base' => array(
             'public/adm/scripts/jquery-1.8.2.min.js',
             'public/adm/plugins/ui/js/jquery-ui.min.js',
-            'public/backend/plugins/alljax/alljax.js',
-            'public/backend/plugins/plupload/js/plupload.full.js',
-            'public/backend/plugins/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',
-            'public/backend/plugins/uniform/jquery.uniform.v200.js',
-            'public/backend/plugins/maskedinput/jquery.maskedinput-1.3.js',
-            'public/backend/plugins/validation/validation.js',
-            'public/backend/plugins/autogrow/autogrow.js',
-            'public/backend/plugins/multiselect/multiselect.js',
-            'public/backend/scripts/ckfinder.js',
-            'public/backend/scripts/forms.js',
-            'public/backend/scripts/list.js',
-            'public/backend/scripts/menu.js',
-            'public/backend/scripts/init.js',
-            'public/backend/scripts/scripts.js'
+            'public/adm/plugins/alljax/alljax.js',
+            'public/adm/plugins/plupload/js/plupload.full.js',
+            'public/adm/plugins/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',
+            'public/adm/plugins/uniform/jquery.uniform.v200.js',
+            'public/adm/plugins/maskedinput/jquery.maskedinput-1.3.js',
+            'public/adm/plugins/validation/validation.js',
+            'public/adm/plugins/autogrow/autogrow.js',
+            'public/adm/plugins/multiselect/multiselect.js',
+            'public/adm/scripts/ckfinder.js',
+            'public/adm/scripts/forms.js',
+            'public/adm/scripts/list.js',
+            'public/adm/scripts/menu.js',
+            'public/adm/scripts/init.js',
+            'public/adm/scripts/scripts.js'
         )
     )
 );
