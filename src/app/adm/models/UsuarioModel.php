@@ -3,20 +3,14 @@
 namespace src\app\adm\models;
 
 use Din\Paginator\Paginator;
-use Din\Mvc\Model\BaseModel;
 use Din\DataAccessLayer\Select;
 
 /**
  *
  * @package app.models
  */
-class UsuarioModel extends BaseModel
+class UsuarioModel extends BaseModelAdm
 {
-
-  public function __construct ()
-  {
-    parent::__construct();
-  }
 
   public function setNome ( $nome )
   {
