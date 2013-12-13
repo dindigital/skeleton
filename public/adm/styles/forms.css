@@ -1,0 +1,398 @@
+/*
+    Document   : login
+    Created on : Oct 1, 2012, 11:07:45 AM
+    Author     : mariosmello
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#containerLogin {
+  width: 400px;
+  background: #FFF;
+  margin: 60px auto;
+}
+
+form {
+  margin-bottom: 0!important;
+}
+
+fieldset {
+  position: relative;
+  border: 1px solid #ddd;
+  border-width: 1px 0 0;
+}
+.no_lines fieldset,
+fieldset.no_lines,
+.no_lines .section,
+.section.no_lines,
+.label_center{
+  text-align:center;
+}
+.no_lines fieldset.label_side > label,
+fieldset.no_lines.label_side > label,
+.no_lines fieldset.label_side > div,
+fieldset.no_lines.label_side > div {
+  border-color: transparent!important;
+}
+.columns > div > fieldset {
+  border-right: 1px solid #ddd;
+}
+.columns > div > fieldset.right {
+  border-right-width: 0;
+}
+.columns > div > fieldset.bottom {
+  border-bottom-width: 1px;
+}
+fieldset > label {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 15px 20px 10px;
+  margin-right: 10px;
+  display: block;
+  color: #333;
+}
+fieldset > label span {
+  display: inline;
+  font-weight: 400;
+  font-size: 11px;
+  font-family: sans-serif;
+  color: #999;
+  margin-left: 5px;
+}
+fieldset > label span.click {
+  cursor: pointer;
+}
+fieldset > div {
+  width: auto;
+  padding: 0 20px 15px;
+}
+fieldset > div > .text,
+fieldset > div > .select2 {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+fieldset > div > *:first-child {
+  margin-top: 0px;
+}
+fieldset > div > .value {
+  margin-top: 3px;
+  font-size: 13px;
+  font-weight: 700;
+  display: block;
+  color: #333;
+}
+fieldset > div > p.comment {
+  margin-top: 10px;
+}
+label.error {
+  font-weight: 700;
+  font-size: 10px;
+  background: #DA202C;
+  color: #fff;
+  position: absolute;
+  bottom: 8px;
+  right: 7px;
+  display: block;
+  line-height: 20px;
+  padding: 0 5px;
+  border-radius: 3px;
+  border: 1px solid #9E253B;
+  border-width: 1px 0 0 1px;
+}
+input.text,
+.textarea,
+.ui-multiselect,
+table input.text,
+.chzn-container-multi .chzn-choices {
+  width: 100%!important;
+  box-sizing: border-box;
+  border: 0;
+  background: rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 0 2px 0 #ddd;
+  border-radius: 1px;
+}
+input.text {
+  line-height: 32px;
+  height: 32px;
+  padding: 0 0 0 5px;
+}
+input.text.width_50 {
+  width: 50%;
+}
+input.text.width_25 {
+  width: 25%;
+}
+input.text.width_75 {
+  width: 25%;
+}
+.textarea_holder,
+.textarea {
+  padding: 5px 0 0 5px;
+  min-height: 60px;
+}
+.textarea_holder > textarea {
+  height: 100px;
+  width: 100%;
+  display: block;
+}
+input.text:hover,
+.textarea:hover {
+  box-shadow: inset 0 0 2px 0 #aaa;
+}
+input.text:focus,
+.textarea:focus {
+  box-shadow: inset 0 0 2px 0 #555;
+}
+.required_tag {
+  background: url(/adm/images/input_required.png) top right;
+  width: 40px;
+  height: 40px;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: -1px;
+  margin-top: 0;
+}
+fieldset.label_side > label {
+  width: 100px;
+  position: relative;
+  float: left;
+  left: 0;
+  /* padding: 15px 20px; */
+
+  border-right: 1px solid #eee;
+  clear: left;
+  line-height: 15px;
+  margin-bottom: -5px;
+  margin-top: 5px;
+}
+fieldset.label_side > label > span {
+  display: block;
+  margin: 5px 0 -15px;
+  line-height: normal;
+  padding-bottom: 25px!important;
+}
+fieldset.label_side > label > span > a {
+  color: #999;
+}
+fieldset.label_side > div {
+  width: auto;
+  margin-left: 140px;
+  padding: 15px 20px;
+  border-left: 1px solid #eee;
+  clear: right;
+}
+fieldset.label_side > div > input.text {
+  width: 100%;
+}
+fieldset.label_side.label_small > label {
+  width: 70px;
+}
+fieldset.label_side.label_small > div {
+  margin-left: 110px;
+}
+fieldset.no_label > div {
+  padding: 15px 20px;
+}
+fieldset.label_top.empty_label > div {
+  margin-top: 23px;
+  padding: 15px 20px;
+}
+fieldset > div > label {
+  display: block;
+  line-height: 25px;
+}
+fieldset > div > label:first-child {
+  margin-top: -3px;
+}
+fieldset > div.inline > label.text {
+  display: inline-block;
+  line-height: 26px;
+  margin-right: 10px;
+  margin-top: 0;
+}
+fieldset > div > label input[type=radio],
+fieldset > div > label input[type=checkbox] {
+  margin-right: 8px;
+}
+fieldset > div > button {
+  margin-bottom: 0;
+}
+.edit_text input {
+  background: #fff;
+  margin-bottom: 10px;
+  border: none;
+}
+
+.button_bar {
+  padding: 10px 15px;
+  clear: both;
+  background-color: #e3e9ed;
+  border: 1px solid #ddd;
+}
+
+button, .button {
+  background-color: #1C5EA0;
+  border-color: #064792;
+  color: #fff;
+  border: 0 solid;
+  text-shadow: 0 1px 0 #000;
+  padding: 5px 12px 5px 5px;
+  cursor: pointer;
+  overflow: hidden;
+  float: left;
+  margin: 0 5px;
+  height: 34px;
+}
+
+button img, .button img {
+  float: left;
+}
+
+button:hover, .button:hover {
+  background-color: #175592;
+}
+
+.button_red {
+  background-color:#9E253B;
+  border:1px solid #7C1F30;
+}
+
+.button_red:hover {
+  background-color:#8b1a2f;
+}
+
+button span, .button span {
+  display: block;
+  padding: 4px 0 0 5px;
+  float: left;
+}
+
+.jqui_radios {
+  margin: 15px 0 0 0!important;
+}
+
+.gallery {
+  overflow: hidden;
+  padding: 15px 0 10px 0;
+}
+
+.gallery li {
+  width: 200px;
+  float: left;
+  overflow: hidden;
+  margin: 0 7px 7px 0;
+}
+
+.gallery input {
+  width: 196px;
+  margin: 0;
+  font-size: 10px;
+}
+
+.galleryInfo {
+  color: #999999;
+  list-style: inside;
+  padding: 0 0 0 5px;
+}
+
+.galleryInfo li {
+  padding: 0 0 3px 0;
+}
+
+.preview a {
+  display: inline!important;
+}
+.preview a img {
+  display: inline!important;
+}
+
+.ckfinder_t{
+  width: 200px!important;
+}
+
+.ui-autocomplete-loading {
+  background: white url('/adm/plugins/ui/css/smoothness/images/ui-anim_basic_16x16.gif') right center no-repeat !important;
+}
+
+.drop_infinito{
+  display: block;
+  margin-bottom: 7px;
+}
+
+.drop_infinito select, .selector_top select {
+  margin-bottom: 5px;
+  width: 215px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 12px;
+  background-color: #f2f2f2;
+  color: #666;
+  border: 0 solid;
+  padding: 2px 0 2px 8px;
+  -webkit-border-radius: 20px 0 0 20px;
+  -moz-border-radius: 20px 0 0 20px;
+  border-radius: 20px 0 0 20px;
+}
+
+.descricao_cadastro {
+  font-size: 11px;
+  color: #949494;
+  padding: 5px 10px 0 0;
+}
+
+.limit_info {
+  position: absolute;
+  right: 30px;
+  width: 100px;
+  color: #315b84;
+  text-align: right;
+  margin-top: -10px!important;
+  font-size: 14px;
+  letter-spacing: -1px;
+  cursor: default;
+}
+
+.charleft {
+  position: absolute;
+  cursor: default;
+}
+
+.limit_textarea {
+  margin-top: 10px;
+}
+
+#preview_buscadores {
+  width: 534px;
+  border: 1px solid #fc1d00;
+  padding: 10px 5px;
+}
+
+#preview_buscadores .titulo_preview {
+  color: #4d03ff;
+  padding: 0;
+  margin: 0;
+}
+#preview_buscadores .link_preview {
+  color: #1e9900;
+  padding: 0;
+  margin: 5px 0;
+}
+#preview_buscadores .link_preview span {
+  color: #4d03ff;
+}
+#preview_buscadores .descricao_preview {
+  color: #333333;
+  padding: 0;
+  margin: 0;
+}
+
+#link {
+  width: 300px!important;
+}
+
+.selector_top {
+  float: left;
+  margin: 7px 25px 0 0;
+  padding-left: 10px;
+  position: relative;
+}

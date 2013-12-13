@@ -1,0 +1,40 @@
+/*
+*background-color: red; -----> IE6 / IE7
+
+color:#F0F\0/; --------------> IE8
+
+@media all and (min-width:0) {
+  ul li {
+    color:#F0F\0/; ----------> IE9 / IE 10
+  }
+}
+*/
+
+input.text, 
+.textarea, 
+.ui-multiselect, 
+table input.text, 
+.chzn-container-multi .chzn-choices {
+  background-color: #f2f2f2;
+  border: 1px solid #eaeaea;
+}
+
+*input.text, 
+*.textarea, 
+*.ui-multiselect, 
+*table input.text, 
+*.chzn-container-multi .chzn-choices {
+  background-color: #f2f2f2;
+  border: 1px solid #eaeaea;
+}
+
+*button {
+  width: 220px;
+  padding-right: 5px;
+}
+
+@media all and (min-width:0) {
+  button span, .button span {
+    padding-top: 6px\0/;
+  }
+}

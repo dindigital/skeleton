@@ -28,4 +28,4 @@ try {
   die('<h1>' . $e->getMessage() . '</h1>');
 }
 
-echo microtime(true) - $init;
+//echo microtime(true) - $init;

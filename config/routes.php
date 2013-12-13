@@ -4,36 +4,14 @@ use Din\Router\RouteTypes;
 
 return array(
     '' => array(
-        '^/?$' => array(
-            'app' => 'teste',
-            'controller' => 'Index',
+        'adm/?$' => array(
+            'app' => 'adm',
+            'controller' => 'usuariologin',
             'method' => 'index'
         ),
-        '^/inserts/?$' => array(
-            'app' => 'teste',
-            'controller' => 'Agenda',
-            'method' => 'inserts'
-        ),
-        '^/delete/?$' => array(
-            'app' => 'teste',
-            'controller' => 'Agenda',
-            'method' => 'delete'
-        ),
-        '^/update/?$' => array(
-            'app' => 'teste',
-            'controller' => 'Agenda',
-            'method' => 'update'
-        ),
-        '^/select/?$' => array(
-            'app' => 'teste',
-            'controller' => 'Agenda',
-            'method' => 'select'
-        ),
-        '' => array(
-            'app' => 'teste',
-            'controller' => 'Index',
-            'method' => 'erro',
-            'type' => RouteTypes::ERR_404,
+        'adm/(.*)' => array(
+            'app' => 'adm',
+            'type' => RouteTypes::ACTION,
         ),
     )
 );
