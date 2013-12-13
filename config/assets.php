@@ -18,7 +18,6 @@ return array(
         'adm_base' => array(
             'public/adm/scripts/jquery-1.8.2.min.js',
             'public/adm/plugins/ui/js/jquery-ui.min.js',
-            'public/adm/plugins/alljax/alljax.js',
             'public/adm/plugins/plupload/js/plupload.full.js',
             'public/adm/plugins/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',
             'public/adm/plugins/uniform/jquery.uniform.v200.js',
