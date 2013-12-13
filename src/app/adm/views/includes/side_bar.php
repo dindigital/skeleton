@@ -3,9 +3,9 @@
 
   <!-- CONTAINER PROFILE -->
   <div id="containerProfile" class="boxradios">
-    <?//= $this->avatar ?>
+    <?php echo $data['user']['avatar'] ?>
     <h2>Administrador</h2>
-    <h3><a class="replace_container" href="/adm/config/cadastro/" title="Configurações">NOME<?//= $this->user_table->nome ?></a></h3>
+    <h3><a class="replace_container" href="/adm/config/cadastro/" title="Configurações"><?php echo $data['user']['nome'] ?></a></h3>
     <ul>
       <li>
         <a class="replace_container" href="/adm/config/cadastro/" title="Configurações">Config</a>
