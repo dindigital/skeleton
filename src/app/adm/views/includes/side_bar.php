@@ -11,14 +11,14 @@
         <a class="replace_container" href="/adm/config/cadastro/" title="Configurações">Config</a>
         <span class="divider">|</span>
       </li>
-      <li><a href="/adm/usuariologin/logout/" title="Sair do painel administrativo">Sair</a></li>
+      <li><a href="/adm/usuario_auth/logout/" title="Sair do painel administrativo">Sair</a></li>
     </ul>
   </div>
   <!-- FIM CONTAINER PROFILE -->
 
   <!-- NAV SIDE -->
   <div id="nav_side">
-    <a class="replace_container" href="configuracao/cadastro/" title="Configurações">Configurações</a>
+    <a class="replace_container" href="/adm/configuracao/cadastro/" title="Configurações">Configurações</a>
   </div>
   <!-- FIM NAV SIDE -->
 

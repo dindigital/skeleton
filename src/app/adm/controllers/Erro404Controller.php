@@ -1,6 +1,6 @@
 <?
 
-namespace src\app\adm005\controllers;
+namespace src\app\adm\controllers;
 
 /**
  *

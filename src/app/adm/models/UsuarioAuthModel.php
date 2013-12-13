@@ -12,7 +12,7 @@ use Din\Auth\AuthDataLayer\AuthDataLayer;
  *
  * @package app.models
  */
-class UsuarioLoginModel extends Auth
+class UsuarioAuthModel extends Auth
 {
 
   public function __construct ()

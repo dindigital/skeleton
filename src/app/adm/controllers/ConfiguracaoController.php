@@ -1,16 +1,16 @@
 <?
 
-namespace src\app\adm005\controllers;
+namespace src\app\adm\controllers;
 
-use src\app\adm005\BaseControllerApp;
-use src\app\adm005\models\ConfiguracaoModel;
+use src\app\adm\BaseControllerAdm;
+use src\app\adm\models\ConfiguracaoModel;
 use lib\Form\Post\Post;
 
 /**
  *
  * @package app.controllers
  */
-class ConfiguracaoController extends BaseControllerApp
+class ConfiguracaoController extends BaseControllerAdm
 {
 
   public function __construct ( $app_name, $Compressor )

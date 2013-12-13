@@ -6,7 +6,7 @@ return array(
     '' => array(
         'adm/?$' => array(
             'app' => 'adm',
-            'controller' => 'usuariologin',
+            'controller' => 'usuarioAuth',
             'method' => 'index'
         ),
         'adm/(.*)' => array(

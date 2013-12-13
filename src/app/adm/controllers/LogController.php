@@ -1,18 +1,18 @@
 <?php
 
-namespace src\app\adm005\controllers;
+namespace src\app\adm\controllers;
 
-use src\app\adm005\BaseControllerApp;
-use src\app\adm005\models\LogModel;
-use src\app\adm005\objects\PaginatorPainel;
-use src\app\adm005\objects\Arrays;
-use src\app\adm005\objects\Dropdown;
+use src\app\adm\BaseControllerAdm;
+use src\app\adm\models\LogModel;
+use src\app\adm\objects\PaginatorPainel;
+use src\app\adm\objects\Arrays;
+use src\app\adm\objects\Dropdown;
 
 /**
  *
  * @package app.controllers
  */
-class LogController extends BaseControllerApp
+class LogController extends BaseControllerAdm
 {
 
   public function __construct ( $app_name, $Compressor )

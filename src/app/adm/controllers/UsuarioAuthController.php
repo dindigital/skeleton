@@ -3,14 +3,14 @@
 namespace src\app\adm\controllers;
 
 use Din\Mvc\Controller\BaseController;
-use src\app\adm\models\UsuarioLoginModel;
+use src\app\adm\models\UsuarioAuthModel;
 use Din\Http\Header;
 
 /**
  *
  * @package app.controllers
  */
-class UsuariologinController extends BaseController
+class UsuarioAuthController extends BaseController
 {
 
   public function __construct ()
@@ -38,8 +38,8 @@ class UsuariologinController extends BaseController
     $senha = $_POST['senha'];
     $memorizar = isset($_POST['memorizar']) ? '1' : '0';
 
-    $usuariologinmodel = new UsuarioLoginModel();
-    $usuariologinmodel->login($email, $senha, $memorizar);
+    $usuarioAuthModel = new UsuarioAuthModel();
+    $usuarioAuthModel->login($email, $senha, $memorizar);
 
     Header::redirect('/adm/index/index/');
     $this->display_html();
@@ -47,8 +47,8 @@ class UsuariologinController extends BaseController
 
   public function get_logout ()
   {
-    $usuariologinmodel = new UsuarioLoginModel();
-    $usuariologinmodel->logout();
+    $usuarioAuthModel = new UsuarioAuthModel();
+    $usuarioAuthModel->logout();
 
     Header::redirect('/adm/');
   }
@@ -57,7 +57,7 @@ class UsuariologinController extends BaseController
   {
     try {
 
-      $this->action = '/adm005/usuariologin/login/';
+      $this->action = '/adm/usuario_auth/login/';
 
       $this->alljax_view('login.php');
     } catch (\Exception $e) {

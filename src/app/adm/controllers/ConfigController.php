@@ -1,18 +1,18 @@
 <?
 
-namespace src\app\adm005\controllers;
+namespace src\app\adm\controllers;
 
-use src\app\adm005\BaseControllerApp;
-use src\app\adm005\models\UsuarioModel;
-use src\app\adm005\controllers\LogController;
+use src\app\adm\BaseControllerAdm;
+use src\app\adm\models\UsuarioModel;
+use src\app\adm\controllers\LogController;
 use lib\Form\Post\Post;
-use src\app\adm005\objects\Upload;
+use src\app\adm\objects\Upload;
 
 /**
  *
  * @package app.controllers
  */
-class ConfigController extends BaseControllerApp
+class ConfigController extends BaseControllerAdm
 {
 
   public function __construct ( $app_name, $assets )

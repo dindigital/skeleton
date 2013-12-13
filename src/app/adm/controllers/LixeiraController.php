@@ -1,18 +1,18 @@
 <?php
 
-namespace src\app\adm005\controllers;
+namespace src\app\adm\controllers;
 
-use src\app\adm005\BaseControllerApp;
-use src\app\adm005\models\LixeiraModel;
-use src\app\adm005\objects\PaginatorPainel;
-use src\app\adm005\controllers\LogController;
+use src\app\adm\BaseControllerAdm;
+use src\app\adm\models\LixeiraModel;
+use src\app\adm\objects\PaginatorPainel;
+use src\app\adm\controllers\LogController;
 use lib\Form\Post\Post;
 
 /**
  *
  * @package app.controllers
  */
-class LixeiraController extends BaseControllerApp
+class LixeiraController extends BaseControllerAdm
 {
 
   public function __construct ( $app_name, $Compressor )
