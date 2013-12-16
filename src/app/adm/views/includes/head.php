@@ -17,4 +17,4 @@
       <script type="text/javascript" src="/adm/plugins/ckeditor365/ckeditor.js"></script>
       <script type="text/javascript" src="/adm/plugins/ckfinder23/ckfinder.js"></script>
   </head>
-  <body onload="< ?//=@$this->onload?>">
+  <body>

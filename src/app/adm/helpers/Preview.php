@@ -1,8 +1,8 @@
 <?php
 
-namespace src\app\adm005\objects;
+namespace src\app\adm\helpers;
 
-use lib\Image\Picuri;
+use Din\Image\Picuri;
 
 class Preview
 {
@@ -44,4 +44,3 @@ class Preview
   }
 
 }
-

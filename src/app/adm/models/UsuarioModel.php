@@ -4,6 +4,8 @@ namespace src\app\adm\models;
 
 use Din\Paginator\Paginator;
 use Din\DataAccessLayer\Select;
+use src\tables\UsuarioTable;
+use Din\Validation\Validate;
 
 /**
  *
@@ -11,6 +13,12 @@ use Din\DataAccessLayer\Select;
  */
 class UsuarioModel extends BaseModelAdm
 {
+
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->_table = new UsuarioTable();
+  }
 
   public function setNome ( $nome )
   {
@@ -22,7 +30,7 @@ class UsuarioModel extends BaseModelAdm
 
   public function setEmail ( $email, $id = null )
   {
-    if ( $email == '' || !\lib\Validation\Validate::email($email) )
+    if ( $email == '' || !Validate::email($email) )
       throw new \Exception('E-mail usuário deve ser um e-mail válido');
 
     $SQL = "SELECT * FROM usuario {\$strWhere}";
@@ -32,10 +40,10 @@ class UsuarioModel extends BaseModelAdm
       $arrCriteria['id_usuario'] = array('<>' => $id);
     }
 
-    $result = $this->_dao->getByCriteria($this->_table, $SQL, $arrCriteria);
-
-    if ( count($result) )
-      throw new \Exception('Este e-mail já existe.');
+//    $result = $this->_dao->getByCriteria($this->_table, $SQL, $arrCriteria);
+//
+//    if ( count($result) )
+//      throw new \Exception('Este e-mail já existe.');
 
     $this->_table->email = $email;
   }
@@ -51,48 +59,38 @@ class UsuarioModel extends BaseModelAdm
     }
   }
 
-  public function inserir ( $ativo, $nome, $email, $senha, $avatar )
+  public function inserir ( $info )
   {
-    $this->_table->clear();
-
-    $this->setAtivo($ativo);
-    $this->setNome($nome);
-    $this->setEmail($email);
-    $this->setSenha($senha);
+    $this->setAtivo($info['ativo']);
+    $this->setNome($info['nome']);
+    $this->setEmail($info['email']);
+    $this->setSenha($info['senha']);
     $this->setIncData();
 
     $id = $this->_dao->insert($this->_table);
 
-    $this->setArquivo('avatar', $avatar, $id, false);
+    $this->setArquivo('avatar', $info['senha'], $id, false);
     $this->_dao->update($this->_table, $id);
 
     return $id;
   }
 
-  public function atualizar ( $id, $ativo, $nome, $email, $senha, $avatar )
+  public function atualizar ( $id, $info )
   {
-    $this->_table->clear();
+    $this->setAtivo($info['ativo']);
+    $this->setNome($info['nome']);
+    $this->setEmail($info['email'], $id);
+    $this->setSenha($info['senha'], false);
 
-    if ( !$this->_dao->countByPk($this->_table, $id) )
-      throw new \Exception('Usuário não encontrado.');
+    $this->setArquivo('avatar', $info['avatar'], $id, false);
 
-    $this->setAtivo($ativo);
-    $this->setNome($nome);
-    $this->setEmail($email, $id);
-    $this->setSenha($senha, false);
-
-    $this->setArquivo('avatar', $avatar, $id, false);
-
-    return $this->_dao->update($this->_table, $id);
+    return $this->_dao->update($this->_table, array(
+                'id_usuario' => $id
+    ));
   }
 
   public function salvar_config ( $id, $nome, $email, $senha, $avatar )
   {
-    $this->_table->clear();
-
-    if ( !$this->_dao->countByPk($this->_table, $id) )
-      throw new \Exception('Usuário não encontrado.');
-
     $this->setNome($nome);
     $this->setEmail($email, $id);
     $this->setSenha($senha, false);
@@ -101,21 +99,20 @@ class UsuarioModel extends BaseModelAdm
     return $this->_dao->update($this->_table, $id);
   }
 
-  public function listar ( $arrParams = array(), Paginator $Paginator = null )
+  public function listar ( $arrFilters = array(), Paginator $Paginator = null )
   {
-    $arrParams['id_usuario']['<>'] = '1';
+    $arrCriteria = array(
+        'nome' => array('LIKE' => '%' . $arrFilters['nome'] . '%'),
+        'email' => array('LIKE' => '%' . $arrFilters['email'] . '%'),
+        'id_usuario' => array('<>' => '1')
+    );
 
-    $SQL = '
-    SELECT
-      u.id_usuario,u.nome,u.email,u.ativo,u.inc_data
-    FROM
-      usuario u
-    {$strWhere}
-    ORDER BY
-      u.nome
-    ';
+    $select = new Select('usuario');
+    $select->addField('*');
+    $select->where($arrCriteria);
+    $select->order_by('nome');
 
-    $result = $this->_dao->getByCriteria($this->_table, $SQL, $arrParams, $Paginator);
+    $result = $this->_dao->select($select);
 
     return $result;
   }

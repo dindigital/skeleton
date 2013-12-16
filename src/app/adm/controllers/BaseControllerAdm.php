@@ -24,7 +24,7 @@ abstract class BaseControllerAdm extends BaseController
   }
 
   /**
-   * Seta os arquivos que compões o layout do adm
+   * Seta os arquivos que compõem o layout do adm
    */
   private function setViewFiles ()
   {
@@ -32,8 +32,34 @@ abstract class BaseControllerAdm extends BaseController
     $this->_view->addFile('src/app/adm/views/includes/head.php', '{$HEAD}');
     $this->_view->addFile('src/app/adm/views/includes/side_bar.php', '{$SIDE_BAR}');
     $this->_view->addFile('src/app/adm/views/includes/footer.php', '{$FOOTER}');
+  }
+
+  public function setCadastroTemplate ( $filename )
+  {
+    $this->setRegistroSalvoData();
+
     $this->_view->addFile('src/app/adm/views/includes/cadastro_alerts.php', '{$CADASTRO_ALERTS}');
     $this->_view->addFile('src/app/adm/views/includes/cadastro_submit.php', '{$CADASTRO_SUBMIT}');
+    $this->_view->addFile('src/app/adm/views/includes/btn_novo_registro.php', '{$BTN_NOVO_REGISTRO}');
+
+    $this->_view->addFile('src/app/adm/views/' . $filename, '{$CONTENT}');
+    $this->display_html();
+  }
+
+  public function setListTemplate ( $filename, $paginator )
+  {
+    $this->_data['paginator']['subtotal'] = $paginator->getSubTotal();
+    $this->_data['paginator']['total'] = $paginator->getTotal();
+    $this->_data['paginator']['numbers'] = $paginator->getNumbers();
+
+    $this->_view->addFile('src/app/adm/views/includes/btn_limpar.php', '{$BTN_LIMPAR}');
+    $this->_view->addFile('src/app/adm/views/includes/btn_buscar.php', '{$BTN_BUSCAR}');
+    $this->_view->addFile('src/app/adm/views/includes/btn_excluir_permanentemente.php', '{$BTN_EXCLUIR_PERMANENTEMENTE}');
+    $this->_view->addFile('src/app/adm/views/includes/btn_novo_registro.php', '{$BTN_NOVO_REGISTRO}');
+    $this->_view->addFile('src/app/adm/views/includes/lista_footer.php', '{$LISTA_FOOTER}');
+
+    $this->_view->addFile('src/app/adm/views/' . $filename, '{$CONTENT}');
+    $this->display_html();
   }
 
   /**

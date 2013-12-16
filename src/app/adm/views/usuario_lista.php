@@ -1,23 +1,26 @@
 <div id="top_container">
-  <h2>Lista de <?= $this->_model->getMe() ?></h2>
+  <h2>Lista de Usuários</h2>
 </div>
 
-<? include 'includes/cadastro_alerts.php' ?>
 
 <div id="search_table">
-  <form id="main_form" method="get" class="form_busca" action="<?= $this->action ?>">
-    <? include 'includes/hidden_fields.php' ?>
+  <form id="main_form" method="get" class="form_busca">
+    <?php // include 'includes/hidden_fields.php' ?>
 
-    <input name="nome" type="text" placeholder="Busca por nome" value="<?= $this->busca->nome ?>">
-    <input name="email" type="text" placeholder="Busca por email" value="<?= $this->busca->email ?>">
+    <input name="nome" type="text" placeholder="Busca por nome" value="<?php echo $data['busca']['nome']; ?>">
+    <input name="email" type="text" placeholder="Busca por email" value="<?php echo $data['busca']['email']; ?>">
 
-    <? include 'includes/lista_buscar.php' ?>
+    {$BTN_LIMPAR}
+    {$BTN_BUSCAR}
   </form>
 </div>
 
 <div class="button_bar clearfix">
-  <? include 'includes/btn_novo_registro.php' ?>
-  <? include 'includes/btn_excluir_permanentemente.php' ?>
+  <button type="button" class="link boxradios" href="/adm/usuario/cadastro/">
+    <img height="24" width="24" alt="Voltar para a lista" src="/adm/images/create_write.png">
+    <span>Novo Registro</span>
+  </button>
+  {$BTN_EXCLUIR_PERMANENTEMENTE}
 </div>
 
 <div class="box">
@@ -33,23 +36,23 @@
     </thead>
 
     <tbody>
-      <? foreach ( $this->list as $table ): ?>
-        <tr<? if ( isset($table->del_pai) && $table->del_pai == '1' ): ?> class="del_pai"<? endif ?>>
-          <td class="typeCheck"><input class="uniform excluir" type="checkbox" name="excluir[]" id="exc_<?= $table->getName(true) ?>_<?= $table->getPkValue() ?>" /></td>
-          <td class="typeStatus"><input class="uniform setAtivo" type="checkbox" <? if ( $table->ativo == '1' ): ?> checked="checked"<? endif ?> id="<?= $table->getPkValue() ?>" /></td>
+      <?php foreach ( $data['list'] as $row ): ?>
+        <tr>
+          <td class="typeCheck"><input class="uniform excluir" type="checkbox" name="excluir[]" id="exc_usuario_<?php echo $row['id_usuario']; ?>" /></td>
+          <td class="typeStatus"><input class="uniform setAtivo" type="checkbox" <?php if ( $row['ativo'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_usuario']; ?>" /></td>
           <td>
-            <?= $table->nome ?>
+            <?php echo $row['nome']; ?>
             <ul>
-              <? include 'includes/lista_editar.php' ?>
-              <? include 'includes/lista_excluir_direto.php' ?>
+              <li><a href="/adm/usuario/cadastro/<?php echo $row['id_usuario']; ?>/" title="Editar registro" class="replace_container">Editar</a></li>
+              <li><a class="excluir_shortcut" title="Enviar para lixeira">Excluir</a></li>
             </ul>
           </td>
-          <td><?= $table->email ?></td>
-          <td><?php echo \lib\Validation\DateTransform::format_date($table->inc_data, 'full') ?></td>
+          <td><?php echo $row['email']; ?></td>
+          <td><?php echo $row['inc_data']; ?></td>
         </tr>
-      <? endforeach ?>
+      <?php endforeach; ?>
     </tbody>
   </table>
-  <? include 'includes/lista_footer.php' ?>
+  {$LISTA_FOOTER}
 </div>
 

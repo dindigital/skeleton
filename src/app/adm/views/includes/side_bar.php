@@ -18,7 +18,8 @@
 
   <!-- NAV SIDE -->
   <div id="nav_side">
-    <a class="replace_container" href="/adm/configuracao/cadastro/" title="Configurações">Configurações</a>
+    <a href="/adm/configuracao/cadastro/" title="Configurações">Configurações</a>
+    <a href="/adm/usuario/lista/" title="Usuário">Usuário</a>
   </div>
   <!-- FIM NAV SIDE -->
 

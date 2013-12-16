@@ -7,7 +7,7 @@
 
 <div class="button_bar clearfix">
   <button type="button" class="replace_container" href="<?= $this->uri->lista ?>">
-    <img height="24" width="24" alt="Voltar para a lista" src="/backend/images/list.png">
+    <img height="24" width="24" alt="Voltar para a lista" src="/adm/images/list.png">
     <span>Voltar para a lista</span>
   </button>
 </div>

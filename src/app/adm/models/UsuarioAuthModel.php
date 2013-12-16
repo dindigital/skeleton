@@ -24,7 +24,7 @@ class UsuarioAuthModel extends Auth
     $pass_field = 'senha';
     $active_field = 'ativo';
 
-    $PDO = PDOBuilder::build();
+    $PDO = PDOBuilder::build(DB_TYPE, DB_HOST, DB_SCHEMA, DB_USER, DB_PASS);
     $ADL = new AuthDataLayer($PDO, $tbl, $login_field, $pass_field, $pk_field, $active_field);
 
     parent::__construct($ADL, new Crypt(), new Session($session_name));

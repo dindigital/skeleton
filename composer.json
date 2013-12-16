@@ -6,6 +6,7 @@
     }
   ],
   "require": {
-    "dindigital/din": "dev-master"
+    "dindigital/din": "dev-master",
+    "spekkionu/wideimage": "dev-master"
   }
 }

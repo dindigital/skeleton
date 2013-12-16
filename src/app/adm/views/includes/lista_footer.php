@@ -1,10 +1,10 @@
-<? if ( !count($this->list) ): ?>
+<?php if ( !count($data['list']) ): ?>
   <div class="noresult">Sua pesquisa não retornou resultados.</div>
-<? endif; ?>
+<?php endif; ?>
 
 <div class="tablePagination">
-  <div class="tablePagination_info">Exibindo <?= $this->paginator->getSubTotal() ?> de <?= $this->paginator->getTotal() ?> resultados</div>
+  <div class="tablePagination_info">Exibindo <?php echo $data['paginator']['subtotal']; ?> de <?php echo $data['paginator']['total']; ?> resultados</div>
   <div class="tablePagination_btns">
-    <?= $this->paginator->getNumbers() ?>
+    <?php echo $data['paginator']['numbers']; ?>
   </div>
 </div>

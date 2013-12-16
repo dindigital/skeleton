@@ -19,8 +19,8 @@ header("Pragma: no-cache");
 // Settings
 $_SERVER['DOCUMENT_ROOT'] = str_replace('\\', DIRECTORY_SEPARATOR, $_SERVER['DOCUMENT_ROOT']);
 $_SERVER['DOCUMENT_ROOT'] = str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['DOCUMENT_ROOT']);
-//$targetDir = $_SERVER['DOCUMENT_ROOT'] . '/public/system/uploads/temp/';
-$targetDir = getenv("upload_tmp_dir");
+$targetDir = $_SERVER['DOCUMENT_ROOT'] . '/tmp';
+//$targetDir = getenv("upload_tmp_dir");
 if ( !is_dir($targetDir) )
   mkdir($targetDir, 0777, true);
 //$targetDir = 'uploads';
@@ -71,8 +71,7 @@ if ( $cleanupTargetDir && is_dir($targetDir) && ($dir = opendir($targetDir)) ) {
   }
 
   closedir($dir);
-}
-else
+} else
   die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
 
 
@@ -95,17 +94,14 @@ if ( strpos(@$contentType, "multipart") !== false ) {
       if ( $in ) {
         while ($buff = fread($in, 4096))
           fwrite($out, $buff);
-      }
-      else
+      } else
         die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
       fclose($in);
       fclose($out);
       @unlink($_FILES['file']['tmp_name']);
-    }
-    else
+    } else
       die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
-  }
-  else
+  } else
     die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
 } else {
   // Open temp file
@@ -117,14 +113,12 @@ if ( strpos(@$contentType, "multipart") !== false ) {
     if ( $in ) {
       while ($buff = fread($in, 4096))
         fwrite($out, $buff);
-    }
-    else
+    } else
       die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
 
     fclose($in);
     fclose($out);
-  }
-  else
+  } else
     die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
 }
 

@@ -13,7 +13,7 @@
   </fieldset>
   <div class="button_bar clearfix">
     <button type="submit" class="boxradios right">
-      <img src="/backend/images/key_2.png">
+      <img src="/adm/images/key_2.png">
       <span>Acessar</span>
     </button>
   </div>

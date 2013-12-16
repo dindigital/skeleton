@@ -1,8 +1,8 @@
-<?
+<?php
 
-namespace src\app\adm005\objects;
+namespace src\app\adm\helpers;
 
-use lib\Paginator\Paginator;
+use Din\Paginator\Paginator;
 
 /**
  *
