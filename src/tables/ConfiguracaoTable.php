@@ -1,9 +1,9 @@
-<?
+<?php
 
 namespace src\tables;
 
-use lib\DataAccessLayer\Table\AbstractTable;
-use lib\DataAccessLayer\Table\iTable;
+use Din\DataAccessLayer\Table\AbstractTable;
+use Din\DataAccessLayer\Table\iTable;
 
 /**
  *
@@ -15,47 +15,46 @@ class ConfiguracaoTable extends AbstractTable implements iTable
   /**
    * @var int(11) NOT NULL pk
    */
-  protected $id_configuracao;
+  private $id_configuracao;
 
   /**
    * @var varchar(255) NOT NULL
    */
-  protected $title_home;
+  private $title_home;
 
   /**
    * @var text NOT NULL
    */
-  protected $description_home;
+  private $description_home;
 
   /**
    * @var text NOT NULL
    */
-  protected $keywords_home;
+  private $keywords_home;
 
   /**
    * @var varchar(255) NOT NULL title
    */
-  protected $title_interna;
+  private $title_interna;
 
   /**
    * @var text NOT NULL
    */
-  protected $description_interna;
+  private $description_interna;
 
   /**
    * @var text NOT NULL
    */
-  protected $keywords_interna;
+  private $keywords_interna;
 
   /**
    * @var int(11) NOT NULL
    */
-  protected $qtd_horas;
+  private $qtd_horas;
 
   /**
    * @var varchar(255) NOT NULL
    */
-  protected $email_avisos;
+  private $email_avisos;
 
 }
-

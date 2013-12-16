@@ -1,20 +1,23 @@
-<?
+<?php
 
-namespace src\app\adm005\models;
+namespace src\app\adm\models;
 
-use src\models\Configuracao;
+use src\app\adm\models\BaseModelAdm;
+use Din\DataAccessLayer\Select;
+use src\tables\ConfiguracaoTable;
+use Din\Validation\Validate;
 
 /**
  *
  * @package app.models
  */
-class ConfiguracaoModel extends Configuracao
+class ConfiguracaoModel extends BaseModelAdm
 {
 
   public function __construct ()
   {
     parent::__construct();
-    $this->setMe('Configuração');
+    $this->_table = new ConfiguracaoTable;
   }
 
   public function setTitleHome ( $title_home )
@@ -77,23 +80,20 @@ class ConfiguracaoModel extends Configuracao
 
   public function setEmailAvisos ( $email_avisos )
   {
-    if ( !\lib\Validation\Validate::email($email_avisos) )
+    if ( !Validate::email($email_avisos) )
       throw new \Exception('E-mail avisos deve ser um e-mail válido');
 
     $this->_table->email_avisos = $email_avisos;
   }
 
-  public function getById ()
+  public function getById ( $id_configuracao )
   {
-    $SQL = '
-    SELECT
-      *
-    FROM
-      ' . $this->_table->getName() . '
-    {$strWhere}
-    ';
-
-    $result = $this->_dao->getByCriteria($this->_table, $SQL, '1');
+    $select = new Select('configuracao');
+    $select->addField('*');
+    $select->where(array(
+        'id_configuracao' => $id_configuracao
+    ));
+    $result = $this->_dao->select($select);
 
     if ( !count($result) )
       throw new \Exception('Configuração não encontrada.');
@@ -101,22 +101,18 @@ class ConfiguracaoModel extends Configuracao
     return $result[0];
   }
 
-  public function atualizar ( $title_home, $description_home, $keywords_home, $title_interna, $description_interna, $keywords_interna, $qtd_horas, $email_avisos )
+  public function atualizar ( $id, $info )
   {
-    if ( !$this->_dao->countByPk($this->_table, '1') )
-      throw new \Exception('Registro não encontrado.');
+    $this->setTitleHome($info['title_home']);
+    $this->setDescriptionHome($info['description_home']);
+    $this->setKeywordsHome($info['keywords_home']);
+    $this->setTitleInterna($info['title_interna']);
+    $this->setDescriptionInterna($info['description_interna']);
+    $this->setKeywordsInterna($info['keywords_interna']);
+    $this->setQtdHoras($info['qtd_horas']);
+    $this->setEmailAvisos($info['email_avisos']);
 
-    $this->setTitleHome($title_home);
-    $this->setDescriptionHome($description_home);
-    $this->setKeywordsHome($keywords_home);
-    $this->setTitleInterna($title_interna);
-    $this->setDescriptionInterna($description_interna);
-    $this->setKeywordsInterna($keywords_interna);
-    $this->setQtdHoras($qtd_horas);
-    $this->setEmailAvisos($email_avisos);
-
-    $this->_dao->update($this->_table, '1');
+    $this->_dao->update($this->_table, $id);
   }
 
 }
-

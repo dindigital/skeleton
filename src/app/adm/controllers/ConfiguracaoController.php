@@ -1,10 +1,11 @@
-<?
+<?php
 
 namespace src\app\adm\controllers;
 
-use src\app\adm\BaseControllerAdm;
+use src\app\adm\controllers\BaseControllerAdm;
 use src\app\adm\models\ConfiguracaoModel;
-use lib\Form\Post\Post;
+use Din\Http\Post;
+use Din\Http\Header;
 
 /**
  *
@@ -13,60 +14,39 @@ use lib\Form\Post\Post;
 class ConfiguracaoController extends BaseControllerAdm
 {
 
-  public function __construct ( $app_name, $Compressor )
+  private $_model;
+
+  public function __construct ()
   {
-    try {
-
-      parent::__construct($app_name, $Compressor);
-
-      $this->_model = new ConfiguracaoModel();
-    } catch (\Exception $e) {
-      $this->alljax_exception($e);
-    }
+    $this->_model = new ConfiguracaoModel();
+    parent::__construct();
   }
 
-  public function get_cadastro ( $salvo = false )
+  public function get_cadastro ()
   {
+    $this->_data['table'] = $this->_model->getById(1);
+    $this->setRegistroSalvoData();
 
-    try {
-
-      $this->action = $this->uri->cadastro;
-
-      $this->table = $this->_model->getById('1');
-
-      $this->registro_salvo($salvo);
-    } catch (\Exception $e) {
-      $this->alljax_exception($e);
-    }
+    $this->_view->addFile('src/app/adm/views/configuracao_cadastro.php', '{$CONTENT}');
+    $this->display_html();
   }
 
   public function post_cadastro ()
   {
-    try {
+    $this->_model->atualizar('1', array(
+        'title_home' => Post::text('title_home'),
+        'description_home' => Post::text('description_home'),
+        'keywords_home' => Post::text('keywords_home'),
+        'title_interna' => Post::text('title_interna'),
+        'description_interna' => Post::text('description_interna'),
+        'keywords_interna' => Post::text('keywords_interna'),
+        'qtd_horas' => Post::text('qtd_horas'),
+        'email_avisos' => Post::text('email_avisos'),
+    ));
 
-      $title_home = $_POST['title_home'];
-      $description_home = $_POST['description_home'];
-      $keywords_home = $_POST['keywords_home'];
-      $title_interna = $_POST['title_interna'];
-      $description_interna = $_POST['description_interna'];
-      $keywords_interna = $_POST['keywords_interna'];
-      $qtd_horas = $_POST['qtd_horas'];
-      $email_avisos = $_POST['email_avisos'];
+    $this->setRegistroSalvoSession();
 
-      $content = array();
-
-      $content['before'] = $this->_model->getById();
-
-      $this->_model->atualizar($title_home, $description_home, $keywords_home, $title_interna, $description_interna, $keywords_interna, $qtd_horas, $email_avisos);
-
-      $content['after'] = $this->_model->getById();
-      LogController::inserir($this, '1', $content, 'U');
-
-      $this->alljax_redirect_after_save();
-    } catch (\Exception $e) {
-      $this->alljax_exception($e);
-    }
+    Header::redirect('/adm/configuracao/cadastro/');
   }
 
 }
-

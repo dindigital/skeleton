@@ -53,16 +53,4 @@ class UsuarioAuthController extends BaseController
     Header::redirect('/adm/');
   }
 
-  public function get_login ()
-  {
-    try {
-
-      $this->action = '/adm/usuario_auth/login/';
-
-      $this->alljax_view('login.php');
-    } catch (\Exception $e) {
-      $this->alljax_exception($e);
-    }
-  }
-
 }
