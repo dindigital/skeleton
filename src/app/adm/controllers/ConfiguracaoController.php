@@ -18,17 +18,14 @@ class ConfiguracaoController extends BaseControllerAdm
 
   public function __construct ()
   {
-    $this->_model = new ConfiguracaoModel();
     parent::__construct();
+    $this->_model = new ConfiguracaoModel();
   }
 
   public function get_cadastro ()
   {
     $this->_data['table'] = $this->_model->getById(1);
-    $this->setRegistroSalvoData();
-
-    $this->_view->addFile('src/app/adm/views/configuracao_cadastro.php', '{$CONTENT}');
-    $this->display_html();
+    $this->setCadastroTemplate('configuracao_cadastro.php');
   }
 
   public function post_cadastro ()
@@ -45,8 +42,7 @@ class ConfiguracaoController extends BaseControllerAdm
     ));
 
     $this->setRegistroSalvoSession();
-
-    Header::redirect('/adm/configuracao/cadastro/');
+    Header::redirect();
   }
 
 }
