@@ -10,6 +10,7 @@ use Din\Session\Session;
 use Din\Image\Picuri;
 use Din\Http\Post;
 use Din\Http\Header;
+use Din\ViewHelpers\DateTransform;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -24,6 +25,7 @@ abstract class BaseControllerAdm extends BaseController
     $this->setAssetsData();
     $this->setUserData();
     $this->setBasicTemplate();
+    $this->setViewHelpers();
   }
 
   /**
@@ -71,6 +73,11 @@ abstract class BaseControllerAdm extends BaseController
   private function setAssetsData ()
   {
     $this->_data['assets'] = $this->getAssets();
+  }
+
+  public function setViewHelpers ()
+  {
+    $this->_data['DateTransform'] = new DateTransform;
   }
 
   /**
