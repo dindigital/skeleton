@@ -91,7 +91,7 @@ class ConfiguracaoModel extends BaseModelAdm
     $select = new Select('configuracao');
     $select->addField('*');
     $select->where(array(
-        'id_configuracao' => $id_configuracao
+        'id_configuracao = ?' => $id_configuracao
     ));
     $result = $this->_dao->select($select);
 

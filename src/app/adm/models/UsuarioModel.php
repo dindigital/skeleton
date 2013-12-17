@@ -64,9 +64,9 @@ class UsuarioModel extends BaseModelAdm
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
     $arrCriteria = array(
-        'nome' => array('LIKE' => '%' . $arrFilters['nome'] . '%'),
-        'email' => array('LIKE' => '%' . $arrFilters['email'] . '%'),
-        'email' => array('<>' => 'suporte@dindigital.com')
+        'nome LIKE ?' => '%' . $arrFilters['nome'] . '%',
+        'email LIKE ?' => '%' . $arrFilters['email'] . '%',
+        'email <> ?' => 'suporte@dindigital.com'
     );
 
     $select = new Select('usuario');
@@ -88,7 +88,7 @@ class UsuarioModel extends BaseModelAdm
   public function getById ( $id )
   {
     $arrCriteria = array(
-        'id_usuario' => $id
+        'id_usuario = ?' => $id
     );
 
     $select = new Select('usuario');
