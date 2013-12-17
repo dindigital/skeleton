@@ -9,7 +9,7 @@ return array(
     'url' => 'http://framework.jairjunior.com',
     'clientname' => 'FRAMEWORK INC',
     'agencia_nome' => 'DIN DIGITAL',
-    'imagem_padrao' => '/backend/images/profile.png',
+    'imagem_padrao' => '/adm/images/profile.png',
     'path_image' => 'public/system/images/',
     'path_assets' => 'public/system/assets/',
     'path_replace' => 'public',

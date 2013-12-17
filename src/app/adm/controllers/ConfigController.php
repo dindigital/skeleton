@@ -1,12 +1,11 @@
-<?
+<?php
 
 namespace src\app\adm\controllers;
 
-use src\app\adm\BaseControllerAdm;
 use src\app\adm\models\UsuarioModel;
-use src\app\adm\controllers\LogController;
-use lib\Form\Post\Post;
-use src\app\adm\objects\Upload;
+use Din\Http\Post;
+use src\app\adm\helpers\Upload;
+use Din\Http\Header;
 
 /**
  *
@@ -15,57 +14,35 @@ use src\app\adm\objects\Upload;
 class ConfigController extends BaseControllerAdm
 {
 
-  public function __construct ( $app_name, $assets )
+  private $_model;
+
+  public function __construct ()
   {
-    try {
-
-      parent::__construct($app_name, $assets);
-
-      $this->_model = new UsuarioModel();
-    } catch (\Exception $e) {
-      $this->alljax_exception($e);
-    }
+    parent::__construct();
+    $this->_model = new UsuarioModel();
   }
 
-  public function get_cadastro ( $salvo = false )
+  public function get_cadastro ()
   {
-    try {
+    $this->_data['table'] = $this->_model->getById($this->_data['user']['id_usuario']);
+    $this->_data['table']['avatar'] = Upload::get('avatar', $this->_data['table']['avatar'], 'imagem', false);
 
-      $this->action = $this->uri->cadastro;
-
-      $this->table = $this->_model->getById($this->user_table->id_usuario);
-
-      Upload::set($this->table, 'avatar', 'imagem');
-
-      $this->registro_salvo($salvo);
-    } catch (\Exception $e) {
-      $this->alljax_exception($e);
-    }
+    $this->setCadastroTemplate('config_cadastro.php');
   }
 
   public function post_cadastro ()
   {
-    try {
+    $id_usuario = $this->_data['user']['id_usuario'];
 
-      $id_usuario = $this->user_table->id_usuario;
-      $nome = $_POST['nome'];
-      $email = $_POST['email'];
-      $senha = $_POST['senha'];
-      $avatar = Post::upload('avatar');
+    $this->_model->salvar_config($id_usuario, array(
+        'nome' => Post::text('nome'),
+        'email' => Post::text('email'),
+        'senha' => Post::text('senha'),
+        'avatar' => Post::upload('avatar'),
+    ));
 
-      $content = array();
-
-      $content['before'] = $this->_model->getById($id_usuario);
-
-      $this->_model->salvar_config($id_usuario, $nome, $email, $senha, $avatar);
-
-      $content['after'] = $this->_model->getById($id_usuario);
-      LogController::inserir($this, $id_usuario, $content, 'U');
-
-      $this->alljax_redirect_after_save(null, false);
-    } catch (\Exception $e) {
-      $this->alljax_exception($e);
-    }
+    $this->setRegistroSalvoSession();
+    Header::redirect();
   }
 
 }

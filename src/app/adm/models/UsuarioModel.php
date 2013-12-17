@@ -6,6 +6,7 @@ use Din\Paginator\Paginator;
 use Din\DataAccessLayer\Select;
 use src\tables\UsuarioTable;
 use Din\Validation\Validate;
+use Din\Crypt\Crypt;
 
 /**
  *
@@ -54,7 +55,7 @@ class UsuarioModel extends BaseModelAdm
       throw new \Exception('Senha é obrigatório');
 
     if ( $senha != '' ) {
-      $crypt = new \lib\Crypt\Crypt();
+      $crypt = new Crypt();
       $this->_table->senha = $crypt->crypt($senha);
     }
   }
@@ -84,19 +85,17 @@ class UsuarioModel extends BaseModelAdm
 
     $this->setArquivo('avatar', $info['avatar'], $id, false);
 
-    return $this->_dao->update($this->_table, array(
-                'id_usuario' => $id
-    ));
+    return $this->_dao->update($this->_table, array('id_usuario' => $id));
   }
 
-  public function salvar_config ( $id, $nome, $email, $senha, $avatar )
+  public function salvar_config ( $id, $info )
   {
-    $this->setNome($nome);
-    $this->setEmail($email, $id);
-    $this->setSenha($senha, false);
-    $this->setArquivo('avatar', $avatar, $id, false);
+    $this->setNome($info['nome']);
+    $this->setEmail($info['email'], $id);
+    $this->setSenha($info['senha'], false);
+    $this->setArquivo('avatar', $info['avatar'], $id, false);
 
-    return $this->_dao->update($this->_table, $id);
+    return $this->_dao->update($this->_table, array('id_usuario' => $id));
   }
 
   public function listar ( $arrFilters = array(), Paginator $Paginator = null )

@@ -68,6 +68,7 @@ class UsuarioController extends BaseControllerAdm
       $this->_model->atualizar($id, $info);
     }
 
+    $this->setRegistroSalvoSession();
     Header::redirect();
   }
 

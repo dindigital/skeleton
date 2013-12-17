@@ -20,13 +20,13 @@ abstract class BaseControllerAdm extends BaseController
 
     $this->setAssetsData();
     $this->setUserData();
-    $this->setViewFiles();
+    $this->setBasicTemplate();
   }
 
   /**
    * Seta os arquivos que compõem o layout do adm
    */
-  private function setViewFiles ()
+  private function setBasicTemplate ()
   {
     $this->_view->addFile('src/app/adm/views/layout.phtml');
     $this->_view->addFile('src/app/adm/views/includes/head.php', '{$HEAD}');
