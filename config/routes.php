@@ -13,5 +13,11 @@ return array(
             'app' => 'adm',
             'type' => RouteTypes::ACTION,
         ),
+        '' => array(
+            'app' => 'adm',
+            'controller' => 'Erro404',
+            'method' => 'display',
+            'type' => RouteTypes::ERR_404,
+        ),
     )
 );
