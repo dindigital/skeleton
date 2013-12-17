@@ -7,6 +7,7 @@ use src\app\adm\models\UsuarioModel;
 use src\app\adm\models\UsuarioAuthModel;
 use \Exception;
 use Din\Session\Session;
+use Din\Image\Picuri;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -82,7 +83,7 @@ abstract class BaseControllerAdm extends BaseController
 
     $usuario = new UsuarioModel();
     $this->_data['user'] = $usuario->getById($usuarioAuthModel->getId());
-    $this->_data['user']['avatar'] = '<img src="/adm/images/profile.png" />';
+    $this->_data['user']['avatar'] = Picuri::picUri($this->_data['user']['avatar'], 50, 50, true);
   }
 
   protected function setRegistroSalvoSession ()
