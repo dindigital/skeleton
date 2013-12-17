@@ -8,6 +8,8 @@ use src\app\adm\models\UsuarioAuthModel;
 use \Exception;
 use Din\Session\Session;
 use Din\Image\Picuri;
+use Din\Http\Post;
+use Din\Http\Header;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -97,6 +99,26 @@ abstract class BaseControllerAdm extends BaseController
     $session = new Session('adm_session');
     $this->_data['registro_salvo'] = $session->is_set('registro_salvo');
     $session->un_set('registro_salvo');
+  }
+
+  //_# OPERAÇÕES COMUNS
+  public function post_excluir ()
+  {
+    $itens = Post::aray('itens');
+
+    foreach ( $itens as $item ) {
+      list($tbl, $id) = explode('_', $item);
+      $model_name = "\\src\\app\\adm\\models\\{$tbl}Model";
+      $model = new $model_name;
+      $model->excluir($id);
+    }
+
+    Header::redirect(Header::getReferer());
+  }
+
+  public function post_ativo ()
+  {
+    $this->_model->toggleAtivo(Post::text('id'), Post::checkbox('ativo'));
   }
 
 }

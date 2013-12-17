@@ -5,6 +5,8 @@
 
 <div id="search_table">
   <form id="main_form" method="get" class="form_busca">
+    <input type="hidden" id="link_prefix" value="/adm/usuario/" />
+    <span id="magicfields"></span>
     <?php // include 'includes/hidden_fields.php' ?>
 
     <input name="nome" type="text" placeholder="Busca por nome" value="<?php echo $data['busca']['nome']; ?>">

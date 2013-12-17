@@ -8,7 +8,6 @@ use Din\Http\Get;
 use src\app\adm\helpers\Upload;
 use Din\Http\Post;
 use Din\Http\Header;
-use \Exception;
 
 /**
  *
@@ -17,7 +16,7 @@ use \Exception;
 class UsuarioController extends BaseControllerAdm
 {
 
-  private $_model;
+  protected $_model;
 
   public function __construct ()
   {
@@ -32,7 +31,7 @@ class UsuarioController extends BaseControllerAdm
         'email' => Get::text('email'),
     );
 
-    $paginator = new PaginatorPainel(20, 7, @$_GET['pag']);
+    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
     $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
     $this->_data['busca'] = $arrFilters;
 
@@ -47,7 +46,7 @@ class UsuarioController extends BaseControllerAdm
       $this->_data['table'] = array();
     }
 
-    $this->_data['table']['avatar'] = Upload::get('avatar', $this->_data['table']['avatar'], 'imagem');
+    $this->_data['table']['avatar'] = Upload::get('avatar', @$this->_data['table']['avatar'], 'imagem');
 
     $this->setCadastroTemplate('usuario_cadastro.php');
   }
@@ -69,7 +68,7 @@ class UsuarioController extends BaseControllerAdm
     }
 
     $this->setRegistroSalvoSession();
-    Header::redirect();
+    Header::redirect('/adm/usuario/cadastro/' . $id . '/');
   }
 
 }

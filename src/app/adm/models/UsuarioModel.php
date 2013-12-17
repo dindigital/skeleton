@@ -4,9 +4,9 @@ namespace src\app\adm\models;
 
 use Din\Paginator\Paginator;
 use Din\DataAccessLayer\Select;
+use src\app\adm\validators\UsuarioValidator;
 use src\tables\UsuarioTable;
-use Din\Validation\Validate;
-use Din\Crypt\Crypt;
+use \Exception;
 
 /**
  *
@@ -18,98 +18,67 @@ class UsuarioModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_table = new UsuarioTable();
-  }
-
-  public function setNome ( $nome )
-  {
-    if ( $nome == '' )
-      throw new \Exception('Nome é obrigatório');
-
-    $this->_table->nome = $nome;
-  }
-
-  public function setEmail ( $email, $id = null )
-  {
-    if ( $email == '' || !Validate::email($email) )
-      throw new \Exception('E-mail usuário deve ser um e-mail válido');
-
-    $SQL = "SELECT * FROM usuario {\$strWhere}";
-    $arrCriteria = array();
-    $arrCriteria['email'] = $email;
-    if ( $id ) {
-      $arrCriteria['id_usuario'] = array('<>' => $id);
-    }
-
-//    $result = $this->_dao->getByCriteria($this->_table, $SQL, $arrCriteria);
-//
-//    if ( count($result) )
-//      throw new \Exception('Este e-mail já existe.');
-
-    $this->_table->email = $email;
-  }
-
-  public function setSenha ( $senha, $obg = true )
-  {
-    if ( $senha == '' && $obg )
-      throw new \Exception('Senha é obrigatório');
-
-    if ( $senha != '' ) {
-      $crypt = new Crypt();
-      $this->_table->senha = $crypt->crypt($senha);
-    }
   }
 
   public function inserir ( $info )
   {
-    $this->setAtivo($info['ativo']);
-    $this->setNome($info['nome']);
-    $this->setEmail($info['email']);
-    $this->setSenha($info['senha']);
-    $this->setIncData();
+    $usuario = new UsuarioValidator();
+    $usuario->setAtivo($info['ativo']);
+    $usuario->setNome($info['nome']);
+    $usuario->setEmail($info['email']);
+    $usuario->setSenha($info['senha']);
+    $usuario->setIncData();
+    $id = $usuario->setIdUsuario()->getTable()->id_usuario;
 
-    $id = $this->_dao->insert($this->_table);
+    $usuario->setArquivo('avatar', $info['avatar'], $id, false);
 
-    $this->setArquivo('avatar', $info['senha'], $id, false);
-    $this->_dao->update($this->_table, $id);
+    $this->_dao->insert($usuario->getTable());
 
     return $id;
   }
 
   public function atualizar ( $id, $info )
   {
-    $this->setAtivo($info['ativo']);
-    $this->setNome($info['nome']);
-    $this->setEmail($info['email'], $id);
-    $this->setSenha($info['senha'], false);
+    $usuario = new UsuarioValidator();
+    $usuario->setAtivo($info['ativo']);
+    $usuario->setNome($info['nome']);
+    $usuario->setEmail($info['email'], $id);
+    $usuario->setSenha($info['senha'], false);
 
-    $this->setArquivo('avatar', $info['avatar'], $id, false);
+    $usuario->setArquivo('avatar', $info['avatar'], $id, false);
 
-    return $this->_dao->update($this->_table, array('id_usuario' => $id));
+    return $this->_dao->update($usuario->getTable(), array('id_usuario' => $id));
   }
 
   public function salvar_config ( $id, $info )
   {
-    $this->setNome($info['nome']);
-    $this->setEmail($info['email'], $id);
-    $this->setSenha($info['senha'], false);
-    $this->setArquivo('avatar', $info['avatar'], $id, false);
+    $usuario = new UsuarioValidator();
+    $usuario->setNome($info['nome']);
+    $usuario->setEmail($info['email'], $id);
+    $usuario->setSenha($info['senha'], false);
+    $usuario->setArquivo('avatar', $info['avatar'], $id, false);
 
-    return $this->_dao->update($this->_table, array('id_usuario' => $id));
+    return $this->_dao->update($usuario->getTable(), array('id_usuario' => $id));
   }
 
-  public function listar ( $arrFilters = array(), Paginator $Paginator = null )
+  public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
     $arrCriteria = array(
         'nome' => array('LIKE' => '%' . $arrFilters['nome'] . '%'),
         'email' => array('LIKE' => '%' . $arrFilters['email'] . '%'),
-        'id_usuario' => array('<>' => '1')
+        'email' => array('<>' => 'suporte@dindigital.com')
     );
 
     $select = new Select('usuario');
-    $select->addField('*');
+    $select->addField('id_usuario');
+    $select->addField('ativo');
+    $select->addField('nome');
+    $select->addField('email');
+    $select->addField('inc_data');
     $select->where($arrCriteria);
     $select->order_by('nome');
+
+    $this->setPaginationSelect($select, $paginator);
 
     $result = $this->_dao->select($select);
 
@@ -129,27 +98,21 @@ class UsuarioModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     if ( !count($result) )
-      throw new \Exception('Usuário não encontrado.');
+      throw new Exception('Usuário não encontrado.');
 
     return $result[0];
   }
 
-  public function getDropdown ( $firstOption = null, $selected = null )
+  public function excluir ( $id )
   {
-    $d = new \lib\Form\Dropdown\Dropdown('usuario');
+    $this->_dao->delete('usuario', array('id_usuario' => $id));
+  }
 
-    $SQL = "SELECT id_usuario, nome FROM usuario {\$strWhere} ORDER BY nome";
-    $arrayObj = $this->_dao->getByCriteria($this->_table, $SQL, array(
-    ));
-    $d->setOptionsObj($arrayObj, 'id_usuario', 'nome');
-    $d->setClass('uniform');
-    $d->setSelected($selected);
-
-    if ( $firstOption ) {
-      $d->setFirstOpt($firstOption);
-    }
-
-    return $d->getElement();
+  public function toggleAtivo ( $id, $ativo )
+  {
+    $validator = new UsuarioValidator();
+    $validator->setAtivo($ativo);
+    $this->_dao->update($validator->getTable(), array('id_usuario' => $id));
   }
 
 }

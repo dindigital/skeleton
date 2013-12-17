@@ -85,8 +85,8 @@ function sadmForms() {
       }
     })
             .on('keyup', function() {
-      $(this).ColorPickerSetColor(this.value);
-    });
+              $(this).ColorPickerSetColor(this.value);
+            });
   }
 
 
@@ -165,18 +165,6 @@ function sadmForms() {
   $(".dataMask:visible").mask("99/99/9999");
   $(".horaMask:visible").mask("99:99");
   $(".horafullMask:visible").mask("99:99:99");
-
-  //_# ATIVO
-  $('.setAtivo').change(function() {
-    var ativo = ($(this).is(':checked')) ? '1' : '0';
-    var action = $('#link_ativo').val();
-    var id = $(this).attr('id');
-
-    $.post(action, {
-      ativo: ativo,
-      id: id
-    });
-  });
 
   //============================================================================
   //_______________________________# PLUPLOAD #_________________________________

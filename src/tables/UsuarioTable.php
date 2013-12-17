@@ -13,7 +13,7 @@ class UsuarioTable extends AbstractTable implements iTable
 {
 
   /**
-   * @var int(11) NOT NULL
+   * @var char(32) NOT NULL
    */
   protected $id_usuario;
 

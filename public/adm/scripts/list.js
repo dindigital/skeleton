@@ -134,6 +134,19 @@ function sadmList() {
     $('.lixeira_ex').click();
     return;
   });
+
+  //_# ATIVO
+  $('.setAtivo').change(function() {
+    var ativo = ($(this).is(':checked')) ? '1' : '0';
+    var action = $('#link_prefix').val() + 'ativo/';
+    var id = $(this).attr('id');
+
+    $.post(action, {
+      ativo: ativo,
+      id: id
+    });
+  });
+
   //_# =========================================================================
 
   $('.limpar_busca').click(function() {
