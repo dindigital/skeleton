@@ -30,7 +30,7 @@ class UsuarioAuthModel extends Auth
     parent::__construct($ADL, new Crypt(), new Session($session_name));
   }
 
-  public function login ( $email, $senha, $memorizar = null )
+  public function login ( $email, $senha, $is_crypted = false )
   {
     if ( !parent::login($email, $senha) ) {
       throw new \Exception("Dados inválidos. Usuário não encontrado.");

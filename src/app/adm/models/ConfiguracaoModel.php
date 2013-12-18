@@ -46,7 +46,7 @@ class ConfiguracaoModel extends BaseModelAdm
     $validator->setQtdHoras($info['qtd_horas']);
     $validator->setEmailAvisos($info['email_avisos']);
 
-    $this->_dao->update($validator->getTable(), $id);
+    $this->_dao->update($validator->getTable(), array('id_configuracao = ?' => '1'));
   }
 
 }

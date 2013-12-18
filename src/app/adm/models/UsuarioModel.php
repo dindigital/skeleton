@@ -46,7 +46,7 @@ class UsuarioModel extends BaseModelAdm
 
     $usuario->setArquivo('avatar', $info['avatar'], $id, false);
 
-    return $this->_dao->update($usuario->getTable(), array('id_usuario' => $id));
+    return $this->_dao->update($usuario->getTable(), array('id_usuario = ?' => $id));
   }
 
   public function salvar_config ( $id, $info )
@@ -57,7 +57,7 @@ class UsuarioModel extends BaseModelAdm
     $usuario->setSenha($info['senha'], false);
     $usuario->setArquivo('avatar', $info['avatar'], $id, false);
 
-    return $this->_dao->update($usuario->getTable(), array('id_usuario' => $id));
+    return $this->_dao->update($usuario->getTable(), array('id_usuario = ?' => $id));
   }
 
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
@@ -104,14 +104,14 @@ class UsuarioModel extends BaseModelAdm
 
   public function excluir ( $id )
   {
-    $this->_dao->delete('usuario', array('id_usuario' => $id));
+    $this->_dao->delete('usuario', array('id_usuario = ?' => $id));
   }
 
   public function toggleAtivo ( $id, $ativo )
   {
     $validator = new UsuarioValidator();
     $validator->setAtivo($ativo);
-    $this->_dao->update($validator->getTable(), array('id_usuario' => $id));
+    $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
   }
 
 }

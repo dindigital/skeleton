@@ -3,7 +3,7 @@
 namespace src\app\adm\validators;
 
 use \Exception;
-use Din\Validation\StringTransform;
+use Din\ViewHelpers\StringTransform;
 use Din\File\Folder;
 
 class BaseValidator
