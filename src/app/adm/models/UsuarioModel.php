@@ -5,7 +5,6 @@ namespace src\app\adm\models;
 use Din\Paginator\Paginator;
 use Din\DataAccessLayer\Select;
 use src\app\adm\validators\UsuarioValidator;
-use src\tables\UsuarioTable;
 use \Exception;
 
 /**

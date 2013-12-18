@@ -24,7 +24,7 @@ class ConfigController extends BaseControllerAdm
 
   public function get_cadastro ()
   {
-    $this->_data['table'] = $this->_model->getById($this->_data['user']['id_usuario']);
+    $this->_data['table'] = $this->_data['user'];
     $this->_data['table']['avatar'] = Upload::get('avatar', $this->_data['table']['avatar'], 'imagem', false);
 
     $this->setCadastroTemplate('config_cadastro.php');

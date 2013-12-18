@@ -3,7 +3,7 @@
 
   <!-- CONTAINER PROFILE -->
   <div id="containerProfile" class="boxradios">
-    <?php echo $data['user']['avatar'] ?>
+    <?php echo $data['user']['avatar_img'] ?>
     <h2>Administrador</h2>
     <h3><a class="replace_container" href="/adm/config/cadastro/" title="Configurações"><?php echo $data['user']['nome'] ?></a></h3>
     <ul>
