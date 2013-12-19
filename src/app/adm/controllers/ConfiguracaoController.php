@@ -41,8 +41,40 @@ class ConfiguracaoController extends BaseControllerAdm
         'email_avisos' => Post::text('email_avisos'),
     ));
 
+    /* $errorDetail = array();
+      $errorDetail[] = array(
+      'field' => 'nome',
+      'msg' => 'Nome é um campo obrgatório'
+      );
+      $errorDetail[] = array(
+      'field' => 'email',
+      'msg' => 'E-mail existe em nossa base de dados'
+      );
+      $errorDetail[] = array(
+      'field' => 'cpf',
+      'msg' => 'CPF Inválido'
+      );
+
+      $teste = array(
+      'type' => 'error',
+      'errorDetail' => $errorDetail
+      ); */
+
+    /* $teste = array(
+      'type' => 'redirect',
+      'uri' => '/adm'
+      ); */
+
+    $teste = array(
+        'type' => 'success',
+        'message' => 'Cadastro OK!'
+    );
+    echo json_encode($teste);
+    exit;
+
     $this->setRegistroSalvoSession();
     Header::redirect();
   }
 
 }
+

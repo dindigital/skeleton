@@ -17,17 +17,6 @@ function sadmForms() {
     $(".validate_form").validate();
   }
 
-  // Dismiss alert box
-
-  $(".alert.dismissible").on("click", function() {
-    $(this).animate({
-      opacity: 0
-    }, 'slow', function() {
-      $(this).slideUp();
-    });
-  });
-
-
   // Textxarea Autogrow
 
   if ($.fn.autoGrow) {
@@ -85,8 +74,8 @@ function sadmForms() {
       }
     })
             .on('keyup', function() {
-              $(this).ColorPickerSetColor(this.value);
-            });
+      $(this).ColorPickerSetColor(this.value);
+    });
   }
 
 
@@ -165,6 +154,51 @@ function sadmForms() {
   $(".dataMask:visible").mask("99/99/9999");
   $(".horaMask:visible").mask("99:99");
   $(".horafullMask:visible").mask("99:99:99");
+
+
+  // Forço o envio via ajax de formulários com com ID #main_form
+  $('#main_form').alajax({
+    type: 'json', // Defino tipo json
+    beforeSend: function() {
+      // Antes de enviar, coloco tela de loading e removo mensagens de erro
+      showLoadingOverlay();
+      $('.alert_red').hide();
+      $('.alert_red span').html('');
+      $('.alert_green').hide();
+      $('.alert_green span').html('');
+    },
+    success: function(data) {
+      // Depois de enviar, removo tela de loading
+      hideLoadingOverlay();
+      // Faço um switch para verificar o tipo de retorno
+      switch (data.type) {
+        case 'error':
+          // No caso do retorno conter erro, faço o each no objeto adicionando ao DOM
+          $.each(data.errorDetail, function(key, value) {
+            $('.alert_red span').append('<p>' + value.msg + '</p>');
+            if (key === 0) {
+              // No caso do primeiro item, dou um focus pelo nome do field
+              $('.alajax').find("[name='" + value.field + "']").focus();
+            }
+          });
+          boxError();
+          break;
+        case 'redirect':
+          location.href = data.uri;
+          break;
+        case 'success':
+          $('.alert_green span').append('<p>' + data.message + '</p>');
+          $('.alert_green').stop(true, true).slideDown('slow').animate({opacity: 1}, 4000, function() {
+            $('.alert_green').slideUp();
+          });
+          break;
+      }
+    },
+    error: function() {
+      $('.alert_red span').append('<p>Erro no envio do formulário. Por favor entre em contato com o suporte</p>');
+      boxError();
+    }
+  });
 
   //============================================================================
   //_______________________________# PLUPLOAD #_________________________________
@@ -493,4 +527,10 @@ function hide_save_msg()
   setTimeout(function() {
     $('#alert_salvo').trigger('click');
   }, 3000);
+}
+
+function boxError() {
+  $('.alert_red').stop(true, true).slideDown('slow').animate({opacity: 1}, 4000, function() {
+    $('.alert_red').slideUp();
+  });
 }

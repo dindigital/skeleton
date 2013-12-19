@@ -7,7 +7,7 @@
 
 <div class="box">
 
-  <form class="validate_form" method="post">
+  <form class="validate_form" method="post" id="main_form">
 
     <fieldset class="label_side">
       <label for="required_field">Title Home</label>

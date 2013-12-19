@@ -3,7 +3,7 @@
   <span></span>
 </div>
 
-<div class="alert dismissible alert_green" id="alert_salvo" <?php if ( $data['registro_salvo'] !== true ): ?>style="display: none"<?php endif ?>>
+<div class="alert dismissible alert_green" id="alert_salvo" style="display: none">
   <img height="24" width="24" src="/adm/images/alert_2.png">
-  Registro salvo com sucesso!
+  <span></span>
 </div>
