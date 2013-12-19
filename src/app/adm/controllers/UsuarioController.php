@@ -53,22 +53,26 @@ class UsuarioController extends BaseControllerAdm
 
   public function post_cadastro ( $id = null )
   {
-    $info = array(
-        'ativo' => Post::checkbox('ativo'),
-        'nome' => Post::text('nome'),
-        'email' => Post::text('email'),
-        'senha' => Post::text('senha'),
-        'avatar' => Post::upload('avatar'),
-    );
+    try {
+      $info = array(
+          'ativo' => Post::checkbox('ativo'),
+          'nome' => Post::text('nome'),
+          'email' => Post::text('email'),
+          'senha' => Post::text('senha'),
+          'avatar' => Post::upload('avatar'),
+      );
 
-    if ( !$id ) {
-      $id = $this->_model->inserir($info);
-    } else {
-      $this->_model->atualizar($id, $info);
+      if ( !$id ) {
+        $id = $this->_model->inserir($info);
+      } else {
+        $this->_model->atualizar($id, $info);
+      }
+
+      $this->setRegistroSalvoSession();
+      Header::redirect('/adm/usuario/cadastro/' . $id . '/');
+    } catch (\Exception $e) {
+      die('aaaaaaa');
     }
-
-    $this->setRegistroSalvoSession();
-    Header::redirect('/adm/usuario/cadastro/' . $id . '/');
   }
 
 }

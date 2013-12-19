@@ -25,6 +25,7 @@ return array(
             'public/adm/plugins/validation/validation.js',
             'public/adm/plugins/autogrow/autogrow.js',
             'public/adm/plugins/multiselect/multiselect.js',
+            'public/adm/plugins/alajax/alajax-1.2.js',
             'public/adm/scripts/ckfinder.js',
             'public/adm/scripts/forms.js',
             'public/adm/scripts/list.js',
