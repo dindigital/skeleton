@@ -50,7 +50,7 @@
             </ul>
           </td>
           <td><?php echo $row['email']; ?></td>
-          <td><?php echo $data['DateTransform']::format_date($row['inc_data']); ?></td>
+          <td><?php echo $data['DateFormat']::filter_date($row['inc_data']); ?></td>
         </tr>
       <?php endforeach; ?>
     </tbody>
