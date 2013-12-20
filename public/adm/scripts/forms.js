@@ -74,8 +74,8 @@ function sadmForms() {
       }
     })
             .on('keyup', function() {
-      $(this).ColorPickerSetColor(this.value);
-    });
+              $(this).ColorPickerSetColor(this.value);
+            });
   }
 
 
@@ -169,6 +169,7 @@ function sadmForms() {
       return true;
     }
 
+    var retorno = false;
     $('.pupload').each(function() {
       var uploader = $(this).pluploadQueue();
 
@@ -177,7 +178,7 @@ function sadmForms() {
         // ao completar o envio da fila
         uploader.bind('UploadComplete', function() {
           // subtrai 1 no total de campos plupload
-          totalPluploadFields -= 1;
+//          totalPluploadFields -= 1;
           // chama o evento submit novamnete.
           $('#main_form').submit();
         });
@@ -185,23 +186,28 @@ function sadmForms() {
         // envia o upload
         uploader.start();
         showLoadingOverlay();
+        retorno = false;
         return false;
         // não houve upload, nem há nada na fila
-      } else if ((uploader.total.uploaded + uploader.total.failed) == 0) {
-        if ($(this).hasClass('obg')) {
-          var fieldname = $(this).attr('id');
-          showError('Por favor selecionar um arquivo no campo de upload ' + fieldname);
-          return false;
-        } else {
-          totalPluploadFields -= 1;
-
-          if (totalPluploadFields == 0) {
-            $('#main_form').submit();
-          }
-        }
+      } else /*if ((uploader.total.uploaded + uploader.total.failed) == 0)*/ {
+//        if ($(this).hasClass('obg')) {
+//          var fieldname = $(this).attr('id');
+//          showError('Por favor selecionar um arquivo no campo de upload ' + fieldname);
+//          return false;
+//        } else {
+//        totalPluploadFields -= 1;
+//
+//        if (totalPluploadFields == 0) {
+        retorno = true;
+        return true;
+        //$('#main_form').submit();
+//        }
+//        }
       }
 
     });
+
+    return retorno;
 
     // se o código chegou aqui, o retorno é false
     return false;
@@ -312,6 +318,13 @@ function sadmForms() {
 //    return false;
 //  });
 
+  if ($('#alert_salvo').length) {
+    $('#alert_salvo').slideDown('slow').animate({opacity: 1}, 4000, function() {
+      $('#alert_salvo').slideUp();
+    });
+
+  }
+
   $('#main_form').ajaxForm({
     dataType: 'json',
     beforeSubmit: function() {
@@ -327,14 +340,15 @@ function sadmForms() {
       // Faço um switch para verificar o tipo de retorno
       switch (data.type) {
         case 'error':
+          $('.alert_red span').append('<p>' + data.message + '</p>');
           // No caso do retorno conter erro, faço o each no objeto adicionando ao DOM
-          $.each(data.errorDetail, function(key, value) {
-            $('.alert_red span').append('<p>' + value.msg + '</p>');
-            if (key === 0) {
-              // No caso do primeiro item, dou um focus pelo nome do field
-              $('#main_form').find("[name='" + value.field + "']").focus();
-            }
-          });
+//          $.each(data.errorDetail, function(key, value) {
+//            $('.alert_red span').append('<p>' + value.msg + '</p>');
+//            if (key === 0) {
+//              // No caso do primeiro item, dou um focus pelo nome do field
+//              $('#main_form').find("[name='" + value.field + "']").focus();
+//            }
+//          });
           boxError();
           break;
         case 'redirect':
