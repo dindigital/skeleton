@@ -5,7 +5,8 @@ namespace src\app\adm\controllers;
 use src\app\adm\models\UsuarioModel;
 use Din\Http\Post;
 use src\app\adm\helpers\Upload;
-use Din\Http\Header;
+use Din\ViewHelpers\JsonViewHelper;
+use Exception;
 
 /**
  *
@@ -32,17 +33,22 @@ class ConfigController extends BaseControllerAdm
 
   public function post_cadastro ()
   {
-    $id_usuario = $this->_data['user']['id_usuario'];
+    try {
+      $id_usuario = $this->_data['user']['id_usuario'];
 
-    $this->_model->salvar_config($id_usuario, array(
-        'nome' => Post::text('nome'),
-        'email' => Post::text('email'),
-        'senha' => Post::text('senha'),
-        'avatar' => Post::upload('avatar'),
-    ));
+      $this->_model->salvar_config($id_usuario, array(
+          'nome' => Post::text('nome'),
+          'email' => Post::text('email'),
+          'senha' => Post::text('senha'),
+          'avatar' => Post::upload('avatar'),
+      ));
 
-    $this->setRegistroSalvoSession();
-    Header::redirect();
+      $this->setRegistroSalvoSession();
+
+      JsonViewHelper::redirect('/adm/config/cadastro/');
+    } catch (Exception $e) {
+      JsonViewHelper::display_error_message($e);
+    }
   }
 
 }

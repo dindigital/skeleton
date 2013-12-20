@@ -5,7 +5,7 @@ namespace src\app\adm\validators;
 use src\app\adm\validators\BaseValidator;
 use src\tables\ConfiguracaoTable;
 use Respect\Validation\Validator as v;
-use \Exception;
+use Din\Exception\JsonException;
 
 class ConfiguracaoValidator extends BaseValidator
 {
@@ -19,7 +19,7 @@ class ConfiguracaoValidator extends BaseValidator
   {
 
     if ( !v::string()->notEmpty()->validate($title_home) )
-      throw new Exception('Title Home é obrigatório');
+      JsonException::addException('Title Home é obrigatório');
 
     $this->_table->title_home = $title_home;
   }
@@ -27,7 +27,7 @@ class ConfiguracaoValidator extends BaseValidator
   public function setDescriptionHome ( $description_home )
   {
     if ( !v::string()->notEmpty()->validate($description_home) )
-      throw new Exception('Description Home é obrigatório');
+      JsonException::addException('Description Home é obrigatório');
 
     $this->_table->description_home = $description_home;
   }
@@ -35,7 +35,7 @@ class ConfiguracaoValidator extends BaseValidator
   public function setKeywordsHome ( $keywords_home )
   {
     if ( !v::string()->notEmpty()->validate($keywords_home) )
-      throw new Exception('Keywords Home é obrigatório');
+      JsonException::addException('Keywords Home é obrigatório');
 
     $this->_table->keywords_home = $keywords_home;
   }
@@ -43,7 +43,7 @@ class ConfiguracaoValidator extends BaseValidator
   public function setTitleInterna ( $title_interna )
   {
     if ( !v::string()->notEmpty()->validate($title_interna) )
-      throw new Exception('Title Internas é obrigatório');
+      JsonException::addException('Title Internas é obrigatório');
 
     $this->_table->title_interna = $title_interna;
   }
@@ -51,7 +51,7 @@ class ConfiguracaoValidator extends BaseValidator
   public function setDescriptionInterna ( $description_interna )
   {
     if ( !v::string()->notEmpty()->validate($description_interna) )
-      throw new Exception('Description Internas é obrigatório');
+      JsonException::addException('Description Internas é obrigatório');
 
     $this->_table->description_interna = $description_interna;
   }
@@ -59,7 +59,7 @@ class ConfiguracaoValidator extends BaseValidator
   public function setKeywordsInterna ( $keywords_interna )
   {
     if ( !v::string()->notEmpty()->validate($keywords_interna) )
-      throw new Exception('Keywords Internas é obrigatório');
+      JsonException::addException('Keywords Internas é obrigatório');
 
     $this->_table->keywords_interna = $keywords_interna;
   }
@@ -67,7 +67,7 @@ class ConfiguracaoValidator extends BaseValidator
   public function setQtdHoras ( $qtd_horas )
   {
     if ( !v::numeric()->validate($qtd_horas) )
-      throw new Exception('Qtd. hora deve ser um número maior ou igual a 0');
+      JsonException::addException('Qtd. hora deve ser um número maior ou igual a 0');
 
     $this->_table->qtd_horas = $qtd_horas;
   }
@@ -75,7 +75,7 @@ class ConfiguracaoValidator extends BaseValidator
   public function setEmailAvisos ( $email_avisos )
   {
     if ( !v::email()->validate($email_avisos) )
-      throw new Exception('E-mail avisos deve ser um e-mail válido');
+      JsonException::addException('E-mail avisos deve ser um e-mail válido');
 
     $this->_table->email_avisos = $email_avisos;
   }
