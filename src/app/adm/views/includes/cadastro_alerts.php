@@ -3,7 +3,9 @@
   <span></span>
 </div>
 
-<div class="alert dismissible alert_green" id="alert_salvo" style="display: none">
-  <img height="24" width="24" src="/adm/images/alert_2.png">
-  <span></span>
-</div>
+<?php if ( isset($data['registro_salvo']) ): ?>
+  <div class="alert dismissible alert_green" id="alert_salvo" style="display: none">
+    <img height="24" width="24" src="/adm/images/alert_2.png">
+    <span><?php echo $data['registro_salvo']; ?></span>
+  </div>
+<?php endif; ?>

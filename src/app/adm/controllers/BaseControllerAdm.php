@@ -26,6 +26,12 @@ abstract class BaseControllerAdm extends BaseController
     $this->setUserData();
     $this->setBasicTemplate();
     $this->setViewHelpers();
+    $this->setDefaultHeaders();
+  }
+
+  private function setDefaultHeaders ()
+  {
+    Header::setNoCache();
   }
 
   /**
@@ -98,13 +104,15 @@ abstract class BaseControllerAdm extends BaseController
   protected function setRegistroSalvoSession ()
   {
     $session = new Session('adm_session');
-    $session->set('registro_salvo', true);
+    $session->set('registro_salvo', 'Registro salvo com sucesso!');
   }
 
   protected function setRegistroSalvoData ()
   {
     $session = new Session('adm_session');
-    $this->_data['registro_salvo'] = $session->is_set('registro_salvo');
+    if ( $session->is_set('registro_salvo') ) {
+      $this->_data['registro_salvo'] = $session->get('registro_salvo');
+    }
     $session->un_set('registro_salvo');
   }
 

@@ -55,6 +55,20 @@
       </div>
     </fieldset>
 
+    <fieldset class="label_side top">
+      <label for="required_field">Avatar2</label>
+      <div>
+        <?php echo @$data['table']['avatar2'] ?>
+      </div>
+    </fieldset>
+
+    <fieldset class="label_side top">
+      <label for="required_field">Avatar3</label>
+      <div>
+        <?php echo @$data['table']['avatar3'] ?>
+      </div>
+    </fieldset>
+
     {$CADASTRO_SUBMIT}
 
   </form>

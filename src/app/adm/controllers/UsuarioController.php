@@ -7,7 +7,6 @@ use src\app\adm\helpers\PaginatorPainel;
 use Din\Http\Get;
 use src\app\adm\helpers\Upload;
 use Din\Http\Post;
-use Din\Http\Header;
 
 /**
  *
@@ -47,6 +46,8 @@ class UsuarioController extends BaseControllerAdm
     }
 
     $this->_data['table']['avatar'] = Upload::get('avatar', @$this->_data['table']['avatar'], 'imagem');
+    $this->_data['table']['avatar2'] = Upload::get('avatar2', @$this->_data['table']['avatar2'], 'imagem');
+    $this->_data['table']['avatar3'] = Upload::get('avatar3', @$this->_data['table']['avatar3'], 'imagem');
 
     $this->setCadastroTemplate('usuario_cadastro.php');
   }
@@ -60,6 +61,8 @@ class UsuarioController extends BaseControllerAdm
           'email' => Post::text('email'),
           'senha' => Post::text('senha'),
           'avatar' => Post::upload('avatar'),
+          'avatar2' => Post::upload('avatar2'),
+          'avatar3' => Post::upload('avatar3'),
       );
 
       if ( !$id ) {
@@ -69,9 +72,18 @@ class UsuarioController extends BaseControllerAdm
       }
 
       $this->setRegistroSalvoSession();
-      Header::redirect('/adm/usuario/cadastro/' . $id . '/');
+
+      die(json_encode(array(
+          'type' => 'redirect',
+          'uri' => '/adm/usuario/cadastro/' . $id . '/'
+      )));
+
+      //Header::redirect('/adm/usuario/cadastro/' . $id . '/');
     } catch (\Exception $e) {
-      die('aaaaaaa');
+      die(json_encode(array(
+          'type' => 'error',
+          'message' => $e->getMessage()
+      )));
     }
   }
 

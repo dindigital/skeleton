@@ -45,6 +45,8 @@ class UsuarioModel extends BaseModelAdm
     $usuario->setSenha($info['senha'], false);
 
     $usuario->setArquivo('avatar', $info['avatar'], $id, false);
+    $usuario->setArquivo('avatar2', $info['avatar2'], $id, false);
+    $usuario->setArquivo('avatar3', $info['avatar3'], $id, false);
 
     return $this->_dao->update($usuario->getTable(), array('id_usuario = ?' => $id));
   }
