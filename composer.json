@@ -8,6 +8,7 @@
   "require": {
     "dindigital/din": "dev-master",
     "imagine/imagine": "dev-master",
-    "phpmailer/phpmailer": "dev-master"
+    "phpmailer/phpmailer": "dev-master",
+    "Respect/Validation": "dev-master"
   }
 }

@@ -22,7 +22,6 @@ return array(
             'public/adm/plugins/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',
             'public/adm/plugins/uniform/jquery.uniform.v200.js',
             'public/adm/plugins/maskedinput/jquery.maskedinput-1.3.js',
-            'public/adm/plugins/validation/validation.js',
             'public/adm/plugins/autogrow/autogrow.js',
             'public/adm/plugins/multiselect/multiselect.js',
             'public/adm/plugins/ajaxform/jquery.form.js',
