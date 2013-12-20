@@ -6,6 +6,7 @@ use src\app\adm\validators\BaseValidator;
 use src\tables\UsuarioTable;
 use Din\Validation\Validate;
 use Din\Crypt\Crypt;
+use Din\Exception\JsonException;
 
 class UsuarioValidator extends BaseValidator
 {
@@ -25,7 +26,7 @@ class UsuarioValidator extends BaseValidator
   public function setNome ( $nome )
   {
     if ( $nome == '' )
-      throw new \Exception('Nome é obrigatório');
+      return JsonException::addException(array('nome' => 'Nome é obrigatório'));
 
     $this->_table->nome = $nome;
   }
@@ -33,7 +34,7 @@ class UsuarioValidator extends BaseValidator
   public function setEmail ( $email, $id = null )
   {
     if ( $email == '' || !Validate::email($email) )
-      throw new \Exception('E-mail usuário deve ser um e-mail válido');
+      return JsonException::addException('E-mail inválido');
 
     $SQL = "SELECT * FROM usuario {\$strWhere}";
     $arrCriteria = array();
@@ -53,7 +54,7 @@ class UsuarioValidator extends BaseValidator
   public function setSenha ( $senha, $obg = true )
   {
     if ( $senha == '' && $obg )
-      throw new \Exception('Senha é obrigatório');
+      return JsonException::addException('Senha é obrigatório');
 
     if ( $senha != '' ) {
       $crypt = new Crypt();

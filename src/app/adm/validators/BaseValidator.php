@@ -5,6 +5,7 @@ namespace src\app\adm\validators;
 use \Exception;
 use Din\ViewHelpers\StringTransform;
 use Din\File\Folder;
+use Din\Exception\JsonException;
 
 class BaseValidator
 {
@@ -23,16 +24,17 @@ class BaseValidator
     $this->_table->inc_data = date('Y-m-d H:i:s');
   }
 
-  public function setArquivo ( $fieldname, $file, $id = null, $obg = true, $tmp_dir = null )
+  public function setArquivo ( $fieldname, $file, $id = null )
   {
-    if ( is_null($tmp_dir) ) {
-      $tmp_dir = 'tmp';
-    }
+    $tmp_dir = 'tmp';
+//    if ( is_null($tmp_dir) ) {
+//      $tmp_dir = 'tmp';
+//    }
 
     try {
       Folder::make_writable($tmp_dir);
     } catch (Exception $e) {
-      throw new Exception($e->getMessage());
+      return JsonException::addException($e->getMessage());
     }
 
     try {
@@ -76,9 +78,9 @@ class BaseValidator
         return $origin;
       }
     } catch (Exception $e) {
-      if ( $obg ) {
-        throw new Exception($e->getMessage());
-      } else if ( is_null($id) ) {
+      /* if ( $obg ) {
+        return JsonException::addException($e->getMessage());
+        } else */if ( is_null($id) ) {
         $this->_table->$fieldname = null;
       }
     }
@@ -87,6 +89,11 @@ class BaseValidator
   public function getTable ()
   {
     return $this->_table;
+  }
+
+  public function throwException ()
+  {
+    JsonException::throwException();
   }
 
 }

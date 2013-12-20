@@ -7,6 +7,8 @@ use src\app\adm\helpers\PaginatorPainel;
 use Din\Http\Get;
 use src\app\adm\helpers\Upload;
 use Din\Http\Post;
+use Din\ViewHelpers\JsonViewHelper;
+use \Exception;
 
 /**
  *
@@ -73,17 +75,9 @@ class UsuarioController extends BaseControllerAdm
 
       $this->setRegistroSalvoSession();
 
-      die(json_encode(array(
-          'type' => 'redirect',
-          'uri' => '/adm/usuario/cadastro/' . $id . '/'
-      )));
-
-      //Header::redirect('/adm/usuario/cadastro/' . $id . '/');
-    } catch (\Exception $e) {
-      die(json_encode(array(
-          'type' => 'error',
-          'message' => $e->getMessage()
-      )));
+      JsonViewHelper::redirect('/adm/usuario/cadastro/' . $id . '/');
+    } catch (Exception $e) {
+      JsonViewHelper::teste($e);
     }
   }
 

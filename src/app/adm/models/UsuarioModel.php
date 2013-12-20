@@ -21,45 +21,48 @@ class UsuarioModel extends BaseModelAdm
 
   public function inserir ( $info )
   {
-    $usuario = new UsuarioValidator();
-    $usuario->setAtivo($info['ativo']);
-    $usuario->setNome($info['nome']);
-    $usuario->setEmail($info['email']);
-    $usuario->setSenha($info['senha']);
-    $usuario->setIncData();
-    $id = $usuario->setIdUsuario()->getTable()->id_usuario;
+    $validator = new UsuarioValidator();
+    $validator->setAtivo($info['ativo']);
+    $validator->setNome($info['nome']);
+    $validator->setEmail($info['email']);
+    $validator->setSenha($info['senha']);
+    $validator->setIncData();
+    $id = $validator->setIdUsuario()->getTable()->id_usuario;
 
-    $usuario->setArquivo('avatar', $info['avatar'], $id, false);
+    $validator->setArquivo('avatar', $info['avatar'], $id, false);
+    $validator->throwException();
 
-    $this->_dao->insert($usuario->getTable());
+    $this->_dao->insert($validator->getTable());
 
     return $id;
   }
 
   public function atualizar ( $id, $info )
   {
-    $usuario = new UsuarioValidator();
-    $usuario->setAtivo($info['ativo']);
-    $usuario->setNome($info['nome']);
-    $usuario->setEmail($info['email'], $id);
-    $usuario->setSenha($info['senha'], false);
+    $validator = new UsuarioValidator();
+    $validator->setAtivo($info['ativo']);
+    $validator->setNome($info['nome']);
+    $validator->setEmail($info['email'], $id);
+    $validator->setSenha($info['senha'], false);
 
-    $usuario->setArquivo('avatar', $info['avatar'], $id, false);
-    $usuario->setArquivo('avatar2', $info['avatar2'], $id, false);
-    $usuario->setArquivo('avatar3', $info['avatar3'], $id, false);
+    $validator->setArquivo('avatar', $info['avatar'], $id, false);
+    $validator->setArquivo('avatar2', $info['avatar2'], $id, false);
+    $validator->setArquivo('avatar3', $info['avatar3'], $id, false);
+    $validator->throwException();
 
-    return $this->_dao->update($usuario->getTable(), array('id_usuario = ?' => $id));
+    return $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
   }
 
   public function salvar_config ( $id, $info )
   {
-    $usuario = new UsuarioValidator();
-    $usuario->setNome($info['nome']);
-    $usuario->setEmail($info['email'], $id);
-    $usuario->setSenha($info['senha'], false);
-    $usuario->setArquivo('avatar', $info['avatar'], $id, false);
+    $validator = new UsuarioValidator();
+    $validator->setNome($info['nome']);
+    $validator->setEmail($info['email'], $id);
+    $validator->setSenha($info['senha'], false);
+    $validator->setArquivo('avatar', $info['avatar'], $id, false);
+    $validator->throwException();
 
-    return $this->_dao->update($usuario->getTable(), array('id_usuario = ?' => $id));
+    return $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
   }
 
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
