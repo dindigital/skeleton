@@ -104,19 +104,18 @@ function sadmList() {
     var c = confirm('Deseja realmente excluir os ítens selecionados?');
 
     if (c) {
-      $('#magicfields').html('');
+      var form = $('<form method="POST"></form>').appendTo('body');
 
       $('.excluir:checked').each(function() {
         var id = $(this).attr('id').replace('exc_', '');
-        $('#magicfields').append('<input type="hidden" name="itens[]" value="' + id + '" />');
+        form.append('<input type="hidden" name="itens[]" value="' + id + '" />');
       });
 
       var link_prefix = $('#link_prefix').val();
       var action = link_prefix + 'excluir/';
 
-      $('#main_form').attr('action', action);
-      $('#main_form').attr('method', 'post');
-      $('#main_form').submit();
+      form.attr('action', action);
+      form.submit();
     }
   });
 
