@@ -1,7 +1,6 @@
 function sadmForms() {
 
   // Form inputs
-
   $("fieldset > div > input[type=text]").addClass("text");
   $("fieldset > div > input[type=email]").addClass("text");
   $("fieldset > div > input[type=number]").addClass("text");
@@ -12,7 +11,6 @@ function sadmForms() {
   $("fieldset > div > input[type=checkbox].indeterminate").prop("indeterminate", true);
 
   // Textxarea Autogrow
-
   if ($.fn.autoGrow) {
     $('textarea.autogrow').autoGrow();
   }
@@ -27,37 +25,29 @@ function sadmForms() {
 
   if ($.fn.buttonset) {
     $(".jqui_checkbox").buttonset();
-
     $(".jqui_radios").buttonset();
     $(".jqui_radios > label").on("click", function() {
       $(this).siblings().removeClass("ui-state-active");
-    }); // jQuery UI radio buttonset fix
+    });
   }
-
 
   if ($.fn.uniform) {
     $(".uniform input, .uniform, .uniform a, .time_picker_holder select").uniform();
-    //setTimeout('$(".uniform input, .uniform, .uniform a, .time_picker_holder select").uniform();',10);
   }
 
   if ($.fn.multiselect) {
     $(".multisorter").multiselect({});
   }
 
-
   if ($.fn.sortable) {
     $(".sortable").sortable();
-    //$( ".sortable" ).disableSelection();
   }
 
   // Colour Picker
-
   if ($.fn.ColorPicker) {
-
     $('#colorpicker_inline').ColorPicker({
       flat: true
     });
-
     $('.colorpicker_popup').ColorPicker({
       onSubmit: function(hsb, hex, rgb, el) {
         $(el).val(hex);
@@ -66,22 +56,10 @@ function sadmForms() {
       onBeforeShow: function() {
         $(this).ColorPickerSetColor(this.value);
       }
-    })
-            .on('keyup', function() {
-              $(this).ColorPickerSetColor(this.value);
-            });
+    }).on('keyup', function() {
+      $(this).ColorPickerSetColor(this.value);
+    });
   }
-
-
-  // Autocomplete
-
-  var autoCompleteList = [
-    "ActionScript",
-  ];
-  $(".autocomplete").autocomplete({
-    source: autoCompleteList
-  });
-
 
   if ($.fn.dialog) {
     $(".dialog_content").dialog({
@@ -109,12 +87,12 @@ function sadmForms() {
 
     $(".dialog_button").live("click", function() {
       var theDialog = $(this).attr('data-dialog');
-      $("#" + theDialog).dialog("open"); // the #dialog element activates the modal box specified above
+      $("#" + theDialog).dialog("open");
       return false;
     });
 
     $(".close_dialog").live("click", function() {
-      $(".dialog_content").dialog("close"); // the #dialog element activates the modal box specified above
+      $(".dialog_content").dialog("close");
       return false;
     });
 
@@ -149,11 +127,7 @@ function sadmForms() {
   $(".horaMask:visible").mask("99:99");
   $(".horafullMask:visible").mask("99:99:99");
 
-
-  //============================================================================
-  //_______________________________# PLUPLOAD #_________________________________
-  //============================================================================
-  //
+  // PLUPLOAD
   // armazena o total de campos plupload para que possamos enviar todos
   var totalPluploadFields = $('.pupload').length;
   $('#main_form').submit(function() {
@@ -171,8 +145,6 @@ function sadmForms() {
       if (uploader.files.length > (uploader.total.uploaded + uploader.total.failed)) {
         // ao completar o envio da fila
         uploader.bind('UploadComplete', function() {
-          // subtrai 1 no total de campos plupload
-//          totalPluploadFields -= 1;
           // chama o evento submit novamnete.
           $('#main_form').submit();
         });
@@ -182,21 +154,10 @@ function sadmForms() {
         showLoadingOverlay();
         retorno = false;
         return false;
+      } else {
         // não houve upload, nem há nada na fila
-      } else /*if ((uploader.total.uploaded + uploader.total.failed) == 0)*/ {
-//        if ($(this).hasClass('obg')) {
-//          var fieldname = $(this).attr('id');
-//          showError('Por favor selecionar um arquivo no campo de upload ' + fieldname);
-//          return false;
-//        } else {
-//        totalPluploadFields -= 1;
-//
-//        if (totalPluploadFields == 0) {
         retorno = true;
         return true;
-        //$('#main_form').submit();
-//        }
-//        }
       }
 
     });
@@ -419,14 +380,12 @@ var li_post_callback = function(data) {
   select.children('option').not(':selected').remove();
 
   $.each(data, function(i, o) {
-
     if (select.children('option[value="' + o.id + '"]').length == 0) {
       select.append('<option value="' + o.id + '">"' + o.label + '"</option>');
     }
   });
 
   select.multiselect('reload');
-  //select.multiselect('destroy').multiselect();
   busca.removeClass('ui-autocomplete-loading');
   avaliable.children('li').show();
 
@@ -443,4 +402,9 @@ function boxError() {
   $('.alert_red').stop(true, true).slideDown('slow').animate({opacity: 1}, 4000, function() {
     $('.alert_red').slideUp();
   });
+}
+
+function show_salvo()
+{
+  $('#alert_salvo').fadeIn(300);
 }
