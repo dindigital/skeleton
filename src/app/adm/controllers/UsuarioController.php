@@ -5,7 +5,7 @@ namespace src\app\adm\controllers;
 use src\app\adm\models\UsuarioModel;
 use src\app\adm\helpers\PaginatorPainel;
 use Din\Http\Get;
-use src\app\adm\helpers\Upload;
+use src\app\adm\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use \Exception;
@@ -47,9 +47,9 @@ class UsuarioController extends BaseControllerAdm
       $this->_data['table'] = array();
     }
 
-    $this->_data['table']['avatar'] = Upload::get('avatar', @$this->_data['table']['avatar'], 'imagem');
-    $this->_data['table']['avatar2'] = Upload::get('avatar2', @$this->_data['table']['avatar2'], 'imagem');
-    $this->_data['table']['avatar3'] = Upload::get('avatar3', @$this->_data['table']['avatar3'], 'imagem');
+    $this->_data['table']['avatar'] = Form::Upload('avatar', @$this->_data['table']['avatar'], 'imagem');
+    $this->_data['table']['avatar2'] = Form::Upload('avatar2', @$this->_data['table']['avatar2'], 'imagem');
+    $this->_data['table']['avatar3'] = Form::Upload('avatar3', @$this->_data['table']['avatar3'], 'imagem');
 
     $this->setCadastroTemplate('usuario_cadastro.php');
   }
