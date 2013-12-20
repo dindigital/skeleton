@@ -10,7 +10,7 @@ use Din\Session\Session;
 use Din\Image\Picuri;
 use Din\Http\Post;
 use Din\Http\Header;
-use Din\ViewHelpers\DateTransform;
+use Din\Filters\Date\DateFormat;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -83,7 +83,7 @@ abstract class BaseControllerAdm extends BaseController
 
   public function setViewHelpers ()
   {
-    $this->_data['DateTransform'] = new DateTransform;
+    $this->_data['DateFormat'] = new DateFormat;
   }
 
   /**
