@@ -11,12 +11,6 @@ function sadmForms() {
   $("fieldset > div > input[type=radio]").addClass("radio");
   $("fieldset > div > input[type=checkbox].indeterminate").prop("indeterminate", true);
 
-  // Form Validation
-
-  if ($.fn.validate) {
-    $(".validate_form").validate();
-  }
-
   // Textxarea Autogrow
 
   if ($.fn.autoGrow) {
@@ -74,8 +68,8 @@ function sadmForms() {
       }
     })
             .on('keyup', function() {
-              $(this).ColorPickerSetColor(this.value);
-            });
+      $(this).ColorPickerSetColor(this.value);
+    });
   }
 
 
@@ -212,111 +206,6 @@ function sadmForms() {
     // se o código chegou aqui, o retorno é false
     return false;
   });
-
-//  //============================================================================
-//  //______________________________# UPLOADIFY #_________________________________
-//  //============================================================================
-//  //
-//  // armazena o total de campos uploadify para que possamos enviar todos
-//  var totalUploadifyFields = $('.uploadify').length;
-//
-//  // essa variavel guarda o id do uploadify atual. É necessária para poder
-//  // acessar o objeto dom de dentro dos eventos. O correto seria acessar com
-//  // $(this), mas o Uploadify não reconhece este tipo de acesso.
-//  var UploadifyActualId = '';
-//
-//  // armazena os nomes e valores dos campos input hidden
-//  var arrInputs = {};
-//
-//  $('#main_form').submit(function() {
-//
-//    // se o total de campos uploadify for 0, então libera o envio do formulário.
-//    if (totalUploadifyFields == 0) {
-//      return true;
-//    }
-//    //neste ponto, existem uploads a serem executados.
-//
-//    // iterando sobre os objetos uploadify
-//    $('.uploadify').each(function() {
-//      var uploader = $(this);
-//
-//      // imitando funcionamento do pupload criando input hidden
-//      // escreve o input hidden que carega o total de arquivos de um uploadify
-//      $('#main_form').append('<input type="hidden" name="' + uploader.attr('id') + '_count" />');
-//
-//      // evento chamado a cada arquivo subido.
-//      uploader.uploadify('settings', 'onUploadSuccess', function(file, data, response) {
-//        data = $.parseJSON(data);
-//
-//        if (data.error == '1') {
-//          alert('Houve um erro ao subir o arquivo ' + file.name + ': ' + data);
-//          console.log(data);
-//        } else {
-//          // exporta o id do upload atual
-//          UploadifyActualId = data.file_id;
-//          // nome do arquivo temporário
-//          var tmpname = data.tmpname;
-//          // nome original do aquivo
-//          var name = data.name;
-//
-//          if (!arrInputs[UploadifyActualId])
-//            arrInputs[UploadifyActualId] = [];
-//
-//          arrInputs[UploadifyActualId].push({
-//            tmpname: tmpname,
-//            name: name
-//          });
-//        }
-//      });
-//
-//      // ao completar uma fila de uploads
-//      uploader.uploadify('settings', 'onQueueComplete', function(queueData) {
-//        // subtrai 1 do total de campos uploadify. Desta forma quando chegarmos
-//        // em 0, significa que todos já foram completados.
-//        totalUploadifyFields -= 1;
-//
-//        // altera o valor do campo para carregar o numero total de arquivos
-//        var total = queueData.uploadsSuccessful;
-//        var fieldname3 = UploadifyActualId + '_count';
-//        $('input[name="' + fieldname3 + '"]').val(total);
-//
-//        // cria 2 input hidden para cada arquivo, contendo tempname e name
-//        $.each(arrInputs[UploadifyActualId], function(i, o) {
-//          var fieldname1 = UploadifyActualId + '_' + i + '_tmpname';
-//          var fieldname2 = UploadifyActualId + '_' + i + '_name';
-//          $('#main_form').append('<input type="hidden" name="' + fieldname1 + '" value="' + o.tmpname + '">');
-//          $('#main_form').append('<input type="hidden" name="' + fieldname2 + '" value="' + o.name + '">');
-//        });
-//
-//        // chama o evento submit novamnete. Todo este código será executado
-//        // novamente, porém com -1 no totalUploadifyFields
-//        $('#main_form').submit();
-//      });
-//
-//      // há ítens na fila de upload, então envie todos
-//      if (uploader.data('uploadify').queueData.queueLength > 0) {
-//        uploader.uploadify('upload', '*');
-//        showLoadingOverlay();
-//        return false;
-//        // não houve upload, nem há nada na fila
-//      } else if (uploader.data('uploadify').queueData.uploadsSuccessful == 0) {
-//        if (uploader.uploadify('settings', 'required')) {
-//          var fieldname = $(this).attr('id');
-//          showError('Por favor selecionar um arquivo no campo de upload ' + fieldname);
-//          return false;
-//        } else {
-//          totalUploadifyFields -= 1;
-//
-//          if (totalUploadifyFields == 0)
-//            $('#main_form').submit();
-//        }
-//      }
-//
-//    });
-//
-//    // se o código chegou aqui, o retorno é false
-//    return false;
-//  });
 
   if ($('#alert_salvo').length) {
     $('#alert_salvo').slideDown('slow').animate({opacity: 1}, 4000, function() {
