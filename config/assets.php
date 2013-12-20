@@ -29,8 +29,7 @@ return array(
             'public/adm/scripts/forms.js',
             'public/adm/scripts/list.js',
             'public/adm/scripts/menu.js',
-            'public/adm/scripts/init.js',
-            'public/adm/scripts/scripts.js'
+            'public/adm/scripts/init.js'
         )
     )
 );
