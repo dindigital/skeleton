@@ -26,7 +26,7 @@ class UsuarioValidator extends BaseValidator
   public function setNome ( $nome )
   {
     if ( $nome == '' )
-      return JsonException::addException(array('nome' => 'Nome é obrigatório'));
+      return JsonException::addException('Nome é obrigatório');
 
     $this->_table->nome = $nome;
   }

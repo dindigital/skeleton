@@ -77,7 +77,7 @@ class UsuarioController extends BaseControllerAdm
 
       JsonViewHelper::redirect('/adm/usuario/cadastro/' . $id . '/');
     } catch (Exception $e) {
-      JsonViewHelper::teste($e);
+      JsonViewHelper::display_error_message($e);
     }
   }
 

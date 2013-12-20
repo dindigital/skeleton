@@ -68,8 +68,8 @@ function sadmForms() {
       }
     })
             .on('keyup', function() {
-      $(this).ColorPickerSetColor(this.value);
-    });
+              $(this).ColorPickerSetColor(this.value);
+            });
   }
 
 
@@ -228,16 +228,23 @@ function sadmForms() {
       hideLoadingOverlay();
       // Faço um switch para verificar o tipo de retorno
       switch (data.type) {
-        case 'error':
+        case 'error_message':
           $('.alert_red span').append('<p>' + data.message + '</p>');
+          boxError();
+          break;
+        case 'error_object':
           // No caso do retorno conter erro, faço o each no objeto adicionando ao DOM
-//          $.each(data.errorDetail, function(key, value) {
-//            $('.alert_red span').append('<p>' + value.msg + '</p>');
-//            if (key === 0) {
-//              // No caso do primeiro item, dou um focus pelo nome do field
-//              $('#main_form').find("[name='" + value.field + "']").focus();
-//            }
-//          });
+          $.each(data.objects, function(key, value) {
+            for (k in value) {
+              var field = k;
+              var msg = value[k];
+            }
+            $('.alert_red span').append('<p>' + msg + '</p>');
+            if (key === 0) {
+              // No caso do primeiro item, dou um focus pelo nome do field
+              $('#main_form').find("[name='" + field + "']").focus();
+            }
+          });
           boxError();
           break;
         case 'redirect':
