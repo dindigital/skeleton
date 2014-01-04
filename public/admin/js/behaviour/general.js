@@ -1,4 +1,4 @@
-var App = function () {
+var App = function() {
 
   var config = {//Basic Config
     tooltip: true,
@@ -6,34 +6,34 @@ var App = function () {
     nanoScroller: true,
     nestableLists: true,
     hiddenElements: true,
-    bootstrapSwitch:true,
-    dateTime:true,
-    select2:true,
-    tags:true,
-    slider:true
-  }; 
-  
+    bootstrapSwitch: true,
+    dateTime: true,
+    select2: true,
+    tags: true,
+    slider: true
+  };
+
   /*DASHBOARD*/
-  var dashboard = function(){
+  var dashboard = function() {
     var skycons = new Skycons({"color": "#FFFFFF"});
     skycons.add($("#sun-icon")[0], Skycons.PARTLY_CLOUDY_DAY);
     skycons.play();
 
-  
+
     /*Sparklines*/
-    $(".spk1").sparkline([2,4,3,6,7,5,8,9,4,2,6,8,8,9,10], { type: 'bar', width: '80px', barColor: '#4A8CF7'});
-    $(".spk2").sparkline([4,6,7,7,4,3,2,1,4,4 ,5,6,5], { type: 'discrete', width: '80', lineColor: '#4A8CF7',thresholdValue: 4,thresholdColor: '#ff0000'});
-    
-    $(".spk3").sparkline([5,6,7,9,9,5,3,2,2,4,6,7], {
-    type: 'line',
-    lineColor: '#258FEC',
-    fillColor: '#4A8CF7',
-    spotColor: false,
-    width: '80px',
-    minSpotColor: false,
-    maxSpotColor: false,  
-    highlightSpotColor: '#1e7ac6',
-    highlightLineColor: '#1e7ac6'});
+    $(".spk1").sparkline([2, 4, 3, 6, 7, 5, 8, 9, 4, 2, 6, 8, 8, 9, 10], {type: 'bar', width: '80px', barColor: '#4A8CF7'});
+    $(".spk2").sparkline([4, 6, 7, 7, 4, 3, 2, 1, 4, 4, 5, 6, 5], {type: 'discrete', width: '80', lineColor: '#4A8CF7', thresholdValue: 4, thresholdColor: '#ff0000'});
+
+    $(".spk3").sparkline([5, 6, 7, 9, 9, 5, 3, 2, 2, 4, 6, 7], {
+      type: 'line',
+      lineColor: '#258FEC',
+      fillColor: '#4A8CF7',
+      spotColor: false,
+      width: '80px',
+      minSpotColor: false,
+      maxSpotColor: false,
+      highlightSpotColor: '#1e7ac6',
+      highlightLineColor: '#1e7ac6'});
 
     /*Dashboard Charts*/
     if (!jQuery.plot) {
@@ -44,18 +44,22 @@ var App = function () {
     // random data generator for plot charts
 
     function getRandomData() {
-      if (data.length > 0) data = data.slice(1);
+      if (data.length > 0)
+        data = data.slice(1);
       // do a random walk
       while (data.length < totalPoints) {
-      var prev = data.length > 0 ? data[data.length - 1] : 50;
-      var y = prev + Math.random() * 10 - 5;
-      if (y < 0) y = 0;
-      if (y > 100) y = 100;
-      data.push(y);
+        var prev = data.length > 0 ? data[data.length - 1] : 50;
+        var y = prev + Math.random() * 10 - 5;
+        if (y < 0)
+          y = 0;
+        if (y > 100)
+          y = 100;
+        data.push(y);
       }
       // zip the generated y values with the x values
       var res = [];
-      for (var i = 0; i < data.length; ++i) res.push([i, data[i]])
+      for (var i = 0; i < data.length; ++i)
+        res.push([i, data[i]])
       return res;
     }
 
@@ -67,109 +71,109 @@ var App = function () {
         left: x + 5,
         border: "1px solid #000",
         padding: "5px",
-        'color':'#fff',
-        'border-radius':'2px',
-        'font-size':'11px',
+        'color': '#fff',
+        'border-radius': '2px',
+        'font-size': '11px',
         "background-color": "#000",
         opacity: 0.80
       }).appendTo("body").fadeIn(200);
-    } 
+    }
 
     function randValue() {
       return (Math.floor(Math.random() * (1 + 50 - 20))) + 10;
     }
 
     var pageviews = [
-    [1, randValue()],
-    [2, randValue()],
-    [3, 2 + randValue()],
-    [4, 3 + randValue()],
-    [5, 5 + randValue()],
-    [6, 10 + randValue()],
-    [7, 15 + randValue()],
-    [8, 20 + randValue()],
-    [9, 25 + randValue()],
-    [10, 30 + randValue()],
-    [11, 35 + randValue()],
-    [12, 25 + randValue()],
-    [13, 15 + randValue()],
-    [14, 20 + randValue()],
-    [15, 45 + randValue()],
-    [16, 50 + randValue()],
-    [17, 65 + randValue()],
-    [18, 70 + randValue()],
-    [19, 85 + randValue()],
-    [20, 80 + randValue()],
-    [21, 75 + randValue()],
-    [22, 80 + randValue()],
-    [23, 75 + randValue()]
+      [1, randValue()],
+      [2, randValue()],
+      [3, 2 + randValue()],
+      [4, 3 + randValue()],
+      [5, 5 + randValue()],
+      [6, 10 + randValue()],
+      [7, 15 + randValue()],
+      [8, 20 + randValue()],
+      [9, 25 + randValue()],
+      [10, 30 + randValue()],
+      [11, 35 + randValue()],
+      [12, 25 + randValue()],
+      [13, 15 + randValue()],
+      [14, 20 + randValue()],
+      [15, 45 + randValue()],
+      [16, 50 + randValue()],
+      [17, 65 + randValue()],
+      [18, 70 + randValue()],
+      [19, 85 + randValue()],
+      [20, 80 + randValue()],
+      [21, 75 + randValue()],
+      [22, 80 + randValue()],
+      [23, 75 + randValue()]
     ];
     var visitors = [
-    [1, randValue() - 5],
-    [2, randValue() - 5],
-    [3, randValue() - 5],
-    [4, 6 + randValue()],
-    [5, 5 + randValue()],
-    [6, 20 + randValue()],
-    [7, 25 + randValue()],
-    [8, 36 + randValue()],
-    [9, 26 + randValue()],
-    [10, 38 + randValue()],
-    [11, 39 + randValue()],
-    [12, 50 + randValue()],
-    [13, 51 + randValue()],
-    [14, 12 + randValue()],
-    [15, 13 + randValue()],
-    [16, 14 + randValue()],
-    [17, 15 + randValue()],
-    [18, 15 + randValue()],
-    [19, 16 + randValue()],
-    [20, 17 + randValue()],
-    [21, 18 + randValue()],
-    [22, 19 + randValue()],
-    [23, 20 + randValue()],
-    [24, 21 + randValue()],
-    [25, 14 + randValue()],
-    [26, 24 + randValue()],
-    [27, 25 + randValue()],
-    [28, 26 + randValue()],
-    [29, 27 + randValue()],
-    [30, 31 + randValue()]
+      [1, randValue() - 5],
+      [2, randValue() - 5],
+      [3, randValue() - 5],
+      [4, 6 + randValue()],
+      [5, 5 + randValue()],
+      [6, 20 + randValue()],
+      [7, 25 + randValue()],
+      [8, 36 + randValue()],
+      [9, 26 + randValue()],
+      [10, 38 + randValue()],
+      [11, 39 + randValue()],
+      [12, 50 + randValue()],
+      [13, 51 + randValue()],
+      [14, 12 + randValue()],
+      [15, 13 + randValue()],
+      [16, 14 + randValue()],
+      [17, 15 + randValue()],
+      [18, 15 + randValue()],
+      [19, 16 + randValue()],
+      [20, 17 + randValue()],
+      [21, 18 + randValue()],
+      [22, 19 + randValue()],
+      [23, 20 + randValue()],
+      [24, 21 + randValue()],
+      [25, 14 + randValue()],
+      [26, 24 + randValue()],
+      [27, 25 + randValue()],
+      [28, 26 + randValue()],
+      [29, 27 + randValue()],
+      [30, 31 + randValue()]
     ];
 
     if ($('#site_statistics').size() != 0) {
       $('#site_statistics_loading').hide();
       $('#site_statistics_content').show();
       var plot_statistics = $.plot($("#site_statistics"), [{
-        data: pageviews,
-        label: "Sales"
-      }
+          data: pageviews,
+          label: "Sales"
+        }
       ], {
         series: {
           lines: {
             show: true,
-            lineWidth: 2, 
+            lineWidth: 2,
             fill: true,
             fillColor: {
               colors: [{
-                opacity: 0.2
-              }, {
-                opacity: 0.01
-              }
+                  opacity: 0.2
+                }, {
+                  opacity: 0.01
+                }
               ]
-            } 
+            }
           },
           points: {
             show: true
           },
           shadowSize: 2
         },
-        legend:{
+        legend: {
           show: false
         },
         grid: {
-        labelMargin: 10,
-           axisMargin: 500,
+          labelMargin: 10,
+          axisMargin: 500,
           hoverable: true,
           clickable: true,
           tickColor: "rgba(255,255,255,0.22)",
@@ -185,14 +189,14 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       var plot_statistics2 = $.plot($("#site_statistics2"), [{
-        data: pageviews,
-        label: "Unique Visits"
-      }, {
-        data: visitors,
-        label: "Page Views"
-      }
+          data: pageviews,
+          label: "Unique Visits"
+        }, {
+          data: visitors,
+          label: "Page Views"
+        }
       ], {
         series: {
           bars: {
@@ -203,21 +207,21 @@ var App = function () {
             hoverable: true,
             fillColor: {
               colors: [{
-                opacity: 0.85
-              }, {
-                opacity: 0.85
-              }
+                  opacity: 0.85
+                }, {
+                  opacity: 0.85
+                }
               ]
-            } 
+            }
           },
           shadowSize: 2
         },
-        legend:{
+        legend: {
           show: false
         },
         grid: {
-        labelMargin: 10,
-           axisMargin: 500,
+          labelMargin: 10,
+          axisMargin: 500,
           hoverable: true,
           clickable: true,
           tickColor: "rgba(255,255,255,0.22)",
@@ -233,40 +237,40 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       /*Pie Chart*/
       var data = [
-      { label: "Google", data: 50},
-      { label: "Dribbble", data: 7},
-      { label: "Twitter", data: 8},
-      { label: "Youtube", data: 9},
-      { label: "Microsoft", data: 14},
-      { label: "Apple", data: 13},
-      { label: "Amazon", data: 10},
-      { label: "Facebook", data: 5}
-      ]; 
+        {label: "Google", data: 50},
+        {label: "Dribbble", data: 7},
+        {label: "Twitter", data: 8},
+        {label: "Youtube", data: 9},
+        {label: "Microsoft", data: 14},
+        {label: "Apple", data: 13},
+        {label: "Amazon", data: 10},
+        {label: "Facebook", data: 5}
+      ];
 
       $.plot('#piec', data, {
         series: {
           pie: {
             show: true,
             innerRadius: 0.27,
-            shadow:{
+            shadow: {
               top: 5,
               left: 15,
-              alpha:0.3
+              alpha: 0.3
             },
-            stroke:{
-              width:0
+            stroke: {
+              width: 0
             },
             label: {
-                        show: true,
-                        formatter: function (label, series) {
-                            return '<div style="font-size:12px;text-align:center;padding:2px;color:#333;">' + label + '</div>';
+              show: true,
+              formatter: function(label, series) {
+                return '<div style="font-size:12px;text-align:center;padding:2px;color:#333;">' + label + '</div>';
 
-                        }
-                    },
-            highlight:{
+              }
+            },
+            highlight: {
               opacity: 0.08
             }
           }
@@ -275,12 +279,12 @@ var App = function () {
           hoverable: true,
           clickable: true
         },
-        colors: ["#5793f3", "#dd4d79", "#bd3b47","#dd4444","#fd9c35","#fec42c","#d4df5a","#5578c2"],
+        colors: ["#5793f3", "#dd4d79", "#bd3b47", "#dd4444", "#fd9c35", "#fec42c", "#d4df5a", "#5578c2"],
         legend: {
           show: false
         }
       });
-      
+
       /*COM Chart*/
       var data_com = [
         [1, randValue() - 5],
@@ -293,48 +297,48 @@ var App = function () {
         [8, 3 + randValue()],
         [9, 2 + randValue()]
       ];
-       var names = [
-                    "Alpha",
-                    "Beta",
-                    "Gamma",
-                    "Delta",
-                    "Epsilon",
-                    "Zeta",
-                    "Eta",
-                    "Theta"
-                ];
-          
+      var names = [
+        "Alpha",
+        "Beta",
+        "Gamma",
+        "Delta",
+        "Epsilon",
+        "Zeta",
+        "Eta",
+        "Theta"
+      ];
+
       var plot_statistics = $.plot($("#com_stats"), [{
-        data: data_com, showLabels: true, labels: data_com, labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF" 
-      }
+          data: data_com, showLabels: true, labels: data_com, labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF"
+        }
       ], {
         series: {
           lines: {
             show: true,
-            lineWidth: 2, 
+            lineWidth: 2,
             fill: true,
             fillColor: {
               colors: [{
-                opacity: 0.25
-              }, {
-                opacity: 0.25
-              }
+                  opacity: 0.25
+                }, {
+                  opacity: 0.25
+                }
               ]
-            } 
+            }
           },
           points: {
             show: true
           },
           shadowSize: 2
         },
-        legend:{
+        legend: {
           show: false
         },
         grid: {
-          show:false,
+          show: false,
           margin: 5,
           labelMargin: 10,
-           axisMargin: 10,
+          axisMargin: 10,
           hoverable: true,
           clickable: true,
           tickColor: "rgba(255,255,255,0.22)",
@@ -352,9 +356,9 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       /*Bar charts widget*/
-        var data3 = [
+      var data3 = [
         [1, randValue()],
         [2, randValue()],
         [3, 2 + randValue()],
@@ -371,12 +375,12 @@ var App = function () {
         [14, 20 + randValue()],
         [15, 20 + randValue()],
         [16, 75 + randValue()]
-        ];
+      ];
 
       var plot_statistics2 = $.plot($("#com2_stats"), [{
-        data: data3,
-        label: "Unique Visits"
-      }
+          data: data3,
+          label: "Unique Visits"
+        }
       ], {
         series: {
           bars: {
@@ -386,23 +390,23 @@ var App = function () {
             fill: true,
             fillColor: {
               colors: [{
-                opacity: 0.8
-              }, {
-                opacity: 0.8
-              }
+                  opacity: 0.8
+                }, {
+                  opacity: 0.8
+                }
               ]
             },
             hoverable: true
           },
           shadowSize: 2
         },
-        legend:{
+        legend: {
           show: false
         },
         grid: {
           show: true,
           labelMargin: 10,
-           axisMargin: 500,
+          axisMargin: 500,
           hoverable: true,
           clickable: true,
           tickColor: "rgba(0,0,0,0.1)",
@@ -413,7 +417,7 @@ var App = function () {
         },
         colors: ["#FD6A5E", "#FFFFFF", "#52e136"],
         xaxis: {
-          font:{
+          font: {
             color: "rgba(0,0,0,0.6)",
             lineHeight: '0',
             size: '5px'
@@ -422,7 +426,7 @@ var App = function () {
           tickDecimals: 0
         },
         yaxis: {
-          font:{
+          font: {
             lineHeight: '0',
             size: '5px',
             color: "rgba(255,255,255,0)"
@@ -431,11 +435,11 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
-      
+
+
       var previousPoint = null;
-      $("#site_statistics").bind("plothover", function (event, pos, item) {
-      
+      $("#site_statistics").bind("plothover", function(event, pos, item) {
+
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 
         if (item) {
@@ -443,18 +447,18 @@ var App = function () {
             previousPoint = item.dataIndex;
             $("#tooltip").remove();
             var x = item.datapoint[0].toFixed(2),
-            y = item.datapoint[1].toFixed(2);
+                    y = item.datapoint[1].toFixed(2);
             showTooltip(item.pageX, item.pageY,
-            item.series.label + " of " + x + " = " + y);
+                    item.series.label + " of " + x + " = " + y);
           }
         } else {
           $("#tooltip").remove();
           previousPoint = null;
         }
-      }); 
-      
-      $("#site_statistics2").bind("plothover", function (event, pos, item) {
-      
+      });
+
+      $("#site_statistics2").bind("plothover", function(event, pos, item) {
+
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 
         if (item) {
@@ -462,52 +466,52 @@ var App = function () {
             previousPoint = item.dataIndex;
             $("#tooltip").remove();
             var x = item.datapoint[0].toFixed(2),
-            y = item.datapoint[1].toFixed(2);
+                    y = item.datapoint[1].toFixed(2);
             showTooltip(item.pageX, item.pageY,
-            item.series.label + " of " + x + " = " + y);
+                    item.series.label + " of " + x + " = " + y);
           }
         } else {
           $("#tooltip").remove();
           previousPoint = null;
         }
-      }); 
+      });
     }
 
     /*Jquery Easy Pie Chart*/
-      $('.epie-chart').easyPieChart({
-        barColor: '#FD9C35',
-        trackColor: '#EFEFEF',
-        lineWidth: 7,
-        animate: 600,
-        size: 103,
-        onStep: function(val){//Update current value while animation
-          $("span", this.$el).html(parseInt(val) + "%");
-        }
-        });
+    $('.epie-chart').easyPieChart({
+      barColor: '#FD9C35',
+      trackColor: '#EFEFEF',
+      lineWidth: 7,
+      animate: 600,
+      size: 103,
+      onStep: function(val) {//Update current value while animation
+        $("span", this.$el).html(parseInt(val) + "%");
+      }
+    });
 
     /*Chat Comments*/
-    $(".chat-in form").submit(function(e){
+    $(".chat-in form").submit(function(e) {
 
       var d = new Date();
       var time = d.getHours() + ":" + d.getMinutes();
       var inp = $("input[type='text']", this);
       var msg = inp.val();
       var img = 'images/avatar1_50.jpg';
-        
+
       inp.val("");
-      
+
       var tpl = $('<div class="chat-conv" style="display:none;">' +
-              '<img title="" data-toggle="tooltip" src="'+ img +'" class="c-avatar ttip" data-original-title="">' +
+              '<img title="" data-toggle="tooltip" src="' + img + '" class="c-avatar ttip" data-original-title="">' +
               '<div class="c-bubble">' +
-                '<div class="msg">'+ msg +'</div>' +
-                '<div><small class="date">'+ time +'</small></div>' +
-                '<span></span>' +
+              '<div class="msg">' + msg + '</div>' +
+              '<div><small class="date">' + time + '</small></div>' +
+              '<span></span>' +
               '</div>' +
-            '</div>');
-            
+              '</div>');
+
       $(this).parents(".chat-wi").find(".chat-content").css("transition", "all 1s ease");
       $(this).parents(".chat-wi").find(".chat-content").append(tpl);
-      
+
       tpl.slideDown();
       //$(".nscroller").nanoScroller({ scroll: 'bottom' });
       //$(".nscroller").nanoScroller();
@@ -516,10 +520,10 @@ var App = function () {
     });
   };
   /*END OF DASHBOARD*/
- 
-  var uiElements = function(){
-  	/*Gritter Notifications*/
-    $('#not-basic').click(function(){
+
+  var uiElements = function() {
+    /*Gritter Notifications*/
+    $('#not-basic').click(function() {
       $.gritter.add({
         title: 'Thomas new msg!',
         text: "You have a new Thomas message, let's checkout your inbox.",
@@ -528,8 +532,8 @@ var App = function () {
       });
       return false;
     });
-    
-    $('#not-theme').click(function(){
+
+    $('#not-theme').click(function() {
       $.gritter.add({
         title: 'Welcome home!',
         text: 'You can start your day checking the new messages.',
@@ -539,20 +543,20 @@ var App = function () {
       });
       return false;
     });
-    
-    $('#not-sticky').click(function(){
+
+    $('#not-sticky').click(function() {
       $.gritter.add({
         title: 'Sticky Note',
         text: "Your daily goal is 130 new code lines, don't forget to update your work.",
         image: 'images/blueprint_icon.png',
         class_name: 'clean',
-        sticky: true, 
+        sticky: true,
         time: ''
       });
       return false;
     });
-    
-    $('#not-text').click(function(){
+
+    $('#not-text').click(function() {
       $.gritter.add({
         title: 'Just Text',
         text: 'This is a simple Gritter Notification.',
@@ -562,54 +566,54 @@ var App = function () {
       return false;
     });
   };//End of uiElements
-  
-  
+
+
   /*Nestable Lists*/
-  var nestable = function(){
+  var nestable = function() {
     //Watch for list changes and show serialized output
-    function update_out(selector, sel2){
+    function update_out(selector, sel2) {
       var out = $(selector).nestable('serialize');
       $(sel2).html(window.JSON.stringify(out));
     }
-    
-    update_out('#list1',"#out1");
-    update_out('#list2',"#out2");
-    
+
+    update_out('#list1', "#out1");
+    update_out('#list2', "#out2");
+
     $('#list1').on('change', function() {
-      update_out('#list1',"#out1");
+      update_out('#list1', "#out1");
     });
-    
+
     $('#list2').on('change', function() {
-      update_out('#list2',"#out2");
+      update_out('#list2', "#out2");
     });
   };//End of Nestable Lists
-  
-  
+
+
   /*Form Wizard*/
-  var wizard = function(){
+  var wizard = function() {
     //Fuel UX
     $('.wizard-ux').wizard();
 
-    $('.wizard-ux').on('changed',function(){
+    $('.wizard-ux').on('changed', function() {
       //delete $.fn.slider;
       $('.bslider').slider();
     });
-    
-    $(".wizard-next").click(function(e){
+
+    $(".wizard-next").click(function(e) {
       var id = $(this).data("wizard");
       $(id).wizard('next');
       e.preventDefault();
     });
-    
-    $(".wizard-previous").click(function(e){
+
+    $(".wizard-previous").click(function(e) {
       var id = $(this).data("wizard");
       $(id).wizard('previous');
       e.preventDefault();
     });
   };//End of wizard
-  
+
   /*Form Masks*/
-  var masks = function(){
+  var masks = function() {
     $("[data-mask='date']").mask("99/99/9999");
     $("[data-mask='phone']").mask("(999) 999-9999");
     $("[data-mask='phone-ext']").mask("(999) 999-9999? x99999");
@@ -620,25 +624,25 @@ var App = function () {
     $("[data-mask='percent']").mask("99%");
     $("[data-mask='currency']").mask("$999,999,999.99");
   };//End of masks
-  
+
   /*Text Editors*/
-  var textEditor = function(){
-  	//Ckeditor
+  var textEditor = function() {
+    //Ckeditor
     $('textarea.ckeditor').ckeditor();
   };//End of textEditor
-  
+
   /*Data Tables*/
-  var dataTables = function(){
-  	//Basic Instance
+  var dataTables = function() {
+    //Basic Instance
     $("#datatable").dataTable();
 
     //Search input style
-    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Search');
-    $('.dataTables_length select').addClass('form-control');    
+    $('.dataTables_filter input').addClass('form-control').attr('placeholder', 'Search');
+    $('.dataTables_length select').addClass('form-control');
   };//End of dataTables
 
   /*Maps*/
-  var maps = function(){
+  var maps = function() {
     //Basic Map
     var map;
 
@@ -649,7 +653,7 @@ var App = function () {
     };
     map = new google.maps.Map(document.getElementById('map_one'), mapOptions);
 
-  //Hybrid Map
+    //Hybrid Map
     var map2;
 
     var mapOptions = {
@@ -659,8 +663,8 @@ var App = function () {
     };
     map2 = new google.maps.Map(document.getElementById('map_two'), mapOptions);
 
-   
-   //Terrain Map
+
+    //Terrain Map
     var map3;
 
     var mapOptions = {
@@ -671,10 +675,10 @@ var App = function () {
     map3 = new google.maps.Map(document.getElementById('map_three'), mapOptions);
 
   };//End of maps
-  
-  
+
+
   /*Charts*/
-  var charts = function(){
+  var charts = function() {
     if (!jQuery.plot) {
       return;
     }
@@ -683,18 +687,22 @@ var App = function () {
     // random data generator for plot charts
 
     function getRandomData() {
-      if (data.length > 0) data = data.slice(1);
+      if (data.length > 0)
+        data = data.slice(1);
       // do a random walk
       while (data.length < totalPoints) {
-      var prev = data.length > 0 ? data[data.length - 1] : 50;
-      var y = prev + Math.random() * 10 - 5;
-      if (y < 0) y = 0;
-      if (y > 100) y = 100;
-      data.push(y);
+        var prev = data.length > 0 ? data[data.length - 1] : 50;
+        var y = prev + Math.random() * 10 - 5;
+        if (y < 0)
+          y = 0;
+        if (y > 100)
+          y = 100;
+        data.push(y);
       }
       // zip the generated y values with the x values
       var res = [];
-      for (var i = 0; i < data.length; ++i) res.push([i, data[i]])
+      for (var i = 0; i < data.length; ++i)
+        res.push([i, data[i]])
       return res;
     }
 
@@ -706,111 +714,111 @@ var App = function () {
         left: x + 5,
         border: "1px solid #000",
         padding: "5px",
-        'color':'#fff',
-        'border-radius':'2px',
-        'font-size':'11px',
+        'color': '#fff',
+        'border-radius': '2px',
+        'font-size': '11px',
         "background-color": "#000",
         opacity: 0.80
       }).appendTo("body").fadeIn(200);
-    } 
+    }
 
     function randValue() {
       return (Math.floor(Math.random() * (1 + 50 - 20))) + 10;
     }
 
     var pageviews = [
-    [1, randValue()],
-    [2, randValue()],
-    [3, 2 + randValue()],
-    [4, 3 + randValue()],
-    [5, 5 + randValue()],
-    [6, 10 + randValue()],
-    [7, 15 + randValue()],
-    [8, 20 + randValue()],
-    [9, 25 + randValue()],
-    [10, 30 + randValue()],
-    [11, 35 + randValue()],
-    [12, 25 + randValue()],
-    [13, 15 + randValue()],
-    [14, 20 + randValue()],
-    [15, 45 + randValue()],
-    [16, 50 + randValue()],
-    [17, 65 + randValue()],
-    [18, 70 + randValue()],
-    [19, 85 + randValue()],
-    [20, 80 + randValue()],
-    [21, 75 + randValue()],
-    [22, 80 + randValue()],
-    [23, 75 + randValue()]
+      [1, randValue()],
+      [2, randValue()],
+      [3, 2 + randValue()],
+      [4, 3 + randValue()],
+      [5, 5 + randValue()],
+      [6, 10 + randValue()],
+      [7, 15 + randValue()],
+      [8, 20 + randValue()],
+      [9, 25 + randValue()],
+      [10, 30 + randValue()],
+      [11, 35 + randValue()],
+      [12, 25 + randValue()],
+      [13, 15 + randValue()],
+      [14, 20 + randValue()],
+      [15, 45 + randValue()],
+      [16, 50 + randValue()],
+      [17, 65 + randValue()],
+      [18, 70 + randValue()],
+      [19, 85 + randValue()],
+      [20, 80 + randValue()],
+      [21, 75 + randValue()],
+      [22, 80 + randValue()],
+      [23, 75 + randValue()]
     ];
     var visitors = [
-    [1, randValue() - 5],
-    [2, randValue() - 5],
-    [3, randValue() - 5],
-    [4, 6 + randValue()],
-    [5, 5 + randValue()],
-    [6, 20 + randValue()],
-    [7, 25 + randValue()],
-    [8, 36 + randValue()],
-    [9, 26 + randValue()],
-    [10, 38 + randValue()],
-    [11, 39 + randValue()],
-    [12, 50 + randValue()],
-    [13, 51 + randValue()],
-    [14, 12 + randValue()],
-    [15, 13 + randValue()],
-    [16, 14 + randValue()],
-    [17, 15 + randValue()],
-    [18, 15 + randValue()],
-    [19, 16 + randValue()],
-    [20, 17 + randValue()],
-    [21, 18 + randValue()],
-    [22, 19 + randValue()],
-    [23, 20 + randValue()],
-    [24, 21 + randValue()],
-    [25, 14 + randValue()],
-    [26, 24 + randValue()],
-    [27, 25 + randValue()],
-    [28, 26 + randValue()],
-    [29, 27 + randValue()],
-    [30, 31 + randValue()]
+      [1, randValue() - 5],
+      [2, randValue() - 5],
+      [3, randValue() - 5],
+      [4, 6 + randValue()],
+      [5, 5 + randValue()],
+      [6, 20 + randValue()],
+      [7, 25 + randValue()],
+      [8, 36 + randValue()],
+      [9, 26 + randValue()],
+      [10, 38 + randValue()],
+      [11, 39 + randValue()],
+      [12, 50 + randValue()],
+      [13, 51 + randValue()],
+      [14, 12 + randValue()],
+      [15, 13 + randValue()],
+      [16, 14 + randValue()],
+      [17, 15 + randValue()],
+      [18, 15 + randValue()],
+      [19, 16 + randValue()],
+      [20, 17 + randValue()],
+      [21, 18 + randValue()],
+      [22, 19 + randValue()],
+      [23, 20 + randValue()],
+      [24, 21 + randValue()],
+      [25, 14 + randValue()],
+      [26, 24 + randValue()],
+      [27, 25 + randValue()],
+      [28, 26 + randValue()],
+      [29, 27 + randValue()],
+      [30, 31 + randValue()]
     ];
 
     if ($('#site_statistics').size() != 0) {
 
       $('#site_statistics_loading').hide();
       $('#site_statistics_content').show();
-      
+
       var plot_statistics = $.plot($("#site_statistics"), [{
-        data: pageviews,
-        label: "Sales"
-      }
+          data: pageviews,
+          label: "Sales"
+        }
       ], {
         series: {
           lines: {
             show: true,
-            lineWidth: 2, 
+            lineWidth: 2,
             fill: true,
             fillColor: {
               colors: [{
-                opacity: 0.25
-              }, {
-                opacity: 0.25
-              }
+                  opacity: 0.25
+                }, {
+                  opacity: 0.25
+                }
               ]
-            } 
+            }
           },
           points: {
             show: true
           },
           shadowSize: 2
         },
-        legend:{
+        legend: {
           show: false
         },
         grid: {
-        labelMargin: 10,
-           axisMargin: 500,
+          labelMargin: 10,
+          axisMargin: 500,
           hoverable: true,
           clickable: true,
           tickColor: "rgba(0,0,0,0.15)",
@@ -826,11 +834,11 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       var plot_statistics2 = $.plot($("#site_statistics2"), [{
-        data: pageviews,
-        label: "Unique Visits"
-      }
+          data: pageviews,
+          label: "Unique Visits"
+        }
       ], {
         series: {
           bars: {
@@ -841,21 +849,21 @@ var App = function () {
             hoverable: true,
             fillColor: {
               colors: [{
-                opacity: 1
-              }, {
-                opacity: 1
-              }
+                  opacity: 1
+                }, {
+                  opacity: 1
+                }
               ]
-            } 
+            }
           },
           shadowSize: 2
         },
-        legend:{
+        legend: {
           show: false
         },
         grid: {
-        labelMargin: 10,
-           axisMargin: 500,
+          labelMargin: 10,
+          axisMargin: 500,
           hoverable: true,
           clickable: true,
           tickColor: "rgba(0,0,0,0.15)",
@@ -871,40 +879,40 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       /*Pie Chart*/
       var data = [
-      { label: "Google", data: 50},
-      { label: "Dribbble", data: 7},
-      { label: "Twitter", data: 8},
-      { label: "Youtube", data: 9},
-      { label: "Microsoft", data: 14},
-      { label: "Apple", data: 13},
-      { label: "Amazon", data: 10},
-      { label: "Facebook", data: 5}
-      ]; 
+        {label: "Google", data: 50},
+        {label: "Dribbble", data: 7},
+        {label: "Twitter", data: 8},
+        {label: "Youtube", data: 9},
+        {label: "Microsoft", data: 14},
+        {label: "Apple", data: 13},
+        {label: "Amazon", data: 10},
+        {label: "Facebook", data: 5}
+      ];
 
       $.plot('#piec', data, {
         series: {
           pie: {
             show: true,
             innerRadius: 0.27,
-            shadow:{
+            shadow: {
               top: 5,
               left: 15,
-              alpha:0.3
+              alpha: 0.3
             },
-            stroke:{
-              width:0
+            stroke: {
+              width: 0
             },
             label: {
-                        show: true,
-                        formatter: function (label, series) {
-                            return '<div style="font-size:12px;text-align:center;padding:2px;color:#333;">' + label + '</div>';
+              show: true,
+              formatter: function(label, series) {
+                return '<div style="font-size:12px;text-align:center;padding:2px;color:#333;">' + label + '</div>';
 
-                        }
-                    },
-            highlight:{
+              }
+            },
+            highlight: {
               opacity: 0.08
             }
           }
@@ -913,12 +921,12 @@ var App = function () {
           hoverable: true,
           clickable: true
         },
-        colors: ["#5793f3", "#dd4d79", "#bd3b47","#dd4444","#fd9c35","#fec42c","#d4df5a","#5578c2"],
+        colors: ["#5793f3", "#dd4d79", "#bd3b47", "#dd4444", "#fd9c35", "#fec42c", "#d4df5a", "#5578c2"],
         legend: {
           show: false
         }
       });
-      
+
       /*COM Chart*/
       var data_com2 = [
         [1, randValue()],
@@ -970,29 +978,29 @@ var App = function () {
         [22, 120 + randValue()],
         [23, 130 + randValue()]
       ];
-       var names = [
-                    "Alpha",
-                    "Beta",
-                    "Gamma",
-                    "Delta",
-                    "Epsilon",
-                    "Zeta",
-                    "Eta",
-                    "Theta"
-                ];
-          
+      var names = [
+        "Alpha",
+        "Beta",
+        "Gamma",
+        "Delta",
+        "Epsilon",
+        "Zeta",
+        "Eta",
+        "Theta"
+      ];
+
       var plot_statistics = $.plot($("#chart3"), [{
-        data: data_com, showLabels: true, label: "New Visitors", labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF" 
-      },{
-        data: data_com2, showLabels: true, label: "Old Visitors", labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF" 
-      }
+          data: data_com, showLabels: true, label: "New Visitors", labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF"
+        }, {
+          data: data_com2, showLabels: true, label: "Old Visitors", labelPlacement: "below", canvasRender: true, cColor: "#FFFFFF"
+        }
       ], {
         series: {
           lines: {
             show: true,
-            lineWidth: 1, 
+            lineWidth: 1,
             fill: true,
-             fillColor: { colors: [{ opacity: 0.5 }, { opacity: 0.5}] }
+            fillColor: {colors: [{opacity: 0.5}, {opacity: 0.5}]}
           },
           fillColor: "rgba(0, 0, 0, 1)",
           points: {
@@ -1001,23 +1009,23 @@ var App = function () {
           },
           shadowSize: 2
         },
-        legend:{
+        legend: {
           show: true,
-           position:"nw",
-           backgroundColor: "green",
-           container: $("#chart3-legend")
+          position: "nw",
+          backgroundColor: "green",
+          container: $("#chart3-legend")
         },
         grid: {
-          show:false,
+          show: false,
           margin: 0,
           labelMargin: 0,
-           axisMargin: 0,
+          axisMargin: 0,
           hoverable: true,
           clickable: true,
           tickColor: "rgba(255,255,255,1)",
           borderWidth: 0
         },
-        colors: ["#E3E6E8","#1fb594"],
+        colors: ["#E3E6E8", "#1fb594"],
         xaxis: {
           autoscaleMargin: 0,
           ticks: 11,
@@ -1029,33 +1037,33 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       /*LIVE DATA CHART*/
-      
-      var data = [],totalPoints = 200; 
-      
+
+      var data = [], totalPoints = 200;
+
       function getRandomData() {
         if (data.length > 0)
-        data = data.slice(1);
+          data = data.slice(1);
         // Do a random walk
         while (data.length < totalPoints) {
-        var prev = data.length > 0 ? data[data.length - 1] : 50,
-        y = prev + Math.random() * 10 - 5;
-        if (y < 0) {
-        y = 0;
-        } else if (y > 100) {
-        y = 100;
-        }
-        data.push(y);
+          var prev = data.length > 0 ? data[data.length - 1] : 50,
+                  y = prev + Math.random() * 10 - 5;
+          if (y < 0) {
+            y = 0;
+          } else if (y > 100) {
+            y = 100;
+          }
+          data.push(y);
         }
         // Zip the generated y values with the x values
         var res = [];
         for (var i = 0; i < data.length; ++i) {
-        res.push([i, data[i]])
+          res.push([i, data[i]])
         }
         return res;
-      } 
-      
+      }
+
       function update() {
         chart4.setData([getRandomData()]);
         // Since the axes don't change, we don't need to call plot.setupGrid()
@@ -1064,35 +1072,35 @@ var App = function () {
       }
 
       var chart4 = $.plot($("#chart4"), [{
-        data:  getRandomData() ,
-        label: "Sales"
-      }
+          data: getRandomData(),
+          label: "Sales"
+        }
       ], {
         series: {
           lines: {
             show: true,
-            lineWidth: 2, 
+            lineWidth: 2,
             fill: true,
             fillColor: {
               colors: [{
-                opacity: 0.25
-              }, {
-                opacity: 0.25
-              }
+                  opacity: 0.25
+                }, {
+                  opacity: 0.25
+                }
               ]
-            } 
+            }
           },
           points: {
             show: false
           },
           shadowSize: 2
         },
-        legend:{
+        legend: {
           show: false
         },
         grid: {
-        labelMargin: 10,
-           axisMargin: 500,
+          labelMargin: 10,
+          axisMargin: 500,
           hoverable: true,
           clickable: true,
           tickColor: "rgba(0,0,0,0.15)",
@@ -1108,14 +1116,14 @@ var App = function () {
           tickDecimals: 0
         }
       });
-      
+
       update();
-      
+
       /*Tooltips*/
-      
+
       var previousPoint = null;
-      $("#site_statistics").bind("plothover", function (event, pos, item) {
-      
+      $("#site_statistics").bind("plothover", function(event, pos, item) {
+
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 
         if (item) {
@@ -1123,18 +1131,18 @@ var App = function () {
             previousPoint = item.dataIndex;
             $("#tooltip").remove();
             var x = item.datapoint[0].toFixed(2),
-            y = item.datapoint[1].toFixed(2);
+                    y = item.datapoint[1].toFixed(2);
             showTooltip(item.pageX, item.pageY,
-            item.series.label + " of " + x + " = " + y);
+                    item.series.label + " of " + x + " = " + y);
           }
         } else {
           $("#tooltip").remove();
           previousPoint = null;
         }
-      }); 
-      
-      $("#site_statistics2").bind("plothover", function (event, pos, item) {
-      
+      });
+
+      $("#site_statistics2").bind("plothover", function(event, pos, item) {
+
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 
         if (item) {
@@ -1142,18 +1150,18 @@ var App = function () {
             previousPoint = item.dataIndex;
             $("#tooltip").remove();
             var x = item.datapoint[0],
-            y = item.datapoint[1];
+                    y = item.datapoint[1];
             showTooltip(item.pageX, item.pageY,
-            item.series.label + "" + x + " = " + y + "%");
+                    item.series.label + "" + x + " = " + y + "%");
           }
         } else {
           $("#tooltip").remove();
           previousPoint = null;
         }
-      }); 
-      
-      $("#chart3").bind("plothover", function (event, pos, item) {
-      
+      });
+
+      $("#chart3").bind("plothover", function(event, pos, item) {
+
         var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
 
         if (item) {
@@ -1161,176 +1169,155 @@ var App = function () {
             previousPoint = item.dataIndex;
             $("#tooltip").remove();
             var x = item.datapoint[0].toFixed(2),
-            y = item.datapoint[1].toFixed(2);
+                    y = item.datapoint[1].toFixed(2);
             showTooltip(item.pageX, item.pageY,
-            item.series.label + " of " + x + " = " + y);
+                    item.series.label + " of " + x + " = " + y);
           }
         } else {
           $("#tooltip").remove();
           previousPoint = null;
         }
-      }); 
+      });
     }
 
     /*Jquery Easy Pie Chart*/
-      $('.epie-chart').easyPieChart({
-        lineWidth: 8,
-        animate: 600,
-        size: 150,
-        onStep: function(val){//Update current value while animation
-          $("span", this.$el).html(parseInt(val) + "%");
-        }
-        });
-      
+    $('.epie-chart').easyPieChart({
+      lineWidth: 8,
+      animate: 600,
+      size: 150,
+      onStep: function(val) {//Update current value while animation
+        $("span", this.$el).html(parseInt(val) + "%");
+      }
+    });
+
   };//End of charts
-  
+
   /*Widgets*/
-  var widgets = function(){
+  var widgets = function() {
     var skycons = new Skycons({"color": "#FFFFFF"});
     skycons.add($("#sun-icon")[0], Skycons.PARTLY_CLOUDY_DAY);
     skycons.play();
-    
+
   };//End of widgets
-  
+
   return {
-   
-    init: function (options) {
+    init: function(options) {
       //Extends basic config with options
-      $.extend( config, options );
-      
+      $.extend(config, options);
+
       /*VERTICAL MENU*/
-      $(".cl-vnavigation li ul").each(function(){
+      $(".cl-vnavigation li ul").each(function() {
         $(this).parent().addClass("parent");
       });
-      
-      $(".cl-vnavigation").delegate(".parent > a","click",function(e){
+
+      $(".cl-vnavigation").delegate(".parent > a", "click", function(e) {
         var ul = $(this).parent().find("ul");
-        ul.slideToggle(300, 'swing', function () {
+        ul.slideToggle(300, 'swing', function() {
           var p = $(this).parent();
-          if(p.hasClass("open")){
+          if (p.hasClass("open")) {
             p.removeClass("open");
-          }else{
+          } else {
             p.addClass("open");
           }
         });
         e.preventDefault();
       });
-      
-      $(".cl-toggle").click(function(e){
+
+      $(".cl-toggle").click(function(e) {
         var ul = $(".cl-vnavigation");
-        ul.slideToggle(300, 'swing', function () {
+        ul.slideToggle(300, 'swing', function() {
         });
         e.preventDefault();
       });
-      
-      
+
+
       /*Datepicker UI*/
-      $( ".ui-datepicker" ).datepicker();
-      
+      $(".ui-datepicker").datepicker();
+
       /*Tooltips*/
-      if(config.tooltip){
+      if (config.tooltip) {
         $('.ttip, [data-toggle="tooltip"]').tooltip();
       }
-      
+
       /*Popover*/
-      if(config.popover){
+      if (config.popover) {
         $('[data-popover="popover"]').popover();
       }
 
-      /*NanoScroller*/      
-      if(config.nanoScroller){
-        $(".nscroller").nanoScroller();     
-      }
-      
-      /*Nestable Lists*/
-      if(config.nestableLists){
-        $('.dd').nestable();
-      }
-      
       /*Switch*/
-      if(config.bootstrapSwitch){
+      if (config.bootstrapSwitch) {
         $('.switch').bootstrapSwitch();
       }
-      
+
       /*DateTime Picker*/
-      if(config.dateTime){
+      if (config.dateTime) {
         $(".datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
       }
-      
+
       /*Select2*/
-      if(config.select2){
-         $(".select2").select2({
+      if (config.select2) {
+        $(".select2").select2({
           width: '100%'
-         });
+        });
       }
-      
-       /*Tags*/
-      if(config.tags){
-        $(".tags").select2({tags: 0,width: '100%'});
+
+      /*Tags*/
+      if (config.tags) {
+        $(".tags").select2({tags: 0, width: '100%'});
       }
-      
-       /*Slider*/
-      if(config.slider){
-        $('.bslider').slider();     
+
+      /*Slider*/
+      if (config.slider) {
+        $('.bslider').slider();
       }
-      
+
       /*Bind plugins on hidden elements*/
-      if(config.hiddenElements){
-      	/*Dropdown shown event*/
-        $('.dropdown').on('shown.bs.dropdown', function () {
+      if (config.hiddenElements) {
+        /*Dropdown shown event*/
+        $('.dropdown').on('shown.bs.dropdown', function() {
           $(".nscroller").nanoScroller();
         });
-          
+
         /*Tabs refresh hidden elements*/
-        $('.nav-tabs').on('shown.bs.tab', function (e) {
+        $('.nav-tabs').on('shown.bs.tab', function(e) {
           $(".nscroller").nanoScroller();
         });
       }
-      
+
     },
-      
     /*Pages Javascript Methods*/
-    dashBoard: function (){
+    dashBoard: function() {
       dashboard();
     },
-    
-    uiElements: function(){
+    uiElements: function() {
       uiElements();
     },
-    
-    nestableLists: function(){
+    nestableLists: function() {
       nestable();
     },
- 
-    wizard: function(){
+    wizard: function() {
       wizard();
     },
-    
-    masks: function(){
+    masks: function() {
       masks();
     },
-    
-    textEditor: function(){
+    textEditor: function() {
       textEditor();
     },
-    
-    dataTables: function(){
+    dataTables: function() {
       dataTables();
     },
-    
-    maps: function(){
+    maps: function() {
       maps();
     },
-    
-    charts: function(){
+    charts: function() {
       charts();
     },
-    
-    widgets: function(){
+    widgets: function() {
       widgets();
     }
-    
+
   };
- 
+
 }();
 
