@@ -3,6 +3,7 @@
 namespace src\app\admin\controllers;
 
 use src\app\admin\models\UsuarioModel;
+use src\app\admin\models\UsuarioAuthModel;
 use Din\Http\Post;
 use src\app\admin\helpers\Upload;
 use Din\ViewHelpers\JsonViewHelper;
@@ -44,6 +45,10 @@ class ConfigController extends BaseControllerAdm
       ));
 
       $this->setRegistroSalvoSession();
+
+      $usuario = $this->_model->getById($id_usuario);
+      $usuarioAuth = new UsuarioAuthModel;
+      $usuarioAuth->login($usuario['email'], $usuario['senha'], true);
 
       JsonViewHelper::redirect('/admin/config/cadastro/');
     } catch (Exception $e) {

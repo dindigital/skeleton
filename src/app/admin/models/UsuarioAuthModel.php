@@ -32,7 +32,7 @@ class UsuarioAuthModel extends Auth
 
   public function login ( $email, $senha, $is_crypted = false )
   {
-    if ( !parent::login($email, $senha) ) {
+    if ( !parent::login($email, $senha, $is_crypted) ) {
       throw new \Exception("Dados inválidos. Usuário não encontrado.");
     }
 
