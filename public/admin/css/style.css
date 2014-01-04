@@ -129,11 +129,11 @@ table .danger-emphasis-dark{background-color:#c8432e;border-color:#c8432e;}
 }
 
 .navbar-default  .navbar-brand {
-  padding-left: 35px;
+  padding-left: 45px;
   text-align:left;
   width: 206px;
   color: #FFF;
-  background: url(../images/logo.png) no-repeat 0 11px;
+  background: url(../images/logo.png) no-repeat 0 center;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   font-weight: 300;
   font-size:19px;
