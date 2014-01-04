@@ -3056,9 +3056,7 @@ button::-moz-focus-inner {
   display: none;
 }
 
-.preview a {
+.preview {
   clear: both;
-}
-.preview a img {
-  clear: both;
+  padding-top: 5px;
 }
