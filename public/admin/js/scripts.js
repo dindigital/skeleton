@@ -99,16 +99,24 @@ $(document).ready(function() {
   });
 
   $('#excluir_all').change(function() {
-    var checked = $(this).is(':checked');
-    $('.excluir').each(function() {
-      if (checked) {
-        $(this).attr('checked', true);
-        $(this).parent('td').addClass('checked');
-      } else {
-        $(this).attr('checked', false);
-        $(this).parent('td').removeClass('checked');
-      }
-    });
+
+    if ($(this).is(':checked')) {
+      $('.excluir').attr('checked', true);
+    } else {
+      $('.excluir').attr('checked', false);
+    }
+
+    /*var checked = $(this).is(':checked');
+     $('.excluir').each(function() {
+     if (checked) {
+     $(this).attr('checked', true);
+     $(this).parent('td').addClass('checked');
+     } else {
+     $(this).attr('checked', false);
+     $(this).parent('td').removeClass('checked');
+     }
+     });*/
+
   });
 
   var link_prefix = $('#link_prefix').val();
@@ -159,8 +167,8 @@ $(document).ready(function() {
   });
 
   $('a.excluir_shortcut').click(function() {
-    $('input.excluir').attr('checked', false);
-    $(this).parents('tr').find('input.excluir').attr('checked', true);
+    $('.excluir').attr('checked', false);
+    $(this).parents('tr').find('.excluir').attr('checked', true);
     $('.lixeira_ex').click();
     return;
   });
