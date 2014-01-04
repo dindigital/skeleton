@@ -36,7 +36,7 @@ class UsuarioController extends BaseControllerAdm
     $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
     $this->_data['busca'] = $arrFilters;
 
-    $this->setListTemplate('usuario_lista.php', $paginator);
+    $this->setListTemplate('usuario_lista.phtml', $paginator);
   }
 
   public function get_cadastro ( $id = null )
@@ -51,7 +51,7 @@ class UsuarioController extends BaseControllerAdm
     $this->_data['table']['avatar2'] = Upload::get('avatar2', @$this->_data['table']['avatar2'], 'imagem');
     $this->_data['table']['avatar3'] = Upload::get('avatar3', @$this->_data['table']['avatar3'], 'imagem');
 
-    $this->setCadastroTemplate('usuario_cadastro.php');
+    $this->setCadastroTemplate('usuario_cadastro.phtml');
   }
 
   public function post_cadastro ( $id = null )

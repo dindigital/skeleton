@@ -63,11 +63,11 @@ abstract class BaseControllerAdm extends BaseController
     $this->_data['paginator']['total'] = $paginator->getTotal();
     $this->_data['paginator']['numbers'] = $paginator->getNumbers();
 
-    $this->_view->addFile('src/app/admin/views/includes/btn_limpar.php', '{$BTN_LIMPAR}');
-    $this->_view->addFile('src/app/admin/views/includes/btn_buscar.php', '{$BTN_BUSCAR}');
-    $this->_view->addFile('src/app/admin/views/includes/btn_excluir_permanentemente.php', '{$BTN_EXCLUIR_PERMANENTEMENTE}');
-    $this->_view->addFile('src/app/admin/views/includes/btn_novo_registro.php', '{$BTN_NOVO_REGISTRO}');
-    $this->_view->addFile('src/app/admin/views/includes/lista_footer.php', '{$LISTA_FOOTER}');
+    //$this->_view->addFile('src/app/admin/views/includes/btn_limpar.php', '{$BTN_LIMPAR}');
+    //$this->_view->addFile('src/app/admin/views/includes/btn_buscar.php', '{$BTN_BUSCAR}');
+    //$this->_view->addFile('src/app/admin/views/includes/btn_excluir_permanentemente.php', '{$BTN_EXCLUIR_PERMANENTEMENTE}');
+    //$this->_view->addFile('src/app/admin/views/includes/btn_novo_registro.php', '{$BTN_NOVO_REGISTRO}');
+    //$this->_view->addFile('src/app/admin/views/includes/lista_footer.php', '{$LISTA_FOOTER}');
 
     $this->_view->addFile('src/app/admin/views/' . $filename, '{$CONTENT}');
     $this->display_html();

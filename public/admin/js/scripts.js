@@ -98,6 +98,73 @@ $(document).ready(function() {
     }
   });
 
+  $('#excluir_all').change(function() {
+    var checked = $(this).is(':checked');
+    $('.excluir').each(function() {
+      if (checked) {
+        $(this).attr('checked', true);
+        $(this).parent('td').addClass('checked');
+      } else {
+        $(this).attr('checked', false);
+        $(this).parent('td').removeClass('checked');
+      }
+    });
+  });
+
+  var link_prefix = $('#link_prefix').val();
+
+  $('.setAtivo').change(function() {
+    var ativo = ($(this).is(':checked')) ? '1' : '0';
+    var action = $('#link_prefix').val() + 'ativo/';
+    var id = $(this).attr('id');
+
+    $.post(action, {
+      ativo: ativo,
+      id: id
+    });
+  });
+
+  $('.limpar_busca').click(function() {
+    $('.form_busca input[type="text"]').each(function() {
+      $(this).val('');
+    });
+    $('.form_busca select').each(function() {
+      $(this).val('0');
+      $(this).parent().find('span').html($(this).children('option').eq(0).text());
+    });
+  });
+
+  $('.lixeira_ex').click(function() {
+
+    if ($('.excluir').is(':checked')) {
+      alert('Não há nenhum ítem selecionado.');
+      return;
+    }
+
+    var c = confirm('Deseja realmente excluir os ítens selecionados?');
+
+    if (c) {
+      var form = newForm();
+
+      $('.excluir:checked').each(function() {
+        var id = $(this).attr('id').replace('exc_', '');
+        form.append('<input type="hidden" name="itens[]" value="' + id + '" />');
+      });
+
+      var action = link_prefix + 'excluir/';
+
+      form.attr('action', action);
+      form.submit();
+    }
+  });
+
+  $('a.excluir_shortcut').click(function() {
+    $('input.excluir').attr('checked', false);
+    $(this).parents('tr').find('input.excluir').attr('checked', true);
+    $('.lixeira_ex').click();
+    return;
+  });
+
 });
 
 function hideLoadingOverlay() {
@@ -114,4 +181,9 @@ function boxError() {
   $('.alert-danger').stop(true, true).slideDown('slow').animate({opacity: 1}, 4000, function() {
     $('.alert-danger').slideUp();
   });
+}
+
+function newForm()
+{
+  return $('<form method="POST"></form>').appendTo('body');
 }

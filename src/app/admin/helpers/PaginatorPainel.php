@@ -24,11 +24,11 @@ class PaginatorPainel extends Paginator
     $this->_active_class = 'active';
     $this->_disabled_class = 'disabled';
 
-    $this->_first = '<a href="{$link}" class="replace_container {$disabled}">Primeira</a>';
-    $this->_prev = '<a href="{$link}" class="replace_container {$disabled}">Anterior</a>';
-    $this->_numbers = '<a href="{$link}" class="replace_container {$active}">{$n}</a>';
-    $this->_next = '<a href="{$link}" class="replace_container {$disabled}">Próxima</a>';
-    $this->_last = '<a href="{$link}" class="replace_container {$disabled}">Última</a>';
+    $this->_first = '<li class="prev {$disabled}"><a href="{$link}"><span class="fa fa-angle-left"></span><span class="fa fa-angle-left"></span>&nbsp;Primeira</a></li>';
+    $this->_prev = '<li class="prev {$disabled}"><a href="{$link}"><span class="fa fa-angle-left"></span>&nbsp;Anterior</a></li>';
+    $this->_numbers = '<li class="{$active}"><a href="{$link}">{$n}</a></li>';
+    $this->_next = '<li class="next {$disabled}"><a href="{$link}">Próxima&nbsp;<span class="fa fa-angle-right"></span></a></li>';
+    $this->_last = '<li class="next {$disabled}"><a href="{$link}">Última&nbsp;<span class="fa fa-angle-right"></span><span class="fa fa-angle-right"></span></a></li>';
 
     $this->_order = '{$_first}{$_prev}{$_numbers}{$_next}{$_last}';
   }
