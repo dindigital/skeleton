@@ -3,7 +3,7 @@
 namespace src\app\admin\validators;
 
 use \Exception;
-use Din\ViewHelpers\StringTransform;
+use Din\Filters\String\Uri;
 use Din\File\Folder;
 use Din\Exception\JsonException;
 
@@ -60,7 +60,7 @@ class BaseValidator
 
       if ( $id ) {
         $pathinfo = pathinfo($name);
-        $name = StringTransform::amigavel($pathinfo['filename']) . '.' . $pathinfo['extension'];
+        $name = Uri::format($pathinfo['filename']) . '.' . $pathinfo['extension'];
 
         $destination = 'public/system/uploads/' . $folder . '/' .
                 $id . '/' . $fieldname . '/' . $name;
