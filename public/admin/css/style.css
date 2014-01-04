@@ -3049,7 +3049,7 @@ button::-moz-focus-inner {
 }
 
 .form-group-submit {
-  padding-left: 20%!important;
+  padding-left: 5%!important;
 }
 
 .alert-success, .alert-danger {
