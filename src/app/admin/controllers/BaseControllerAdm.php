@@ -98,7 +98,7 @@ abstract class BaseControllerAdm extends BaseController
 
     $usuario = new UsuarioModel();
     $this->_data['user'] = $usuario->getById($usuarioAuthModel->getId());
-    $this->_data['user']['avatar_img'] = Picuri::picUri($this->_data['user']['avatar'], 50, 50, true);
+    $this->_data['user']['avatar_img'] = Picuri::picUri($this->_data['user']['avatar'], 30, 30, true);
   }
 
   protected function setRegistroSalvoSession ()
