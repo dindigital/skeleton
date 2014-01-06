@@ -173,6 +173,39 @@ $(document).ready(function() {
     return;
   });
 
+  $(".tags").select2({tags: 0, width: '100%'});
+
+  $(".select2").select2({
+    width: '100%'
+  });
+
+  $(".ui-datepicker").datepicker();
+
+
+  $(".cl-vnavigation li ul").each(function() {
+    $(this).parent().addClass("parent");
+  });
+
+  $(".cl-vnavigation").delegate(".parent > a", "click", function(e) {
+    var ul = $(this).parent().find("ul");
+    ul.slideToggle(300, 'swing', function() {
+      var p = $(this).parent();
+      if (p.hasClass("open")) {
+        p.removeClass("open");
+      } else {
+        p.addClass("open");
+      }
+    });
+    e.preventDefault();
+  });
+
+  $(".cl-toggle").click(function(e) {
+    var ul = $(".cl-vnavigation");
+    ul.slideToggle(300, 'swing', function() {
+    });
+    e.preventDefault();
+  });
+
 });
 
 function hideLoadingOverlay() {
