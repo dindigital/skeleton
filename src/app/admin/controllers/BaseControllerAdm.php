@@ -41,7 +41,7 @@ abstract class BaseControllerAdm extends BaseController
   {
     $this->_view->addFile('src/app/admin/views/layouts/layout.phtml');
     //$this->_view->addFile('src/app/admin/views/includes/head.php', '{$HEAD}');
-    //$this->_view->addFile('src/app/admin/views/includes/side_bar.php', '{$SIDE_BAR}');
+    $this->_view->addFile('src/app/admin/views/includes/nav.phtml', '{$NAV}');
     //$this->_view->addFile('src/app/admin/views/includes/footer.php', '{$FOOTER}');
   }
 

@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="col-md-12">
+
+    <div class="block-flat">
+      <div class="header">
+        <h3>Cadastro de Galeria</h3>
+      </div>
+      <div class="content">
+
+        {$ALERTS}
+
+        <form id="main_form" class="form-horizontal group-border-dashed validate_form" method="post" style="border-radius: 0px;">
+
+          {$SUBMIT}
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="ativo">Ativo</label>
+            <div class="col-sm-10">
+              <input type="checkbox" name="ativo" id="ativo" checked="checked" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Título Home</label>
+            <div class="col-sm-10">
+              <input name="title_home" type="text" value="" placeholder="Título da home" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Description Home</label>
+            <div class="col-sm-10">
+              <textarea name="description_home" class="form-control" rows="4" placeholder="Descrição da home"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Galeria</label>
+            <div class="col-sm-10">
+
+              <ul class="gallery sortable ui-sortable" id="galeria_ul">
+                <li id="2689" style="" class="">
+                  <img src="http://images.tvabcd.com.br/images/385e17c6081a82df119f875653671228.jpg" width="200" height="150" alt="Honda NSX" class="img_galeria">
+                  <input placeholder="Legenda" name="legenda[]" type="text" value="Honda NSX">
+                  <input placeholder="Crédito" name="credito[]" type="text" value="Autoportal/Portugal">
+                </li><li id="2691">
+                  <img src="http://images.tvabcd.com.br/images/444ac24b00dbe6e0f09d9ca0812fcab7.jpg" width="200" height="150" alt="Honda NSX " class="img_galeria">
+                  <input placeholder="Legenda" name="legenda[]" type="text" value="Honda NSX ">
+                  <input placeholder="Crédito" name="credito[]" type="text" value="Autoportal/Portugal">
+                </li>
+                <li id="2693">
+                  <img src="http://images.tvabcd.com.br/images/d981e95419370aa746ddb8739e01da10.jpg" width="200" height="150" alt="Honda NSX " class="img_galeria">
+                  <input placeholder="Legenda" name="legenda[]" type="text" value="Honda NSX ">
+                  <input placeholder="Crédito" name="credito[]" type="text" value="Autoportal/Portugal">
+                </li>
+                <li id="2690">
+                  <img src="http://images.tvabcd.com.br/images/0f23ed14d7f61668f57deb2a891500b5.jpg" width="200" height="150" alt="Tapete com a marca dos pés de Ayrton Senna" class="img_galeria">
+                  <input placeholder="Legenda" name="legenda[]" type="text" value="Tapete com a marca dos pés de Ayrton Senna">
+                  <input placeholder="Crédito" name="credito[]" type="text" value="Autoportal/Portugal">
+                </li>
+                <li id="2692">
+                  <img src="http://images.tvabcd.com.br/images/64b50e4de74187ff2f9ed3fb5bc85873.jpg" width="200" height="150" alt="Parte interior do Honda NSX" class="img_galeria">
+                  <input placeholder="Legenda" name="legenda[]" type="text" value="Parte interior do Honda NSX">
+                  <input placeholder="Crédito" name="credito[]" type="text" value="Autoportal/Portugal">
+                </li>
+              </ul>
+
+            </div>
+          </div>
+
+          {$SUBMIT}
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
