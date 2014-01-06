@@ -217,7 +217,8 @@ $(document).ready(function() {
   });
 
   $('.daterange').daterangepicker({
-    opens: 'right'
+    opens: 'right',
+    format: 'dd/MM/yyyy'
   });
 
   $(".sortable").sortable();
