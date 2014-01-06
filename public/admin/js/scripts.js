@@ -216,6 +216,10 @@ $(document).ready(function() {
     showOn: 'focus'
   });
 
+  $('.daterange').daterangepicker({
+    opens: 'right'
+  });
+
   $(".sortable").sortable();
 
   $(".color_basic").spectrum({
