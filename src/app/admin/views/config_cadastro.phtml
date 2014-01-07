@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-12">
+
+    <div class="block-flat">
+      <div class="header">
+        <h3>Meus Dados</h3>
+      </div>
+      <div class="content">
+
+        {$ALERTS}
+
+        <form id="main_form" class="form-horizontal group-border-dashed validate_form" method="post" style="border-radius: 0px;">
+
+          {$SUBMIT}
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Nome</label>
+            <div class="col-sm-10">
+              <input name="nome" type="text" value="<?php echo $data['table']['nome']; ?>" placeholder="Seu nome" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">E-mail</label>
+            <div class="col-sm-10">
+              <input name="email" type="text" value="<?php echo $data['table']['email']; ?>" placeholder="Seu e-mail, ele será usado para o login" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Senha</label>
+            <div class="col-sm-10">
+              <input name="senha" class="form-control" type="password" value="" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Avatar</label>
+            <div class="col-sm-10">
+              <?php echo @$data['table']['avatar'] ?>
+            </div>
+          </div>
+
+          {$SUBMIT}
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

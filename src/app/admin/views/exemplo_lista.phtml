@@ -1,0 +1,178 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="block-flat">
+      <div class="header">
+        <h3>Lista de Exemplos</h3>
+      </div>
+
+      <div class="content">
+        <form method="get" class="form_busca">
+          <input type="hidden" id="link_prefix" value="/admin/usuario/" />
+          <div class="col-sm-4 col-md-4 col-lg-3">
+            <input class="form-control daterange" readonly name="datas" type="text" placeholder="Intervalo entre datas" value="">
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-3">
+            <input class="form-control" name="nome" type="text" placeholder="Busca por nome" value="">
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-3">
+            <input class="form-control" name="email" type="text" placeholder="Busca por email" value="">
+          </div>
+          <br class="clear" />
+          <div class="col-sm-4 col-md-4 col-lg-3">
+            <select class="form-control">
+              <option>Selecione o cliente</option>
+              <option>Mário</option>
+              <option>Jair</option>
+              <option>Mariana</option>
+              <option>Teste</option>
+              <option>Outro teste</option>
+            </select>
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-3">
+            <select class="form-control">
+              <option>Selecione o cliente com nome grande para testar</option>
+              <option>Mário</option>
+              <option>Jair</option>
+              <option>Mariana</option>
+              <option>Teste</option>
+              <option>Outro teste</option>
+            </select>
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-3">
+            <input type="submit" value="Buscar" class="btn btn-info btn-rad" />
+            <input type="button" value="Limpar" class="limpar_busca btn btn-default btn-rad" />
+          </div>
+        </form>
+        <br class="clear" />
+      </div>
+
+      <div class="content">
+        <div class="col-lg-12 pull-left">
+          <a href="/admin/usuario/cadastro/" title="Novo Registro" class="btn btn-primary btn-rad">Novo Registro</a>
+          <a href="#" title="Excluir Selecionados" class="lixeira_ex btn btn-danger btn-rad">Excluir Selecionados</a>
+        </div>
+        <br style="clear: both;" />
+      </div>
+
+      <div class="content">
+
+        <div class="table-responsive">
+          <table class="table no-border hover">
+            <thead class="no-border">
+              <tr>
+                <th style="width:2%;"><input type="checkbox" name="excluir[]" id="excluir_all"></th>
+                <th style="width:5%;"><strong>Ativo</strong></th>
+                <th style="width:15%;"><strong>Nome</strong></th>
+                <th style="width:15%;"><strong>E-mail</strong></th>
+                <th style="width:15%;"><strong>CPF</strong></th>
+                <th style="width:15%;"><strong>Data de Inclusão</strong></th>
+                <th style="width:15%;" class="text-center"><strong>Ações</strong></th>
+              </tr>
+            </thead>
+            <tbody class="no-border-y">
+              <tr>
+                <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_usuario_ca002c2c5a246ee4c00e249274300e04"></td>
+                <td><input class="setAtivo" type="checkbox" checked="checked" id="ca002c2c5a246ee4c00e249274300e04"></td>
+                <td>Jair</td>
+                <td>junior@dindigital.com</td>
+                <td>343.609.248-79</td>
+                <td>04/01/2014</td>
+                <td class="text-center">
+                  <a class="label label-default" href="#">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a class="label label-danger excluir_shortcut" href="#">
+                    <i class="fa fa-times"></i>
+                  </a>
+                  <a class="label label-info" href="#">
+                    <i class="fa fa-envelope-o"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_usuario_682cd390cd2547c1884dbe3fb2fea8bb"></td>
+                <td><input class="setAtivo" type="checkbox" checked="checked" id="682cd390cd2547c1884dbe3fb2fea8bb"></td>
+                <td>mariana</td>
+                <td>mariana@dindigital.com</td>
+                <td>343.609.248-79</td>
+                <td>06/01/2014</td>
+                <td class="text-center">
+                  <a class="label label-danger" href="#">
+                    <i class="fa fa-trash-o"></i>
+                  </a>
+                  <a class="label label-default" href="#">
+                    <i class="fa fa-download"></i>
+                  </a>
+                  <a class="label label-info" href="#">
+                    <i class="fa fa-print"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_usuario_5b472da4243fd1e8bc18904d5e1306b1"></td>
+                <td><input class="setAtivo" type="checkbox" checked="checked" id="5b472da4243fd1e8bc18904d5e1306b1"></td>
+                <td>mario</td>
+                <td>mariosmello@live.com</td>
+                <td>343.609.248-79</td>
+                <td>19/12/2013</td>
+                <td class="text-center">
+                  <a class="label label-primary" href="#">
+                    <i class="fa fa-mail-forward"></i>
+                  </a>
+                  <a class="label label-default" href="#">
+                    <i class="fa fa-folder"></i>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_usuario_8952313ded74037a8e953c15e05033f0"></td>
+                <td><input class="setAtivo" type="checkbox" checked="checked" id="8952313ded74037a8e953c15e05033f0"></td>
+                <td>Mário</td>
+                <td>mario@dindigital.com</td>
+                <td>343.609.248-79</td>
+                <td>18/12/2013</td>
+                <td class="text-center">
+                  <a class="label label-default" href="#">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+                  <a class="label label-danger excluir_shortcut" href="#">
+                    <i class="fa fa-times"></i>
+                  </a>
+                  <a class="label label-info" href="#">
+                    <i class="fa fa-envelope-o"></i>
+                  </a>
+                  <a class="label label-danger" href="#">
+                    <i class="fa fa-trash-o"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="pull-left">
+                <div class="dataTables_info" id="datatable_info">
+                  Exibindo 5 de 5 resultados
+                </div>
+              </div>
+              <div class="pull-right">
+                <div class="dataTables_paginate paging_bs_normal">
+                  <ul class="pagination">
+                    <li class="prev disabled"><a href="#"><span class="fa fa-angle-left"></span><span class="fa fa-angle-left"></span>&nbsp;Primeira</a></li><li class="prev disabled"><a href="#"><span class="fa fa-angle-left"></span>&nbsp;Anterior</a></li><li class="active"><a href="?pag=1">1</a></li><li class=""><a href="?pag=2">2</a></li><li class=""><a href="?pag=3">3</a></li><li class=""><a href="?pag=4">4</a></li><li class=""><a href="?pag=5">5</a></li><li class="next "><a href="?pag=2">Próxima&nbsp;<span class="fa fa-angle-right"></span></a></li><li class="next {$disabled}"><a href="?pag=5">Última&nbsp;<span class="fa fa-angle-right"></span><span class="fa fa-angle-right"></span></a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="clearfix">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+

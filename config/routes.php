@@ -13,6 +13,15 @@ return array(
             'app' => 'adm',
             'type' => RouteTypes::ACTION,
         ),
+        'admin/?$' => array(
+            'app' => 'admin',
+            'controller' => 'usuarioAuth',
+            'method' => 'index'
+        ),
+        'admin/(.*)' => array(
+            'app' => 'admin',
+            'type' => RouteTypes::ACTION,
+        ),
         '' => array(
             'app' => 'adm',
             'controller' => 'Erro404',
