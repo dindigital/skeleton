@@ -14,11 +14,6 @@ use \Exception;
 class UsuarioModel extends BaseModelAdm
 {
 
-  public function __construct ()
-  {
-    parent::__construct();
-  }
-
   public function inserir ( $info )
   {
     $validator = new UsuarioValidator();

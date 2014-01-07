@@ -76,18 +76,9 @@ class Form
     return $d->getElement();
   }
 
-  /**
-   * Devolve o campo de upload de acordo com parâmetros.
-   *
-   * @param string $fieldname Nome do campo
-   * @param string $type Tipo de upload permitido
-   * @param bool $obg Campo obrigatório?
-   * @param bool $multiple Multiplos arquivos?
-   * @return string
-   */
-  public static function Upload ( $fieldname, $value, $type, $obg = false, $multiple = false, $preview = true )
+  public static function Upload ( $fieldname, $value, $type, $multiple = false, $preview = true )
   {
-    $upl = PluploadPainel::getButton($fieldname, $type, $obg, $multiple, null);
+    $upl = PluploadPainel::getButton($fieldname, $type, false, $multiple, null);
     if ( !is_null($value) && $preview ) {
       $upl .= Preview::preview($value);
     }
