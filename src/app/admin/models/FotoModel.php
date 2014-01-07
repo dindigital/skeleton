@@ -1,9 +1,10 @@
 <?php
 
-namespace src\app\adm\models;
+namespace src\app\admin\models;
 
-use src\app\adm\validators\FotoValidator;
-use src\app\adm\models\BaseModelAdm;
+use src\app\admin\validators\FotoValidator;
+use src\app\admin\models\BaseModelAdm;
+use Din\DataAccessLayer\Select;
 
 /**
  *
@@ -14,18 +15,18 @@ class FotoModel extends BaseModelAdm
 
   public function getById ( $id )
   {
-    $SQL = '
-    SELECT
-      *
-    FROM
-      ' . $this->_table->getName() . '
-    {$strWhere}
-    ';
+    $arrCriteria = array(
+        'id_foto = ?' => $id
+    );
 
-    $result = $this->_dao->getByCriteria($this->_table, $SQL, $id);
+    $select = new Select('foto');
+    $select->addField('*');
+    $select->where($arrCriteria);
+
+    $result = $this->_dao->select($select);
 
     if ( !count($result) )
-      throw new \Exception('Galeria de Foto não encontrada.');
+      throw new Exception('Galeria não encontrada.');
 
     $row = $result[0];
 

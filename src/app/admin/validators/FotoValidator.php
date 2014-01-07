@@ -1,8 +1,8 @@
 <?php
 
-namespace src\app\adm\validators;
+namespace src\app\admin\validators;
 
-use src\app\adm\validators\BaseValidator;
+use src\app\admin\validators\BaseValidator;
 use src\tables\FotoTable;
 use Din\Exception\JsonException;
 

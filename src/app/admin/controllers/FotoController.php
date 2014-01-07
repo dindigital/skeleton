@@ -1,11 +1,11 @@
 <?php
 
-namespace src\app\adm\controllers;
+namespace src\app\admin\controllers;
 
-use src\app\adm\models\FotoModel;
-use src\app\adm\helpers\PaginatorPainel;
+use src\app\admin\models\FotoModel;
+use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
-use src\app\adm\helpers\Form;
+use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use \Exception;
@@ -49,7 +49,7 @@ class FotoController extends BaseControllerAdm
 
     $this->_data['table']['galeria_uploader'] = Form::Upload('galeria_uploader', @$this->_data['table']['galeria'], 'imagem', true);
 
-    $this->setCadastroTemplate('foto_cadastro.php');
+    $this->setCadastroTemplate('foto_cadastro.phtml');
   }
 
   public function post_cadastro ( $id = null )

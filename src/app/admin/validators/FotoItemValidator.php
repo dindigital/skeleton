@@ -2,7 +2,7 @@
 
 namespace src\app\adm\validators;
 
-use src\app\adm\validators\BaseValidator;
+use src\app\admin\validators\BaseValidator;
 use src\tables\FotoItemTable;
 use Din\Exception\JsonException;
 use Din\File\Folder;

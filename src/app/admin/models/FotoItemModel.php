@@ -1,9 +1,9 @@
 <?php
 
-namespace src\app\adm\models;
+namespace src\app\admin\models;
 
-use src\app\adm\models\BaseModelAdm;
-use src\app\adm\validators\FotoItemValidator;
+use src\app\admin\models\BaseModelAdm;
+use src\app\admin\validators\FotoItemValidator;
 
 /**
  *
