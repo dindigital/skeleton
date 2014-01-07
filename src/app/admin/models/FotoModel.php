@@ -5,6 +5,7 @@ namespace src\app\admin\models;
 use src\app\admin\validators\FotoValidator;
 use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
+use Din\Paginator\Paginator;
 
 /**
  *
@@ -31,27 +32,26 @@ class FotoModel extends BaseModelAdm
     $row = $result[0];
 
     $foto_item = new FotoItemModel();
-    $row->galeria = $foto_item->listar(array('id_foto' => $id));
+    $row['galeria'] = $foto_item->listar(array('id_foto = ?' => $id));
 
     return $row;
   }
 
-  public function listar ( $arrParams = array(), Paginator $Paginator = null, $relacao = '' )
+  public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
-    $arrParams['del'] = '0';
+    $arrCriteria = array(
+        'del = ?' => '0'
+    );
 
-    $SQL = '
-    SELECT
-      a.id_foto, a.ativo, a.titulo
-    FROM
-      ' . $this->_table->getName() . ' a
-    ' . $this->innerJoinRelacao($relacao) . '
-    {$strWhere}
-    ORDER BY
-      a.titulo
-    ';
+    $select = new Select('foto');
+    $select->addField('id_foto');
+    $select->addField('ativo');
+    $select->addField('titulo');
+    $select->addField('inc_data');
+    $select->where($arrCriteria);
+    $select->order_by('titulo');
 
-    $result = $this->_dao->getByCriteria($this->_table, $SQL, $arrParams, $Paginator);
+    $result = $this->_dao->select($select);
 
     return $result;
   }
@@ -64,8 +64,8 @@ class FotoModel extends BaseModelAdm
     //_# RESOLVE A ORDEM
     if ( $galeria_ordem ) {
       foreach ( explode(',', $galeria_ordem) as $i => $id_foto_item ) {
-        $foto_item->atualizar(array(
-            'id_foto' => $id_foto_item,
+        $foto_item->atualizar($id_foto_item, array(
+            //'id_foto' => $id_foto_item,
             'legenda' => $legenda[$i],
             'credito' => $credito[$i],
             'ordem' => ($i + 1),
@@ -90,6 +90,7 @@ class FotoModel extends BaseModelAdm
   {
     $validator = new FotoValidator();
     $id = $validator->setIdFoto()->getTable()->id_foto;
+    $validator->setAtivo($info['ativo']);
     $validator->setTitulo($info['titulo']);
     $validator->setData($info['data']);
     $validator->throwException();
@@ -97,6 +98,21 @@ class FotoModel extends BaseModelAdm
     $this->_dao->insert($validator->getTable());
 
     $this->setUpload($info['galeria_uploader'], $id);
+
+    return $id;
+  }
+
+  public function atualizar ( $id, $info )
+  {
+    $validator = new FotoValidator();
+    $validator->setAtivo($info['ativo']);
+    $validator->setTitulo($info['titulo']);
+    $validator->setData($info['data']);
+    $validator->throwException();
+
+    $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
+
+    $this->setUpload($info['galeria_uploader'], $id, $info['ordem'], $info['legenda'], $info['credito']);
 
     return $id;
   }

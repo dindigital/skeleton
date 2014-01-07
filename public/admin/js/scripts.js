@@ -173,6 +173,12 @@ $(document).ready(function() {
     return;
   });
 
+  //_# EVENTO DE DOUBLE CLICK AO CLICAR EM FOTO DE GALERIA -> REMOVER ELEMENTO
+  $('.img_galeria').dblclick(function() {
+    $(this).parents('li').remove();
+  });
+
+
   $(".tags").select2({tags: 0, width: '100%'});
 
   $(".select2").select2({

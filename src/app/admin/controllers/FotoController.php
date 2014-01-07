@@ -9,6 +9,8 @@ use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use \Exception;
+use src\app\admin\helpers\Galeria;
+use Din\Filters\Date\DateFormat;
 
 /**
  *
@@ -36,18 +38,20 @@ class FotoController extends BaseControllerAdm
     $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
     $this->_data['busca'] = $arrFilters;
 
-    $this->setListTemplate('usuario_lista.php', $paginator);
+    $this->setListTemplate('foto_lista.phtml', $paginator);
   }
 
   public function get_cadastro ( $id = null )
   {
     if ( $id ) {
       $this->_data['table'] = $this->_model->getById($id);
+      $this->_data['table']['data'] = DateFormat::filter_date($this->_data['table']['data']);
     } else {
       $this->_data['table'] = array();
     }
 
-    $this->_data['table']['galeria_uploader'] = Form::Upload('galeria_uploader', @$this->_data['table']['galeria'], 'imagem', true);
+    $this->_data['table']['galeria_uploader'] = Form::Upload('galeria_uploader', @$this->_data['table']['galeria'], 'imagem', true, false);
+    $this->_data['table']['galeria'] = Galeria::get(@$this->_data['table']['galeria'], 'galeria');
 
     $this->setCadastroTemplate('foto_cadastro.phtml');
   }
@@ -65,15 +69,17 @@ class FotoController extends BaseControllerAdm
       if ( !$id ) {
         $id = $this->_model->inserir($info);
       } else {
-        $this->_model->atualizar($id, $info);
+        $this->_model->atualizar($id, array_merge($info, array(
+            'ordem' => Post::text('galeria_ordem'),
+            'legenda' => Post::aray('legenda'),
+            'credito' => Post::aray('credito'),
+        )));
       }
 
       $this->setRegistroSalvoSession();
 
-      JsonViewHelper::redirect('/adm/foto/cadastro/' . $id . '/');
+      JsonViewHelper::redirect('/admin/foto/cadastro/' . $id . '/');
     } catch (Exception $e) {
-      var_dump($e->getMessage());
-      exit;
       JsonViewHelper::display_error_message($e);
     }
   }

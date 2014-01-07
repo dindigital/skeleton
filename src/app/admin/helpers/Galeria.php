@@ -1,8 +1,8 @@
 <?php
 
-namespace src\app\adm005\objects;
+namespace src\app\admin\helpers;
 
-use lib\Image\Picuri;
+use Din\Image\Picuri;
 
 class Galeria
 {
@@ -12,26 +12,23 @@ class Galeria
    *
    * @param string $prop_name nome da propriedade que contém as fotos
    */
-  public static function set ( $std, $prop_name )
+  public static function get ( $galeria, $prop_name )
   {
-    if ( !isset($std->{$prop_name}) ) {
-      $std->{$prop_name} = '';
-      return;
+    if ( !count($galeria) ) {
+      return '';
     }
-
-    $galeria = $std->{$prop_name};
 
     $html = '<ul class="gallery sortable" id="' . $prop_name . '_ul">' . PHP_EOL;
 
     foreach ( $galeria as $item ) {
-      $attribs['alt'] = $item->legenda;
+      $attribs['alt'] = $item['legenda'];
       $attribs['class'] = 'img_galeria';
-      $img = Picuri::picUri($item->arquivo, 200, 150, true, $attribs);
+      $img = Picuri::picUri($item['arquivo'], 196, 150, true, $attribs);
 
-      $html .= '<li id="' . $item->id_foto_item . '">' . PHP_EOL;
+      $html .= '<li id="' . $item['id_foto_item'] . '">' . PHP_EOL;
       $html .= $img . PHP_EOL;
-      $html .= '<input placeholder="Legenda" name="legenda[]" type="text" value="' . $item->legenda . '" />' . PHP_EOL;
-      $html .= '<input placeholder="Crédito" name="credito[]" type="text" value="' . $item->credito . '" />' . PHP_EOL;
+      $html .= '<input placeholder="Legenda" name="legenda[]" type="text" value="' . $item['legenda'] . '" />' . PHP_EOL;
+      $html .= '<input placeholder="Crédito" name="credito[]" type="text" value="' . $item['credito'] . '" />' . PHP_EOL;
       $html .= '</li>' . PHP_EOL;
     }
 
@@ -51,8 +48,7 @@ class Galeria
     $html .= '  <li>Para excluir uma imagem clique duas vezes e então confirmar.</li>' . PHP_EOL;
     $html .= '</ul>' . PHP_EOL;
 
-    $std->{$prop_name} = $html;
+    return $html;
   }
 
 }
-
