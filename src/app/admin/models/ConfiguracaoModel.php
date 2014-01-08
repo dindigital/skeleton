@@ -6,6 +6,7 @@ use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\validators\ConfiguracaoValidator;
 use \Exception;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -47,7 +48,12 @@ class ConfiguracaoModel extends BaseModelAdm
     $validator->setEmailAvisos($info['email_avisos']);
     $validator->throwException();
 
-    $this->_dao->update($validator->getTable(), array('id_configuracao = ?' => '1'));
+    try {
+      $this->_dao->update($validator->getTable(), array('id_configuracao = ?' => '1'));
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
   }
 
 }

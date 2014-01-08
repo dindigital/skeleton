@@ -6,6 +6,7 @@ use Din\Paginator\Paginator;
 use Din\DataAccessLayer\Select;
 use src\app\admin\validators\UsuarioValidator;
 use \Exception;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -34,7 +35,12 @@ class UsuarioModel extends BaseModelAdm
     $validator->setArquivo('avatar3', $info['avatar3'], $id, false);
     $validator->throwException();
 
-    $this->_dao->insert($validator->getTable());
+    try {
+      $this->_dao->insert($validator->getTable());
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
 
     return $id;
   }
@@ -52,7 +58,12 @@ class UsuarioModel extends BaseModelAdm
     $validator->setArquivo('avatar3', $info['avatar3'], $id, false);
     $validator->throwException();
 
-    return $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
+    try {
+      return $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
   }
 
   public function salvar_config ( $id, $info )
@@ -64,7 +75,12 @@ class UsuarioModel extends BaseModelAdm
     $validator->setArquivo('avatar', $info['avatar'], $id, false);
     $validator->throwException();
 
-    return $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
+    try {
+      return $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
   }
 
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
@@ -111,7 +127,12 @@ class UsuarioModel extends BaseModelAdm
 
   public function excluir ( $id )
   {
-    $this->_dao->delete('usuario', array('id_usuario = ?' => $id));
+    try {
+      $this->_dao->delete('usuario', array('id_usuario = ?' => $id));
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
   }
 
   public function toggleAtivo ( $id, $ativo )

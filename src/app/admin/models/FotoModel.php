@@ -6,6 +6,8 @@ use src\app\admin\validators\FotoValidator;
 use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
+use \Exception;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -97,7 +99,12 @@ class FotoModel extends BaseModelAdm
     $validator->setIncData();
     $validator->throwException();
 
-    $this->_dao->insert($validator->getTable());
+    try {
+      $this->_dao->insert($validator->getTable());
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
 
     $this->setUpload($info['galeria_uploader'], $id);
 
@@ -112,7 +119,12 @@ class FotoModel extends BaseModelAdm
     $validator->setData($info['data']);
     $validator->throwException();
 
-    $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
+    try {
+      $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
 
     $this->setUpload($info['galeria_uploader'], $id, $info['ordem'], $info['legenda'], $info['credito']);
 
@@ -121,7 +133,12 @@ class FotoModel extends BaseModelAdm
 
   public function excluir ( $id )
   {
-    $this->_dao->delete('foto', array('id_foto = ?' => $id));
+    try {
+      $this->_dao->delete('foto', array('id_foto = ?' => $id));
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
   }
 
   public function toggleAtivo ( $id, $ativo )

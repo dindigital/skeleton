@@ -5,6 +5,8 @@ namespace src\app\admin\models;
 use src\app\admin\models\BaseModelAdm;
 use src\app\admin\validators\FotoItemValidator;
 use Din\DataAccessLayer\Select;
+use \Exception;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -49,12 +51,16 @@ class FotoItemModel extends BaseModelAdm
     $validator = new FotoItemValidator($this->_dao);
     $id = $validator->setIdFotoItem()->getTable()->id_foto_item;
     $validator->setIdFoto($info['id_foto']);
-    //$validator->setLegenda($info['legenda']);
     $validator->setOrdem2(null, $info['id_foto']);
     $validator->setGaleria($info['arquivo'], "fotos/{$info['id_foto']}/arquivo/{$id}/");
     $validator->throwException();
 
-    $this->_dao->insert($validator->getTable());
+    try {
+      $this->_dao->insert($validator->getTable());
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
 
     return $id;
   }
@@ -66,7 +72,12 @@ class FotoItemModel extends BaseModelAdm
     $validator->setCredito($info['credito']);
     $validator->setOrdem2($info['ordem']);
 
-    $this->_dao->update($validator->getTable(), array('id_foto_item = ?' => $id));
+    try {
+      $this->_dao->update($validator->getTable(), array('id_foto_item = ?' => $id));
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
 
     return $id;
   }
@@ -89,7 +100,12 @@ class FotoItemModel extends BaseModelAdm
       @unlink(WEBROOT . '/public/' . $row['arquivo']);
     }
 
-    $this->_dao->delete('foto_item', $arrCriteria);
+    try {
+      $this->_dao->delete('foto_item', $arrCriteria);
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
   }
 
 }
