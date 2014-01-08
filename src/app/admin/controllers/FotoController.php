@@ -77,7 +77,12 @@ class FotoController extends BaseControllerAdm
 
       $this->setRegistroSalvoSession();
 
-      JsonViewHelper::redirect('/admin/foto/cadastro/' . $id . '/');
+      $redirect = '/admin/foto/cadastro/' . $id . '/';
+      if ( Post::text('redirect') == 'lista' ) {
+        $redirect = '/admin/foto/lista/';
+      }
+
+      JsonViewHelper::redirect($redirect);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
