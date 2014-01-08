@@ -2977,6 +2977,10 @@ button::-moz-focus-inner {
   display: none;
 }
 
+.alert-success-fade {
+  display: block!important;
+}
+
 .preview {
   clear: both;
   padding-top: 5px;

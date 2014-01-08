@@ -98,6 +98,10 @@ $(document).ready(function() {
     }
   });
 
+  $('.alert-success-fade').delay(3000).fadeOut('fast', function() {
+    $(this).remove();
+  });
+
   var link_prefix = $('#link_prefix').val();
 
   $('.btn_lista').click(function() {
