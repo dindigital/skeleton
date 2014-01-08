@@ -40,7 +40,8 @@ class FotoModel extends BaseModelAdm
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
     $arrCriteria = array(
-        'del = ?' => '0'
+        'del = ?' => '0',
+        'titulo LIKE ?' => '%' . $arrFilters['titulo'] . '%'
     );
 
     $select = new Select('foto');
@@ -115,6 +116,13 @@ class FotoModel extends BaseModelAdm
     $this->setUpload($info['galeria_uploader'], $id, $info['ordem'], $info['legenda'], $info['credito']);
 
     return $id;
+  }
+
+  public function toggleAtivo ( $id, $ativo )
+  {
+    $validator = new FotoValidator();
+    $validator->setAtivo($ativo);
+    $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
   }
 
 }

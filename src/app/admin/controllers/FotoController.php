@@ -30,8 +30,7 @@ class FotoController extends BaseControllerAdm
   public function get_lista ()
   {
     $arrFilters = array(
-        'nome' => Get::text('nome'),
-        'email' => Get::text('email'),
+        'titulo' => Get::text('titulo'),
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
