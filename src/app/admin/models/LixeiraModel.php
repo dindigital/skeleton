@@ -6,6 +6,7 @@ use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use \Exception;
 use Din\Paginator\Paginator;
+use Din\Form\Dropdown\Dropdown;
 
 /**
  *
@@ -21,7 +22,7 @@ class LixeiraModel extends BaseModelAdm
     parent::__construct();
 
     $this->_itens = array(
-        array(
+        'foto' => array(
             'tbl' => 'foto',
             'secao' => 'Foto',
             'id' => 'id_foto',
@@ -32,7 +33,16 @@ class LixeiraModel extends BaseModelAdm
 
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
-    foreach ( $this->_itens as $i => $item ) {
+    $itens = $this->_itens;
+
+    if ( $arrFilters['secao'] != '0' ) {
+      if ( isset($itens[$arrFilters['secao']]) ) {
+        $itens = array($itens[$arrFilters['secao']]);
+      }
+    }
+
+    $i = 0;
+    foreach ( $itens as $item ) {
 
       $table_name = $item['tbl'];
       $id_field = $item['id'];
@@ -55,6 +65,8 @@ class LixeiraModel extends BaseModelAdm
       } else {
         $select->union($select1);
       }
+
+      $i++;
     }
 
     $select->order_by('del_data DESC');
@@ -93,14 +105,13 @@ class LixeiraModel extends BaseModelAdm
   {
     $arrOptions = array();
 
-    foreach ( $this->_models as $model ) {
-      $this->setModel($model);
-      $arrOptions[$model] = $this->_model->getMe();
+    foreach ( $this->_itens as $model ) {
+      $arrOptions[$model['tbl']] = $model['secao'];
     }
 
-    $d = new \lib\Form\Dropdown\Dropdown('secao');
+    $d = new Dropdown('secao');
     $d->setOptionsArray($arrOptions);
-    $d->setClass('uniform');
+    $d->setClass('form-control');
     $d->setSelected($selected);
     if ( $firstOption != '' ) {
       $d->setFirstOpt($firstOption);

@@ -8,6 +8,7 @@ use Din\Http\Post;
 use \Exception;
 use src\app\admin\models\LixeiraModel;
 use Din\Http\Header;
+use src\app\admin\helpers\Form;
 
 /**
  *
@@ -28,11 +29,14 @@ class LixeiraController extends BaseControllerAdm
   {
     $arrFilters = array(
         'titulo' => Get::text('titulo'),
+        'secao' => Get::text('secao')
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
     $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
     $this->_data['busca'] = $arrFilters;
+
+    $this->_data['secao'] = $this->_model->getDropdown('Filtro por Seção', $arrFilters['secao']);
 
     $this->setErrorSessionData();
 
