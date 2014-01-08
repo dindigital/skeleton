@@ -100,6 +100,22 @@ $(document).ready(function() {
 
   var link_prefix = $('#link_prefix').val();
 
+  $('.btn_lista').click(function() {
+    var action = link_prefix + 'lista/';
+    location.href = action;
+    return false;
+  });
+
+  $('.btn_cadastro').click(function() {
+    var action = link_prefix + 'cadastro/';
+    location.href = action;
+    return false;
+  });
+
+  $('.submit_lista').click(function() {
+    $("input[name='redirect']").val('lista');
+  });
+
   $('.setAtivo').change(function() {
     var ativo = ($(this).is(':checked')) ? '1' : '0';
     var action = $('#link_prefix').val() + 'ativo/';

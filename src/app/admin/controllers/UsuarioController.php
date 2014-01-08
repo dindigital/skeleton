@@ -75,7 +75,12 @@ class UsuarioController extends BaseControllerAdm
 
       $this->setRegistroSalvoSession();
 
-      JsonViewHelper::redirect('/admin/usuario/cadastro/' . $id . '/');
+      $redirect = '/admin/usuario/cadastro/' . $id . '/';
+      if ( Post::text('redirect') == 'lista' ) {
+        $redirect = '/admin/usuario/lista/';
+      }
+
+      JsonViewHelper::redirect($redirect);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
