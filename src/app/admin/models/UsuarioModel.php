@@ -30,6 +30,8 @@ class UsuarioModel extends BaseModelAdm
     $id = $validator->setIdUsuario()->getTable()->id_usuario;
 
     $validator->setArquivo('avatar', $info['avatar'], $id, false);
+    $validator->setArquivo('avatar2', $info['avatar2'], $id, false);
+    $validator->setArquivo('avatar3', $info['avatar3'], $id, false);
     $validator->throwException();
 
     $this->_dao->insert($validator->getTable());

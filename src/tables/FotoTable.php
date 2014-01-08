@@ -33,6 +33,11 @@ class FotoTable extends AbstractTable implements iTable
   protected $ativo;
 
   /**
+   * @var datetime
+   */
+  protected $inc_data;
+
+  /**
    * @var tinyint(4) NOT NULL
    */
   protected $del;

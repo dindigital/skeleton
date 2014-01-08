@@ -40,9 +40,9 @@ abstract class BaseControllerAdm extends BaseController
   private function setBasicTemplate ()
   {
     $this->_view->addFile('src/app/admin/views/layouts/layout.phtml');
-    //$this->_view->addFile('src/app/admin/views/includes/head.php', '{$HEAD}');
     $this->_view->addFile('src/app/admin/views/includes/nav.phtml', '{$NAV}');
-    //$this->_view->addFile('src/app/admin/views/includes/footer.php', '{$FOOTER}');
+    $this->_view->addFile('src/app/admin/views/includes/paginacao.phtml', '{$PAGINACAO}');
+    $this->_view->addFile('src/app/admin/views/includes/btns_lista_cad-exc.phtml', '{$BTN_LISTA_CAD-EXC}');
   }
 
   public function setCadastroTemplate ( $filename )
@@ -51,7 +51,6 @@ abstract class BaseControllerAdm extends BaseController
 
     $this->_view->addFile('src/app/admin/views/includes/alerts.phtml', '{$ALERTS}');
     $this->_view->addFile('src/app/admin/views/includes/submit.phtml', '{$SUBMIT}');
-    //$this->_view->addFile('src/app/admin/views/includes/btn_novo_registro.php', '{$BTN_NOVO_REGISTRO}');
 
     $this->_view->addFile('src/app/admin/views/' . $filename, '{$CONTENT}');
     $this->display_html();

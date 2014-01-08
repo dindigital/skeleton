@@ -94,6 +94,7 @@ class FotoModel extends BaseModelAdm
     $validator->setAtivo($info['ativo']);
     $validator->setTitulo($info['titulo']);
     $validator->setData($info['data']);
+    $validator->setIncData();
     $validator->throwException();
 
     $this->_dao->insert($validator->getTable());
@@ -116,6 +117,11 @@ class FotoModel extends BaseModelAdm
     $this->setUpload($info['galeria_uploader'], $id, $info['ordem'], $info['legenda'], $info['credito']);
 
     return $id;
+  }
+
+  public function excluir ( $id )
+  {
+    $this->_dao->delete('foto', array('id_foto = ?' => $id));
   }
 
   public function toggleAtivo ( $id, $ativo )

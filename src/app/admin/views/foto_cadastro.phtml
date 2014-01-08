@@ -1,3 +1,5 @@
+<input type="hidden" id="link_prefix" value="/admin/foto/" />
+
 <div class="row">
   <div class="col-md-12">
 
@@ -10,6 +12,9 @@
         {$ALERTS}
 
         <form id="main_form" class="form-horizontal group-border-dashed validate_form" method="post" style="border-radius: 0px;">
+
+          <input type="hidden" name="redirect" value="cadastro" />
+
           {$SUBMIT}
 
           <div class="form-group">

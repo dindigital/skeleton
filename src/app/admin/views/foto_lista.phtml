@@ -1,3 +1,5 @@
+<input type="hidden" id="link_prefix" value="/admin/foto/" />
+
 <div class="row">
   <div class="col-md-12">
     <div class="block-flat">
@@ -7,22 +9,15 @@
 
       <div class="content">
         <form method="get" class="form_busca">
-          <input type="hidden" id="link_prefix" value="/admin/foto/" />
           <div class="col-sm-4 col-md-4 col-lg-2">
             <input class="form-control" name="titulo" type="text" placeholder="Busca por titulo" value="<?php echo $data['busca']['titulo']; ?>">
           </div>
-          <input type="submit" value="Buscar" class="btn btn-info btn-rad" />
           <input type="button" value="Limpar" class="limpar_busca btn btn-default btn-rad" />
+          <input type="submit" value="Buscar" class="btn btn-info btn-rad" />
         </form>
       </div>
 
-      <div class="content">
-        <div class="col-lg-12 pull-left">
-          <a href="/admin/foto/cadastro/" title="Novo Registro" class="btn btn-primary btn-rad">Novo Registro</a>
-          <a href="#" title="Excluir Selecionados" class="lixeira_ex btn btn-danger btn-rad">Excluir Selecionados</a>
-        </div>
-        <br style="clear: both;" />
-      </div>
+      {$BTN_LISTA_CAD-EXC}
 
       <div class="content">
         <div class="table-responsive">
@@ -42,7 +37,7 @@
                   <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_foto_<?php echo $row['id_foto']; ?>" /></td>
                   <td><input class="setAtivo" type="checkbox" <?php if ( $row['ativo'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_foto']; ?>" /></td>
                   <td><?php echo $row['titulo']; ?></td>
-                  <td><?php echo $data['DateFormat']::filter_date($row['inc_data']); ?></td>
+                  <td></td>
                   <td class="text-center">
                     <a class="label label-default" href="/admin/foto/cadastro/<?php echo $row['id_foto']; ?>/">
                       <i class="fa fa-pencil"></i>
@@ -56,30 +51,7 @@
             </tbody>
           </table>
 
-          <?php if ( !count($data['list']) ): ?>
-            <div class="header">
-              <h4>Sua precisa não encontrou resultados</h4>
-            </div>
-          <?php else: ?>
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="pull-left">
-                  <div class="dataTables_info" id="datatable_info">
-                    Exibindo <?php echo $data['paginator']['subtotal']; ?> de <?php echo $data['paginator']['total']; ?> resultados
-                  </div>
-                </div>
-                <div class="pull-right">
-                  <div class="dataTables_paginate paging_bs_normal">
-                    <ul class="pagination">
-                      <?php echo $data['paginator']['numbers']; ?>
-                    </ul>
-                  </div>
-                </div>
-                <div class="clearfix">
-                </div>
-              </div>
-            </div>
-          <?php endif; ?>
+          {$PAGINACAO}
 
         </div>
       </div>
