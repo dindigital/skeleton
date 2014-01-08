@@ -123,7 +123,7 @@ abstract class BaseControllerAdm extends BaseController
 
     foreach ( $itens as $item ) {
       list($tbl, $id) = explode('_', $item);
-      $model_name = "\\src\\app\\adm\\models\\{$tbl}Model";
+      $model_name = "\\src\\app\\admin\\models\\{$tbl}Model";
       $model = new $model_name;
       $model->excluir($id);
     }

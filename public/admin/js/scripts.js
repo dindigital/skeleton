@@ -98,28 +98,27 @@ $(document).ready(function() {
     }
   });
 
-  $('#excluir_all').change(function() {
-
-    if ($(this).is(':checked')) {
-      $('.excluir').attr('checked', true);
-    } else {
-      $('.excluir').attr('checked', false);
-    }
-
-    /*var checked = $(this).is(':checked');
-     $('.excluir').each(function() {
-     if (checked) {
-     $(this).attr('checked', true);
-     $(this).parent('td').addClass('checked');
-     } else {
-     $(this).attr('checked', false);
-     $(this).parent('td').removeClass('checked');
-     }
-     });*/
-
+  $('.alert-success-fade').delay(3000).fadeOut('fast', function() {
+    $(this).remove();
   });
 
   var link_prefix = $('#link_prefix').val();
+
+  $('.btn_lista').click(function() {
+    var action = link_prefix + 'lista/';
+    location.href = action;
+    return false;
+  });
+
+  $('.btn_cadastro').click(function() {
+    var action = link_prefix + 'cadastro/';
+    location.href = action;
+    return false;
+  });
+
+  $('.submit_lista').click(function() {
+    $("input[name='redirect']").val('lista');
+  });
 
   $('.setAtivo').change(function() {
     var ativo = ($(this).is(':checked')) ? '1' : '0';
@@ -142,14 +141,27 @@ $(document).ready(function() {
     });
   });
 
+  $("#excluir_all").click(function() {
+    if ($("#excluir_all").is(':checked')) {
+      $('.excluir').prop("checked", true);
+    } else {
+      $('.excluir').prop("checked", false);
+    }
+  });
+
   $('.lixeira_ex').click(function() {
 
-    if ($('.excluir').is(':checked')) {
+    if ($('.excluir').is(':checked') !== true) {
       alert('Não há nenhum ítem selecionado.');
       return;
     }
 
-    var c = confirm('Deseja realmente excluir os ítens selecionados?');
+    var msg = 'Deseja realmente excluir os ítens selecionados?';
+    if ($('.excluir:checked').length === 1) {
+      msg = 'Deseja realmente excluir o item selecionado?';
+    }
+
+    var c = confirm(msg);
 
     if (c) {
       var form = newForm();
@@ -167,10 +179,9 @@ $(document).ready(function() {
   });
 
   $('a.excluir_shortcut').click(function() {
-    $('.excluir').attr('checked', false);
-    $(this).parents('tr').find('.excluir').attr('checked', true);
+    $('.excluir').prop("checked", false);
+    $(this).parents('tr').find('.excluir').prop("checked", true);
     $('.lixeira_ex').click();
-    return;
   });
 
   //_# EVENTO DE DOUBLE CLICK AO CLICAR EM FOTO DE GALERIA -> REMOVER ELEMENTO
