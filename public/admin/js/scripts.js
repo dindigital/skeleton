@@ -149,6 +149,27 @@ $(document).ready(function() {
     }
   });
 
+  $('.lixeira_re').click(function() {
+
+    if ($('.excluir').is(':checked') !== true) {
+      alert('Não há nenhum ítem selecionado.');
+      return;
+    }
+
+    var form = newForm();
+
+    $('.excluir:checked').each(function() {
+      var id = $(this).attr('id').replace('exc_', '');
+      form.append('<input type="hidden" name="itens[]" value="' + id + '" />');
+    });
+
+    var action = link_prefix + 'restaurar/';
+
+    form.attr('action', action);
+    form.submit();
+  });
+
+
   $('.lixeira_ex').click(function() {
 
     if ($('.excluir').is(':checked') !== true) {

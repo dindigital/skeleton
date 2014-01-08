@@ -133,12 +133,22 @@ class FotoModel extends BaseModelAdm
 
   public function excluir ( $id )
   {
-    try {
-      $this->_dao->delete('foto', array('id_foto = ?' => $id));
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $validator = new FotoValidator();
+    $validator->setDelData();
+    $validator->setDel('1');
+    $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
+  }
+
+  public function restaurar ( $id )
+  {
+    $validator = new FotoValidator();
+    $validator->setDel('0');
+    $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
+  }
+
+  public function excluir_permanente ( $id )
+  {
+    $this->_dao->delete('foto', array('id_foto = ?' => $id));
   }
 
   public function toggleAtivo ( $id, $ativo )

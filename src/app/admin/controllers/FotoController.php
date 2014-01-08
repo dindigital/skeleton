@@ -37,6 +37,8 @@ class FotoController extends BaseControllerAdm
     $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
     $this->_data['busca'] = $arrFilters;
 
+    $this->setErrorSessionData();
+
     $this->setListTemplate('foto_lista.phtml', $paginator);
   }
 

@@ -113,19 +113,40 @@ abstract class BaseControllerAdm extends BaseController
     $session->un_set('registro_salvo');
   }
 
+  protected function setErrorSession ( $msg )
+  {
+    $session = new Session('adm_session');
+    $session->set('error', $msg);
+
+    Header::redirect(Header::getReferer());
+  }
+
+  protected function setErrorSessionData ()
+  {
+    $session = new Session('adm_session');
+    if ( $session->is_set('error') ) {
+      $this->_data['error'] = $session->get('error');
+    }
+    $session->un_set('error');
+  }
+
   //_# OPERAÇÕES COMUNS
   public function post_excluir ()
   {
-    $itens = Post::aray('itens');
+    try {
+      $itens = Post::aray('itens');
 
-    foreach ( $itens as $item ) {
-      list($tbl, $id) = explode('_', $item);
-      $model_name = "\\src\\app\\admin\\models\\{$tbl}Model";
-      $model = new $model_name;
-      $model->excluir($id);
+      foreach ( $itens as $item ) {
+        list($tbl, $id) = explode('_', $item);
+        $model_name = "\\src\\app\\admin\\models\\{$tbl}Model";
+        $model = new $model_name;
+        $model->excluir($id);
+      }
+
+      Header::redirect(Header::getReferer());
+    } catch (Exception $e) {
+      $this->setErrorSession($e->getMessage());
     }
-
-    Header::redirect(Header::getReferer());
   }
 
   public function post_ativo ()

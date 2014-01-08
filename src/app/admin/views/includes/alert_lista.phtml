@@ -5,5 +5,10 @@
         <i class="fa fa-check sign"></i><strong><?php echo $data['registro_salvo']; ?></strong>
       </div>
     <?php endif; ?>
+    <?php if ( isset($data['error']) ): ?>
+      <div class="alert alert-danger alert-success-fade">
+        <i class="fa fa-check sign"></i><strong><?php echo $data['error']; ?></strong>
+      </div>
+    <?php endif; ?>
   </div>
 </div>

@@ -1,133 +1,80 @@
 <?php
 
-namespace src\app\adm005\models;
+namespace src\app\admin\models;
 
-use lib\Mvc\Model\BaseModel;
-use lib\Paginator\Paginator;
+use src\app\admin\models\BaseModelAdm;
+use Din\DataAccessLayer\Select;
+use \Exception;
+use Din\Paginator\Paginator;
 
 /**
  *
  * @package app.models
  */
-class LixeiraModel extends BaseModel
+class LixeiraModel extends BaseModelAdm
 {
+
+  private $_itens;
 
   public function __construct ()
   {
     parent::__construct();
-    $this->setMe('Lixeira');
 
-    $this->_table = new \src\tables\LixeiraTable;
-    $this->_models = array(
-        'Marca',
-        'Relato',
-        'Caso',
-        'Produto',
-        'Servico',
+    $this->_itens = array(
+        array(
+            'tbl' => 'foto',
+            'secao' => 'Foto',
+            'id' => 'id_foto',
+            'title' => 'titulo'
+        ),
     );
   }
 
-  protected function setTbl ( $tbl )
+  public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
-    $tbl = "\\src\\tables\\{$tbl}";
-    $this->_table = new $tbl();
-  }
+    foreach ( $this->_itens as $i => $item ) {
 
-  protected function setModel ( $model )
-  {
-    $model .= 'Model';
-    $model = "\\src\\app\\adm005\\models\\{$model}";
-    $this->_model = new $model();
-  }
+      $table_name = $item['tbl'];
+      $id_field = $item['id'];
+      $title_field = $item['title'];
+      $secao = $item['secao'];
 
-  public function listar ( $arrParams = array(), Paginator $Paginator = null )
-  {
-    $arrSQL = array();
-    $arrIN = array();
+      $select1 = new Select($table_name);
+      $select1->addField($id_field, 'id');
+      $select1->addField($title_field);
+      $select1->addField('del_data');
+      $select1->addSField('secao', $secao);
+      $select1->addSField('tbl', $table_name);
+      $select1->where(array(
+          'del = 1' => null,
+          $title_field . ' LIKE ?' => '%' . $arrFilters['titulo'] . '%'
+      ));
 
-    if ( isset($arrParams['secao']) ) {
-      $key = array_search($arrParams['secao'], $this->_models);
-      $this->_models = array($this->_models[$key]);
+      if ( $i == 0 ) {
+        $select = $select1;
+      } else {
+        $select->union($select1);
+      }
     }
 
-    foreach ( $this->_models as $model ) {
-      $this->setModel($model);
+    $select->order_by('del_data DESC');
 
-      $table_name = $this->_model->_table->getName();
-      $id_field = $this->_model->_table->getPk(true);
-      $title_field = $this->_model->_table->getTitle();
-      $sessao = $this->_model->getMe();
+    $this->setPaginationSelect($select, $paginator);
 
-      $arrSQL[] = '
-      SELECT
-        ' . $id_field . ' id,
-        ' . $title_field . ' titulo,
-        del_data,
-        "' . $sessao . '" secao,
-        "' . $model . '" tbl
-
-      FROM
-        ' . $table_name . '
-      WHERE
-        del = 1 AND ' . $title_field . ' LIKE ?
-      ';
-
-      $arrIN[] = '%' . @$arrParams['titulo'] . '%';
-    }
-
-    $SQL = implode('UNION', $arrSQL);
-    $SQL .= '
-    ORDER BY
-      del_data DESC
-    ';
-
-    //_# PEGANDO O TOTAL DE REGISTROS
-    $SQL2 = "SELECT COUNT(*) total FROM ({$SQL}) fake";
-    $result_total = $this->_dao->_driver->select($SQL2, $arrIN, $this->_table);
-    $total = $result_total[0]->total;
-    //_#
-
-    $SQL = $Paginator->getSQL($SQL, $arrIN, null, $total);
-    $result = $this->_dao->_driver->select($SQL, $arrIN, $this->_table);
+    $result = $this->_dao->select($select);
 
     return $result;
-  }
-
-  public function inserir ( $itens )
-  {
-    foreach ( $itens as $item ) {
-      $tbl = $item['tbl'];
-      $id = $item['id'];
-
-      $this->setModel($tbl);
-
-      /* $valores_atuais = $this->_model->getById($id);
-        if ( $id_entidade && $valores_atuais->id_entidade && $valores_atuais->id_entidade != $id_entidade )
-        throw new \Exception('Permissão negada'); */
-
-      $this->_model->_table->del = 1;
-      $this->_model->_table->del_data = date('Y-m-d H:i:s');
-      $this->_model->changeOrdem($id, 0, array(), true);
-
-      $this->_dao->update($this->_model->_table, $id);
-    }
   }
 
   public function restaurar ( $itens )
   {
     foreach ( $itens as $item ) {
-      $tbl = $item['tbl'];
-      $id = $item['id'];
+      list($tbl, $id) = explode('_', $item);
 
-      $this->setModel($tbl);
-      $result = $this->_model->getById($id);
-      $this->_model->_table = $result;
+      $classname = '\src\app\admin\models\\' . ucfirst($tbl) . 'Model';
 
-      $this->_model->setOrdem();
-      $this->_model->_table->del = 0;
-      $this->_model->_table->del_data = null;
-
-      $this->_dao->update($this->_model->_table, $id);
+      $model = new $classname;
+      $model->restaurar($id);
     }
   }
 
@@ -163,4 +110,3 @@ class LixeiraModel extends BaseModel
   }
 
 }
-

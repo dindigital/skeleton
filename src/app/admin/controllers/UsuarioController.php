@@ -36,6 +36,8 @@ class UsuarioController extends BaseControllerAdm
     $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
     $this->_data['busca'] = $arrFilters;
 
+    $this->setErrorSessionData();
+
     $this->setListTemplate('usuario_lista.phtml', $paginator);
   }
 

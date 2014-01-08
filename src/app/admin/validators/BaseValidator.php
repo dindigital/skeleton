@@ -19,9 +19,21 @@ class BaseValidator
     $this->_table->ativo = $ativo;
   }
 
+  public function setDel ( $del )
+  {
+    $del = intval($del);
+
+    $this->_table->del = $del;
+  }
+
   public function setIncData ()
   {
     $this->_table->inc_data = date('Y-m-d H:i:s');
+  }
+
+  public function setDelData ()
+  {
+    $this->_table->del_data = date('Y-m-d H:i:s');
   }
 
   public function setArquivo ( $fieldname, $file, $id = null )
