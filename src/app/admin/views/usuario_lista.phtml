@@ -47,7 +47,7 @@
                   <td><?php echo $row['email']; ?></td>
                   <td><?php echo $data['DateFormat']::filter_date($row['inc_data']); ?></td>
                   <td class="text-center">
-                    <a class="label label-default" href="/admin/usuario/cadastro/<?php echo $row['id_usuario']; ?>/">
+                    <a class="label label-default btn_edicao" href="<?php echo $row['id_usuario']; ?>">
                       <i class="fa fa-pencil"></i>
                     </a>
                     <a class="label label-danger excluir_shortcut" href="#">

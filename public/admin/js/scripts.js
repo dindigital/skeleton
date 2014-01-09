@@ -38,6 +38,13 @@ $(document).ready(function() {
     return false;
   });
 
+  $('.btn_edicao').click(function() {
+    var id = $(this).attr('href');
+    var action = link_prefix + 'cadastro/' + id + '/';
+    location.href = action;
+    return false;
+  });
+
   $('.setAtivo').change(function() {
     var ativo = ($(this).is(':checked')) ? '1' : '0';
     var action = $('#link_prefix').val() + 'ativo/';

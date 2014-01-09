@@ -42,7 +42,7 @@
                   <td><?php echo $row['titulo']; ?></td>
                   <td><?php echo $data['DateFormat']::filter_date($row['data']); ?></td>
                   <td class="text-center">
-                    <a class="label label-default" href="/admin/noticia/cadastro/<?php echo $row['id_noticia']; ?>/">
+                    <a class="label label-default btn_edicao" href="<?php echo $row['id_noticia']; ?>/">
                       <i class="fa fa-pencil"></i>
                     </a>
                     <a class="label label-danger excluir_shortcut" href="#">
