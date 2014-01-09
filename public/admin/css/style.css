@@ -1738,8 +1738,8 @@ label{
 }
 
 .input-group .btn{
-  margin:0 !important;
-  margin-left:-1px !important;
+  margin:0;
+  margin-left:-1px;
   padding-bottom:6px;
   padding-top:6px;
   box-shadow:none;
@@ -2971,6 +2971,10 @@ button::-moz-focus-inner {
 
 .form-group-submit {
   padding-left: 5%!important;
+}
+
+.btn_space {
+  margin-left: 10px!important;
 }
 
 .alert-success, .alert-danger {
