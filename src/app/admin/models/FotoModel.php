@@ -51,7 +51,7 @@ class FotoModel extends BaseModelAdm
     $select->addField('id_foto');
     $select->addField('ativo');
     $select->addField('titulo');
-    $select->addField('inc_data');
+    $select->addField('data');
     $select->where($arrCriteria);
     $select->order_by('titulo');
 
