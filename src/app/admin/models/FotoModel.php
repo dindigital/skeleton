@@ -8,6 +8,7 @@ use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
 use \Exception;
 use Din\Exception\JsonException;
+use Din\File\Folder;
 
 /**
  *
@@ -148,6 +149,7 @@ class FotoModel extends BaseModelAdm
 
   public function excluir_permanente ( $id )
   {
+    Folder::delete("public/system/uploads/foto/{$id}");
     $this->_dao->delete('foto', array('id_foto = ?' => $id));
   }
 
