@@ -24,8 +24,14 @@ class LixeiraModel extends BaseModelAdm
     $this->_itens = array(
         'foto' => array(
             'tbl' => 'foto',
-            'secao' => 'Foto',
+            'secao' => 'Fotos',
             'id' => 'id_foto',
+            'title' => 'titulo'
+        ),
+        'noticia' => array(
+            'tbl' => 'noticia',
+            'secao' => 'Notícias',
+            'id' => 'id_noticia',
             'title' => 'titulo'
         ),
     );

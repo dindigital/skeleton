@@ -52,7 +52,7 @@ class FotoItemModel extends BaseModelAdm
     $id = $validator->setIdFotoItem()->getTable()->id_foto_item;
     $validator->setIdFoto($info['id_foto']);
     $validator->setOrdem2(null, $info['id_foto']);
-    $validator->setGaleria($info['arquivo'], "fotos/{$info['id_foto']}/arquivo/{$id}/");
+    $validator->setGaleria($info['arquivo'], "foto/{$info['id_foto']}/arquivo/{$id}/");
     $validator->throwException();
 
     try {
