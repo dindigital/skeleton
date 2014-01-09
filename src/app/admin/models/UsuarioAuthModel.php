@@ -7,6 +7,7 @@ use Din\Session\Session;
 use Din\DataAccessLayer\PDO\PDOBuilder;
 use Din\Auth\Auth;
 use Din\Auth\AuthDataLayer\AuthDataLayer;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -33,12 +34,14 @@ class UsuarioAuthModel extends Auth
   public function login ( $email, $senha, $is_crypted = false )
   {
     if ( !parent::login($email, $senha, $is_crypted) ) {
-      throw new \Exception("Dados inválidos. Usuário não encontrado.");
+      JsonException::addException("Dados inválidos. Usuário não encontrado.");
+      JsonException::throwException();
     }
 
     if ( !$this->is_active() ) {
       $this->logout();
-      throw new \Exception("Sua conta ainda não foi ativada. Entre em contato com o Administrador.");
+      JsonException::addException("Sua conta ainda não foi ativada. Entre em contato com o Administrador.");
+      JsonException::throwException();
     }
   }
 

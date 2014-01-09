@@ -6,6 +6,9 @@ use Din\Mvc\Controller\BaseController;
 use src\app\admin\models\UsuarioAuthModel;
 use Din\Http\Header;
 use Din\Http\Post;
+use \Exception;
+use Din\Exception\JsonException;
+use Din\ViewHelpers\JsonViewHelper;
 
 /**
  *
@@ -40,11 +43,14 @@ class UsuarioAuthController extends BaseController
     $email = Post::text('email');
     $senha = Post::text('senha');
 
-    $usuarioAuthModel = new UsuarioAuthModel();
-    $usuarioAuthModel->login($email, $senha);
+    try {
+      $usuarioAuthModel = new UsuarioAuthModel();
+      $usuarioAuthModel->login($email, $senha);
+    } catch (Exception $e) {
+      JsonViewHelper::display_error_message($e);
+    }
 
-    Header::redirect('/admin/index/index/');
-    $this->display_html();
+    JsonViewHelper::redirect('/admin/index/index/');
   }
 
   public function get_logout ()
