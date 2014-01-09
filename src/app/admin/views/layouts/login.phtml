@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +11,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:300,200,100' rel='stylesheet' type='text/css'>
 
-    <link href="/admin/js/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="/admin/fonts/font-awesome-4/css/font-awesome.min.css">
-    <link href="/admin/css/style.css" rel="stylesheet" />
+    <?php echo $data['assets']['css']['adm_login']; ?>
 
   </head>
 
@@ -22,13 +20,7 @@
     {$CONTENT}
 
     <script src="//code.jquery.com/jquery-1.9.1.js"></script>
-    <script type="text/javascript" src="/admin/js/ajaxform/jquery.form.js"></script>
-    <script type="text/javascript" src="/admin/js/base.js"></script>
-    <script type="text/javascript" src="/admin/js/form.js"></script>
+    <?php echo $data['assets']['js']['adm_login']; ?>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/admin/js/bootstrap/dist/js/bootstrap.min.js"></script>
   </body>
 </html>

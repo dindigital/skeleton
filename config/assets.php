@@ -2,34 +2,42 @@
 
 return array(
     'css' => array(
-        'adm_base' => array(
-            'public/adm/plugins/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css',
-            'public/adm/plugins/ui/css/smoothness/jquery-ui.css',
-            'public/adm/plugins/uniform/uniform.default.css',
-            'public/adm/plugins/multiselect/multiselect.css',
-            'public/adm/styles/reset.css',
-            'public/adm/styles/main.css',
-            'public/adm/styles/forms.css',
-            'public/adm/styles/list.css',
-            'public/adm/styles/ie.css',
-        )
+        'adm_login' => array(
+            'public/admin/js/bootstrap/dist/css/bootstrap.css',
+            'public/admin/fonts/font-awesome-4/css/font-awesome.min.css',
+            'public/admin/css/style.css',
+        ),
+        'adm' => array(
+            'public/admin/js/bootstrap/dist/css/bootstrap.css',
+            'public/admin/fonts/font-awesome-4/css/font-awesome.min.css',
+            'public/admin/js/jquery.select2/select2.css',
+            'public/admin/js/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css',
+            'public/admin/js/spectrum/spectrum.css',
+            'public/admin/css/style.css',
+        ),
     ),
     'js' => array(
-        'adm_base' => array(
-            'public/adm/scripts/jquery-1.8.2.min.js',
-            'public/adm/plugins/ui/js/jquery-ui.min.js',
-            'public/adm/plugins/plupload/js/plupload.full.js',
-            'public/adm/plugins/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',
-            'public/adm/plugins/uniform/jquery.uniform.v200.js',
-            'public/adm/plugins/maskedinput/jquery.maskedinput-1.3.js',
-            'public/adm/plugins/autogrow/autogrow.js',
-            'public/adm/plugins/multiselect/multiselect.js',
-            'public/adm/plugins/ajaxform/jquery.form.js',
-            'public/adm/scripts/ckfinder.js',
-            'public/adm/scripts/forms.js',
-            'public/adm/scripts/list.js',
-            'public/adm/scripts/menu.js',
-            'public/adm/scripts/init.js'
-        )
+        'adm_login' => array(
+            'public/admin/js/ajaxform/jquery.form.js',
+            'public/admin/js/base.js',
+            'public/admin/js/ajaxform.js',
+            'public/admin/js/bootstrap/dist/js/bootstrap.min.js',
+        ),
+        'adm' => array(
+            'public/admin/js/plupload/js/plupload.full.js',
+            'public/admin/js/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',
+            'public/admin/js/ajaxform/jquery.form.js',
+            'public/admin/js/jquery.select2/select2.min.js',
+            'public/admin/js/spectrum/spectrum.js',
+            'public/admin/js/daterangepicker/date.js',
+            'public/admin/js/daterangepicker/daterangepicker.js',
+            'public/admin/js/jquery.maskedinput/jquery.maskedinput.js',
+            'public/admin/js/base.js',
+            'public/admin/js/scripts.js',
+            'public/admin/js/form.js',
+            'public/admin/js/ajaxform.js',
+            'public/admin/js/list.js',
+            'public/admin/js/bootstrap/dist/js/bootstrap.min.js',
+        ),
     )
 );

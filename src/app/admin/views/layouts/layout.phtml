@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,31 +11,12 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:300,200,100' rel='stylesheet' type='text/css'>
 
-    <!-- Bootstrap core CSS -->
-    <link href="/admin/js/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="/admin/fonts/font-awesome-4/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="/admin/js/jquery.select2/select2.css" />
-    <link rel="stylesheet" type="text/css" href="/admin/js/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css" />
     <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/redmond/jquery-ui.css" />
-    <link href="/admin/js/spectrum/spectrum.css" rel="stylesheet" />
-    <link href="/admin/css/style.css" rel="stylesheet" />
+    <?php echo $data['assets']['css']['adm']; ?>
 
     <script src="//code.jquery.com/jquery-1.9.1.js"></script>
     <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/admin/js/plupload/js/plupload.full.js"></script>
-    <script type="text/javascript" src="/admin/js/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js"></script>
-    <script type="text/javascript" src="/admin/js/ajaxform/jquery.form.js"></script>
-    <script src="/admin/js/jquery.select2/select2.min.js" type="text/javascript"></script>
-    <script src="/admin/js/spectrum/spectrum.js" type="text/javascript"></script>
-    <script src="/admin/js/daterangepicker/date.js" type="text/javascript"></script>
-    <script src="/admin/js/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-    <script src="/admin/js/jquery.maskedinput/jquery.maskedinput.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/admin/js/scripts.js"></script>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/admin/js/bootstrap/dist/js/bootstrap.min.js"></script>
+    <?php echo $data['assets']['js']['adm']; ?>
 
   </head>
 
@@ -187,7 +168,7 @@
 
     <div id="loading_overlay">
       <div class="loading_message round_bottom">
-        <img src="/adm/images/loading.gif" alt="Carregando" />
+        <img src="/admin/images/loading.gif" alt="Carregando" />
       </div>
     </div>
 
