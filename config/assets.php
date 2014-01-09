@@ -20,7 +20,7 @@ return array(
         'adm_login' => array(
             'public/admin/js/ajaxform/jquery.form.js',
             'public/admin/js/base.js',
-            'public/admin/js/form.js',
+            'public/admin/js/ajaxform.js',
             'public/admin/js/bootstrap/dist/js/bootstrap.min.js',
         ),
         'adm' => array(
@@ -32,7 +32,11 @@ return array(
             'public/admin/js/daterangepicker/date.js',
             'public/admin/js/daterangepicker/daterangepicker.js',
             'public/admin/js/jquery.maskedinput/jquery.maskedinput.js',
+            'public/admin/js/base.js',
             'public/admin/js/scripts.js',
+            'public/admin/js/form.js',
+            'public/admin/js/ajaxform.js',
+            'public/admin/js/list.js',
             'public/admin/js/bootstrap/dist/js/bootstrap.min.js',
         ),
     )
