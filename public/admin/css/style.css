@@ -3193,3 +3193,18 @@ button::-moz-focus-inner {
 .form_busca input, .form_busca select {
   margin-bottom: 8px!important;
 }
+
+.limit_info {
+  position: absolute;
+  right: 30px;
+  width: 100px;
+  color: #315b84;
+  text-align: right;
+  font-size: 13px;
+  letter-spacing: -1px;
+  cursor: default;
+}
+
+.charleft {
+  display: none
+}

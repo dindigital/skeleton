@@ -123,5 +123,23 @@ $(document).ready(function() {
     ]
   });
 
+  $('.limit_text').each(function() {
+    var e = $(this);
+    var maxlength = parseInt(e.attr('maxlength'));
+    var e_target = e.next();
+
+    var total_atual = $(e).val().length;
+    e_target.html(total_atual + ' de ' + maxlength);
+
+    $(e).textareaCount({
+      'maxCharacterSize': maxlength,
+      'originalStyle': '',
+      'warningStyle': '',
+      'displayFormat': ''
+    }, function(data) {
+      var texto = data.input + ' de ' + data.max;
+      e_target.html(texto);
+    });
+  });
 
 });
