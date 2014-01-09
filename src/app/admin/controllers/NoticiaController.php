@@ -50,8 +50,8 @@ class NoticiaController extends BaseControllerAdm
       $this->_data['table'] = array();
     }
 
-    $this->_data['table']['corpo'] = Form::Ck('corpo', $this->_data['table']['corpo']);
-    $this->_data['table']['capa'] = Form::Upload('capa', $this->_data['table']['capa'], 'imagem');
+    $this->_data['table']['corpo'] = Form::Ck('corpo', @$this->_data['table']['corpo']);
+    $this->_data['table']['capa'] = Form::Upload('capa', @$this->_data['table']['capa'], 'imagem');
 
     $this->setCadastroTemplate('noticia_cadastro.phtml');
   }
