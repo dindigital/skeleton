@@ -24,14 +24,23 @@ class LixeiraModel extends BaseModelAdm
     $this->_itens = array(
         'foto' => array(
             'tbl' => 'foto',
+            'model' => 'Foto',
             'secao' => 'Fotos',
             'id' => 'id_foto',
             'title' => 'titulo'
         ),
         'noticia' => array(
             'tbl' => 'noticia',
+            'model' => 'Noticia',
             'secao' => 'Notícias',
             'id' => 'id_noticia',
+            'title' => 'titulo'
+        ),
+        'noticia_cat' => array(
+            'tbl' => 'noticia_cat',
+            'model' => 'NoticiaCat',
+            'secao' => 'Categoria de Notícias',
+            'id' => 'id_noticia_cat',
             'title' => 'titulo'
         ),
     );
@@ -50,6 +59,7 @@ class LixeiraModel extends BaseModelAdm
     $i = 0;
     foreach ( $itens as $item ) {
 
+      $model = $item['model'];
       $table_name = $item['tbl'];
       $id_field = $item['id'];
       $title_field = $item['title'];
@@ -61,6 +71,7 @@ class LixeiraModel extends BaseModelAdm
       $select1->addField('del_data');
       $select1->addSField('secao', $secao);
       $select1->addSField('tbl', $table_name);
+      $select1->addSField('model', $model);
       $select1->where(array(
           'del = 1' => null,
           $title_field . ' LIKE ?' => '%' . $arrFilters['titulo'] . '%'

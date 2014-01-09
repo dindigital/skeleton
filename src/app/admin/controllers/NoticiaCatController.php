@@ -2,33 +2,33 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\NoticiaModel;
+use src\app\admin\models\NoticiaCatModel;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
-use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use \Exception;
-use Din\Filters\Date\DateFormat;
-use src\app\admin\models\NoticiaCatModel;
 
 /**
  *
  * @package app.controllers
  */
-class NoticiaController extends BaseControllerAdm
+class NoticiaCatController extends BaseControllerAdm
 {
 
   protected $_model;
 
-  public function __construct ()
+  public
+          function __construct ()
   {
     parent::__construct();
-    $this->_model = new NoticiaModel();
+
+    $this->_model = new NoticiaCatModel();
   }
 
   public function get_lista ()
   {
+
     $arrFilters = array(
         'titulo' => Get::text('titulo'),
     );
@@ -39,25 +39,19 @@ class NoticiaController extends BaseControllerAdm
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('noticia_lista.phtml', $paginator);
+    $this->setListTemplate('noticiacat_lista.phtml', $paginator);
   }
 
-  public function get_cadastro ( $id = null )
+  public function get_cadastro (
+  $id = null )
   {
     if ( $id ) {
       $this->_data['table'] = $this->_model->getById($id);
-      $this->_data['table']['data'] = DateFormat::filter_date($this->_data['table']['data']);
     } else {
       $this->_data['table'] = array();
     }
 
-    $this->_data['table']['corpo'] = Form::Ck('corpo', @$this->_data['table']['corpo']);
-    $this->_data['table']['capa'] = Form::Upload('capa', @$this->_data['table']['capa'], 'imagem');
-
-    $noticia_cat = new NoticiaCatModel();
-    $this->_data['table']['id_noticia_cat'] = $noticia_cat->getDropdown('Selecione uma Categoria', $this->_data['table']['id_noticia_cat']);
-
-    $this->setCadastroTemplate('noticia_cadastro.phtml');
+    $this->setCadastroTemplate('noticiacat_cadastro.phtml');
   }
 
   public function post_cadastro ( $id = null )
@@ -65,12 +59,7 @@ class NoticiaController extends BaseControllerAdm
     try {
       $info = array(
           'ativo' => Post::checkbox('ativo'),
-          'id_noticia_cat' => Post::text('id_noticia_cat'),
           'titulo' => Post::text('titulo'),
-          'data' => Post::text('data'),
-          'chamada' => Post::text('chamada'),
-          'corpo' => Post::text('corpo'),
-          'capa' => Post::upload('capa'),
       );
 
       if ( !$id ) {
@@ -81,9 +70,9 @@ class NoticiaController extends BaseControllerAdm
 
       $this->setRegistroSalvoSession();
 
-      $redirect = '/admin/noticia/cadastro/' . $id . '/';
+      $redirect = '/admin/noticia_cat/cadastro/' . $id . '/';
       if ( Post::text('redirect') == 'lista' ) {
-        $redirect = '/admin/noticia/lista/';
+        $redirect = '/admin/noticia_cat/lista/';
       }
 
       JsonViewHelper::redirect($redirect);

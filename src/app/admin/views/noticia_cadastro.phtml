@@ -25,6 +25,13 @@
           </div>
 
           <div class="form-group">
+            <label class="col-sm-2 control-label" for="ativo">Categoria</label>
+            <div class="col-sm-10">
+              <?php echo @$data['table']['id_noticia_cat']; ?>
+            </div>
+          </div>
+
+          <div class="form-group">
             <label class="col-sm-2 control-label">Título</label>
             <div class="col-sm-10">
               <input name="titulo" type="text" value="<?php echo @$data['table']['titulo']; ?>" placeholder="Título" class="form-control">

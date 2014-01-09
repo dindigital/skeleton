@@ -60,6 +60,7 @@ class NoticiaModel extends BaseModelAdm
   {
     $validator = new NoticiaValidator();
     $id = $validator->setIdNoticia()->getTable()->id_noticia;
+    $validator->setIdNoticiaCat($info['id_noticia_cat']);
     $validator->setAtivo($info['ativo']);
     $validator->setTitulo($info['titulo']);
     $validator->setData($info['data']);
@@ -77,6 +78,7 @@ class NoticiaModel extends BaseModelAdm
   public function atualizar ( $id, $info )
   {
     $validator = new NoticiaValidator();
+    $validator->setIdNoticiaCat($info['id_noticia_cat']);
     $validator->setAtivo($info['ativo']);
     $validator->setTitulo($info['titulo']);
     $validator->setData($info['data']);

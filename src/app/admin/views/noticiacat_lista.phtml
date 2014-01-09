@@ -1,4 +1,4 @@
-<input type="hidden" id="link_prefix" value="/admin/noticia/" />
+<input type="hidden" id="link_prefix" value="/admin/noticia_cat/" />
 
 <div class="row">
   <div class="col-md-12">
@@ -7,7 +7,7 @@
 
     <div class="block-flat">
       <div class="header">
-        <h3>Lista de Notícias</h3>
+        <h3>Lista de Categorias</h3>
       </div>
 
       <div class="content">
@@ -29,20 +29,20 @@
               <tr>
                 <th style="width:2%;"><input type="checkbox" name="excluir[]" id="excluir_all" /></th>
                 <th style="width:5%;"><strong>Ativo</strong></th>
-                <th style="width:10%;"><strong>Data</strong></th>
-                <th style="width:25%;"><strong>Titulo</strong></th>
+                <th style="width:15%;"><strong>Titulo</strong></th>
+                <th style="width:15%;"><strong>Data de Inclusão</strong></th>
                 <th style="width:15%;" class="text-center"><strong>Ações</strong></th>
               </tr>
             </thead>
             <tbody class="no-border-y">
               <?php foreach ( $data['list'] as $row ): ?>
                 <tr>
-                  <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_noticia_<?php echo $row['id_noticia']; ?>" /></td>
-                  <td><input class="setAtivo" type="checkbox" <?php if ( $row['ativo'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_noticia']; ?>" /></td>
-                  <td><?php echo $data['DateFormat']::filter_date($row['data']); ?></td>
+                  <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_NoticiaCat_<?php echo $row['id_noticia_cat']; ?>" /></td>
+                  <td><input class="setAtivo" type="checkbox" <?php if ( $row['ativo'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_noticia_cat']; ?>" /></td>
                   <td><?php echo $row['titulo']; ?></td>
+                  <td><?php echo $data['DateFormat']::filter_date($row['inc_data']); ?></td>
                   <td class="text-center">
-                    <a class="label label-default btn_edicao" href="<?php echo $row['id_noticia']; ?>">
+                    <a class="label label-default" href="/admin/noticia_cat/cadastro/<?php echo $row['id_noticia_cat']; ?>/">
                       <i class="fa fa-pencil"></i>
                     </a>
                     <a class="label label-danger excluir_shortcut" href="#">
