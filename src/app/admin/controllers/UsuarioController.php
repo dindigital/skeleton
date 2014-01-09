@@ -5,7 +5,7 @@ namespace src\app\admin\controllers;
 use src\app\admin\models\UsuarioModel;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
-use src\app\adm\helpers\Form;
+use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use \Exception;
