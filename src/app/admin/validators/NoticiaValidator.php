@@ -23,6 +23,13 @@ class NoticiaValidator extends BaseValidator
     return $this;
   }
 
+  public function setIdNoticiaCat ( $id_noticia_cat )
+  {
+    $this->_table->id_noticia_cat = $id_noticia_cat;
+
+    return $this;
+  }
+
   public function setTitulo ( $titulo )
   {
     if ( $titulo == '' )

@@ -7,6 +7,7 @@ use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
 use \Exception;
+use Din\Form\Dropdown\Dropdown;
 
 /**
  *
@@ -106,6 +107,28 @@ class NoticiaCatModel extends BaseModelAdm
     $validator = new NoticiaCatValidator();
     $validator->setAtivo($ativo);
     $this->_dao->update($validator->getTable(), array('id_noticia_cat = ?' => $id));
+  }
+
+  public function getDropdown ( $firstOption = '', $selected = null )
+  {
+    $select = new Select('noticia_cat');
+    $select->addField('id_noticia_cat');
+    $select->addField('titulo');
+    $select->where(array(
+        'del = ? ' => '0'
+    ));
+
+    $result = $this->_dao->select($select);
+
+    $d = new Dropdown('id_noticia_cat');
+    $d->setOptionsResult($result, 'id_noticia_cat', 'titulo');
+    $d->setClass('form-control');
+    $d->setSelected($selected);
+    if ( $firstOption != '' ) {
+      $d->setFirstOpt($firstOption);
+    }
+
+    return $d->getElement();
   }
 
 }

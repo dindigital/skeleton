@@ -10,6 +10,7 @@ use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use \Exception;
 use Din\Filters\Date\DateFormat;
+use src\app\admin\models\NoticiaCatModel;
 
 /**
  *
@@ -53,6 +54,9 @@ class NoticiaController extends BaseControllerAdm
     $this->_data['table']['corpo'] = Form::Ck('corpo', @$this->_data['table']['corpo']);
     $this->_data['table']['capa'] = Form::Upload('capa', @$this->_data['table']['capa'], 'imagem');
 
+    $noticia_cat = new NoticiaCatModel();
+    $this->_data['table']['id_noticia_cat'] = $noticia_cat->getDropdown('Selecione uma Categoria', $this->_data['table']['id_noticia_cat']);
+
     $this->setCadastroTemplate('noticia_cadastro.phtml');
   }
 
@@ -61,6 +65,7 @@ class NoticiaController extends BaseControllerAdm
     try {
       $info = array(
           'ativo' => Post::checkbox('ativo'),
+          'id_noticia_cat' => Post::text('id_noticia_cat'),
           'titulo' => Post::text('titulo'),
           'data' => Post::text('data'),
           'chamada' => Post::text('chamada'),

@@ -18,6 +18,11 @@ class NoticiaTable extends AbstractTable implements iTable
   protected $id_noticia;
 
   /**
+   * @var char(32) NOT NULL
+   */
+  protected $id_noticia_cat;
+
+  /**
    * @var varchar(255) NOT NULL title
    */
   protected $titulo;
