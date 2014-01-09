@@ -133,7 +133,7 @@ table .danger-emphasis-dark{background-color:#c8432e;border-color:#c8432e;}
   text-align:left;
   width: 206px;
   color: #FFF;
-  background: url(../images/logo.png) no-repeat 0 center;
+  background: url(/admin/images/logo.png) no-repeat 0 center;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   font-weight: 300;
   font-size:19px;
@@ -602,7 +602,7 @@ table .danger-emphasis-dark{background-color:#c8432e;border-color:#c8432e;}
 }
 
 body.texture{
-  background: url(../images/bg.jpg);
+  background: url(/admin/images/bg.jpg);
 }
 
 /*Vertical Navigation*/
@@ -631,7 +631,7 @@ body.texture{
 }
 
 .cl-vnavigation .parent a{
-  background: url("../images/arrow.png") no-repeat scroll 190px 18px transparent;
+  background: url("/admin/images/arrow.png") no-repeat scroll 190px 18px transparent;
 }
 
 .cl-vnavigation li a{
@@ -756,19 +756,19 @@ body.texture{
 }
 
 .butpro .stat .equal {
-  background: url("../images/stat-same.png") no-repeat scroll left center transparent;
+  background: url("/admin/images/stat-same.png") no-repeat scroll left center transparent;
   font-size: 12px;
   padding: 0 0 0 19px;
 }
 
 .butpro .stat .up {
-  background: url("../images/stat-up.png") no-repeat scroll left center transparent;
+  background: url("/admin/images/stat-up.png") no-repeat scroll left center transparent;
   font-size: 12px;
   padding: 0 0 0 19px;
 }
 
 .butpro .stat .down {
-  background: url("../images/stat-down.png") no-repeat scroll left center transparent;
+  background: url("/admin/images/stat-down.png") no-repeat scroll left center transparent;
   font-size: 12px;
   padding: 0 0 0 19px;
 }
@@ -897,7 +897,7 @@ body.texture{
 }
 
 .widget-block.weather-box .photo{
-  background: url("../images/sunset2.jpg") no-repeat center center;
+  background: url("/admin/images/sunset2.jpg") no-repeat center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -2541,7 +2541,7 @@ a.list-group-item:hover + a.list-group-item{
 .btn:focus{outline:none;}
 
 .btn-group.btn-blurbg{
-  background: url("../images/blur_bg.png") no-repeat;
+  background: url("/admin/images/blur_bg.png") no-repeat;
   padding:40px;
   margin-bottom:20px;
   box-shadow:1px 1px 2px rgba(0, 0, 0, 0.15);
