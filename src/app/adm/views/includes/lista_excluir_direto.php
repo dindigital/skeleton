@@ -1,1 +1,0 @@
-<li><a class="excluir_shortcut" title="Enviar para lixeira">Excluir</a></li>

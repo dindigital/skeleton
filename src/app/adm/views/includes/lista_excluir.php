@@ -1,1 +1,0 @@
-<li><a class="lixeira_shortcut" title="Enviar para lixeira">Lixeira</a></li>
