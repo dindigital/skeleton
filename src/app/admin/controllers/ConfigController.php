@@ -5,7 +5,7 @@ namespace src\app\admin\controllers;
 use src\app\admin\models\UsuarioModel;
 use src\app\admin\models\UsuarioAuthModel;
 use Din\Http\Post;
-use src\app\admin\helpers\Upload;
+use src\app\admin\helpers\Form;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 
@@ -27,7 +27,7 @@ class ConfigController extends BaseControllerAdm
   public function get_cadastro ()
   {
     $this->_data['table'] = $this->_data['user'];
-    $this->_data['table']['avatar'] = Upload::get('avatar', $this->_data['table']['avatar'], 'imagem', false);
+    $this->_data['table']['avatar'] = Form::Upload('avatar', $this->_data['table']['avatar'], 'imagem', false);
 
     $this->setCadastroTemplate('config_cadastro.phtml');
   }
