@@ -6,14 +6,24 @@
         <h3 class="text-center"><img class="logo-img" src="/admin/images/logo.png" alt="logo"/>DIN DIGITAL</h3>
       </div>
       <div>
-        <form style="margin-bottom: 0px !important;" class="ajaxform form-horizontal" method="post" action="">
+        <form style="margin-bottom: 0px !important;" class="ajaxform form-horizontal" method="post" action="" autocomplete="off">
 
           <div class="content">
 
+            <?php if ( isset($data['registro_salvo']) ): ?>
+              <div class="alert alert-success alert-success-fade">
+                <i class="fa fa-check sign"></i><strong><?php echo $data['registro_salvo']; ?></strong>
+              </div>
+            <?php endif; ?>
             <div class="alert alert-danger">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <i class="fa fa-times-circle sign"></i>
               <strong>Erro!</strong>
+              <div></div>
+            </div>
+            <div class="alert alert-success">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <i class="fa fa-check sign"></i><strong>Sucesso!</strong>
               <div></div>
             </div>
 
@@ -38,7 +48,7 @@
           </div>
 
           <div class="foot">
-            <button class="btn btn-default" data-dismiss="modal" type="submit">Esqueci minha senha</button>
+            <a class="btn_lostpass btn btn-default">Esqueci minha senha</a>
             <button class="btn btn-primary" data-dismiss="modal" type="submit">Acessar</button>
           </div>
 

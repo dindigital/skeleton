@@ -36,17 +36,8 @@ class UsuarioValidator extends BaseValidator
     if ( !v::email()->validate($email) )
       return JsonException::addException('E-mail inválido');
 
-    $SQL = "SELECT * FROM usuario {\$strWhere}";
-    $arrCriteria = array();
-    $arrCriteria['email'] = $email;
-    if ( $id ) {
-      $arrCriteria['id_usuario'] = array('<>' => $id);
-    }
-
-//    $result = $this->_dao->getByCriteria($this->_table, $SQL, $arrCriteria);
-//
-//    if ( count($result) )
-//      throw new \Exception('Este e-mail já existe.');
+    // TO DO: Verificar se usuário existe no banco de dados, se existir
+    // não deixar usar o mesmo e-mail
 
     $this->_table->email = $email;
   }

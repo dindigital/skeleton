@@ -53,6 +53,11 @@ class UsuarioTable extends AbstractTable implements iTable
   protected $avatar3;
 
   /**
+   * @var date DEFAULT NULL
+   */
+  protected $senha_data;
+
+  /**
    * @var datetime NOT NULL
    */
   protected $inc_data;

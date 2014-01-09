@@ -7,8 +7,8 @@ use src\app\admin\models\UsuarioAuthModel;
 use Din\Http\Header;
 use Din\Http\Post;
 use \Exception;
-use Din\Exception\JsonException;
 use Din\ViewHelpers\JsonViewHelper;
+use Din\Session\Session;
 
 /**
  *
@@ -27,6 +27,12 @@ class UsuarioAuthController extends BaseController
     $this->_data = array(
         'assets' => $this->getAssets(),
     );
+
+    $session = new Session('adm_session');
+    if ( $session->is_set('registro_salvo') ) {
+      $this->_data['registro_salvo'] = $session->get('registro_salvo');
+    }
+    $session->un_set('registro_salvo');
 
     $this->_view->addFile('src/app/admin/views/layouts/login.phtml');
   }
