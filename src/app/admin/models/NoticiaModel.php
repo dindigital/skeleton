@@ -8,6 +8,7 @@ use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
 use \Exception;
 use Din\File\Folder;
+use src\app\admin\models\HierarquiaModel;
 
 /**
  *
@@ -39,8 +40,8 @@ class NoticiaModel extends BaseModelAdm
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
     $arrCriteria = array(
-        'del = ?' => '0',
-        'titulo LIKE ?' => '%' . $arrFilters['titulo'] . '%'
+        'a.del = ?' => '0',
+        'a.titulo LIKE ?' => '%' . $arrFilters['titulo'] . '%'
     );
 
     $select = new Select('noticia');
@@ -50,6 +51,9 @@ class NoticiaModel extends BaseModelAdm
     $select->addField('data');
     $select->where($arrCriteria);
     $select->order_by('data DESC');
+
+    $select->inner_join('id_noticia_cat', Select::construct('noticia_cat')
+                    ->addField('titulo', 'categoria'));
 
     $result = $this->_dao->select($select);
 
@@ -102,6 +106,9 @@ class NoticiaModel extends BaseModelAdm
 
   public function restaurar ( $id )
   {
+    $lixeira = new LixeiraModel();
+    $lixeira->validateRestaurar('noticia', $id);
+
     $validator = new NoticiaValidator();
     $validator->setDel('0');
     $this->_dao->update($validator->getTable(), array('id_noticia = ?' => $id));

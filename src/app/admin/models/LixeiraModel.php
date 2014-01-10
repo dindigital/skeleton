@@ -27,7 +27,7 @@ class LixeiraModel extends BaseModelAdm
             'model' => 'Foto',
             'secao' => 'Fotos',
             'id' => 'id_foto',
-            'title' => 'titulo'
+            'title' => 'titulo',
         ),
         'noticia' => array(
             'tbl' => 'noticia',
@@ -135,6 +135,48 @@ class LixeiraModel extends BaseModelAdm
     }
 
     return $d->getElement();
+  }
+
+  public function validateRestaurar ( $tbl, $id )
+  {
+    $pai = HierarquiaModel::getPai($tbl);
+    if ( $pai ) {
+      $model_name = '\src\app\admin\models\\' . $pai['model'];
+      $model_inst = new $model_name;
+      $row = $model_inst->getById($id);
+      $id_pai = $row[$pai['id']];
+
+      $select = new Select($pai['tbl']);
+      $select->where(array(
+          $pai['id'] . ' = ?' => $id_pai,
+          'del = ?' => '1'
+      ));
+
+      $count = $this->_dao->select_count($select);
+      if ( $count ) {
+        throw new Exception('É necessário restaurar primeiro');
+      }
+    }
+  }
+
+  public function excluirFilhos ( $tbl, $id, $dao )
+  {
+    $filhos = HierarquiaModel::getFilhos($tbl);
+
+    foreach ( $filhos as $filho ) {
+      $select = new Select($filho['tbl']);
+      $select->addField($filho['id']);
+      $select->where(array(
+          $filho['id_pai'] . ' = ? ' => $id
+      ));
+      $result = $dao->select($select);
+
+      foreach ( $result as $row ) {
+        $model_name = '\src\app\admin\models\\' . $filho['model'];
+        $model_inst = new $model_name;
+        $model_inst->excluir_permanente($row[$filho['id']]);
+      }
+    }
   }
 
 }

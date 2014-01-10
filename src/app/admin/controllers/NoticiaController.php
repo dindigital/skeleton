@@ -55,7 +55,7 @@ class NoticiaController extends BaseControllerAdm
     $this->_data['table']['capa'] = Form::Upload('capa', @$this->_data['table']['capa'], 'imagem');
 
     $noticia_cat = new NoticiaCatModel();
-    $this->_data['table']['id_noticia_cat'] = $noticia_cat->getDropdown('Selecione uma Categoria', $this->_data['table']['id_noticia_cat']);
+    $this->_data['table']['id_noticia_cat'] = $noticia_cat->getDropdown('Selecione uma Categoria', @$this->_data['table']['id_noticia_cat']);
 
     $this->setCadastroTemplate('noticia_cadastro.phtml');
   }
