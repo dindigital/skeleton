@@ -1,15 +1,17 @@
 <div class="form-group form-group-submit">
+  <span class="loadingsubmit"></span>
   <div class="input-group">
     <div class="input-group-btn">
-      <button type="submit" class="btn btn-default" tabindex="-1">Salvar e continuar</button>
+      <button type="submit" class="btn btn-default" tabindex="-1" title="Salvar e continuar">Salvar e continuar</button>
       <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" tabindex="-1">
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><button type="submit" class="btn-link-submit submit_lista">Salvar e voltar para lista</button></li>
-        <li><button type="submit" class="btn-link-submit">Salvar e abrir novo com os mesmos dados</button></li>
+        <li><button type="submit" title="Salvar e voltar para lista" class="btn-link-submit submit_lista">Salvar e voltar para lista</button></li>
+        <li><button type="submit" title="Salvar e abrir novo com os mesmos dados" class="btn-link-submit">Salvar e abrir novo com os mesmos dados</button></li>
         <li class="divider"></li>
-        <li><a href="#" class="btn_lista">Voltar para lista</a></li>
+        <li><a href="#" title="Voltar para a lista" class="btn_lista">Voltar para lista</a></li>
+        <li><a href="#" title="Novo registro" class="btn_cadastro">Novo registro</a></li>
       </ul>
     </div>
     <a href="#" title="Voltar para a lista" class="btn btn-default btn-rad btn_lista btn_space">Voltar</a>

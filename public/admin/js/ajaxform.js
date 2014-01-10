@@ -37,11 +37,13 @@ function ajaxformBeforeSubmit() {
   $('.alert-danger div').html('');
   $('.alert-success').hide();
   $('.alert-success div').html('');
+  $('.loadingsubmit').css('visibility', 'visible');
 }
 
 function ajaxformSuccess(data) {
   // Depois de enviar, removo tela de loading
   hideLoadingOverlay();
+  $('.loadingsubmit').css('visibility', 'hidden');
   // Faço um switch para verificar o tipo de retorno
   switch (data.type) {
     case 'error_message':
@@ -77,6 +79,7 @@ function ajaxformSuccess(data) {
 
 function ajaxformError() {
   hideLoadingOverlay();
+  $('.loadingsubmit').css('visibility', 'hidden');
   $('.alert-danger div').append('<p>Erro no envio do formulário. Por favor entre em contato com o suporte</p>');
   boxError();
 }
