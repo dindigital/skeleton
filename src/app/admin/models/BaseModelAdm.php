@@ -6,6 +6,7 @@ use Din\DataAccessLayer\DAO;
 use Din\DataAccessLayer\PDO\PDOBuilder;
 use Din\DataAccessLayer\Entities;
 use Din\DataAccessLayer\Select;
+use Din\File\Folder;
 
 class BaseModelAdm
 {
@@ -61,6 +62,59 @@ class BaseModelAdm
     $usuario = $usuarioAuth->getUser();
 
     LogMySQLModel::save($this->_dao, $usuario, $action, $msg, $table, $tableHistory);
+  }
+
+  public function excluir ( $id )
+  {
+    $atual = Entities::getThis($this);
+
+    $this->excluirFilhos($atual['tbl'], $id);
+    $tableHistory = $this->getById($id);
+    $validator_namespace = '\src\app\admin\validators\\' . $atual['validator'];
+    $validator = new $validator_namespace;
+    $validator->setDelData();
+    $validator->setDel('1');
+    $this->_dao->update($validator->getTable(), array($atual['id'] . ' = ?' => $id));
+    $this->log('T', $tableHistory[$atual['title']], $atual['tbl'], $tableHistory);
+  }
+
+  public function restaurar ( $id )
+  {
+    $atual = Entities::getThis($this);
+
+    $lixeira = new LixeiraModel();
+    $lixeira->validateRestaurar($atual['tbl'], $id);
+
+    $tableHistory = $this->getById($id);
+    $validator_namespace = '\src\app\admin\validators\\' . $atual['validator'];
+    $validator = new $validator_namespace;
+    $validator->setDel('0');
+    $this->_dao->update($validator->getTable(), array($atual['id'] . ' = ?' => $id));
+    $this->log('R', $tableHistory[$atual['title']], $atual['tbl'], $tableHistory);
+  }
+
+  public function excluir_permanente ( $id )
+  {
+    $atual = Entities::getThis($this);
+
+    $this->excluirFilhos($atual['tbl'], $id, true);
+
+    $tableHistory = $this->getById($id);
+    Folder::delete("public/system/uploads/{$atual['tbl']}/{$id}");
+    $this->_dao->delete($atual['tbl'], array($atual['id'] . ' = ?' => $id));
+    $this->log('D', $tableHistory[$atual['title']], $atual['tbl'], $tableHistory);
+  }
+
+  public function toggleAtivo ( $id, $ativo )
+  {
+    $atual = Entities::getThis($this);
+
+    $tableHistory = $this->getById($id);
+    $validator_namespace = '\src\app\admin\validators\\' . $atual['validator'];
+    $validator = new $validator_namespace;
+    $validator->setAtivo($ativo);
+    $this->_dao->update($validator->getTable(), array($atual['id'] . ' = ?' => $id));
+    $this->log('U', $tableHistory[$atual['title']], $validator->getTable(), $tableHistory);
   }
 
 }

@@ -8,7 +8,7 @@ return array(
         'secao' => 'Fotos',
         'id' => 'id_foto',
         'title' => 'titulo',
-        'lixeira' => false,
+        'lixeira' => true,
     ),
     'noticia' => array(
         'tbl' => 'noticia',
@@ -30,6 +30,24 @@ return array(
         'filho' => array(
             'noticia'
         ),
+        'lixeira' => true,
+    ),
+    'usuario' => array(
+        'tbl' => 'usuario',
+        'model' => 'UsuarioModel',
+        'validator' => 'UsuarioValidator',
+        'secao' => 'Usuários',
+        'id' => 'id_usuario',
+        'title' => 'nome',
+        'lixeira' => false,
+    ),
+    'video' => array(
+        'tbl' => 'video',
+        'model' => 'VideoModel',
+        'validator' => 'VideoValidator',
+        'secao' => 'Vídeos',
+        'id' => 'id_video',
+        'title' => 'titulo',
         'lixeira' => true,
     ),
 );

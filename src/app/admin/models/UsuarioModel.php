@@ -132,23 +132,7 @@ class UsuarioModel extends BaseModelAdm
 
   public function excluir ( $id )
   {
-    try {
-      $tableHistory = $this->getById($id);
-      $this->_dao->delete('usuario', array('id_usuario = ?' => $id));
-      $this->log('D', $tableHistory['nome'], 'usuario', $tableHistory);
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
-  }
-
-  public function toggleAtivo ( $id, $ativo )
-  {
-    $tableHistory = $this->getById($id);
-    $validator = new UsuarioValidator();
-    $validator->setAtivo($ativo);
-    $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
-    $this->log('U', $tableHistory['nome'], $validator->getTable(), $tableHistory);
+    $this->excluir_permanente($id);
   }
 
 }

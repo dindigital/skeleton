@@ -109,43 +109,4 @@ class NoticiaModel extends BaseModelAdm
     return $id;
   }
 
-  public function excluir ( $id )
-  {
-    $tableHistory = $this->getById($id);
-    $validator = new NoticiaValidator();
-    $validator->setDelData();
-    $validator->setDel('1');
-    $this->_dao->update($validator->getTable(), array('id_noticia = ?' => $id));
-    $this->log('T', $tableHistory['titulo'], 'noticia', $tableHistory);
-  }
-
-  public function restaurar ( $id )
-  {
-    $tableHistory = $this->getById($id);
-    $lixeira = new LixeiraModel();
-    $lixeira->validateRestaurar('noticia', $id);
-
-    $validator = new NoticiaValidator();
-    $validator->setDel('0');
-    $this->_dao->update($validator->getTable(), array('id_noticia = ?' => $id));
-    $this->log('R', $tableHistory['titulo'], 'noticia', $tableHistory);
-  }
-
-  public function excluir_permanente ( $id )
-  {
-    $tableHistory = $this->getById($id);
-    Folder::delete("public/system/uploads/noticia/{$id}");
-    $this->_dao->delete('noticia', array('id_noticia = ?' => $id));
-    $this->log('D', $tableHistory['titulo'], 'noticia', $tableHistory);
-  }
-
-  public function toggleAtivo ( $id, $ativo )
-  {
-    $tableHistory = $this->getById($id);
-    $validator = new NoticiaValidator();
-    $validator->setAtivo($ativo);
-    $this->_dao->update($validator->getTable(), array('id_noticia = ?' => $id));
-    $this->log('U', $tableHistory['titulo'], $validator->getTable(), $tableHistory);
-  }
-
 }

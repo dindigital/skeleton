@@ -96,44 +96,6 @@ class NoticiaCatModel extends BaseModelAdm
     return $id;
   }
 
-  public function excluir ( $id )
-  {
-    $this->excluirFilhos('noticia_cat', $id);
-    $tableHistory = $this->getById($id);
-    $validator = new NoticiaCatValidator();
-    $validator->setDelData();
-    $validator->setDel('1');
-    $this->_dao->update($validator->getTable(), array('id_noticia_cat = ?' => $id));
-    $this->log('T', $tableHistory['titulo'], 'noticia_cat', $tableHistory);
-  }
-
-  public function restaurar ( $id )
-  {
-    $tableHistory = $this->getById($id);
-    $validator = new NoticiaCatValidator();
-    $validator->setDel('0');
-    $this->_dao->update($validator->getTable(), array('id_noticia_cat = ?' => $id));
-    $this->log('R', $tableHistory['titulo'], 'noticia_cat', $tableHistory);
-  }
-
-  public function excluir_permanente ( $id )
-  {
-    $this->excluirFilhos('noticia_cat', $id, true);
-
-    $tableHistory = $this->getById($id);
-    $this->_dao->delete('noticia_cat', array('id_noticia_cat = ?' => $id));
-    $this->log('D', $tableHistory['titulo'], 'noticia_cat', $tableHistory);
-  }
-
-  public function toggleAtivo ( $id, $ativo )
-  {
-    $tableHistory = $this->getById($id);
-    $validator = new NoticiaCatValidator();
-    $validator->setAtivo($ativo);
-    $this->_dao->update($validator->getTable(), array('id_noticia_cat = ?' => $id));
-    $this->log('U', $tableHistory['titulo'], $validator->getTable(), $tableHistory);
-  }
-
   public function getDropdown ( $firstOption = '', $selected = null )
   {
     $select = new Select('noticia_cat');
