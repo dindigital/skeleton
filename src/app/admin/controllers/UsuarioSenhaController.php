@@ -56,9 +56,9 @@ class UsuarioSenhaController extends BaseController
     $email->setBody($email_html->getResult());
 
     $sendmail = new SendEmail($email);
-    $sendmail->setHost('smtp.mandrillapp.com');
-    $sendmail->setUser('financeiro@dindigital.com');
-    $sendmail->setPass('bIWsNmzxJIqaMif5nE2bEg');
+    $sendmail->setHost(SMTP_HOST);
+    $sendmail->setUser(SMTP_USER);
+    $sendmail->setPass(SMTP_PASS);
     $sendmail->send();
   }
 

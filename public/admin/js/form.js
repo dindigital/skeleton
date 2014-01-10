@@ -123,5 +123,46 @@ $(document).ready(function() {
     ]
   });
 
+  $('.limit_text').each(function() {
+    var e = $(this);
+    var maxlength = parseInt(e.attr('maxlength'));
+    var e_target = e.next();
+
+    var total_atual = $(e).val().length;
+    e_target.html(total_atual + ' de ' + maxlength);
+
+    $(e).textareaCount({
+      'maxCharacterSize': maxlength,
+      'originalStyle': '',
+      'warningStyle': '',
+      'displayFormat': ''
+    }, function(data) {
+      var texto = data.input + ' de ' + data.max;
+      e_target.html(texto);
+    });
+  });
+
+  $('.youtube_link').bind('change keyup keypress', function() {
+    $(this).val(getIdFromYoutube($(this).val()));
+  });
+
+  $('.vimeo_link').bind('change keyup keypress', function() {
+    var result = getIdFromVimeo($(this).val());
+    if (result) {
+      $(this).val(result);
+    }
+  });
 
 });
+
+function getIdFromYoutube(text) {
+  return text.replace(/(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=))([\w\-]{10,12})\b[?=&\w]*(?!['"][^<>]*>|<\/a>)/ig, '$1');
+}
+
+function getIdFromVimeo(url)
+{
+  var regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/;
+  var parseUrl = regExp.exec(url);
+  if (parseUrl != null)
+    return parseUrl[5];
+}

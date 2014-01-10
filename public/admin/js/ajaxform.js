@@ -37,11 +37,13 @@ function ajaxformBeforeSubmit() {
   $('.alert-danger div').html('');
   $('.alert-success').hide();
   $('.alert-success div').html('');
+  $('.loadingsubmit').css('visibility', 'visible');
 }
 
 function ajaxformSuccess(data) {
   // Depois de enviar, removo tela de loading
   hideLoadingOverlay();
+  $('.loadingsubmit').css('visibility', 'hidden');
   // Faço um switch para verificar o tipo de retorno
   switch (data.type) {
     case 'error_message':
@@ -66,9 +68,16 @@ function ajaxformSuccess(data) {
     case 'redirect':
       location.href = data.uri;
       break;
+    case 'alert':
+      alert(data.message);
+      break;
+    case 'alert_redirect':
+      alert(data.message);
+      location.href = data.uri;
+      break;
     case 'success':
       $('.alert-success div').append('<p>' + data.message + '</p>');
-      $('.alert-success').stop(true, true).slideDown('slow').animate({opacity: 1}, 4000, function() {
+      $('.alert-success').stop(true, true).slideDown('slow').animate({opacity: 1}, 8000, function() {
         $('.alert-success').slideUp();
       });
       break;
@@ -77,6 +86,7 @@ function ajaxformSuccess(data) {
 
 function ajaxformError() {
   hideLoadingOverlay();
+  $('.loadingsubmit').css('visibility', 'hidden');
   $('.alert-danger div').append('<p>Erro no envio do formulário. Por favor entre em contato com o suporte</p>');
   boxError();
 }

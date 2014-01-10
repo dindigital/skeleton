@@ -2795,6 +2795,10 @@ button::-moz-focus-inner {
 
 @media (max-width: 767px) {
 
+  .btn_space {
+    display: none;
+  }
+
   #cl-wrapper{margin-top:0;}
   #pcont{
     margin-left: 0;
@@ -3192,4 +3196,29 @@ button::-moz-focus-inner {
 
 .form_busca input, .form_busca select {
   margin-bottom: 8px!important;
+}
+
+.limit_info {
+  position: absolute;
+  right: 30px;
+  width: 100px;
+  color: #315b84;
+  text-align: right;
+  font-size: 13px;
+  letter-spacing: -1px;
+  cursor: default;
+}
+
+.charleft {
+  display: none
+}
+
+.loadingsubmit {
+  display: block;
+  float: left;
+  width: 38px;
+  height: 30px;
+  background: url(/admin/images/loading_submit.gif) no-repeat;
+  margin: 0 20px 0 0;
+  visibility: hidden;
 }
