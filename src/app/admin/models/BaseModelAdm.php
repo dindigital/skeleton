@@ -55,4 +55,12 @@ class BaseModelAdm
     }
   }
 
+  public function log ( $action, $msg, $table, $tableHistory = null )
+  {
+    $usuarioAuth = new UsuarioAuthModel();
+    $usuario = $usuarioAuth->getUser();
+
+    LogMySQLModel::save($this->_dao, $usuario, $action, $msg, $table, $tableHistory);
+  }
+
 }

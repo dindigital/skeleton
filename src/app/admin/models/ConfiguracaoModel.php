@@ -49,7 +49,9 @@ class ConfiguracaoModel extends BaseModelAdm
     $validator->throwException();
 
     try {
+      $tableHistory = $this->getById($id);
       $this->_dao->update($validator->getTable(), array('id_configuracao = ?' => '1'));
+      $this->log('U', 'Configurações', $validator->getTable(), $tableHistory);
     } catch (Exception $e) {
       JsonException::addException($e->getMessage());
       JsonException::throwException();

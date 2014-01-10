@@ -2,8 +2,8 @@
 
 namespace src\tables;
 
-use lib\DataAccessLayer\Table\AbstractTable;
-use lib\DataAccessLayer\Table\iTable;
+use Din\DataAccessLayer\Table\AbstractTable;
+use Din\DataAccessLayer\Table\iTable;
 
 /**
  *
@@ -13,44 +13,39 @@ class LogTable extends AbstractTable implements iTable
 {
 
   /**
-   * @var int(11) NOT NULL pk
+   * @var int(11) NOT NULL
    */
   protected $id_log;
 
   /**
    * @var varchar(255) NOT NULL
    */
-  protected $responsavel;
+  protected $administrador;
 
   /**
    * @var varchar(255) NOT NULL
    */
-  protected $nome_legivel;
-
-  /**
-   * @var int(11) DEFAULT NULL
-   */
-  protected $id_secao;
+  protected $tabela;
 
   /**
    * @var datetime NOT NULL
    */
-  protected $data;
+  protected $inc_data;
 
   /**
    * @var char(1) NOT NULL
    */
-  protected $crud;
-
-  /**
-   * @var varchar(255) NOT NULL
-   */
-  protected $secao;
+  protected $acao;
 
   /**
    * @var text
    */
   protected $descricao;
+
+  /**
+   * @var mediumtext
+   */
+  protected $conteudo;
 
 }
 
