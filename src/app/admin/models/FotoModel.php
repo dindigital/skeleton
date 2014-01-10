@@ -102,6 +102,7 @@ class FotoModel extends BaseModelAdm
 
     try {
       $this->_dao->insert($validator->getTable());
+      $this->log('C', $info['titulo'], $validator->getTable());
     } catch (Exception $e) {
       JsonException::addException($e->getMessage());
       JsonException::throwException();
@@ -121,7 +122,9 @@ class FotoModel extends BaseModelAdm
     $validator->throwException();
 
     try {
+      $tableHistory = $this->getById($id);
       $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
+      $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
     } catch (Exception $e) {
       JsonException::addException($e->getMessage());
       JsonException::throwException();
@@ -134,30 +137,38 @@ class FotoModel extends BaseModelAdm
 
   public function excluir ( $id )
   {
+    $tableHistory = $this->getById($id);
     $validator = new FotoValidator();
     $validator->setDelData();
     $validator->setDel('1');
     $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
+    $this->log('T', $tableHistory['titulo'], 'foto', $tableHistory);
   }
 
   public function restaurar ( $id )
   {
+    $tableHistory = $this->getById($id);
     $validator = new FotoValidator();
     $validator->setDel('0');
     $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
+    $this->log('R', $tableHistory['titulo'], 'foto', $tableHistory);
   }
 
   public function excluir_permanente ( $id )
   {
+    $tableHistory = $this->getById($id);
     Folder::delete("public/system/uploads/foto/{$id}");
     $this->_dao->delete('foto', array('id_foto = ?' => $id));
+    $this->log('D', $tableHistory['titulo'], 'foto', $tableHistory);
   }
 
   public function toggleAtivo ( $id, $ativo )
   {
+    $tableHistory = $this->getById($id);
     $validator = new FotoValidator();
     $validator->setAtivo($ativo);
     $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
+    $this->log('U', $tableHistory['titulo'], $validator->getTable(), $tableHistory);
   }
 
 }

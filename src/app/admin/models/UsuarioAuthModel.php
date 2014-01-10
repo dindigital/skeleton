@@ -16,9 +16,10 @@ use Din\Exception\JsonException;
 class UsuarioAuthModel extends Auth
 {
 
+  private $_session_name = 'adm_session';
+
   public function __construct ()
   {
-    $session_name = 'adm_session';
     $tbl = 'usuario';
     $pk_field = 'id_usuario';
     $login_field = 'email';
@@ -28,7 +29,7 @@ class UsuarioAuthModel extends Auth
     $PDO = PDOBuilder::build(DB_TYPE, DB_HOST, DB_SCHEMA, DB_USER, DB_PASS);
     $ADL = new AuthDataLayer($PDO, $tbl, $login_field, $pass_field, $pk_field, $active_field);
 
-    parent::__construct($ADL, new Crypt(), new Session($session_name));
+    parent::__construct($ADL, new Crypt(), new Session($this->_session_name));
   }
 
   public function login ( $email, $senha, $is_crypted = false )
@@ -43,6 +44,12 @@ class UsuarioAuthModel extends Auth
       JsonException::addException("Sua conta ainda não foi ativada. Entre em contato com o Administrador.");
       JsonException::throwException();
     }
+  }
+
+  public function getUser ()
+  {
+    $session = new Session($this->_session_name);
+    return $session->get('user_table');
   }
 
 }

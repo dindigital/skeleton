@@ -68,7 +68,13 @@ class VideoModel extends BaseModelAdm
     $validator->setIncData();
     $validator->throwException();
 
-    $this->_dao->insert($validator->getTable());
+    try {
+      $this->_dao->insert($validator->getTable());
+      $this->log('C', $info['titulo'], $validator->getTable());
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
 
     return $id;
   }
@@ -84,36 +90,51 @@ class VideoModel extends BaseModelAdm
     $validator->setLinkVimeo($info['link_vimeo']);
     $validator->throwException();
 
-    $this->_dao->update($validator->getTable(), array('id_video = ?' => $id));
+    try {
+      $tableHistory = $this->getById($id);
+      $this->_dao->update($validator->getTable(), array('id_video = ?' => $id));
+      $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
 
     return $id;
   }
 
   public function excluir ( $id )
   {
+    $tableHistory = $this->getById($id);
     $validator = new VideoValidator();
     $validator->setDelData();
     $validator->setDel('1');
     $this->_dao->update($validator->getTable(), array('id_video = ?' => $id));
+    $this->log('T', $tableHistory['titulo'], 'video', $tableHistory);
   }
 
   public function restaurar ( $id )
   {
+    $tableHistory = $this->getById($id);
     $validator = new VideoValidator();
     $validator->setDel('0');
     $this->_dao->update($validator->getTable(), array('id_video = ?' => $id));
+    $this->log('R', $tableHistory['titulo'], 'video', $tableHistory);
   }
 
   public function excluir_permanente ( $id )
   {
+    $tableHistory = $this->getById($id);
     $this->_dao->delete('video', array('id_video = ?' => $id));
+    $this->log('D', $tableHistory['titulo'], 'video', $tableHistory);
   }
 
   public function toggleAtivo ( $id, $ativo )
   {
+    $tableHistory = $this->getById($id);
     $validator = new VideoValidator();
     $validator->setAtivo($ativo);
     $this->_dao->update($validator->getTable(), array('id_video = ?' => $id));
+    $this->log('U', $tableHistory['titulo'], $validator->getTable(), $tableHistory);
   }
 
 }

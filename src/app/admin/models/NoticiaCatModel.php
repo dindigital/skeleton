@@ -66,7 +66,13 @@ class NoticiaCatModel extends BaseModelAdm
     $validator->setIncData();
     $validator->throwException();
 
-    $this->_dao->insert($validator->getTable());
+    try {
+      $this->_dao->insert($validator->getTable());
+      $this->log('C', $info['titulo'], $validator->getTable());
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
 
     return $id;
   }
@@ -78,40 +84,54 @@ class NoticiaCatModel extends BaseModelAdm
     $validator->setTitulo($info['titulo']);
     $validator->throwException();
 
-    $this->_dao->update($validator->getTable(), array('id_noticia_cat = ?' => $id));
+    try {
+      $tableHistory = $this->getById($id);
+      $this->_dao->update($validator->getTable(), array('id_noticia_cat = ?' => $id));
+      $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
+    } catch (Exception $e) {
+      JsonException::addException($e->getMessage());
+      JsonException::throwException();
+    }
 
     return $id;
   }
 
   public function excluir ( $id )
   {
+    $tableHistory = $this->getById($id);
     HierarquiaModel::excluirFilhos('noticia_cat', $id, $this->_dao);
     $validator = new NoticiaCatValidator();
     $validator->setDelData();
     $validator->setDel('1');
     $this->_dao->update($validator->getTable(), array('id_noticia_cat = ?' => $id));
+    $this->log('T', $tableHistory['titulo'], 'noticia_cat', $tableHistory);
   }
 
   public function restaurar ( $id )
   {
+    $tableHistory = $this->getById($id);
     $validator = new NoticiaCatValidator();
     $validator->setDel('0');
     $this->_dao->update($validator->getTable(), array('id_noticia_cat = ?' => $id));
+    $this->log('R', $tableHistory['titulo'], 'noticia_cat', $tableHistory);
   }
 
   public function excluir_permanente ( $id )
   {
+    $tableHistory = $this->getById($id);
     $lixeira = new LixeiraModel();
     $lixeira->excluirFilhos('noticia_cat', $id, $this->_dao);
-
     $this->_dao->delete('noticia_cat', array('id_noticia_cat = ?' => $id));
+    $this->log('D', $tableHistory['titulo'], 'noticia_cat', $tableHistory);
   }
 
   public function toggleAtivo ( $id, $ativo )
   {
+    $tableHistory = $this->getById($id);
     $validator = new NoticiaCatValidator();
     $validator->setAtivo($ativo);
     $this->_dao->update($validator->getTable(), array('id_noticia_cat = ?' => $id));
+    $this->log('U', $tableHistory['titulo'], $validator->getTable(), $tableHistory);
   }
 
   public function getDropdown ( $firstOption = '', $selected = null )

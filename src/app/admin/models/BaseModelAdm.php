@@ -22,4 +22,12 @@ class BaseModelAdm
     $select->setLimit($limit_offet[0], $limit_offet[1]);
   }
 
+  public function log ( $action, $msg, $table, $tableHistory = null )
+  {
+    $usuarioAuth = new UsuarioAuthModel();
+    $usuario = $usuarioAuth->getUser();
+
+    LogMySQLModel::save($this->_dao, $usuario, $action, $msg, $table, $tableHistory);
+  }
+
 }

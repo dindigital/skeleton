@@ -93,8 +93,7 @@ abstract class BaseControllerAdm extends BaseController
     if ( !$usuarioAuthModel->is_logged() )
       throw new Exception('Permissão negada, usuário deve estar logado.');
 
-    $usuario = new UsuarioModel();
-    $this->_data['user'] = $usuario->getById($usuarioAuthModel->getId());
+    $this->_data['user'] = $usuarioAuthModel->getUser();
     $this->_data['user']['avatar_img'] = Picuri::picUri($this->_data['user']['avatar'], 30, 30, true);
   }
 
