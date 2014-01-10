@@ -19,7 +19,7 @@ function showLoadingOverlay() {
 }
 
 function boxError() {
-  $('.alert-danger').stop(true, true).slideDown('slow').animate({opacity: 1}, 4000, function() {
+  $('.alert-danger').stop(true, true).slideDown('slow').animate({opacity: 1}, 8000, function() {
     $('.alert-danger').slideUp();
   });
 }

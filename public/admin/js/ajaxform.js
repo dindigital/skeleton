@@ -68,9 +68,16 @@ function ajaxformSuccess(data) {
     case 'redirect':
       location.href = data.uri;
       break;
+    case 'alert':
+      alert(data.message);
+      break;
+    case 'alert_redirect':
+      alert(data.message);
+      location.href = data.uri;
+      break;
     case 'success':
       $('.alert-success div').append('<p>' + data.message + '</p>');
-      $('.alert-success').stop(true, true).slideDown('slow').animate({opacity: 1}, 4000, function() {
+      $('.alert-success').stop(true, true).slideDown('slow').animate({opacity: 1}, 8000, function() {
         $('.alert-success').slideUp();
       });
       break;

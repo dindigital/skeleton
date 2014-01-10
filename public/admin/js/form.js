@@ -142,4 +142,27 @@ $(document).ready(function() {
     });
   });
 
+  $('.youtube_link').bind('change keyup keypress', function() {
+    $(this).val(getIdFromYoutube($(this).val()));
+  });
+
+  $('.vimeo_link').bind('change keyup keypress', function() {
+    var result = getIdFromVimeo($(this).val());
+    if (result) {
+      $(this).val(result);
+    }
+  });
+
 });
+
+function getIdFromYoutube(text) {
+  return text.replace(/(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=))([\w\-]{10,12})\b[?=&\w]*(?!['"][^<>]*>|<\/a>)/ig, '$1');
+}
+
+function getIdFromVimeo(url)
+{
+  var regExp = /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/;
+  var parseUrl = regExp.exec(url);
+  if (parseUrl != null)
+    return parseUrl[5];
+}
