@@ -85,7 +85,7 @@ class NoticiaCatModel extends BaseModelAdm
 
   public function excluir ( $id )
   {
-    HierarquiaModel::excluirFilhos('noticia_cat', $id, $this->_dao);
+    $this->excluirFilhos('noticia_cat', $id);
     $validator = new NoticiaCatValidator();
     $validator->setDelData();
     $validator->setDel('1');
@@ -101,8 +101,7 @@ class NoticiaCatModel extends BaseModelAdm
 
   public function excluir_permanente ( $id )
   {
-    $lixeira = new LixeiraModel();
-    $lixeira->excluirFilhos('noticia_cat', $id, $this->_dao);
+    $this->excluirFilhos('noticia_cat', $id, true);
 
     $this->_dao->delete('noticia_cat', array('id_noticia_cat = ?' => $id));
   }

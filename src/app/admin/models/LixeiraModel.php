@@ -7,6 +7,7 @@ use Din\DataAccessLayer\Select;
 use \Exception;
 use Din\Paginator\Paginator;
 use Din\Form\Dropdown\Dropdown;
+use Din\DataAccessLayer\Entities;
 
 /**
  *
@@ -15,40 +16,14 @@ use Din\Form\Dropdown\Dropdown;
 class LixeiraModel extends BaseModelAdm
 {
 
-  private $_itens;
-
   public function __construct ()
   {
     parent::__construct();
-
-    $this->_itens = array(
-        'foto' => array(
-            'tbl' => 'foto',
-            'model' => 'Foto',
-            'secao' => 'Fotos',
-            'id' => 'id_foto',
-            'title' => 'titulo',
-        ),
-        'noticia' => array(
-            'tbl' => 'noticia',
-            'model' => 'Noticia',
-            'secao' => 'Notícias',
-            'id' => 'id_noticia',
-            'title' => 'titulo'
-        ),
-        'noticia_cat' => array(
-            'tbl' => 'noticia_cat',
-            'model' => 'NoticiaCat',
-            'secao' => 'Categoria de Notícias',
-            'id' => 'id_noticia_cat',
-            'title' => 'titulo'
-        ),
-    );
   }
 
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
-    $itens = $this->_itens;
+    $itens = Entities::getLixeiraItens();
 
     if ( $arrFilters['secao'] != '0' ) {
       if ( isset($itens[$arrFilters['secao']]) ) {
@@ -100,7 +75,7 @@ class LixeiraModel extends BaseModelAdm
     foreach ( $itens as $item ) {
       list($tbl, $id) = explode('_', $item);
 
-      $classname = '\src\app\admin\models\\' . ucfirst($tbl) . 'Model';
+      $classname = '\src\app\admin\models\\' . $tbl;
 
       $model = new $classname;
       $model->restaurar($id);
@@ -110,11 +85,11 @@ class LixeiraModel extends BaseModelAdm
   public function excluir ( $itens )
   {
     foreach ( $itens as $item ) {
-      $tbl = $item['tbl'];
-      $id = $item['id'];
-
-      $this->setModel($tbl);
-      $this->_model->excluir($id);
+      list($tbl, $id) = explode('_', $item);
+      $tbl = ucfirst($tbl);
+      $model_name = "\\src\\app\\admin\\models\\{$tbl}";
+      $model = new $model_name;
+      $model->excluir_permanente($id);
     }
   }
 
@@ -122,7 +97,7 @@ class LixeiraModel extends BaseModelAdm
   {
     $arrOptions = array();
 
-    foreach ( $this->_itens as $model ) {
+    foreach ( Entities::getLixeiraItens() as $model ) {
       $arrOptions[$model['tbl']] = $model['secao'];
     }
 
@@ -139,44 +114,48 @@ class LixeiraModel extends BaseModelAdm
 
   public function validateRestaurar ( $tbl, $id )
   {
-    $pai = HierarquiaModel::getPai($tbl);
+    $atual = Entities::getEntity($tbl);
+    $pai = Entities::getPai($tbl);
+
     if ( $pai ) {
-      $model_name = '\src\app\admin\models\\' . $pai['model'];
+      $model_name = '\src\app\admin\models\\' . $atual['model'];
       $model_inst = new $model_name;
       $row = $model_inst->getById($id);
       $id_pai = $row[$pai['id']];
 
       $select = new Select($pai['tbl']);
+      $select->addField($pai['title'], 'titulo');
       $select->where(array(
           $pai['id'] . ' = ?' => $id_pai,
           'del = ?' => '1'
       ));
 
-      $count = $this->_dao->select_count($select);
-      if ( $count ) {
-        throw new Exception('É necessário restaurar primeiro');
+      $result = $this->_dao->select($select);
+
+      if ( count($result) ) {
+        throw new Exception('É necessário restaurar o ítem: ' . $pai['secao'] . ' - ' . $result[0]['titulo']);
       }
     }
   }
 
-  public function excluirFilhos ( $tbl, $id, $dao )
-  {
-    $filhos = HierarquiaModel::getFilhos($tbl);
-
-    foreach ( $filhos as $filho ) {
-      $select = new Select($filho['tbl']);
-      $select->addField($filho['id']);
-      $select->where(array(
-          $filho['id_pai'] . ' = ? ' => $id
-      ));
-      $result = $dao->select($select);
-
-      foreach ( $result as $row ) {
-        $model_name = '\src\app\admin\models\\' . $filho['model'];
-        $model_inst = new $model_name;
-        $model_inst->excluir_permanente($row[$filho['id']]);
-      }
-    }
-  }
-
+//  public function excluirFilhos ( $tbl, $id, $dao )
+//  {
+//    die('a');
+//    $filhos = HierarquiaModel::getFilhos($tbl);
+//
+//    foreach ( $filhos as $filho ) {
+//      $select = new Select($filho['tbl']);
+//      $select->addField($filho['id']);
+//      $select->where(array(
+//          $filho['id_pai'] . ' = ? ' => $id
+//      ));
+//      $result = $dao->select($select);
+//
+//      foreach ( $result as $row ) {
+//        $model_name = '\src\app\admin\models\\' . $filho['model'];
+//        $model_inst = new $model_name;
+//        $model_inst->excluir_permanente($row[$filho['id']]);
+//      }
+//    }
+//  }
 }

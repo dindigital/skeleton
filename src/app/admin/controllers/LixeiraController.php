@@ -8,7 +8,6 @@ use Din\Http\Post;
 use \Exception;
 use src\app\admin\models\LixeiraModel;
 use Din\Http\Header;
-use src\app\admin\helpers\Form;
 
 /**
  *
@@ -61,13 +60,7 @@ class LixeiraController extends BaseControllerAdm
     try {
       $itens = Post::aray('itens');
 
-      foreach ( $itens as $item ) {
-        list($tbl, $id) = explode('_', $item);
-        $tbl = ucfirst($tbl);
-        $model_name = "\\src\\app\\admin\\models\\{$tbl}Model";
-        $model = new $model_name;
-        $model->excluir_permanente($id);
-      }
+      $this->_model->excluir($itens);
 
       Header::redirect(Header::getReferer());
     } catch (Exception $e) {
