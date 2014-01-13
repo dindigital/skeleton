@@ -7,8 +7,6 @@ use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
 use \Exception;
-use Din\File\Folder;
-use src\app\admin\models\HierarquiaModel;
 
 /**
  *

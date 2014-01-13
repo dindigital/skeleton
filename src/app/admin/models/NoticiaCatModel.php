@@ -8,7 +8,6 @@ use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
 use \Exception;
 use Din\Form\Dropdown\Dropdown;
-use src\app\admin\models\HierarquiaModel;
 
 /**
  *

@@ -8,7 +8,6 @@ use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
 use \Exception;
 use Din\Exception\JsonException;
-use Din\File\Folder;
 
 /**
  *
