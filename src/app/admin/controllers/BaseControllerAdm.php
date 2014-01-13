@@ -3,7 +3,6 @@
 namespace src\app\admin\controllers;
 
 use Din\Mvc\Controller\BaseController;
-use src\app\admin\models\UsuarioModel;
 use src\app\admin\models\UsuarioAuthModel;
 use \Exception;
 use Din\Session\Session;
@@ -151,6 +150,17 @@ abstract class BaseControllerAdm extends BaseController
   public function post_ativo ()
   {
     $this->_model->toggleAtivo(Post::text('id'), Post::checkbox('ativo'));
+  }
+
+  public function post_ordem ()
+  {
+    try {
+      $this->_model->changeOrdem(Post::text('id'), Post::text('ordem'));
+
+      Header::redirect(Header::getReferer());
+    } catch (Exception $e) {
+      $this->setErrorSession($e->getMessage());
+    }
   }
 
 }

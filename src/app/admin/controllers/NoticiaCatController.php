@@ -8,6 +8,8 @@ use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use \Exception;
+use src\app\admin\helpers\Form;
+use src\app\admin\helpers\Arrays;
 
 /**
  *
@@ -31,11 +33,13 @@ class NoticiaCatController extends BaseControllerAdm
 
     $arrFilters = array(
         'titulo' => Get::text('titulo'),
+        'home' => Get::text('home'),
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
     $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
     $this->_data['busca'] = $arrFilters;
+    $this->_data['busca']['home'] = Form::Dropdown('home', Arrays::$simNao, $arrFilters['home'], 'Home?');
 
     $this->setErrorSessionData();
 
@@ -51,6 +55,8 @@ class NoticiaCatController extends BaseControllerAdm
       $this->_data['table'] = array();
     }
 
+    $this->_data['table']['capa'] = Form::Upload('capa', @$this->_data['table']['capa'], 'imagem');
+
     $this->setCadastroTemplate('noticiacat_cadastro.phtml');
   }
 
@@ -60,6 +66,8 @@ class NoticiaCatController extends BaseControllerAdm
       $info = array(
           'ativo' => Post::checkbox('ativo'),
           'titulo' => Post::text('titulo'),
+          'home' => Post::checkbox('home'),
+          'capa' => Post::upload('capa')
       );
 
       if ( !$id ) {

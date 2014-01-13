@@ -15,6 +15,9 @@
           <div class="col-sm-4 col-md-4 col-lg-2">
             <input class="form-control" name="titulo" type="text" placeholder="Busca por titulo" value="<?php echo $data['busca']['titulo']; ?>">
           </div>
+          <div class="col-sm-4 col-md-4 col-lg-2">
+            <?php echo $data['busca']['home']; ?>
+          </div>
           <input type="button" value="Limpar" class="limpar_busca btn btn-default btn-rad" />
           <input type="submit" value="Buscar" class="btn btn-info btn-rad" />
         </form>
@@ -29,6 +32,7 @@
               <tr>
                 <th style="width:2%;"><input type="checkbox" name="excluir[]" id="excluir_all" /></th>
                 <th style="width:5%;"><strong>Ativo</strong></th>
+                <th style="width:5%;"><strong>Ordem</strong></th>
                 <th style="width:15%;"><strong>Titulo</strong></th>
                 <th style="width:15%;"><strong>Data de Inclusão</strong></th>
                 <th style="width:15%;" class="text-center"><strong>Ações</strong></th>
@@ -39,6 +43,7 @@
                 <tr>
                   <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_NoticiaCat_<?php echo $row['id_noticia_cat']; ?>" /></td>
                   <td><input class="setAtivo" type="checkbox" <?php if ( $row['ativo'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_noticia_cat']; ?>" /></td>
+                  <td><?php echo $row['ordem']; ?></td>
                   <td><?php echo $row['titulo']; ?></td>
                   <td><?php echo $data['DateFormat']::filter_date($row['inc_data']); ?></td>
                   <td class="text-center">

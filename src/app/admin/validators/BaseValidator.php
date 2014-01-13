@@ -36,6 +36,14 @@ class BaseValidator
     $this->_table->del_data = date('Y-m-d H:i:s');
   }
 
+  public function setOrdem ( $ordem )
+  {
+    if ( !is_numeric($ordem) )
+      return JsonException::addException('ordem deve ser numérica');
+
+    $this->_table->ordem = $ordem;
+  }
+
   public function setArquivo ( $fieldname, $file, $id = null )
   {
     $tmp_dir = 'tmp';

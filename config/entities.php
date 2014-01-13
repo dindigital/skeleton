@@ -31,6 +31,10 @@ return array(
             'noticia'
         ),
         'lixeira' => true,
+        'ordem' => array(
+            'opcional' => false,
+            'dependencia' => 'home'
+        ),
     ),
     'usuario' => array(
         'tbl' => 'usuario',

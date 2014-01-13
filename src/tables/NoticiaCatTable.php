@@ -23,6 +23,16 @@ class NoticiaCatTable extends AbstractTable implements iTable
   protected $titulo;
 
   /**
+   * @var tinyint(4) NOT NULL
+   */
+  protected $home;
+
+  /**
+   * @var varchar(255) NOT NULL
+   */
+  protected $capa;
+
+  /**
    * @var datetime
    */
   protected $inc_data;
@@ -41,5 +51,10 @@ class NoticiaCatTable extends AbstractTable implements iTable
    * @var datetime DEFAULT NULL
    */
   protected $del_data;
+
+  /**
+   * @var int DEFAULT NULL
+   */
+  protected $ordem;
 
 }

@@ -29,4 +29,11 @@ class NoticiaCatValidator extends BaseValidator
     $this->_table->titulo = $titulo;
   }
 
+  public function setHome ( $home )
+  {
+    $home = intval($home);
+
+    $this->_table->home = $home;
+  }
+
 }

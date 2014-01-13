@@ -117,4 +117,44 @@ class BaseModelAdm
     $this->log('U', $tableHistory[$atual['title']], $validator->getTable(), $tableHistory);
   }
 
+  public function operaOrdem ( $operador, $arrCriteria )
+  {
+    $atual = Entities::getThis($this);
+
+    $SQL = "UPDATE {$atual['tbl']} SET ordem = ordem {$operador} 1";
+    $result = $this->_dao->execute($SQL, $arrCriteria);
+
+    return $result;
+  }
+
+  public function atualizaOrdem ( $ordem, $id )
+  {
+    $atual = Entities::getThis($this);
+
+    $validator_namespace = '\src\app\admin\validators\\' . $atual['validator'];
+    $validator = new $validator_namespace;
+    $validator->setOrdem($ordem);
+    $this->_dao->update($validator->getTable(), array($atual['id'] . '= ? ' => $id));
+  }
+
+  public function changeOrdem ( $id, $ordem )
+  {
+    \src\app\admin\helpers\Ordem::changeOrdem($this, $id, $ordem);
+  }
+
+  public function getMaxOrdem ( $arrCriteria = array() )
+  {
+    $atual = Entities::getThis($this);
+
+    $select = new Select($atual['tbl']);
+
+    if ( $atual['ordem']['opcional'] ) {
+      $arrCriteria['ordem > ?'] = '0';
+    }
+
+    $select->where($arrCriteria);
+
+    return $this->_dao->select_count($select);
+  }
+
 }

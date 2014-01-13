@@ -60,9 +60,9 @@ class Form
   {
     $d = new Dropdown($name);
     if ( $class )
-      $d->setClass('uniform ' . $class);
+      $d->setClass('form-control ' . $class);
     else
-      $d->setClass('uniform');
+      $d->setClass('form-control');
 
     $d->setSelected($selected);
     $d->setOptionsArray($array);
