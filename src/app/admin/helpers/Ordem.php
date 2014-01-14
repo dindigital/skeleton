@@ -2,7 +2,7 @@
 
 namespace src\app\admin\helpers;
 
-use Din\DataAccessLayer\Entities;
+use src\app\admin\helpers\Entities;
 use Din\Form\Dropdown\Dropdown;
 
 class Ordem

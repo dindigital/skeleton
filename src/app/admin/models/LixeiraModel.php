@@ -7,7 +7,7 @@ use Din\DataAccessLayer\Select;
 use \Exception;
 use Din\Paginator\Paginator;
 use Din\Form\Dropdown\Dropdown;
-use Din\DataAccessLayer\Entities;
+use src\app\admin\helpers\Entities;
 
 /**
  *
@@ -29,7 +29,7 @@ class LixeiraModel extends BaseModelAdm
     $i = 0;
     foreach ( $itens as $item ) {
 
-      $model = $item['model'];
+      $name = $item['name'];
       $table_name = $item['tbl'];
       $id_field = $item['id'];
       $title_field = $item['title'];
@@ -40,8 +40,7 @@ class LixeiraModel extends BaseModelAdm
       $select1->addField($title_field);
       $select1->addField('del_data');
       $select1->addSField('secao', $secao);
-      $select1->addSField('tbl', $table_name);
-      $select1->addSField('model', $model);
+      $select1->addSField('name', $name);
       $select1->where(array(
           'del = 1' => null,
           $title_field . ' LIKE ?' => '%' . $arrFilters['titulo'] . '%'
@@ -68,11 +67,11 @@ class LixeiraModel extends BaseModelAdm
   public function restaurar ( $itens )
   {
     foreach ( $itens as $item ) {
-      list($tbl, $id) = explode('_', $item);
+      list($name, $id) = explode('_', $item);
 
-      $classname = '\src\app\admin\models\\' . $tbl;
+      $atual = Entities::getEntityByName($name);
 
-      $model = new $classname;
+      $model = new $atual['model'];
       $model->restaurar($id);
     }
   }
@@ -80,10 +79,10 @@ class LixeiraModel extends BaseModelAdm
   public function excluir ( $itens )
   {
     foreach ( $itens as $item ) {
-      list($tbl, $id) = explode('_', $item);
-      $tbl = ucfirst($tbl);
-      $model_name = "\\src\\app\\admin\\models\\{$tbl}";
-      $model = new $model_name;
+      list($name, $id) = explode('_', $item);
+
+      $atual = Entities::getEntityByName($name);
+      $model = new $atual['model'];
       $model->excluir_permanente($id);
     }
   }
@@ -113,8 +112,7 @@ class LixeiraModel extends BaseModelAdm
     $pai = Entities::getPai($tbl);
 
     if ( $pai ) {
-      $model_name = '\src\app\admin\models\\' . $atual['model'];
-      $model_inst = new $model_name;
+      $model_inst = new $atual['model'];
       $row = $model_inst->getById($id);
       $id_pai = $row[$pai['id']];
 

@@ -3,15 +3,13 @@
 return array(
     'configuracao' => array(
         'tbl' => 'configuracao',
-        'model' => 'ConfiguracaoModel',
-        'validator' => 'ConfiguracaoValidator',
+        'name' => 'Configuracao',
         'secao' => 'Configuração',
         'id' => 'id_configuracao',
     ),
     'foto' => array(
         'tbl' => 'foto',
-        'model' => 'FotoModel',
-        'validator' => 'FotoValidator',
+        'name' => 'Foto',
         'secao' => 'Fotos',
         'id' => 'id_foto',
         'title' => 'titulo',
@@ -19,8 +17,7 @@ return array(
     ),
     'noticia' => array(
         'tbl' => 'noticia',
-        'model' => 'NoticiaModel',
-        'validator' => 'NoticiaValidator',
+        'name' => 'Noticia',
         'secao' => 'Notícias',
         'id' => 'id_noticia',
         'title' => 'titulo',
@@ -32,8 +29,7 @@ return array(
     ),
     'noticia_cat' => array(
         'tbl' => 'noticia_cat',
-        'model' => 'NoticiaCatModel',
-        'validator' => 'NoticiaCatValidator',
+        'name' => 'NoticiaCat',
         'secao' => 'Categoria de Notícias',
         'id' => 'id_noticia_cat',
         'title' => 'titulo',
@@ -48,8 +44,7 @@ return array(
     ),
     'usuario' => array(
         'tbl' => 'usuario',
-        'model' => 'UsuarioModel',
-        'validator' => 'UsuarioValidator',
+        'name' => 'Usuario',
         'secao' => 'Usuários',
         'id' => 'id_usuario',
         'title' => 'nome',
@@ -57,8 +52,7 @@ return array(
     ),
     'video' => array(
         'tbl' => 'video',
-        'model' => 'VideoModel',
-        'validator' => 'VideoValidator',
+        'name' => 'Video',
         'secao' => 'Vídeos',
         'id' => 'id_video',
         'title' => 'titulo',

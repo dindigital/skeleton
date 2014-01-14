@@ -4,7 +4,7 @@ namespace src\app\admin\models;
 
 use Din\DataAccessLayer\DAO;
 use Din\DataAccessLayer\PDO\PDOBuilder;
-use Din\DataAccessLayer\Entities;
+use src\app\admin\helpers\Entities;
 use Din\DataAccessLayer\Select;
 use Din\File\Folder;
 use src\app\admin\helpers\Ordem;
@@ -69,8 +69,7 @@ class BaseModelAdm
       $result = $this->_dao->select($select);
 
       foreach ( $result as $row ) {
-        $model_name = '\src\app\admin\models\\' . $filho['model'];
-        $model_inst = new $model_name;
+        $model_inst = new $filho['model'];
         if ( $permanente ) {
           $model_inst->excluir_permanente($row['id_filho']);
         } else {
@@ -96,8 +95,7 @@ class BaseModelAdm
 
     $this->excluirFilhos($atual['tbl'], $id);
     $tableHistory = $this->getById($id);
-    $validator_namespace = '\src\app\admin\validators\\' . $atual['validator'];
-    $validator = new $validator_namespace;
+    $validator = new $atual['validator'];
     $validator->setDelData();
     $validator->setDel('1');
     $this->_dao->update($validator->getTable(), array($atual['id'] . ' = ?' => $id));
@@ -113,8 +111,7 @@ class BaseModelAdm
 
     $tableHistory = $this->getById($id);
 
-    $validator_namespace = '\src\app\admin\validators\\' . $atual['validator'];
-    $validator = new $validator_namespace;
+    $validator = new $atual['validator'];
 
     Ordem::setOrdem($this, $validator, $tableHistory);
 
@@ -142,8 +139,7 @@ class BaseModelAdm
     $atual = Entities::getThis($this);
 
     $tableHistory = $this->getById($id);
-    $validator_namespace = '\src\app\admin\validators\\' . $atual['validator'];
-    $validator = new $validator_namespace;
+    $validator = new $atual['validator'];
     $validator->setAtivo($ativo);
     $this->_dao->update($validator->getTable(), array($atual['id'] . ' = ?' => $id));
     $this->log('U', $tableHistory[$atual['title']], $validator->getTable(), $tableHistory);
@@ -163,8 +159,7 @@ class BaseModelAdm
   {
     $atual = Entities::getThis($this);
 
-    $validator_namespace = '\src\app\admin\validators\\' . $atual['validator'];
-    $validator = new $validator_namespace;
+    $validator = new $atual['validator'];
     $validator->setOrdem($ordem);
     $this->_dao->update($validator->getTable(), array($atual['id'] . '= ? ' => $id));
   }

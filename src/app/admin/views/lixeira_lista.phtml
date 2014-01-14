@@ -45,7 +45,7 @@
             <tbody class="no-border-y">
               <?php foreach ( $data['list'] as $row ): ?>
                 <tr>
-                  <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_<?php echo $row['model']; ?>_<?php echo $row['id']; ?>" /></td>
+                  <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_<?php echo $row['name']; ?>_<?php echo $row['id']; ?>" /></td>
                   <td><?php echo $data['DateFormat']::filter_date($row['del_data'], 'd/m/Y H:i:s'); ?></td>
                   <td><?php echo $row['titulo']; ?></td>
                   <td><?php echo $row['secao']; ?></td>
