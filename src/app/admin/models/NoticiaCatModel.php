@@ -17,26 +17,6 @@ use src\app\admin\helpers\Ordem;
 class NoticiaCatModel extends BaseModelAdm
 {
 
-  public function getById ( $id )
-  {
-    $arrCriteria = array(
-        'id_noticia_cat = ?' => $id
-    );
-
-    $select = new Select('noticia_cat');
-    $select->addField('*');
-    $select->where($arrCriteria);
-
-    $result = $this->_dao->select($select);
-
-    if ( !count($result) )
-      throw new Exception('Categoria não encontrada.');
-
-    $row = $result[0];
-
-    return $row;
-  }
-
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
     $arrCriteria = array(

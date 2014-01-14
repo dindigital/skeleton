@@ -5,7 +5,6 @@ namespace src\app\admin\models;
 use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\validators\ConfiguracaoValidator;
-use \Exception;
 use Din\Exception\JsonException;
 
 /**
@@ -14,26 +13,6 @@ use Din\Exception\JsonException;
  */
 class ConfiguracaoModel extends BaseModelAdm
 {
-
-  public function __construct ()
-  {
-    parent::__construct();
-  }
-
-  public function getById ( $id_configuracao )
-  {
-    $select = new Select('configuracao');
-    $select->addField('*');
-    $select->where(array(
-        'id_configuracao = ?' => $id_configuracao
-    ));
-    $result = $this->_dao->select($select);
-
-    if ( !count($result) )
-      throw new Exception('Configuração não encontrada.');
-
-    return $result[0];
-  }
 
   public function atualizar ( $id, $info )
   {
@@ -48,14 +27,9 @@ class ConfiguracaoModel extends BaseModelAdm
     $validator->setEmailAvisos($info['email_avisos']);
     $validator->throwException();
 
-    try {
-      $tableHistory = $this->getById($id);
-      $this->_dao->update($validator->getTable(), array('id_configuracao = ?' => '1'));
-      $this->log('U', 'Configurações', $validator->getTable(), $tableHistory);
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $tableHistory = $this->getById($id);
+    $this->_dao->update($validator->getTable(), array('id_configuracao = ?' => '1'));
+    $this->log('U', 'Configurações', $validator->getTable(), $tableHistory);
   }
 
 }

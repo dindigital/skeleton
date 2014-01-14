@@ -16,11 +16,6 @@ use Din\DataAccessLayer\Entities;
 class LixeiraModel extends BaseModelAdm
 {
 
-  public function __construct ()
-  {
-    parent::__construct();
-  }
-
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
     $itens = Entities::getLixeiraItens();
@@ -138,24 +133,4 @@ class LixeiraModel extends BaseModelAdm
     }
   }
 
-//  public function excluirFilhos ( $tbl, $id, $dao )
-//  {
-//    die('a');
-//    $filhos = HierarquiaModel::getFilhos($tbl);
-//
-//    foreach ( $filhos as $filho ) {
-//      $select = new Select($filho['tbl']);
-//      $select->addField($filho['id']);
-//      $select->where(array(
-//          $filho['id_pai'] . ' = ? ' => $id
-//      ));
-//      $result = $dao->select($select);
-//
-//      foreach ( $result as $row ) {
-//        $model_name = '\src\app\admin\models\\' . $filho['model'];
-//        $model_inst = new $model_name;
-//        $model_inst->excluir_permanente($row[$filho['id']]);
-//      }
-//    }
-//  }
 }

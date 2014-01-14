@@ -6,7 +6,6 @@ use src\app\admin\validators\BaseValidator;
 use src\tables\FotoTable;
 use Din\Exception\JsonException;
 use Din\Filters\Date\DateToSql;
-use Din\Filters\Date\DateFormat;
 
 class FotoValidator extends BaseValidator
 {
@@ -33,7 +32,7 @@ class FotoValidator extends BaseValidator
 
   public function setData ( $data )
   {
-    if ( !DateFormat::validate($data) )
+    if ( !DateToSql::validate($data) )
       return JsonException::addException('Data é obrigatório');
 
     $data = DateToSql::filter_date($data);

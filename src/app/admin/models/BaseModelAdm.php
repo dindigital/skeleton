@@ -8,6 +8,7 @@ use Din\DataAccessLayer\Entities;
 use Din\DataAccessLayer\Select;
 use Din\File\Folder;
 use src\app\admin\helpers\Ordem;
+use Exception;
 
 class BaseModelAdm
 {
@@ -30,6 +31,28 @@ class BaseModelAdm
     $total = $this->_dao->select_count($select);
     $limit_offet = $paginator->getLimitOffset($total);
     $select->setLimit($limit_offet[0], $limit_offet[1]);
+  }
+
+  public function getById ( $id )
+  {
+    $atual = Entities::getThis($this);
+
+    $arrCriteria = array(
+        $atual['id'] . ' = ?' => $id
+    );
+
+    $select = new Select($atual['tbl']);
+    $select->addField('*');
+    $select->where($arrCriteria);
+
+    $result = $this->_dao->select($select);
+
+    if ( !count($result) )
+      throw new Exception('Registro não encontrado.');
+
+    $row = $result[0];
+
+    return $row;
   }
 
   public function excluirFilhos ( $tbl, $id, $permanente = false )
@@ -104,6 +127,8 @@ class BaseModelAdm
   {
     $atual = Entities::getThis($this);
 
+    Ordem::changeOrdem($this, $id, 0);
+
     $this->excluirFilhos($atual['tbl'], $id, true);
 
     $tableHistory = $this->getById($id);
@@ -146,7 +171,7 @@ class BaseModelAdm
 
   public function changeOrdem ( $id, $ordem )
   {
-    \src\app\admin\helpers\Ordem::changeOrdem($this, $id, $ordem);
+    Ordem::changeOrdem($this, $id, $ordem);
   }
 
   public function getMaxOrdem ( $arrCriteria = array() )

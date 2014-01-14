@@ -6,7 +6,6 @@ use src\app\admin\validators\VideoValidator;
 use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
-use \Exception;
 
 /**
  *
@@ -14,26 +13,6 @@ use \Exception;
  */
 class VideoModel extends BaseModelAdm
 {
-
-  public function getById ( $id )
-  {
-    $arrCriteria = array(
-        'id_video = ?' => $id
-    );
-
-    $select = new Select('video');
-    $select->addField('*');
-    $select->where($arrCriteria);
-
-    $result = $this->_dao->select($select);
-
-    if ( !count($result) )
-      throw new Exception('Vídeo não encontrada.');
-
-    $row = $result[0];
-
-    return $row;
-  }
 
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
@@ -68,13 +47,8 @@ class VideoModel extends BaseModelAdm
     $validator->setIncData();
     $validator->throwException();
 
-    try {
-      $this->_dao->insert($validator->getTable());
-      $this->log('C', $info['titulo'], $validator->getTable());
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $this->_dao->insert($validator->getTable());
+    $this->log('C', $info['titulo'], $validator->getTable());
 
     return $id;
   }
@@ -90,14 +64,9 @@ class VideoModel extends BaseModelAdm
     $validator->setLinkVimeo($info['link_vimeo']);
     $validator->throwException();
 
-    try {
-      $tableHistory = $this->getById($id);
-      $this->_dao->update($validator->getTable(), array('id_video = ?' => $id));
-      $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $tableHistory = $this->getById($id);
+    $this->_dao->update($validator->getTable(), array('id_video = ?' => $id));
+    $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
 
     return $id;
   }

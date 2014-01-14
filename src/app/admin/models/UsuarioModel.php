@@ -6,7 +6,6 @@ use Din\Paginator\Paginator;
 use Din\DataAccessLayer\Select;
 use src\app\admin\validators\UsuarioValidator;
 use \Exception;
-use Din\Exception\JsonException;
 
 /**
  *
@@ -14,11 +13,6 @@ use Din\Exception\JsonException;
  */
 class UsuarioModel extends BaseModelAdm
 {
-
-  public function __construct ()
-  {
-    parent::__construct();
-  }
 
   public function inserir ( $info )
   {
@@ -35,13 +29,8 @@ class UsuarioModel extends BaseModelAdm
     $validator->setArquivo('avatar3', $info['avatar3'], $id, false);
     $validator->throwException();
 
-    try {
-      $this->_dao->insert($validator->getTable());
-      $this->log('C', $info['nome'], $validator->getTable());
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $this->_dao->insert($validator->getTable());
+    $this->log('C', $info['nome'], $validator->getTable());
 
     return $id;
   }
@@ -59,14 +48,9 @@ class UsuarioModel extends BaseModelAdm
     $validator->setArquivo('avatar3', $info['avatar3'], $id, false);
     $validator->throwException();
 
-    try {
-      $tableHistory = $this->getById($id);
-      $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
-      $this->log('U', $info['nome'], $validator->getTable(), $tableHistory);
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $tableHistory = $this->getById($id);
+    $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
+    $this->log('U', $info['nome'], $validator->getTable(), $tableHistory);
   }
 
   public function salvar_config ( $id, $info )
@@ -78,14 +62,9 @@ class UsuarioModel extends BaseModelAdm
     $validator->setArquivo('avatar', $info['avatar'], $id, false);
     $validator->throwException();
 
-    try {
-      $tableHistory = $this->getById($id);
-      $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
-      $this->log('U', $info['nome'], $validator->getTable(), $tableHistory);
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $tableHistory = $this->getById($id);
+    $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $id));
+    $this->log('U', $info['nome'], $validator->getTable(), $tableHistory);
   }
 
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
@@ -110,24 +89,6 @@ class UsuarioModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return $result;
-  }
-
-  public function getById ( $id )
-  {
-    $arrCriteria = array(
-        'id_usuario = ?' => $id
-    );
-
-    $select = new Select('usuario');
-    $select->addField('*');
-    $select->where($arrCriteria);
-
-    $result = $this->_dao->select($select);
-
-    if ( !count($result) )
-      throw new Exception('Usuário não encontrado.');
-
-    return $result[0];
   }
 
   public function excluir ( $id )

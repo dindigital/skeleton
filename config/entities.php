@@ -1,6 +1,13 @@
 <?php
 
 return array(
+    'configuracao' => array(
+        'tbl' => 'configuracao',
+        'model' => 'ConfiguracaoModel',
+        'validator' => 'ConfiguracaoValidator',
+        'secao' => 'Configuração',
+        'id' => 'id_configuracao',
+    ),
     'foto' => array(
         'tbl' => 'foto',
         'model' => 'FotoModel',

@@ -4,8 +4,6 @@ namespace src\app\admin\models;
 
 use Din\DataAccessLayer\Select;
 use src\app\admin\validators\UsuarioSenhaValidator;
-use \Exception;
-use Din\Exception\JsonException;
 
 /**
  *
@@ -15,11 +13,6 @@ class UsuarioSenhaModel extends BaseModelAdm
 {
 
   private $_token = null;
-
-  public function __construct ()
-  {
-    parent::__construct();
-  }
 
   public function recuperar_senha ( $email )
   {

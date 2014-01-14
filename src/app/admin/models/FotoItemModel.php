@@ -5,8 +5,6 @@ namespace src\app\admin\models;
 use src\app\admin\models\BaseModelAdm;
 use src\app\admin\validators\FotoItemValidator;
 use Din\DataAccessLayer\Select;
-use \Exception;
-use Din\Exception\JsonException;
 
 /**
  *
@@ -14,24 +12,6 @@ use Din\Exception\JsonException;
  */
 class FotoItemModel extends BaseModelAdm
 {
-
-  public function getById ( $id )
-  {
-    $arrCriteria = array(
-        'id_foto_item = ?' => $id
-    );
-
-    $select = new Select('foto_item');
-    $select->addField('*');
-    $select->where($arrCriteria);
-
-    $result = $this->_dao->select($select);
-
-    if ( !count($result) )
-      throw new Exception('Foto não encontrada.');
-
-    return $result[0];
-  }
 
   public function listar ( $arrCriteria = array() )
   {
@@ -55,12 +35,7 @@ class FotoItemModel extends BaseModelAdm
     $validator->setGaleria($info['arquivo'], "foto/{$info['id_foto']}/arquivo/{$id}/");
     $validator->throwException();
 
-    try {
-      $this->_dao->insert($validator->getTable());
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $this->_dao->insert($validator->getTable());
 
     return $id;
   }
@@ -72,12 +47,7 @@ class FotoItemModel extends BaseModelAdm
     $validator->setCredito($info['credito']);
     $validator->setOrdem2($info['ordem']);
 
-    try {
-      $this->_dao->update($validator->getTable(), array('id_foto_item = ?' => $id));
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $this->_dao->update($validator->getTable(), array('id_foto_item = ?' => $id));
 
     return $id;
   }
@@ -100,11 +70,35 @@ class FotoItemModel extends BaseModelAdm
       @unlink(WEBROOT . '/public/' . $row['arquivo']);
     }
 
-    try {
-      $this->_dao->delete('foto_item', $arrCriteria);
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
+    $this->_dao->delete('foto_item', $arrCriteria);
+  }
+
+  public function saveFotos ( $upload, $id, $galeria_ordem = null, $legenda = null, $credito = null )
+  {
+    $this->deletar_removidas($id, $galeria_ordem);
+
+    //_# RESOLVE A ORDEM
+    if ( $galeria_ordem ) {
+      foreach ( explode(',', $galeria_ordem) as $i => $id_foto_item ) {
+        $this->atualizar($id_foto_item, array(
+            //'id_foto' => $id_foto_item,
+            'legenda' => $legenda[$i],
+            'credito' => $credito[$i],
+            'ordem' => ($i + 1),
+        ));
+      }
+    }
+
+    //_# SALVA NOVAS FOTOS
+    foreach ( $upload as $arquivo ) {
+      if ( count($arquivo) == 2 ) {
+        $legenda = pathinfo($arquivo['name'], PATHINFO_FILENAME);
+        $this->inserir(array(
+            'id_foto' => $id,
+            'legenda' => $legenda,
+            'arquivo' => $arquivo
+        ));
+      }
     }
   }
 

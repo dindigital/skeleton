@@ -115,19 +115,14 @@ class Ordem
       }
     }
 
-//    if ( intval($ordem_antiga) == 0 && $trash )
-//      return;
     //_# Opcionais
     if ( $ordem_antiga == 0 ) {
       $arrCriteria['ordem >= ?'] = $ordem;
       $result = $model->operaOrdem('+', $arrCriteria);
-      //'0 =  ?' => $ordem_antiga
     } else if ( $ordem == 0 ) {
 
       $arrCriteria['ordem > ?'] = $ordem_antiga;
       $result = $model->operaOrdem('-', $arrCriteria);
-      ///'0 =  ?' => $ordem
-      //
       //_# Obrigatórios
     } else {
       if ( $ordem < $ordem_antiga ) {

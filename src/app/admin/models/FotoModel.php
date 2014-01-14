@@ -6,8 +6,6 @@ use src\app\admin\validators\FotoValidator;
 use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
-use \Exception;
-use Din\Exception\JsonException;
 
 /**
  *
@@ -18,20 +16,7 @@ class FotoModel extends BaseModelAdm
 
   public function getById ( $id )
   {
-    $arrCriteria = array(
-        'id_foto = ?' => $id
-    );
-
-    $select = new Select('foto');
-    $select->addField('*');
-    $select->where($arrCriteria);
-
-    $result = $this->_dao->select($select);
-
-    if ( !count($result) )
-      throw new Exception('Galeria não encontrada.');
-
-    $row = $result[0];
+    $row = parent::getById($id);
 
     $foto_item = new FotoItemModel();
     $row['galeria'] = $foto_item->listar(array('id_foto = ?' => $id));
@@ -59,36 +44,6 @@ class FotoModel extends BaseModelAdm
     return $result;
   }
 
-  public function setUpload ( $upload, $id, $galeria_ordem = null, $legenda = null, $credito = null )
-  {
-    $foto_item = new FotoItemModel();
-    $foto_item->deletar_removidas($id, $galeria_ordem);
-
-    //_# RESOLVE A ORDEM
-    if ( $galeria_ordem ) {
-      foreach ( explode(',', $galeria_ordem) as $i => $id_foto_item ) {
-        $foto_item->atualizar($id_foto_item, array(
-            //'id_foto' => $id_foto_item,
-            'legenda' => $legenda[$i],
-            'credito' => $credito[$i],
-            'ordem' => ($i + 1),
-        ));
-      }
-    }
-
-    //_# SALVA NOVAS FOTOS
-    foreach ( $upload as $arquivo ) {
-      if ( count($arquivo) == 2 ) {
-        $legenda = pathinfo($arquivo['name'], PATHINFO_FILENAME);
-        $foto_item->inserir(array(
-            'id_foto' => $id,
-            'legenda' => $legenda,
-            'arquivo' => $arquivo
-        ));
-      }
-    }
-  }
-
   public function inserir ( $info )
   {
     $validator = new FotoValidator();
@@ -99,15 +54,11 @@ class FotoModel extends BaseModelAdm
     $validator->setIncData();
     $validator->throwException();
 
-    try {
-      $this->_dao->insert($validator->getTable());
-      $this->log('C', $info['titulo'], $validator->getTable());
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $this->_dao->insert($validator->getTable());
+    $this->log('C', $info['titulo'], $validator->getTable());
 
-    $this->setUpload($info['galeria_uploader'], $id);
+    $foto_item = new FotoItemModel();
+    $foto_item->saveFotos($info['galeria_uploader'], $id);
 
     return $id;
   }
@@ -120,16 +71,12 @@ class FotoModel extends BaseModelAdm
     $validator->setData($info['data']);
     $validator->throwException();
 
-    try {
-      $tableHistory = $this->getById($id);
-      $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
-      $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $tableHistory = $this->getById($id);
+    $this->_dao->update($validator->getTable(), array('id_foto = ?' => $id));
+    $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
 
-    $this->setUpload($info['galeria_uploader'], $id, $info['ordem'], $info['legenda'], $info['credito']);
+    $foto_item = new FotoItemModel();
+    $foto_item->saveFotos($info['galeria_uploader'], $id, $info['ordem'], $info['legenda'], $info['credito']);
 
     return $id;
   }
