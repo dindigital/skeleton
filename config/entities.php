@@ -19,6 +19,9 @@ return array(
         'title' => 'titulo',
         'pai' => 'noticia_cat',
         'lixeira' => true,
+        'ordem' => array(
+            'opcional' => true,
+        )
     ),
     'noticia_cat' => array(
         'tbl' => 'noticia_cat',

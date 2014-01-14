@@ -29,6 +29,7 @@
               <tr>
                 <th style="width:2%;"><input type="checkbox" name="excluir[]" id="excluir_all" /></th>
                 <th style="width:5%;"><strong>Ativo</strong></th>
+                <th style="width:5%;"><strong>Ordem</strong></th>
                 <th style="width:10%;"><strong>Data</strong></th>
                 <th style="width:25%;"><strong>Categoria</strong></th>
                 <th><strong>Titulo</strong></th>
@@ -40,6 +41,7 @@
                 <tr>
                   <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_noticia_<?php echo $row['id_noticia']; ?>" /></td>
                   <td><input class="setAtivo" type="checkbox" <?php if ( $row['ativo'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_noticia']; ?>" /></td>
+                  <td><?php echo $row['ordem']; ?></td>
                   <td><?php echo $data['DateFormat']::filter_date($row['data']); ?></td>
                   <td><?php echo $row['categoria']; ?></td>
                   <td><?php echo $row['titulo']; ?></td>

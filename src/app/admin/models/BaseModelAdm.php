@@ -7,6 +7,7 @@ use Din\DataAccessLayer\PDO\PDOBuilder;
 use Din\DataAccessLayer\Entities;
 use Din\DataAccessLayer\Select;
 use Din\File\Folder;
+use src\app\admin\helpers\Ordem;
 
 class BaseModelAdm
 {
@@ -68,6 +69,8 @@ class BaseModelAdm
   {
     $atual = Entities::getThis($this);
 
+    Ordem::changeOrdem($this, $id, 0);
+
     $this->excluirFilhos($atual['tbl'], $id);
     $tableHistory = $this->getById($id);
     $validator_namespace = '\src\app\admin\validators\\' . $atual['validator'];
@@ -86,8 +89,12 @@ class BaseModelAdm
     $lixeira->validateRestaurar($atual['tbl'], $id);
 
     $tableHistory = $this->getById($id);
+
     $validator_namespace = '\src\app\admin\validators\\' . $atual['validator'];
     $validator = new $validator_namespace;
+
+    Ordem::setOrdem($this, $validator, $tableHistory);
+
     $validator->setDel('0');
     $this->_dao->update($validator->getTable(), array($atual['id'] . ' = ?' => $id));
     $this->log('R', $tableHistory[$atual['title']], $atual['tbl'], $tableHistory);
@@ -150,6 +157,10 @@ class BaseModelAdm
 
     if ( $atual['ordem']['opcional'] ) {
       $arrCriteria['ordem > ?'] = '0';
+    }
+
+    if ( isset($atual['lixeira']) ) {
+      $arrCriteria['del = 0'] = null;
     }
 
     $select->where($arrCriteria);

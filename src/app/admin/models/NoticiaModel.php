@@ -7,6 +7,7 @@ use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
 use \Exception;
+use src\app\admin\helpers\Ordem;
 
 /**
  *
@@ -47,13 +48,15 @@ class NoticiaModel extends BaseModelAdm
     $select->addField('ativo');
     $select->addField('titulo');
     $select->addField('data');
+    $select->addField('ordem');
     $select->where($arrCriteria);
-    $select->order_by('data DESC');
+    $select->order_by('a.ordem=0,a.ordem,data DESC');
 
     $select->inner_join('id_noticia_cat', Select::construct('noticia_cat')
                     ->addField('titulo', 'categoria'));
 
     $result = $this->_dao->select($select);
+    $result = Ordem::setDropdown($this, $result, $arrCriteria);
 
     return $result;
   }
@@ -69,16 +72,12 @@ class NoticiaModel extends BaseModelAdm
     $validator->setChamada($info['chamada']);
     $validator->setCorpo($info['corpo']);
     $validator->setArquivo('capa', $info['capa'], $id);
+    Ordem::setOrdem($this, $validator);
     $validator->setIncData();
     $validator->throwException();
 
-    try {
-      $this->_dao->insert($validator->getTable());
-      $this->log('C', $info['titulo'], $validator->getTable());
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $this->_dao->insert($validator->getTable());
+    $this->log('C', $info['titulo'], $validator->getTable());
 
     return $id;
   }
@@ -95,14 +94,9 @@ class NoticiaModel extends BaseModelAdm
     $validator->setArquivo('capa', $info['capa'], $id);
     $validator->throwException();
 
-    try {
-      $tableHistory = $this->getById($id);
-      $this->_dao->update($validator->getTable(), array('id_noticia = ?' => $id));
-      $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $tableHistory = $this->getById($id);
+    $this->_dao->update($validator->getTable(), array('id_noticia = ?' => $id));
+    $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
 
     return $id;
   }

@@ -60,7 +60,7 @@ class Ordem
     return $result;
   }
 
-  public static function setOrdem ( $model, $validator )
+  public static function setOrdem ( $model, $validator, $result = null )
   {
     $atual = Entities::getThis($model);
     if ( !isset($atual['ordem']) )
@@ -73,7 +73,7 @@ class Ordem
     } else {
       if ( isset($atual['ordem']['dependencia']) ) {
         $dependencia_field = $atual['ordem']['dependencia'];
-        $dependencia_value = $validator->getTable()->{$dependencia_field};
+        $dependencia_value = $result ? $result[$dependencia_field] : $validator->getTable()->{$dependencia_field};
 
         if ( is_null($dependencia_value) ) {
           $arrCriteria[$dependencia_field . ' IS NULL'] = null;
@@ -92,10 +92,17 @@ class Ordem
   {
     $atual = Entities::getThis($model);
 
+    if ( !isset($atual['ordem']) )
+      return;
+
     $result = $model->getById($id);
     $ordem_antiga = $result['ordem'];
 
     $arrCriteria = array();
+
+    if ( isset($atual['lixeira']) ) {
+      $arrCriteria['del = 0'] = null;
+    }
 
     if ( isset($atual['ordem']['dependencia']) ) {
       $dependencia_field = $atual['ordem']['dependencia'];

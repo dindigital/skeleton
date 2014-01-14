@@ -67,4 +67,9 @@ class NoticiaTable extends AbstractTable implements iTable
    */
   protected $capa;
 
+  /**
+   * @var int(11) DEFAULT NULL
+   */
+  protected $ordem;
+
 }
