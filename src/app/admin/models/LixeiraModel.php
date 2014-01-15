@@ -4,7 +4,7 @@ namespace src\app\admin\models;
 
 use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
-use \Exception;
+use Exception;
 use Din\Paginator\Paginator;
 use Din\Form\Dropdown\Dropdown;
 use src\app\admin\helpers\Entities;

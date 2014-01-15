@@ -9,6 +9,7 @@ use Din\DataAccessLayer\Select;
 use Din\File\Folder;
 use src\app\admin\helpers\Ordem;
 use Exception;
+use src\app\admin\models\Log\LogMySQLModel as log;
 
 class BaseModelAdm
 {
@@ -84,7 +85,7 @@ class BaseModelAdm
     $usuarioAuth = new UsuarioAuthModel();
     $usuario = $usuarioAuth->getUser();
 
-    LogMySQLModel::save($this->_dao, $usuario, $action, $msg, $table, $tableHistory);
+    log::save($this->_dao, $usuario, $action, $msg, $table, $tableHistory);
   }
 
   public function excluir ( $id )

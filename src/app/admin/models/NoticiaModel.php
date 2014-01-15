@@ -6,7 +6,6 @@ use src\app\admin\validators\NoticiaValidator;
 use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
-use \Exception;
 use src\app\admin\helpers\Ordem;
 
 /**

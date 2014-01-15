@@ -1,10 +1,12 @@
 <?php
 
-namespace src\app\admin\models;
+namespace src\app\admin\models\Log;
 
 use src\app\admin\validators\LogValidator;
+use src\app\admin\models\Log\LogAbstract;
+use src\app\admin\models\Log\LogInterface;
 
-class LogMySQLModel extends LogAbstract implements Log
+class LogMySQLModel extends LogAbstract implements LogInterface
 {
 
   public static function save ( $dao, $usuario, $action, $msg, $table, $tableHistory )
@@ -77,4 +79,3 @@ class LogMySQLModel extends LogAbstract implements Log
   }
 
 }
-

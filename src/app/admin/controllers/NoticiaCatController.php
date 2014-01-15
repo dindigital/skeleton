@@ -2,12 +2,12 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\NoticiaCatModel;
+use src\app\admin\models\NoticiaCatModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
-use \Exception;
+use Exception;
 use src\app\admin\helpers\Form;
 use src\app\admin\helpers\Arrays;
 
@@ -20,12 +20,12 @@ class NoticiaCatController extends BaseControllerAdm
 
   protected $_model;
 
-  public
-          function __construct ()
+  public function __construct ()
   {
     parent::__construct();
 
-    $this->_model = new NoticiaCatModel();
+    $this->_model = new model();
+    $this->setEntityData();
   }
 
   public function get_lista ()

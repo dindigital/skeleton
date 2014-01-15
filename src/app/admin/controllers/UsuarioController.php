@@ -2,13 +2,13 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\UsuarioModel;
+use src\app\admin\models\UsuarioModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
-use \Exception;
+use Exception;
 
 /**
  *
@@ -22,7 +22,8 @@ class UsuarioController extends BaseControllerAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new UsuarioModel();
+    $this->_model = new model();
+    $this->setEntityData();
   }
 
   public function get_lista ()

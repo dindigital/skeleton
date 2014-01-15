@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\models;
+namespace src\app\admin\models\Log;
 
 use Din\DataAccessLayer\Table\iTable;
 
@@ -41,4 +41,3 @@ abstract class LogAbstract
   }
 
 }
-

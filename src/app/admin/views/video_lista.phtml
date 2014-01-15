@@ -1,4 +1,4 @@
-<input type="hidden" id="link_prefix" value="/admin/video/" />
+<input type="hidden" id="link_prefix" value="/admin/<?php echo $this->_data['entity']['tbl']; ?>/" />
 
 <div class="row">
   <div class="col-md-12">
@@ -7,7 +7,7 @@
 
     <div class="block-flat">
       <div class="header">
-        <h3>Lista de Vídeos</h3>
+        <h3>Lista de <?php echo $this->_data['entity']['secao']; ?></h3>
       </div>
 
       <div class="content">
@@ -37,12 +37,12 @@
             <tbody class="no-border-y">
               <?php foreach ( $data['list'] as $row ): ?>
                 <tr>
-                  <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_video_<?php echo $row['id_video']; ?>" /></td>
+                  <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_<?php echo $this->_data['entity']['name']; ?>_<?php echo $row['id_video']; ?>" /></td>
                   <td><input class="setAtivo" type="checkbox" <?php if ( $row['ativo'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_video']; ?>" /></td>
                   <td><?php echo $data['DateFormat']::filter_date($row['data']); ?></td>
                   <td><?php echo $row['titulo']; ?></td>
                   <td class="text-center">
-                    <a class="label label-default btn_edicao" href="<?php echo $row['id_video']; ?>/">
+                    <a class="label label-default btn_edicao" href="<?php echo $row[$this->_data['entity']['id']]; ?>">
                       <i class="fa fa-pencil"></i>
                     </a>
                     <a class="label label-danger excluir_shortcut" href="#">

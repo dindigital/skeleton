@@ -7,7 +7,7 @@ use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
-use \Exception;
+use Exception;
 use src\app\admin\helpers\Form;
 use src\app\admin\models\PaginaCatModel;
 
@@ -25,6 +25,7 @@ class PaginaController extends BaseControllerAdm
     parent::__construct();
 
     $this->_model = new model();
+    $this->setEntityData();
   }
 
   public function get_lista ()
@@ -43,7 +44,6 @@ class PaginaController extends BaseControllerAdm
     $this->_data['busca']['id_pagina_cat'] = $pagina_cat->getDropdown('Filtro por Menu', @$this->_data['busca']['id_pagina_cat']);
 
     $this->setErrorSessionData();
-    $this->setEntityData();
 
     $this->setListTemplate('pagina_lista.phtml', $paginator);
   }
@@ -62,7 +62,6 @@ class PaginaController extends BaseControllerAdm
     $pagina_cat = new PaginaCatModel();
     $this->_data['table']['id_pagina_cat'] = $pagina_cat->getDropdown('Selecione um Menu', @$this->_data['table']['id_pagina_cat']);
 
-    $this->setEntityData();
     $this->setCadastroTemplate('pagina_cadastro.phtml');
   }
 

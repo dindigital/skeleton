@@ -2,7 +2,7 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\UsuarioModel;
+use src\app\admin\models\UsuarioModel as model;
 use src\app\admin\models\UsuarioAuthModel;
 use Din\Http\Post;
 use src\app\admin\helpers\Form;
@@ -21,7 +21,7 @@ class ConfigController extends BaseControllerAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new UsuarioModel();
+    $this->_model = new model();
   }
 
   public function get_cadastro ()

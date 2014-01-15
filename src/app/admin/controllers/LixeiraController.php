@@ -5,8 +5,8 @@ namespace src\app\admin\controllers;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
-use \Exception;
-use src\app\admin\models\LixeiraModel;
+use Exception;
+use src\app\admin\models\LixeiraModel as model;
 use Din\Http\Header;
 
 /**
@@ -21,7 +21,7 @@ class LixeiraController extends BaseControllerAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new LixeiraModel;
+    $this->_model = new model;
   }
 
   public function get_lista ()

@@ -2,12 +2,12 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\VideoModel;
+use src\app\admin\models\VideoModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
-use \Exception;
+use Exception;
 use Din\Filters\Date\DateFormat;
 
 /**
@@ -22,7 +22,8 @@ class VideoController extends BaseControllerAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new VideoModel();
+    $this->_model = new model();
+    $this->setEntityData();
   }
 
   public function get_lista ()

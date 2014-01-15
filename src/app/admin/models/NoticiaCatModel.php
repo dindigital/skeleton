@@ -6,7 +6,6 @@ use src\app\admin\validators\NoticiaCatValidator;
 use src\app\admin\models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
-use \Exception;
 use Din\Form\Dropdown\Dropdown;
 use src\app\admin\helpers\Ordem;
 
@@ -57,13 +56,8 @@ class NoticiaCatModel extends BaseModelAdm
     Ordem::setOrdem($this, $validator);
     $validator->throwException();
 
-    try {
-      $this->_dao->insert($validator->getTable());
-      $this->log('C', $info['titulo'], $validator->getTable());
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $this->_dao->insert($validator->getTable());
+    $this->log('C', $info['titulo'], $validator->getTable());
 
     return $id;
   }
@@ -77,14 +71,9 @@ class NoticiaCatModel extends BaseModelAdm
     $validator->setArquivo('capa', $info['capa'], $id);
     $validator->throwException();
 
-    try {
-      $tableHistory = $this->getById($id);
-      $this->_dao->update($validator->getTable(), array('id_noticia_cat = ?' => $id));
-      $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
-    } catch (Exception $e) {
-      JsonException::addException($e->getMessage());
-      JsonException::throwException();
-    }
+    $tableHistory = $this->getById($id);
+    $this->_dao->update($validator->getTable(), array('id_noticia_cat = ?' => $id));
+    $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
 
     return $id;
   }

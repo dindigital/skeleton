@@ -6,7 +6,7 @@ use Din\Mvc\Controller\BaseController;
 use src\app\admin\models\UsuarioAuthModel;
 use Din\Http\Header;
 use Din\Http\Post;
-use \Exception;
+use Exception;
 use Din\ViewHelpers\JsonViewHelper;
 use Din\Session\Session;
 

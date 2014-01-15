@@ -2,13 +2,13 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\FotoModel;
+use src\app\admin\models\FotoModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
-use \Exception;
+use Exception;
 use src\app\admin\helpers\Galeria;
 use Din\Filters\Date\DateFormat;
 
@@ -24,7 +24,8 @@ class FotoController extends BaseControllerAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new FotoModel();
+    $this->_model = new model();
+    $this->setEntityData();
   }
 
   public function get_lista ()

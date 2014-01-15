@@ -5,7 +5,7 @@ namespace src\app\admin\controllers;
 use Din\Mvc\Controller\BaseController;
 use src\app\admin\models\UsuarioSenhaModel;
 use Din\Http\Post;
-use \Exception;
+use Exception;
 use Din\ViewHelpers\JsonViewHelper;
 use Din\Email\Email;
 use Din\Email\SendEmail\SendEmail;
@@ -18,11 +18,6 @@ use Din\Session\Session;
  */
 class UsuarioSenhaController extends BaseController
 {
-
-  public function __construct ()
-  {
-    parent::__construct();
-  }
 
   public function post_recuperar_senha ()
   {

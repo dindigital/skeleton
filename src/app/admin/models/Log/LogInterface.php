@@ -1,8 +1,8 @@
 <?php
 
-namespace src\app\admin\models;
+namespace src\app\admin\models\Log;
 
-interface Log
+interface LogInterface
 {
 
   public static function save ( $dao, $usuario, $action, $msg, $table, $tableHistory );
@@ -13,4 +13,3 @@ interface Log
 
   public function deleteRestore ( $table_name, $action );
 }
-

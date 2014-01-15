@@ -3,7 +3,7 @@
 namespace src\app\admin\controllers;
 
 use src\app\admin\controllers\BaseControllerAdm;
-use src\app\admin\models\ConfiguracaoModel;
+use src\app\admin\models\ConfiguracaoModel as model;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
@@ -15,12 +15,13 @@ use Exception;
 class ConfiguracaoController extends BaseControllerAdm
 {
 
-  private $_model;
+  protected $_model;
 
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new ConfiguracaoModel();
+    $this->_model = new model();
+    $this->setEntityData();
   }
 
   public function get_cadastro ()

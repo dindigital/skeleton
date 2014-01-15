@@ -44,7 +44,7 @@
                   <td><?php echo $row['titulo']; ?></td>
                   <td><?php echo $data['DateFormat']::filter_date($row['inc_data']); ?></td>
                   <td class="text-center">
-                    <a class="label label-default" href="/admin/<?php echo $this->_data['entity']['tbl']; ?>/cadastro/<?php echo $row[$this->_data['entity']['id']]; ?>/">
+                    <a class="label label-default btn_edicao" href="<?php echo $row[$this->_data['entity']['id']]; ?>">
                       <i class="fa fa-pencil"></i>
                     </a>
                     <a class="label label-danger excluir_shortcut" href="#">

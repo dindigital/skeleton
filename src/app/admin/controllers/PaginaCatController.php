@@ -2,14 +2,13 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\PaginaCatModel;
+use src\app\admin\models\PaginaCatModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
-use \Exception;
+use Exception;
 use src\app\admin\helpers\Form;
-use src\app\admin\helpers\Arrays;
 
 /**
  *
@@ -24,7 +23,8 @@ class PaginaCatController extends BaseControllerAdm
   {
     parent::__construct();
 
-    $this->_model = new PaginaCatModel();
+    $this->_model = new model();
+    $this->setEntityData();
   }
 
   public function get_lista ()
@@ -39,7 +39,6 @@ class PaginaCatController extends BaseControllerAdm
     $this->_data['busca'] = $arrFilters;
 
     $this->setErrorSessionData();
-    $this->setEntityData();
 
     $this->setListTemplate('paginacat_lista.phtml', $paginator);
   }
@@ -56,7 +55,6 @@ class PaginaCatController extends BaseControllerAdm
     $this->_data['table']['capa'] = Form::Upload('capa', @$this->_data['table']['capa'], 'imagem');
     $this->_data['table']['conteudo'] = Form::Ck('conteudo', @$this->_data['table']['conteudo']);
 
-    $this->setEntityData();
     $this->setCadastroTemplate('paginacat_cadastro.phtml');
   }
 
