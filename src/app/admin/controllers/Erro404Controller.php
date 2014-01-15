@@ -17,8 +17,6 @@ class Erro404Controller
     die('
       <h1>Erro 404</h1>
       <h2>Costomize este erro em src/app/admin/controllers/Erro404Controller</h2>
-
-
       ');
   }
 

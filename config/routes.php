@@ -5,17 +5,15 @@ use Din\Router\RouteTypes;
 return array(
     '' => array(
         'admin/?$' => array(
-            'app' => 'admin',
-            'controller' => 'usuarioAuth',
+            'controller' => 'admin\controllers\UsuarioAuthController',
             'method' => 'index'
         ),
         'admin/(.*)' => array(
-            'app' => 'admin',
+            'path' => 'admin\controllers\\',
             'type' => RouteTypes::ACTION,
         ),
         '' => array(
-            'app' => 'admin',
-            'controller' => 'Erro404',
+            'controller' => 'admin\controllers\Erro404Controller',
             'method' => 'display',
             'type' => RouteTypes::ERR_404,
         ),
