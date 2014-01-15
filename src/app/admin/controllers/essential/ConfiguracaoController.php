@@ -1,8 +1,8 @@
 <?php
 
-namespace src\app\admin\controllers;
+namespace src\app\admin\controllers\essential;
 
-use src\app\admin\controllers\BaseControllerAdm;
+use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\ConfiguracaoModel as model;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;

@@ -5,10 +5,11 @@ namespace src\app\admin\controllers;
 use src\app\admin\models\PaginaCatModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
+use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
-use src\app\admin\helpers\Form;
+use src\app\admin\controllers\essential\BaseControllerAdm;
 
 /**
  *

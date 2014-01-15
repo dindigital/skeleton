@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers;
+namespace src\app\admin\controllers\essential;
 
 use src\app\admin\models\UsuarioModel as model;
 use src\app\admin\models\UsuarioAuthModel;

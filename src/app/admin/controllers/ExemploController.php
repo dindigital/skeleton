@@ -2,6 +2,8 @@
 
 namespace src\app\admin\controllers;
 
+use src\app\admin\controllers\essential\BaseControllerAdm;
+
 /**
  *
  * @package app.controllers

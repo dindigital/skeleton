@@ -9,6 +9,7 @@ use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
+use src\app\admin\controllers\essential\BaseControllerAdm;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\models\NoticiaCatModel;
 

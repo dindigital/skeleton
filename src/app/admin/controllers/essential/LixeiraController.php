@@ -1,11 +1,12 @@
 <?php
 
-namespace src\app\admin\controllers;
+namespace src\app\admin\controllers\essential;
 
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Exception;
+use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\LixeiraModel as model;
 use Din\Http\Header;
 

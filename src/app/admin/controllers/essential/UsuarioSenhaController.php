@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers;
+namespace src\app\admin\controllers\essential;
 
 use Din\Mvc\Controller\BaseController;
 use src\app\admin\models\UsuarioSenhaModel;
