@@ -58,4 +58,27 @@ return array(
         'title' => 'titulo',
         'lixeira' => true,
     ),
+    'pagina_cat' => array(
+        'tbl' => 'pagina_cat',
+        'name' => 'PaginaCat',
+        'secao' => 'Menu',
+        'id' => 'id_pagina_cat',
+        'title' => 'titulo',
+        'lixeira' => true,
+        'ordem' => array(
+            'opcional' => false
+        )
+    ),
+    'pagina' => array(
+        'tbl' => 'pagina',
+        'name' => 'Pagina',
+        'secao' => 'Página',
+        'id' => 'id_pagina',
+        'title' => 'titulo',
+        'lixeira' => true,
+        'ordem' => array(
+            'opcional' => true,
+            'dependencia' => 'id_pagina_cat'
+        )
+    ),
 );

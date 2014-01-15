@@ -10,6 +10,7 @@ use Din\Image\Picuri;
 use Din\Http\Post;
 use Din\Http\Header;
 use Din\Filters\Date\DateFormat;
+use src\app\admin\helpers\Entities;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -126,6 +127,11 @@ abstract class BaseControllerAdm extends BaseController
       $this->_data['error'] = $session->get('error');
     }
     $session->un_set('error');
+  }
+
+  protected function setEntityData ()
+  {
+    $this->_data['entity'] = Entities::getThis($this->_model);
   }
 
   //_# OPERAÇÕES COMUNS
