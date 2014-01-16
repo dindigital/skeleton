@@ -24,11 +24,11 @@ class LogModel extends BaseModelAdm
         'a.descricao LIKE ?' => '%' . $arrFilters['descricao'] . '%'
     );
 
-    if ( $arrFilters['acao'] != '0' ) {
+    if ( $arrFilters['acao'] != '0' && $arrFilters['acao'] != '' ) {
       $arrCriteria['a.acao = ?'] = $arrFilters['acao'];
     }
 
-    if ( $arrFilters['secao'] != '0' ) {
+    if ( $arrFilters['secao'] != '0' && $arrFilters['secao'] != '' ) {
       $arrCriteria['a.tabela = ?'] = $arrFilters['secao'];
     }
 
