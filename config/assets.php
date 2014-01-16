@@ -34,11 +34,12 @@ return array(
             'public/admin/js/jquery.maskedinput/jquery.maskedinput.js',
             'public/admin/js/counter/jquery.textareaCounter.plugin.js',
             'public/admin/js/base.js',
-            'public/admin/js/scripts.js',
+            'public/admin/js/prefix.js',
             'public/admin/js/form.js',
             'public/admin/js/ajaxform.js',
             'public/admin/js/list.js',
             'public/admin/js/bootstrap/dist/js/bootstrap.min.js',
+            'public/admin/js/scripts.js',
         ),
     )
 );

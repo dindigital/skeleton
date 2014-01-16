@@ -24,18 +24,4 @@ $(document).ready(function() {
     $('.lixeira_ex').click();
   });
 
-  $('.drop_ordem').change(function() {
-    var ordem = $(this).val();
-    var id = $(this).attr('id');
-    var link = $('#link_prefix').val() + 'ordem/';
-
-    var form = newForm();
-
-    form.append('<input type="hidden" name="ordem" value="' + ordem + '" />');
-    form.append('<input type="hidden" name="id" value="' + id + '" />');
-    form.attr('action', link);
-
-    form.submit();
-  });
-
 });
