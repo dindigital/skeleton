@@ -23,6 +23,11 @@ class PaginaTable extends AbstractTable implements iTable
   protected $id_pagina_cat;
 
   /**
+   * @var char(32) NULL
+   */
+  protected $id_parent;
+
+  /**
    * @var varchar(255) NOT NULL
    */
   protected $titulo;

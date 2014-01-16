@@ -28,6 +28,22 @@ class PaginaValidator extends BaseValidator
     return $this;
   }
 
+  public function setIdParent ( $id_parent )
+  {
+    if ( count($id_parent) ) {
+      $last = end($id_parent);
+      if ( $last == '0' ) {
+        if ( isset($id_parent[count($id_parent) - 2]) ) {
+          $this->_table->id_parent = $id_parent[count($id_parent) - 2];
+        }
+      } else {
+        $this->_table->id_parent = end($id_parent);
+      }
+    }
+
+    return $this;
+  }
+
   public function setTitulo ( $titulo )
   {
     if ( $titulo == '' )
