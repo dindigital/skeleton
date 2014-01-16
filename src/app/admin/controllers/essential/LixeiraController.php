@@ -7,7 +7,7 @@ use Din\Http\Get;
 use Din\Http\Post;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\models\LixeiraModel as model;
+use src\app\admin\models\essential\LixeiraModel as model;
 use Din\Http\Header;
 
 /**
@@ -40,7 +40,7 @@ class LixeiraController extends BaseControllerAdm
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('lixeira_lista.phtml', $paginator);
+    $this->setListTemplate('essential/lixeira_lista.phtml', $paginator);
   }
 
   public function post_restaurar ()

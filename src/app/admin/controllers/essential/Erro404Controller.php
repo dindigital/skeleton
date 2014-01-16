@@ -14,10 +14,9 @@ class Erro404Controller
   public function get_display ()
   {
     Header::set404();
-    die('
-      <h1>Erro 404</h1>
-      <h2>Costomize este erro em src/app/admin/controllers/Erro404Controller</h2>
-      ');
+    $view = new \Din\Mvc\View\View();
+    $view->addFile('src/app/admin/views/essential/404.phtml');
+    $view->display_html();
   }
 
 }

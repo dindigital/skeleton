@@ -3,7 +3,7 @@
 namespace src\app\admin\controllers\essential;
 
 use Din\Mvc\Controller\BaseController;
-use src\app\admin\models\UsuarioSenhaModel;
+use src\app\admin\models\essential\UsuarioSenhaModel;
 use Din\Http\Post;
 use Exception;
 use Din\ViewHelpers\JsonViewHelper;
@@ -64,7 +64,7 @@ class UsuarioSenhaController extends BaseController
     );
 
     $this->_view->addFile('src/app/admin/views/layouts/login.phtml');
-    $this->_view->addFile('src/app/admin/views/recuperar_senha.phtml', '{$CONTENT}');
+    $this->_view->addFile('src/app/admin/views/essential/recuperar_senha.phtml', '{$CONTENT}');
     $this->display_html();
   }
 

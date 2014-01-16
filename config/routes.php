@@ -12,10 +12,6 @@ return array(
             'controller' => 'admin\controllers\essential\IndexController',
             'method' => 'index',
         ),
-        'admin/configuracao/cadastro/' => array(
-            'controller' => 'admin\controllers\essential\ConfiguracaoController',
-            'method' => 'cadastro',
-        ),
         'admin/lixeira/lista/' => array(
             'controller' => 'admin\controllers\essential\LixeiraController',
             'method' => 'lista',

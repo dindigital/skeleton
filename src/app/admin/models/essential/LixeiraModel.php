@@ -1,8 +1,8 @@
 <?php
 
-namespace src\app\admin\models;
+namespace src\app\admin\models\essential;
 
-use src\app\admin\models\BaseModelAdm;
+use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Exception;
 use Din\Paginator\Paginator;

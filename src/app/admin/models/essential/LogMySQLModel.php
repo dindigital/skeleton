@@ -1,10 +1,10 @@
 <?php
 
-namespace src\app\admin\models\Log;
+namespace src\app\admin\models\essential;
 
 use src\app\admin\validators\LogValidator;
-use src\app\admin\models\Log\LogAbstract;
-use src\app\admin\models\Log\LogInterface;
+use src\app\admin\models\essential\LogAbstract;
+use src\app\admin\models\essential\LogInterface;
 
 class LogMySQLModel extends LogAbstract implements LogInterface
 {

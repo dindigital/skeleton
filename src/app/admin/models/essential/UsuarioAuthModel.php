@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\models;
+namespace src\app\admin\models\essential;
 
 use Din\Crypt\Crypt;
 use Din\Session\Session;

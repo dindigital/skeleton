@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\models;
+namespace src\app\admin\models\essential;
 
 use Din\DataAccessLayer\DAO;
 use Din\DataAccessLayer\PDO\PDOBuilder;
@@ -9,7 +9,7 @@ use Din\DataAccessLayer\Select;
 use Din\File\Folder;
 use src\app\admin\helpers\Ordem;
 use Exception;
-use src\app\admin\models\Log\LogMySQLModel as log;
+use src\app\admin\models\essential\LogMySQLModel as log;
 
 class BaseModelAdm
 {

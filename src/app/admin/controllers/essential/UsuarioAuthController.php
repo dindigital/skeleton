@@ -3,7 +3,7 @@
 namespace src\app\admin\controllers\essential;
 
 use Din\Mvc\Controller\BaseController;
-use src\app\admin\models\UsuarioAuthModel;
+use src\app\admin\models\essential\UsuarioAuthModel;
 use Din\Http\Header;
 use Din\Http\Post;
 use Exception;
@@ -40,7 +40,7 @@ class UsuarioAuthController extends BaseController
   public function get_index ()
   {
     $this->setAuthTemplate();
-    $this->_view->addFile('src/app/admin/views/login.phtml', '{$CONTENT}');
+    $this->_view->addFile('src/app/admin/views/essential/login.phtml', '{$CONTENT}');
     $this->display_html();
   }
 

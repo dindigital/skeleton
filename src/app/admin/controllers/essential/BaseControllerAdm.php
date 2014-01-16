@@ -3,7 +3,7 @@
 namespace src\app\admin\controllers\essential;
 
 use Din\Mvc\Controller\BaseController;
-use src\app\admin\models\UsuarioAuthModel;
+use src\app\admin\models\essential\UsuarioAuthModel;
 use Exception;
 use Din\Session\Session;
 use Din\Image\Picuri;

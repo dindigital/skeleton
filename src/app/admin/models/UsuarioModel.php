@@ -5,6 +5,7 @@ namespace src\app\admin\models;
 use Din\Paginator\Paginator;
 use Din\DataAccessLayer\Select;
 use src\app\admin\validators\UsuarioValidator;
+use src\app\admin\models\essential\BaseModelAdm;
 
 /**
  *

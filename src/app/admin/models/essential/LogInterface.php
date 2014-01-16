@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\models\Log;
+namespace src\app\admin\models\essential;
 
 interface LogInterface
 {

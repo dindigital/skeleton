@@ -3,7 +3,7 @@
 namespace src\app\admin\models;
 
 use src\app\admin\validators\FotoValidator;
-use src\app\admin\models\BaseModelAdm;
+use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
 

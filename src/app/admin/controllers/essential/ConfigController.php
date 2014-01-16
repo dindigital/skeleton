@@ -3,7 +3,7 @@
 namespace src\app\admin\controllers\essential;
 
 use src\app\admin\models\UsuarioModel as model;
-use src\app\admin\models\UsuarioAuthModel;
+use src\app\admin\models\essential\UsuarioAuthModel;
 use Din\Http\Post;
 use src\app\admin\helpers\Form;
 use Din\ViewHelpers\JsonViewHelper;
@@ -29,7 +29,7 @@ class ConfigController extends BaseControllerAdm
     $this->_data['table'] = $this->_data['user'];
     $this->_data['table']['avatar'] = Form::Upload('avatar', $this->_data['table']['avatar'], 'imagem', false);
 
-    $this->setCadastroTemplate('config_cadastro.phtml');
+    $this->setCadastroTemplate('essential/config_cadastro.phtml');
   }
 
   public function post_cadastro ()
