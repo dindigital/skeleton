@@ -10,6 +10,7 @@ use Din\Image\Picuri;
 use Din\Http\Post;
 use Din\Http\Header;
 use Din\Filters\Date\DateFormat;
+use src\app\admin\helpers\Arrays;
 use src\app\admin\helpers\Entities;
 
 /**
@@ -81,6 +82,7 @@ abstract class BaseControllerAdm extends BaseController
   public function setViewHelpers ()
   {
     $this->_data['DateFormat'] = new DateFormat;
+    $this->_data['Arrays'] = new Arrays;
   }
 
   /**
