@@ -48,6 +48,26 @@ class LogModel extends BaseModelAdm
     return $result;
   }
 
+  public function getById ( $id )
+  {
+    $arrCriteria = array(
+        'id_log = ?' => $id
+    );
+
+    $select = new Select('log');
+    $select->addField('*');
+    $select->where($arrCriteria);
+
+    $result = $this->_dao->select($select);
+
+    if ( !count($result) )
+      throw new Exception('Registro não encontrado.');
+
+    $row = $result[0];
+
+    return $row;
+  }
+
   public function getDropdownAction ( $firstOption = '', $selected = null )
   {
     $arrOptions = Arrays::logAcao();
