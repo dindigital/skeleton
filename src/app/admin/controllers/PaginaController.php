@@ -53,6 +53,7 @@ class PaginaController extends BaseControllerAdm
   {
     if ( $id ) {
       $this->_data['table'] = $this->_model->getById($id);
+      $this->_data['table']['infinito'] = $this->_model->loadInfinity($id);
     } else {
       $this->_data['table'] = array();
     }
@@ -61,7 +62,7 @@ class PaginaController extends BaseControllerAdm
     $this->_data['table']['conteudo'] = Form::Ck('conteudo', @$this->_data['table']['conteudo']);
 
     $pagina_cat = new PaginaCatModel();
-    $this->_data['table']['id_pagina_cat'] = $pagina_cat->getDropdown('Selecione um Menu', @$this->_data['table']['id_pagina_cat']);
+    $this->_data['table']['id_pagina_cat'] = $pagina_cat->getDropdown('Selecione um Menu', @$this->_data['table']['id_pagina_cat'], 'ajax_intinify_cat');
 
     $this->setCadastroTemplate('pagina_cadastro.phtml');
   }
@@ -72,6 +73,7 @@ class PaginaController extends BaseControllerAdm
       $info = array(
           'ativo' => Post::checkbox('ativo'),
           'id_pagina_cat' => Post::text('id_pagina_cat'),
+          'id_parent' => Post::aray('id_parent'),
           'titulo' => Post::text('titulo'),
           'capa' => Post::upload('capa'),
           'conteudo' => Post::text('conteudo'),
@@ -96,6 +98,18 @@ class PaginaController extends BaseControllerAdm
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+  }
+
+  public function get_ajax_intinify_cat ( $id_pagina_cat )
+  {
+    $dorpdown = $this->_model->getDropdown('Subnível de Página', null, 'ajax_infinity', $id_pagina_cat, null);
+    die($dorpdown);
+  }
+
+  public function get_ajax_infinity ( $id_parent )
+  {
+    $dorpdown = $this->_model->getDropdown('Subnível de Página', null, 'ajax_infinity', null, $id_parent);
+    die($dorpdown);
   }
 
 }

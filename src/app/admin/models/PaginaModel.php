@@ -7,6 +7,7 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
 use src\app\admin\helpers\Ordem;
+use Din\Form\Dropdown\Dropdown;
 
 /**
  *
@@ -35,7 +36,7 @@ class PaginaModel extends BaseModelAdm
     $select->where($arrCriteria);
     $select->order_by('a.ordem=0,a.ordem,a.titulo');
 
-    $select->inner_join('id_pagina_Cat', Select::construct('pagina_cat')
+    $select->inner_join('id_pagina_cat', Select::construct('pagina_cat')
                     ->addField('titulo', 'menu'));
 
     $result = $this->_dao->select($select);
@@ -49,6 +50,7 @@ class PaginaModel extends BaseModelAdm
     $validator = new PaginaValidator();
     $id = $validator->setIdPagina()->getTable()->id_pagina;
     $validator->setIdPaginaCat($info['id_pagina_cat']);
+    $validator->setIdParent($info['id_parent']);
     $validator->setAtivo($info['ativo']);
     $validator->setTitulo($info['titulo']);
     $validator->setConteudo($info['conteudo']);
@@ -70,6 +72,7 @@ class PaginaModel extends BaseModelAdm
   {
     $validator = new PaginaValidator();
     $validator->setIdPaginaCat($info['id_pagina_cat']);
+    $validator->setIdParent($info['id_parent']);
     $validator->setAtivo($info['ativo']);
     $validator->setTitulo($info['titulo']);
     $validator->setConteudo($info['conteudo']);
@@ -83,6 +86,70 @@ class PaginaModel extends BaseModelAdm
     $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
 
     return $id;
+  }
+
+  public function getDropdown ( $firstOption = '', $selected = null, $class = null, $id_pagina_cat = null, $id_parent = '', $exclude_id = null )
+  {
+    $select = new Select('pagina');
+    $select->addField('id_pagina');
+    $select->addField('titulo');
+    $arrCriteria = array(
+        'del = ? ' => '0'
+    );
+    if ( $id_pagina_cat ) {
+      $arrCriteria['id_pagina_cat = ?'] = $id_pagina_cat;
+    }
+    if ( $exclude_id ) {
+      $arrCriteria['id_pagina <> ?'] = $exclude_id;
+    }
+
+    if ( $id_parent !== '' ) {
+      if ( is_null($id_parent) ) {
+        $arrCriteria['id_parent IS NULL'] = null;
+      } else {
+        $arrCriteria['id_parent = ?'] = $id_parent;
+      }
+    }
+    $select->where($arrCriteria);
+
+    $result = $this->_dao->select($select);
+
+    $d = new Dropdown('id_parent[]');
+    $d->setOptionsResult($result, 'id_pagina', 'titulo');
+    $d->setClass('form-control');
+    if ( $class ) {
+      $d->setClass('form-control ' . $class);
+    }
+    $d->setSelected($selected);
+    if ( $firstOption != '' ) {
+      $d->setFirstOpt($firstOption);
+    }
+
+    return $d->getElement();
+  }
+
+  public function loadInfinity ( $id )
+  {
+    $r = array();
+
+    $first = $this->getById($id);
+    $id_cat = $first['id_pagina_cat'];
+    if ( $first['id_parent'] ) {
+
+      $last = $this->getDropdown('Subnível de Página', null, 'ajax_pagina_infinita', $id_cat, $first['id_parent'], $first['id_pagina']);
+
+      while ($first['id_parent']) {
+        $second = $this->getById($first['id_parent']);
+        $r[] = $this->getDropdown('Subnível de Página', $first['id_parent'], 'ajax_pagina_infinita', $id_cat, $second['id_parent']);
+        $first = $second;
+      }
+
+      $r = array_reverse($r);
+
+      $r[] = $last;
+    }
+
+    return $r;
   }
 
 }
