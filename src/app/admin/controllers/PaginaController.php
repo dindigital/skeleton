@@ -62,7 +62,7 @@ class PaginaController extends BaseControllerAdm
     $this->_data['table']['conteudo'] = Form::Ck('conteudo', @$this->_data['table']['conteudo']);
 
     $pagina_cat = new PaginaCatModel();
-    $this->_data['table']['id_pagina_cat'] = $pagina_cat->getDropdown('Selecione um Menu', @$this->_data['table']['id_pagina_cat'], 'ajax_pagina_cat_pagina');
+    $this->_data['table']['id_pagina_cat'] = $pagina_cat->getDropdown('Selecione um Menu', @$this->_data['table']['id_pagina_cat'], 'ajax_intinify_cat');
 
     $this->setCadastroTemplate('pagina_cadastro.phtml');
   }
@@ -100,15 +100,15 @@ class PaginaController extends BaseControllerAdm
     }
   }
 
-  public function get_ajax_pagina_cat_pagina ( $id_pagina_cat )
+  public function get_ajax_intinify_cat ( $id_pagina_cat )
   {
-    $dorpdown = $this->_model->getDropdown('Subnível de Página', null, 'ajax_pagina_infinita', $id_pagina_cat, null);
+    $dorpdown = $this->_model->getDropdown('Subnível de Página', null, 'ajax_infinity', $id_pagina_cat, null);
     die($dorpdown);
   }
 
-  public function get_ajax_pagina_infinita ( $id_parent )
+  public function get_ajax_infinity ( $id_parent )
   {
-    $dorpdown = $this->_model->getDropdown('Subnível de Página', null, 'ajax_pagina_infinita', null, $id_parent);
+    $dorpdown = $this->_model->getDropdown('Subnível de Página', null, 'ajax_infinity', null, $id_parent);
     die($dorpdown);
   }
 

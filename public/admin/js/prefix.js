@@ -120,9 +120,53 @@ $(document).ready(function() {
     form.submit();
   });
 
+  $('.ajax_intinify_cat').change(function() {
+    var id = $(this).val();
+
+    $('.drop_infinity_line.other').remove();
+    $('.drop_infinity_line').hide();
+
+    if (id != '0') {
+      var url = $('#link_prefix').val() + 'ajax_intinify_cat/' + id + '/';
+
+      $.get(url, function(data) {
+        $('.drop_infinity_container').html(data);
+        $('.drop_infinity_line').show();
+        intinity_event();
+      });
+    }
+  });
+
+  intinity_event();
+
 });
 
 function newForm()
 {
   return $('<form method="POST"></form>').appendTo('body');
+}
+
+function intinity_event()
+{
+  $('.ajax_infinity').unbind();
+  $('.ajax_infinity').change(function() {
+    var id = $(this).val();
+    var duplication_container = $(this).parents('.drop_infinity_line');
+
+    duplication_container.nextAll('.drop_infinity_line').remove();
+    if (id != '0') {
+      var url = $('#link_prefix').val() + 'ajax_infinity/' + id + '/';
+
+      $.get(url, function(data) {
+        var clone = duplication_container.clone();
+        clone.find('.drop_infinity_container').html(data);
+        clone.addClass('other');
+
+        duplication_container.after(clone);
+
+        intinity_event();
+      });
+    }
+  });
+
 }
