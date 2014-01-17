@@ -82,6 +82,29 @@ class FotoItemValidator extends BaseValidator
     $file = str_replace(PATH_REPLACE, '', $destination);
 
     $this->_table->arquivo = $file;
+    $this->readTags($destination);
+  }
+
+  private function readTags ( $file )
+  {
+    if ( !in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), array('jpg', 'tiff')) )
+      return;
+
+    $exif = exif_read_data($file);
+
+    $legenda = '';
+    $credito = '';
+
+    if ( isset($exif['ImageDescription']) ) {
+      $legenda = $exif['ImageDescription'];
+    }
+
+    if ( isset($exif['Artist']) ) {
+      $credito = $exif['Artist'];
+    }
+
+    $this->setLegenda($legenda);
+    $this->setCredito($credito);
   }
 
 }
