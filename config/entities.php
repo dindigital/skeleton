@@ -1,6 +1,14 @@
 <?php
 
 return array(
+    'lixeira' => array(
+        'name' => 'Lixeira',
+        'secao' => 'Lixeira',
+    ),
+    'log' => array(
+        'name' => 'Log',
+        'secao' => 'Log',
+    ),
     'configuracao' => array(
         'tbl' => 'configuracao',
         'name' => 'Configuracao',

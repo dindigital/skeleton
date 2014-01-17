@@ -25,7 +25,8 @@ try {
 
   $fc->dispatch();
 } catch (Exception $e) {
-  die('<h1>' . $e->getMessage() . '</h1>');
+  $erro = new \src\app\admin\controllers\essential\Erro500Controller;
+  $erro->get_display($e->getMessage());
 }
 
 //echo microtime(true) - $init;

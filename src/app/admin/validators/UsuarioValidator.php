@@ -53,4 +53,10 @@ class UsuarioValidator extends BaseValidator
     }
   }
 
+  public function setPermissao ( $permissao )
+  {
+    $permissao = json_encode($permissao);
+    $this->_table->permissao = $permissao;
+  }
+
 }

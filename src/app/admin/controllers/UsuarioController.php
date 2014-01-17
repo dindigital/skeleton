@@ -10,6 +10,7 @@ use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
+use src\app\admin\models\essential\PermissaoModel;
 
 /**
  *
@@ -25,6 +26,7 @@ class UsuarioController extends BaseControllerAdm
     parent::__construct();
     $this->_model = new model();
     $this->setEntityData();
+    $this->require_permission();
   }
 
   public function get_lista ()
@@ -55,6 +57,9 @@ class UsuarioController extends BaseControllerAdm
     $this->_data['table']['avatar2'] = Form::Upload('avatar2', @$this->_data['table']['avatar2'], 'imagem');
     $this->_data['table']['avatar3'] = Form::Upload('avatar3', @$this->_data['table']['avatar3'], 'imagem');
 
+    $permissao = new PermissaoModel();
+    $this->_data['table']['permissao'] = $permissao->getListbox(@$this->_data['table']['permissao']);
+
     $this->setCadastroTemplate('usuario_cadastro.phtml');
   }
 
@@ -69,6 +74,7 @@ class UsuarioController extends BaseControllerAdm
           'avatar' => Post::upload('avatar'),
           'avatar2' => Post::upload('avatar2'),
           'avatar3' => Post::upload('avatar3'),
+          'permissao' => Post::aray('permissao'),
       );
 
       if ( !$id ) {
