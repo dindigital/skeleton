@@ -5,6 +5,7 @@ namespace src\app\admin\validators;
 use src\app\admin\validators\BaseValidator;
 use src\tables\PaginaTable;
 use Din\Exception\JsonException;
+use src\app\admin\models\PaginaCatModel;
 
 class PaginaValidator extends BaseValidator
 {
@@ -16,6 +17,11 @@ class PaginaValidator extends BaseValidator
 
   public function setIdPaginaCat ( $id_pagina_cat )
   {
+    $pagina_cat = new PaginaCatModel();
+    $count = $pagina_cat->getCount($id_pagina_cat);
+    if ( $count == 0 )
+      return JsonException::addException('Menu não encontrado.');
+
     $this->_table->id_pagina_cat = $id_pagina_cat;
 
     return $this;

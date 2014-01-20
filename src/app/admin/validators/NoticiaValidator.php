@@ -6,6 +6,7 @@ use src\app\admin\validators\BaseValidator;
 use src\tables\NoticiaTable;
 use Din\Exception\JsonException;
 use Din\Filters\Date\DateToSql;
+use src\app\admin\models\NoticiaCatModel;
 
 class NoticiaValidator extends BaseValidator
 {
@@ -17,6 +18,12 @@ class NoticiaValidator extends BaseValidator
 
   public function setIdNoticiaCat ( $id_noticia_cat )
   {
+    $noticia_cat = new NoticiaCatModel();
+    $count = $noticia_cat->getCount($id_noticia_cat);
+
+    if ( $count == 0 )
+      return JsonException::addException('Categoria não encontrada.');
+
     $this->_table->id_noticia_cat = $id_noticia_cat;
 
     return $this;

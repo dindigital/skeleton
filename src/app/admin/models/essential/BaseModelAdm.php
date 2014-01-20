@@ -56,6 +56,22 @@ class BaseModelAdm
     return $row;
   }
 
+  public function getCount ( $id )
+  {
+    $atual = Entities::getThis($this);
+
+    $arrCriteria = array(
+        $atual['id'] . ' = ?' => $id
+    );
+
+    $select = new Select($atual['tbl']);
+    $select->where($arrCriteria);
+
+    $result = $this->_dao->select_count($select);
+
+    return $result;
+  }
+
   public function excluirFilhos ( $tbl, $id, $permanente = false )
   {
     $atual = Entities::getEntity($tbl);
