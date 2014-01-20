@@ -5,11 +5,11 @@ namespace src\app\admin\models\essential;
 interface LogInterface
 {
 
-  public static function save ( $dao, $usuario, $action, $msg, $table, $tableHistory );
+  public static function save ( $dao, $usuario, $action, $msg, $name, $table, $tableHistory );
 
-  public function insert ( $table_name );
+  public function insert ();
 
-  public function update ( $table_name );
+  public function update ();
 
-  public function deleteRestore ( $table_name, $action );
+  public function deleteRestore ( $action );
 }

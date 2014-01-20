@@ -28,14 +28,14 @@ class LogModel extends BaseModelAdm
       $arrCriteria['a.acao = ?'] = $arrFilters['acao'];
     }
 
-    if ( $arrFilters['secao'] != '0' && $arrFilters['secao'] != '' ) {
-      $arrCriteria['a.tabela = ?'] = $arrFilters['secao'];
+    if ( $arrFilters['name'] != '0' && $arrFilters['name'] != '' ) {
+      $arrCriteria['a.name = ?'] = $arrFilters['name'];
     }
 
     $select = new Select('log');
     $select->addField('id_log');
     $select->addField('administrador');
-    $select->addField('tabela');
+    $select->addField('name');
     $select->addField('inc_data');
     $select->addField('acao');
     $select->addField('descricao');
@@ -82,15 +82,15 @@ class LogModel extends BaseModelAdm
     return $d->getElement();
   }
 
-  public function getDropdownSecao ( $firstOption = '', $selected = null )
+  public function getDropdownName ( $firstOption = '', $selected = null )
   {
     $arrOptions = array();
     foreach ( Entities::$entities as $row ) {
-      if ( isset($row['tbl']) && isset($row['secao']) )
-        $arrOptions[$row['tbl']] = $row['secao'];
+      if ( isset($row['secao']) && isset($row['tbl']) && isset($row['name']) )
+        $arrOptions[$row['name']] = $row['secao'];
     }
 
-    $d = new Dropdown('secao');
+    $d = new Dropdown('name');
     $d->setOptionsArray($arrOptions);
     $d->setClass('form-control');
     $d->setSelected($selected);

@@ -3233,3 +3233,10 @@ button::-moz-focus-inner {
   text-decoration: line-through;
   color: red;
 }
+
+.table-responsive select {
+  padding: 0;
+  margin: 0;
+  height: auto;
+  width: 80%;
+}

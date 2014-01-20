@@ -101,7 +101,9 @@ class BaseModelAdm
     $usuarioAuth = new UsuarioAuthModel();
     $usuario = $usuarioAuth->getUser();
 
-    log::save($this->_dao, $usuario, $action, $msg, $table, $tableHistory);
+    $entities = Entities::getThis($this);
+
+    log::save($this->_dao, $usuario, $action, $msg, $entities['name'], $table, $tableHistory);
   }
 
   public function excluir ( $id )
