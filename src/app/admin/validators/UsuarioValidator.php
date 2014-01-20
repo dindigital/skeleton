@@ -16,13 +16,6 @@ class UsuarioValidator extends BaseValidator
     $this->_table = new UsuarioTable();
   }
 
-  public function setIdUsuario ()
-  {
-    $this->_table->id_usuario = $this->_table->getNewId();
-
-    return $this;
-  }
-
   public function setNome ( $nome )
   {
     if ( !v::string()->notEmpty()->validate($nome) )

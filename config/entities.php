@@ -23,6 +23,11 @@ return array(
         'title' => 'titulo',
         'lixeira' => true,
     ),
+    'foto_item' => array(
+        'tbl' => 'foto_item',
+        'name' => 'FotoItem',
+        'id' => 'id_foto_item',
+    ),
     'noticia' => array(
         'tbl' => 'noticia',
         'name' => 'Noticia',

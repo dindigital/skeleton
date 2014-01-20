@@ -46,7 +46,7 @@ class NoticiaCatModel extends BaseModelAdm
   public function inserir ( $info )
   {
     $validator = new NoticiaCatValidator();
-    $id = $validator->setIdNoticiaCat()->getTable()->id_noticia_cat;
+    $id = $validator->setId($this);
     $validator->setAtivo($info['ativo']);
     $validator->setTitulo($info['titulo']);
     $validator->setHome($info['home']);

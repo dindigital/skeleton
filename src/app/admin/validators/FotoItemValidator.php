@@ -19,13 +19,6 @@ class FotoItemValidator extends BaseValidator
     $this->_dao = $dao;
   }
 
-  public function setIdFotoItem ()
-  {
-    $this->_table->id_foto_item = $this->_table->getNewId();
-
-    return $this;
-  }
-
   public function setIdFoto ( $id_foto )
   {
     $this->_table->id_foto = $id_foto;

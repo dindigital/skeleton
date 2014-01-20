@@ -47,7 +47,7 @@ class FotoModel extends BaseModelAdm
   public function inserir ( $info )
   {
     $validator = new FotoValidator();
-    $id = $validator->setIdFoto()->getTable()->id_foto;
+    $id = $validator->setId($this);
     $validator->setAtivo($info['ativo']);
     $validator->setTitulo($info['titulo']);
     $validator->setData($info['data']);

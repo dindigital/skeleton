@@ -2,15 +2,26 @@
 
 namespace src\app\admin\validators;
 
-use \Exception;
+use Exception;
 use Din\Filters\String\Uri;
 use Din\File\Folder;
 use Din\Exception\JsonException;
+use src\app\admin\helpers\Entities;
 
 class BaseValidator
 {
 
   protected $_table;
+
+  public function setId ( $model )
+  {
+    $entity = Entities::getThis($model);
+    $property = $entity['id'];
+
+    $this->_table->{$property} = $this->_table->getNewId();
+
+    return $this->_table->{$property};
+  }
 
   public function setAtivo ( $ativo )
   {

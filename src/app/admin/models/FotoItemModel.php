@@ -29,7 +29,7 @@ class FotoItemModel extends BaseModelAdm
   public function inserir ( $info )
   {
     $validator = new FotoItemValidator($this->_dao);
-    $id = $validator->setIdFotoItem()->getTable()->id_foto_item;
+    $id = $validator->setId($this);
     $validator->setIdFoto($info['id_foto']);
     $validator->setOrdem2(null, $info['id_foto']);
     $validator->setGaleria($info['arquivo'], "foto/{$info['id_foto']}/arquivo/{$id}/");

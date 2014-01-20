@@ -23,7 +23,7 @@ class UsuarioModel extends BaseModelAdm
     $validator->setSenha($info['senha']);
     $validator->setPermissao($info['permissao']);
     $validator->setIncData();
-    $id = $validator->setIdUsuario()->getTable()->id_usuario;
+    $id = $validator->setId($this);
 
     $validator->setArquivo('avatar', $info['avatar'], $id, false);
     $validator->setArquivo('avatar2', $info['avatar2'], $id, false);
