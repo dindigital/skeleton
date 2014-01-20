@@ -86,7 +86,8 @@ class LogModel extends BaseModelAdm
   {
     $arrOptions = array();
     foreach ( Entities::$entities as $row ) {
-      $arrOptions[$row['tbl']] = $row['name'];
+      if ( isset($row['tbl']) && isset($row['secao']) )
+        $arrOptions[$row['tbl']] = $row['secao'];
     }
 
     $d = new Dropdown('secao');
