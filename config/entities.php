@@ -18,7 +18,7 @@ return array(
     'foto' => array(
         'tbl' => 'foto',
         'name' => 'Foto',
-        'secao' => 'Fotos',
+        'secao' => 'Galeria de Fotos',
         'id' => 'id_foto',
         'title' => 'titulo',
         'lixeira' => true,
