@@ -9,7 +9,7 @@ use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use Din\Filters\Date\DateFormat;
+use src\app\admin\formats\VideoFormat;
 
 /**
  *
@@ -35,7 +35,7 @@ class VideoController extends BaseControllerAdm
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
+    $this->_data['list'] = VideoFormat::formatResult($this->_model->listar($arrFilters, $paginator));
     $this->_data['busca'] = $arrFilters;
 
     $this->setErrorSessionData();
@@ -46,8 +46,7 @@ class VideoController extends BaseControllerAdm
   public function get_cadastro ( $id = null )
   {
     if ( $id ) {
-      $this->_data['table'] = $this->_model->getById($id);
-      $this->_data['table']['data'] = DateFormat::filter_date($this->_data['table']['data']);
+      $this->_data['table'] = VideoFormat::formatRow($this->_model->getById($id));
     } else {
       $this->_data['table'] = array();
     }
