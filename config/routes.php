@@ -24,7 +24,7 @@ return array(
             'controller' => 'admin\controllers\essential\LixeiraController',
             'method' => 'excluir',
         ),
-        'admin/log/lista/' => array(
+        'admin/log/list/' => array(
             'controller' => 'admin\controllers\essential\LogController',
             'method' => 'list',
         ),
