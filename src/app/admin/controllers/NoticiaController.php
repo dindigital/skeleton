@@ -5,12 +5,11 @@ namespace src\app\admin\controllers;
 use src\app\admin\models\NoticiaModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
-use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use Din\Filters\Date\DateFormat;
+use src\app\admin\formats\NoticiaFormat;
 use src\app\admin\models\NoticiaCatModel;
 
 /**
@@ -37,7 +36,7 @@ class NoticiaController extends BaseControllerAdm
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
+    $this->_data['list'] = NoticiaFormat::formatResult($this->_model->listar($arrFilters, $paginator));
     $this->_data['busca'] = $arrFilters;
 
     $this->setErrorSessionData();
@@ -47,18 +46,12 @@ class NoticiaController extends BaseControllerAdm
 
   public function get_cadastro ( $id = null )
   {
-    if ( $id ) {
-      $this->_data['table'] = $this->_model->getById($id);
-      $this->_data['table']['data'] = DateFormat::filter_date($this->_data['table']['data']);
-    } else {
-      $this->_data['table'] = array();
-    }
-
-    $this->_data['table']['corpo'] = Form::Ck('corpo', @$this->_data['table']['corpo']);
-    $this->_data['table']['capa'] = Form::Upload('capa', @$this->_data['table']['capa'], 'imagem');
+    $row = $id ? $this->_model->getById($id) : array();
 
     $noticia_cat = new NoticiaCatModel();
-    $this->_data['table']['id_noticia_cat'] = $noticia_cat->getDropdown('Selecione uma Categoria', @$this->_data['table']['id_noticia_cat']);
+    $noticia_cat_dropdown = $noticia_cat->getDropdown();
+
+    $this->_data['table'] = NoticiaFormat::formatRow($row, $noticia_cat_dropdown);
 
     $this->setCadastroTemplate('noticia_cadastro.phtml');
   }

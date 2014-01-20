@@ -42,7 +42,7 @@
                   <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_noticia_<?php echo $row['id_noticia']; ?>" /></td>
                   <td><input class="setAtivo" type="checkbox" <?php if ( $row['ativo'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_noticia']; ?>" /></td>
                   <td><?php echo $row['ordem']; ?></td>
-                  <td><?php echo $data['DateFormat']::filter_date($row['data']); ?></td>
+                  <td><?php echo $row['data']; ?></td>
                   <td><?php echo $row['categoria']; ?></td>
                   <td><?php echo $row['titulo']; ?></td>
                   <td class="text-center">

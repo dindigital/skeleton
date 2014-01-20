@@ -11,6 +11,7 @@ use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\essential\PermissaoModel;
+use src\app\admin\formats\UsuarioFormat;
 
 /**
  *
@@ -37,7 +38,7 @@ class UsuarioController extends BaseControllerAdm
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
+    $this->_data['list'] = UsuarioFormat::formatResult($this->_model->listar($arrFilters, $paginator));
     $this->_data['busca'] = $arrFilters;
 
     $this->setErrorSessionData();
@@ -47,18 +48,12 @@ class UsuarioController extends BaseControllerAdm
 
   public function get_cadastro ( $id = null )
   {
-    if ( $id ) {
-      $this->_data['table'] = $this->_model->getById($id);
-    } else {
-      $this->_data['table'] = array();
-    }
-
-    $this->_data['table']['avatar'] = Form::Upload('avatar', @$this->_data['table']['avatar'], 'imagem');
-    $this->_data['table']['avatar2'] = Form::Upload('avatar2', @$this->_data['table']['avatar2'], 'imagem');
-    $this->_data['table']['avatar3'] = Form::Upload('avatar3', @$this->_data['table']['avatar3'], 'imagem');
+    $row = $id ? $this->_model->getById($id) : array();
 
     $permissao = new PermissaoModel();
-    $this->_data['table']['permissao'] = $permissao->getListbox(@$this->_data['table']['permissao']);
+    $permissao_listbox = $permissao->getListbox(@$this->_data['table']['permissao']);
+
+    $this->_data['table'] = UsuarioFormat::formatRow($row, $permissao_listbox);
 
     $this->setCadastroTemplate('usuario_cadastro.phtml');
   }

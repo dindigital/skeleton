@@ -19,8 +19,10 @@ class VideoFormat
 
   public static function formatRow ( $row )
   {
-    $row['titulo'] = htmlspecialchars($row['titulo']);
-    $row['data'] = DateFormat::filter_date($row['data']);
+    if ( !empty($row) ) {
+      $row['titulo'] = htmlspecialchars($row['titulo']);
+      $row['data'] = DateFormat::filter_date($row['data']);
+    }
 
     return $row;
   }

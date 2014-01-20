@@ -25,12 +25,7 @@ class PermissaoModel extends BaseModelAdm
         $arrOptions[$entity['name']] = $entity['secao'];
     }
 
-    $d = new Listbox('permissao');
-    $d->setOptionsArray($arrOptions);
-    $d->setClass('form-control');
-    $d->setSelected($selected);
-
-    return $d->getElement();
+    return $arrOptions;
   }
 
   public function block ( $model, $user )

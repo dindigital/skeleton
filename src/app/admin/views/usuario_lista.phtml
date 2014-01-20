@@ -45,7 +45,7 @@
                   <td><input class="setAtivo" type="checkbox" <?php if ( $row['ativo'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_usuario']; ?>" /></td>
                   <td><?php echo $row['nome']; ?></td>
                   <td><?php echo $row['email']; ?></td>
-                  <td><?php echo $data['DateFormat']::filter_date($row['inc_data']); ?></td>
+                  <td><?php echo $row['inc_data']; ?></td>
                   <td class="text-center">
                     <a class="label label-default btn_edicao" href="<?php echo $row[$this->_data['entity']['id']]; ?>">
                       <i class="fa fa-pencil"></i>

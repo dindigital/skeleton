@@ -45,11 +45,9 @@ class VideoController extends BaseControllerAdm
 
   public function get_cadastro ( $id = null )
   {
-    if ( $id ) {
-      $this->_data['table'] = VideoFormat::formatRow($this->_model->getById($id));
-    } else {
-      $this->_data['table'] = array();
-    }
+    $row = $id ? $this->_model->getById($id) : array();
+
+    $this->_data['table'] = VideoFormat::formatRow($row);
 
     $this->setCadastroTemplate('video_cadastro.phtml');
   }

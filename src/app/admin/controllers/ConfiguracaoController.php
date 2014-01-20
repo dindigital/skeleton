@@ -7,6 +7,7 @@ use src\app\admin\models\ConfiguracaoModel as model;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
+use src\app\admin\formats\ConfiguracaoFormat;
 
 /**
  *
@@ -27,7 +28,7 @@ class ConfiguracaoController extends BaseControllerAdm
 
   public function get_cadastro ()
   {
-    $this->_data['table'] = $this->_model->getById(1);
+    $this->_data['table'] = ConfiguracaoFormat::formatRow($this->_model->getById(1));
     $this->setCadastroTemplate('configuracao_cadastro.phtml');
   }
 

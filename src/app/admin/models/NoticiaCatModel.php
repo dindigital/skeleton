@@ -78,7 +78,7 @@ class NoticiaCatModel extends BaseModelAdm
     return $id;
   }
 
-  public function getDropdown ( $firstOption = '', $selected = null )
+  public function getDropdown ()
   {
     $select = new Select('noticia_cat');
     $select->addField('id_noticia_cat');
@@ -89,15 +89,12 @@ class NoticiaCatModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
-    $d = new Dropdown('id_noticia_cat');
-    $d->setOptionsResult($result, 'id_noticia_cat', 'titulo');
-    $d->setClass('form-control');
-    $d->setSelected($selected);
-    if ( $firstOption != '' ) {
-      $d->setFirstOpt($firstOption);
+    $arrOptions = array();
+    foreach ( $result as $row ) {
+      $arrOptions[$row['id_noticia_cat']] = $row['titulo'];
     }
 
-    return $d->getElement();
+    return $arrOptions;
   }
 
 }
