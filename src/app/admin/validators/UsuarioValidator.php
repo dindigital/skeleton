@@ -3,7 +3,7 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use src\tables\UsuarioTable;
+use Din\DataAccessLayer\Table\Table;
 use Respect\Validation\Validator as v;
 use Din\Crypt\Crypt;
 use Din\Exception\JsonException;
@@ -13,7 +13,7 @@ class UsuarioValidator extends BaseValidator
 
   public function __construct ()
   {
-    $this->_table = new UsuarioTable();
+    $this->_table = new Table('usuario');
   }
 
   public function setNome ( $nome )

@@ -3,7 +3,7 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use src\tables\PaginaCatTable;
+use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 
 class PaginaCatValidator extends BaseValidator
@@ -11,7 +11,7 @@ class PaginaCatValidator extends BaseValidator
 
   public function __construct ()
   {
-    $this->_table = new PaginaCatTable();
+    $this->_table = new Table('pagina_cat');
   }
 
   public function setTitulo ( $titulo )

@@ -3,7 +3,7 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use src\tables\NoticiaCatTable;
+use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 
 class NoticiaCatValidator extends BaseValidator
@@ -11,7 +11,7 @@ class NoticiaCatValidator extends BaseValidator
 
   public function __construct ()
   {
-    $this->_table = new NoticiaCatTable();
+    $this->_table = new Table('noticia_cat');
   }
 
   public function setTitulo ( $titulo )

@@ -3,7 +3,7 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use src\tables\ConfiguracaoTable;
+use Din\DataAccessLayer\Table\Table;
 use Respect\Validation\Validator as v;
 use Din\Exception\JsonException;
 
@@ -12,7 +12,7 @@ class ConfiguracaoValidator extends BaseValidator
 
   public function __construct ()
   {
-    $this->_table = new ConfiguracaoTable;
+    $this->_table = new Table('configuracao');
   }
 
   public function setTitleHome ( $title_home )

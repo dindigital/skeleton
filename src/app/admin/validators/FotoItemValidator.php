@@ -3,7 +3,7 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use src\tables\FotoItemTable;
+use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 use Din\File\Folder;
 use Din\DataAccessLayer\Select;
@@ -15,7 +15,7 @@ class FotoItemValidator extends BaseValidator
 
   public function __construct ( $dao )
   {
-    $this->_table = new FotoItemTable();
+    $this->_table = new Table('foto_item');
     $this->_dao = $dao;
   }
 

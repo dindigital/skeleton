@@ -3,7 +3,7 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use src\tables\NoticiaTable;
+use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 use Din\Filters\Date\DateToSql;
 use src\app\admin\models\NoticiaCatModel;
@@ -13,7 +13,7 @@ class NoticiaValidator extends BaseValidator
 
   public function __construct ()
   {
-    $this->_table = new NoticiaTable();
+    $this->_table = new Table('noticia');
   }
 
   public function setIdNoticiaCat ( $id_noticia_cat )

@@ -18,7 +18,7 @@ class BaseValidator
     $entity = Entities::getThis($model);
     $property = $entity['id'];
 
-    $this->_table->{$property} = $this->_table->getNewId();
+    $this->_table->{$property} = md5(uniqid());
 
     return $this->_table->{$property};
   }

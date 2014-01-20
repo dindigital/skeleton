@@ -3,7 +3,7 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use src\tables\FotoTable;
+use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 use Din\Filters\Date\DateToSql;
 
@@ -12,7 +12,7 @@ class FotoValidator extends BaseValidator
 
   public function __construct ()
   {
-    $this->_table = new FotoTable();
+    $this->_table = new Table('foto');
   }
 
   public function setTitulo ( $titulo )
