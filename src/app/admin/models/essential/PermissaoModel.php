@@ -21,7 +21,8 @@ class PermissaoModel extends BaseModelAdm
     }
     $arrOptions = array();
     foreach ( Entities::$entities as $tbl => $entity ) {
-      $arrOptions[$entity['name']] = $entity['secao'];
+      if ( isset($entity['secao']) )
+        $arrOptions[$entity['name']] = $entity['secao'];
     }
 
     $d = new Listbox('permissao');
