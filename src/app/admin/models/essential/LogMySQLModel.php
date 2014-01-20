@@ -9,23 +9,24 @@ use src\app\admin\models\essential\LogInterface;
 class LogMySQLModel extends LogAbstract implements LogInterface
 {
 
-  public static function save ( $dao, $usuario, $action, $msg, $table, $tableHistory )
+  public static function save ( $dao, $usuario, $action, $msg, $name, $table, $tableHistory )
   {
     $log = new self;
     $log->_dao = $dao;
     $log->usuario = $usuario;
     $log->msg = $msg;
+    $log->name = $name;
     $log->table = $table;
     $log->tableHistory = $tableHistory;
 
     $log->logicSave($action);
   }
 
-  public function insert ( $table_name )
+  public function insert ()
   {
     $validator = new LogValidator();
     $validator->setAdministrador($this->usuario['nome']);
-    $validator->setTabela($table_name);
+    $validator->setName($this->name);
     $validator->setAcao('C');
     $validator->setDescricao($this->msg);
     $validator->setConteudo(json_encode($this->table->setted_values));
@@ -34,7 +35,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
     $this->_dao->insert($validator->getTable());
   }
 
-  public function update ( $table_name )
+  public function update ()
   {
 
     $diff = array();
@@ -56,7 +57,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
 
     $validator = new LogValidator();
     $validator->setAdministrador($this->usuario['nome']);
-    $validator->setTabela($table_name);
+    $validator->setName($this->name);
     $validator->setAcao('U');
     $validator->setDescricao($this->msg);
     $validator->setConteudo($conteudo);
@@ -65,11 +66,11 @@ class LogMySQLModel extends LogAbstract implements LogInterface
     $this->_dao->insert($validator->getTable());
   }
 
-  public function deleteRestore ( $table_name, $action )
+  public function deleteRestore ( $action )
   {
     $validator = new LogValidator();
     $validator->setAdministrador($this->usuario['nome']);
-    $validator->setTabela($table_name);
+    $validator->setName($this->name);
     $validator->setAcao($action);
     $validator->setDescricao($this->msg);
     $validator->setConteudo(json_encode($this->tableHistory));

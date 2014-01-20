@@ -31,7 +31,7 @@ class LogController extends BaseControllerAdm
     $arrFilters = array(
         'usuario' => Get::text('usuario'),
         'acao' => Get::text('acao'),
-        'secao' => Get::text('secao'),
+        'name' => Get::text('name'),
         'descricao' => Get::text('descricao')
     );
 
@@ -39,7 +39,7 @@ class LogController extends BaseControllerAdm
     $this->_data['list'] = $this->_model->resultList($arrFilters, $paginator);
     $this->_data['busca'] = $arrFilters;
     $this->_data['dropdown']['acao'] = $this->_model->getDropdownAction('Filtro por Ação', $arrFilters['acao']);
-    $this->_data['dropdown']['secao'] = $this->_model->getDropdownSecao('Filtro por Seção', $arrFilters['secao']);
+    $this->_data['dropdown']['name'] = $this->_model->getDropdownName('Filtro por Seção', $arrFilters['name']);
 
     $this->setListTemplate('essential/log_lista.phtml', $paginator);
   }

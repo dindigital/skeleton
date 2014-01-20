@@ -18,9 +18,9 @@ class LogValidator extends BaseValidator
     $this->_table->administrador = $administrador;
   }
 
-  public function setTabela ( $tabela )
+  public function setName ( $name )
   {
-    $this->_table->tabela = $tabela;
+    $this->_table->name = $name;
   }
 
   public function setAcao ( $acao )

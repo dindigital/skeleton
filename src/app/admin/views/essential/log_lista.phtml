@@ -22,7 +22,7 @@
             <?php echo $data['dropdown']['acao']; ?>
           </div>
           <div class="col-sm-4 col-md-4 col-lg-2">
-            <?php echo $data['dropdown']['secao']; ?>
+            <?php echo $data['dropdown']['name']; ?>
           </div>
           <input type="button" value="Limpar" class="limpar_busca btn btn-default btn-rad" />
           <input type="submit" value="Buscar" class="btn btn-info btn-rad" />
@@ -48,7 +48,7 @@
                   <td><?php echo $data['DateFormat']::filter_date($row['inc_data'], 'd/m H:i'); ?></td>
                   <td><?php echo $row['administrador']; ?></td>
                   <td><?php echo $data['Arrays']::logAcao($row['acao']); ?></td>
-                  <td><?php echo $row['tabela']; ?></td>
+                  <td><?php echo $row['name']; ?></td>
                   <td><?php echo $row['descricao']; ?></td>
                   <td class="text-center">
                     <a class="label label-default btn_edicao" href="<?php echo $row['id_log']; ?>">
