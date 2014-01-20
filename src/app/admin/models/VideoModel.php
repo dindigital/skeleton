@@ -37,7 +37,7 @@ class VideoModel extends BaseModelAdm
   public function inserir ( $info )
   {
     $validator = new VideoValidator();
-    $id = $validator->setIdVideo()->getTable()->id_video;
+    $id = $validator->setId($this);
     $validator->setAtivo($info['ativo']);
     $validator->setTitulo($info['titulo']);
     $validator->setData($info['data']);

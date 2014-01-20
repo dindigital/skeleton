@@ -9,6 +9,7 @@ use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
+use Din\Filters\Date\DateFormat;
 
 /**
  *
@@ -24,6 +25,7 @@ class VideoController extends BaseControllerAdm
     parent::__construct();
     $this->_model = new model();
     $this->setEntityData();
+    $this->require_permission();
   }
 
   public function get_lista ()

@@ -14,13 +14,6 @@ class PaginaCatValidator extends BaseValidator
     $this->_table = new PaginaCatTable();
   }
 
-  public function setIdPaginaCat ()
-  {
-    $this->_table->id_pagina_cat = $this->_table->getNewId();
-
-    return $this;
-  }
-
   public function setTitulo ( $titulo )
   {
     if ( $titulo == '' )

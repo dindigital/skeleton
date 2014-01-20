@@ -26,6 +26,7 @@ class PaginaCatController extends BaseControllerAdm
 
     $this->_model = new model();
     $this->setEntityData();
+    $this->require_permission();
   }
 
   public function get_lista ()

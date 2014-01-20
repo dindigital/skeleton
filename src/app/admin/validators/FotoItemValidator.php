@@ -19,13 +19,6 @@ class FotoItemValidator extends BaseValidator
     $this->_dao = $dao;
   }
 
-  public function setIdFotoItem ()
-  {
-    $this->_table->id_foto_item = $this->_table->getNewId();
-
-    return $this;
-  }
-
   public function setIdFoto ( $id_foto )
   {
     $this->_table->id_foto = $id_foto;
@@ -82,6 +75,29 @@ class FotoItemValidator extends BaseValidator
     $file = str_replace(PATH_REPLACE, '', $destination);
 
     $this->_table->arquivo = $file;
+    $this->readTags($destination);
+  }
+
+  private function readTags ( $file )
+  {
+    if ( !in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), array('jpg', 'tiff')) )
+      return;
+
+    $exif = exif_read_data($file);
+
+    $legenda = '';
+    $credito = '';
+
+    if ( isset($exif['ImageDescription']) ) {
+      $legenda = $exif['ImageDescription'];
+    }
+
+    if ( isset($exif['Artist']) ) {
+      $credito = $exif['Artist'];
+    }
+
+    $this->setLegenda($legenda);
+    $this->setCredito($credito);
   }
 
 }

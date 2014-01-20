@@ -12,6 +12,7 @@ use Din\Http\Header;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Arrays;
 use src\app\admin\helpers\Entities;
+use src\app\admin\models\essential\PermissaoModel;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -97,6 +98,10 @@ abstract class BaseControllerAdm extends BaseController
 
     $this->_data['user'] = $usuarioAuthModel->getUser();
     $this->_data['user']['avatar_img'] = Picuri::picUri($this->_data['user']['avatar'], 30, 30, true);
+
+    $permissao = new PermissaoModel();
+    $permissoes = $permissao->getArray($this->_data['user']);
+    $this->_data['permissao'] = array_fill_keys($permissoes, '');
   }
 
   protected function setRegistroSalvoSession ()
@@ -134,6 +139,12 @@ abstract class BaseControllerAdm extends BaseController
   protected function setEntityData ()
   {
     $this->_data['entity'] = Entities::getThis($this->_model);
+  }
+
+  public function require_permission ()
+  {
+    $permissao = new PermissaoModel();
+    $permissao->block($this->_model, $this->_data['user']);
   }
 
   //_# OPERAÇÕES COMUNS

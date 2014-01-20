@@ -48,7 +48,7 @@ class PaginaModel extends BaseModelAdm
   public function inserir ( $info )
   {
     $validator = new PaginaValidator();
-    $id = $validator->setIdPagina()->getTable()->id_pagina;
+    $id = $validator->setId($this);
     $validator->setIdPaginaCat($info['id_pagina_cat']);
     $validator->setIdParent($info['id_parent']);
     $validator->setAtivo($info['ativo']);
@@ -136,11 +136,11 @@ class PaginaModel extends BaseModelAdm
     $id_cat = $first['id_pagina_cat'];
     if ( $first['id_parent'] ) {
 
-      $last = $this->getDropdown('Subnível de Página', null, 'ajax_pagina_infinita', $id_cat, $first['id_parent'], $first['id_pagina']);
+      $last = $this->getDropdown('Subnível de Página', null, 'ajax_infinity', $id_cat, $first['id_parent'], $first['id_pagina']);
 
       while ($first['id_parent']) {
         $second = $this->getById($first['id_parent']);
-        $r[] = $this->getDropdown('Subnível de Página', $first['id_parent'], 'ajax_pagina_infinita', $id_cat, $second['id_parent']);
+        $r[] = $this->getDropdown('Subnível de Página', $first['id_parent'], 'ajax_infinity', $id_cat, $second['id_parent']);
         $first = $second;
       }
 

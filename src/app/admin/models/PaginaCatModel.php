@@ -41,7 +41,7 @@ class PaginaCatModel extends BaseModelAdm
   public function inserir ( $info )
   {
     $validator = new PaginaCatValidator();
-    $id = $validator->setIdPaginaCat()->getTable()->id_pagina_cat;
+    $id = $validator->setId($this);
     $validator->setAtivo($info['ativo']);
     $validator->setTitulo($info['titulo']);
     $validator->setConteudo($info['conteudo']);

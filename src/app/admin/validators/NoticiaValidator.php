@@ -15,13 +15,6 @@ class NoticiaValidator extends BaseValidator
     $this->_table = new NoticiaTable();
   }
 
-  public function setIdNoticia ()
-  {
-    $this->_table->id_noticia = $this->_table->getNewId();
-
-    return $this;
-  }
-
   public function setIdNoticiaCat ( $id_noticia_cat )
   {
     $this->_table->id_noticia_cat = $id_noticia_cat;

@@ -15,13 +15,6 @@ class FotoValidator extends BaseValidator
     $this->_table = new FotoTable();
   }
 
-  public function setIdFoto ()
-  {
-    $this->_table->id_foto = $this->_table->getNewId();
-
-    return $this;
-  }
-
   public function setTitulo ( $titulo )
   {
     if ( $titulo == '' )

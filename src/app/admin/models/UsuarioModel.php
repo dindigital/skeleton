@@ -21,8 +21,9 @@ class UsuarioModel extends BaseModelAdm
     $validator->setNome($info['nome']);
     $validator->setEmail($info['email']);
     $validator->setSenha($info['senha']);
+    $validator->setPermissao($info['permissao']);
     $validator->setIncData();
-    $id = $validator->setIdUsuario()->getTable()->id_usuario;
+    $id = $validator->setId($this);
 
     $validator->setArquivo('avatar', $info['avatar'], $id, false);
     $validator->setArquivo('avatar2', $info['avatar2'], $id, false);
@@ -42,6 +43,7 @@ class UsuarioModel extends BaseModelAdm
     $validator->setNome($info['nome']);
     $validator->setEmail($info['email'], $id);
     $validator->setSenha($info['senha'], false);
+    $validator->setPermissao($info['permissao']);
 
     $validator->setArquivo('avatar', $info['avatar'], $id, false);
     $validator->setArquivo('avatar2', $info['avatar2'], $id, false);

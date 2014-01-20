@@ -1,6 +1,14 @@
 <?php
 
 return array(
+    'lixeira' => array(
+        'name' => 'Lixeira',
+        'secao' => 'Lixeira',
+    ),
+    'log' => array(
+        'name' => 'Log',
+        'secao' => 'Log',
+    ),
     'configuracao' => array(
         'tbl' => 'configuracao',
         'name' => 'Configuracao',
@@ -14,6 +22,11 @@ return array(
         'id' => 'id_foto',
         'title' => 'titulo',
         'lixeira' => true,
+    ),
+    'foto_item' => array(
+        'tbl' => 'foto_item',
+        'name' => 'FotoItem',
+        'id' => 'id_foto_item',
     ),
     'noticia' => array(
         'tbl' => 'noticia',

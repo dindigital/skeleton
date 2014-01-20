@@ -67,4 +67,9 @@ class UsuarioTable extends AbstractTable implements iTable
    */
   protected $id_conselho;
 
+  /**
+   * @var text DEFAULT NULL
+   */
+  protected $permissao;
+
 }
