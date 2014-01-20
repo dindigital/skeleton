@@ -82,20 +82,7 @@ class PaginaController extends BaseControllerAdm
           'keywords' => Post::text('keywords'),
       );
 
-      if ( !$id ) {
-        $id = $this->_model->inserir($info);
-      } else {
-        $this->_model->atualizar($id, $info);
-      }
-
-      $this->setRegistroSalvoSession();
-
-      $redirect = '/admin/pagina/cadastro/' . $id . '/';
-      if ( Post::text('redirect') == 'lista' ) {
-        $redirect = '/admin/pagina/lista/';
-      }
-
-      JsonViewHelper::redirect($redirect);
+      $this->saveAndRedirect($info, $id);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

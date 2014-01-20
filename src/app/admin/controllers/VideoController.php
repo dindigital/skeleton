@@ -9,7 +9,7 @@ use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\formats\VideoFormat;
+use src\app\admin\viewhelpers\VideoViewHelper as vh;
 
 /**
  *
@@ -35,7 +35,7 @@ class VideoController extends BaseControllerAdm
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = VideoFormat::formatResult($this->_model->listar($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
     $this->_data['busca'] = $arrFilters;
 
     $this->setErrorSessionData();
@@ -47,7 +47,7 @@ class VideoController extends BaseControllerAdm
   {
     $row = $id ? $this->_model->getById($id) : array();
 
-    $this->_data['table'] = VideoFormat::formatRow($row);
+    $this->_data['table'] = vh::formatRow($row);
 
     $this->setCadastroTemplate('video_cadastro.phtml');
   }
@@ -64,20 +64,7 @@ class VideoController extends BaseControllerAdm
           'link_vimeo' => Post::text('link_vimeo'),
       );
 
-      if ( !$id ) {
-        $id = $this->_model->inserir($info);
-      } else {
-        $this->_model->atualizar($id, $info);
-      }
-
-      $this->setRegistroSalvoSession();
-
-      $redirect = '/admin/video/cadastro/' . $id . '/';
-      if ( Post::text('redirect') == 'lista' ) {
-        $redirect = '/admin/video/lista/';
-      }
-
-      JsonViewHelper::redirect($redirect);
+      $this->saveAndRedirect($info, $id);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

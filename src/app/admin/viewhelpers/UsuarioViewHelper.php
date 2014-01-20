@@ -1,12 +1,12 @@
 <?php
 
-namespace src\app\admin\formats;
+namespace src\app\admin\viewhelpers;
 
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use Din\Form\Listbox\Listbox;
 
-class UsuarioFormat
+class UsuarioViewHelper
 {
 
   public static function formatResult ( $result )

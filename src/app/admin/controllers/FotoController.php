@@ -68,26 +68,12 @@ class FotoController extends BaseControllerAdm
           'titulo' => Post::text('titulo'),
           'data' => Post::text('data'),
           'galeria_uploader' => Post::upload('galeria_uploader'),
+          'ordem' => Post::text('galeria_ordem'),
+          'legenda' => Post::aray('legenda'),
+          'credito' => Post::aray('credito'),
       );
 
-      if ( !$id ) {
-        $id = $this->_model->inserir($info);
-      } else {
-        $this->_model->atualizar($id, array_merge($info, array(
-            'ordem' => Post::text('galeria_ordem'),
-            'legenda' => Post::aray('legenda'),
-            'credito' => Post::aray('credito'),
-        )));
-      }
-
-      $this->setRegistroSalvoSession();
-
-      $redirect = '/admin/foto/cadastro/' . $id . '/';
-      if ( Post::text('redirect') == 'lista' ) {
-        $redirect = '/admin/foto/lista/';
-      }
-
-      JsonViewHelper::redirect($redirect);
+      $this->saveAndRedirect($info, $id);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

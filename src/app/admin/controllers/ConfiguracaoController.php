@@ -7,7 +7,7 @@ use src\app\admin\models\ConfiguracaoModel as model;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
-use src\app\admin\formats\ConfiguracaoFormat;
+use src\app\admin\viewhelpers\ConfiguracaoViewHelper as vh;
 
 /**
  *
@@ -28,14 +28,15 @@ class ConfiguracaoController extends BaseControllerAdm
 
   public function get_cadastro ()
   {
-    $this->_data['table'] = ConfiguracaoFormat::formatRow($this->_model->getById(1));
+    $this->_data['table'] = vh::formatRow($this->_model->getById(1));
     $this->setCadastroTemplate('configuracao_cadastro.phtml');
   }
 
   public function post_cadastro ()
   {
     try {
-      $this->_model->atualizar('1', array(
+
+      $info = array(
           'title_home' => Post::text('title_home'),
           'description_home' => Post::text('description_home'),
           'keywords_home' => Post::text('keywords_home'),
@@ -44,11 +45,9 @@ class ConfiguracaoController extends BaseControllerAdm
           'keywords_interna' => Post::text('keywords_interna'),
           'qtd_horas' => Post::text('qtd_horas'),
           'email_avisos' => Post::text('email_avisos'),
-      ));
+      );
 
-      $this->setRegistroSalvoSession();
-
-      JsonViewHelper::redirect('/admin/configuracao/cadastro/');
+      $this->saveAndRedirect($info, '1');
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

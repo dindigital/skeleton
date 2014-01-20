@@ -72,20 +72,7 @@ class NoticiaCatController extends BaseControllerAdm
           'capa' => Post::upload('capa')
       );
 
-      if ( !$id ) {
-        $id = $this->_model->inserir($info);
-      } else {
-        $this->_model->atualizar($id, $info);
-      }
-
-      $this->setRegistroSalvoSession();
-
-      $redirect = '/admin/noticia_cat/cadastro/' . $id . '/';
-      if ( Post::text('redirect') == 'lista' ) {
-        $redirect = '/admin/noticia_cat/lista/';
-      }
-
-      JsonViewHelper::redirect($redirect);
+      $this->saveAndRedirect($info, $id);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

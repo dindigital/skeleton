@@ -9,7 +9,7 @@ use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\formats\NoticiaFormat;
+use src\app\admin\viewhelpers\NoticiaViewHelper as vh;
 use src\app\admin\models\NoticiaCatModel;
 
 /**
@@ -36,7 +36,7 @@ class NoticiaController extends BaseControllerAdm
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = NoticiaFormat::formatResult($this->_model->listar($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
     $this->_data['busca'] = $arrFilters;
 
     $this->setErrorSessionData();
@@ -51,7 +51,7 @@ class NoticiaController extends BaseControllerAdm
     $noticia_cat = new NoticiaCatModel();
     $noticia_cat_dropdown = $noticia_cat->getDropdown();
 
-    $this->_data['table'] = NoticiaFormat::formatRow($row, $noticia_cat_dropdown);
+    $this->_data['table'] = vh::formatRow($row, $noticia_cat_dropdown);
 
     $this->setCadastroTemplate('noticia_cadastro.phtml');
   }
@@ -69,20 +69,7 @@ class NoticiaController extends BaseControllerAdm
           'capa' => Post::upload('capa'),
       );
 
-      if ( !$id ) {
-        $id = $this->_model->inserir($info);
-      } else {
-        $this->_model->atualizar($id, $info);
-      }
-
-      $this->setRegistroSalvoSession();
-
-      $redirect = '/admin/noticia/cadastro/' . $id . '/';
-      if ( Post::text('redirect') == 'lista' ) {
-        $redirect = '/admin/noticia/lista/';
-      }
-
-      JsonViewHelper::redirect($redirect);
+      $this->saveAndRedirect($info, $id);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

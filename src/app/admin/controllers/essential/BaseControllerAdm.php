@@ -13,6 +13,7 @@ use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Arrays;
 use src\app\admin\helpers\Entities;
 use src\app\admin\models\essential\PermissaoModel;
+use Din\ViewHelpers\JsonViewHelper;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -146,6 +147,26 @@ abstract class BaseControllerAdm extends BaseController
   {
     $permissao = new PermissaoModel();
     $permissao->block($this->_model, $this->_data['user']);
+  }
+
+  public function saveAndRedirect ( $info, $id )
+  {
+    if ( !$id ) {
+      $id = $this->_model->inserir($info);
+    } else {
+      $this->_model->atualizar($id, $info);
+    }
+
+    $this->setRegistroSalvoSession();
+
+    $entity = Entities::getThis($this->_model);
+
+    $redirect = '/admin/' . $entity['tbl'] . '/cadastro/' . $id . '/';
+    if ( Post::text('redirect') == 'lista' ) {
+      $redirect = '/admin/' . $entity['tbl'] . '/lista/';
+    }
+
+    JsonViewHelper::redirect($redirect);
   }
 
   //_# OPERAÇÕES COMUNS

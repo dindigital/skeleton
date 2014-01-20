@@ -1,11 +1,11 @@
 <?php
 
-namespace src\app\admin\formats;
+namespace src\app\admin\viewhelpers;
 
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 
-class NoticiaFormat
+class NoticiaViewHelper
 {
 
   public static function formatResult ( $result )

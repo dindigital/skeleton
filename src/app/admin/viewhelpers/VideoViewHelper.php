@@ -1,10 +1,10 @@
 <?php
 
-namespace src\app\admin\formats;
+namespace src\app\admin\viewhelpers;
 
 use Din\Filters\Date\DateFormat;
 
-class VideoFormat
+class VideoViewHelper
 {
 
   public static function formatResult ( $result )

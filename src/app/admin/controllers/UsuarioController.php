@@ -5,13 +5,12 @@ namespace src\app\admin\controllers;
 use src\app\admin\models\UsuarioModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
-use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\essential\PermissaoModel;
-use src\app\admin\formats\UsuarioFormat;
+use src\app\admin\viewhelpers\UsuarioViewHelper as vh;
 
 /**
  *
@@ -38,7 +37,7 @@ class UsuarioController extends BaseControllerAdm
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = UsuarioFormat::formatResult($this->_model->listar($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
     $this->_data['busca'] = $arrFilters;
 
     $this->setErrorSessionData();
@@ -53,7 +52,7 @@ class UsuarioController extends BaseControllerAdm
     $permissao = new PermissaoModel();
     $permissao_listbox = $permissao->getListbox(@$this->_data['table']['permissao']);
 
-    $this->_data['table'] = UsuarioFormat::formatRow($row, $permissao_listbox);
+    $this->_data['table'] = vh::formatRow($row, $permissao_listbox);
 
     $this->setCadastroTemplate('usuario_cadastro.phtml');
   }
@@ -72,20 +71,7 @@ class UsuarioController extends BaseControllerAdm
           'permissao' => Post::aray('permissao'),
       );
 
-      if ( !$id ) {
-        $id = $this->_model->inserir($info);
-      } else {
-        $this->_model->atualizar($id, $info);
-      }
-
-      $this->setRegistroSalvoSession();
-
-      $redirect = '/admin/usuario/cadastro/' . $id . '/';
-      if ( Post::text('redirect') == 'lista' ) {
-        $redirect = '/admin/usuario/lista/';
-      }
-
-      JsonViewHelper::redirect($redirect);
+      $this->saveAndRedirect($info, $id);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

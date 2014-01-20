@@ -1,8 +1,8 @@
 <?php
 
-namespace src\app\admin\formats;
+namespace src\app\admin\viewhelpers;
 
-class ConfiguracaoFormat
+class ConfiguracaoViewHelper
 {
 
   public static function formatRow ( $row )
