@@ -44,16 +44,14 @@ class LogController extends BaseControllerAdm
     $this->setListTemplate('essential/log_lista.phtml', $paginator);
   }
 
-  public function get_view ()
+  public function get_save ( $id )
   {
     try {
-      $itens = Post::aray('itens');
-
-      $this->_model->restaurar($itens);
-
-      Header::redirect(Header::getReferer());
+      $this->_data['table'] = $this->_model->getById($id);
+      $this->_view->addFile('src/app/admin/views/essential/log_view.phtml', '{$CONTENT}');
+      $this->display_html();
     } catch (Exception $e) {
-      $this->setErrorSession($e->getMessage());
+
     }
   }
 

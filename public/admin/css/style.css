@@ -3222,3 +3222,14 @@ button::-moz-focus-inner {
   margin: 0 20px 0 0;
   visibility: hidden;
 }
+
+.log_default {
+  padding: 7px 0 0 0;
+  font-size: 14px;
+}
+
+.log_before {
+  font-size: 12px;
+  text-decoration: line-through;
+  color: red;
+}

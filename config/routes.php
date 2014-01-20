@@ -24,13 +24,13 @@ return array(
             'controller' => 'admin\controllers\essential\LixeiraController',
             'method' => 'excluir',
         ),
-        'admin/log/list/' => array(
+        'admin/log/lista/' => array(
             'controller' => 'admin\controllers\essential\LogController',
             'method' => 'list',
         ),
-        'admin/log/view/' => array(
+        'admin/log/cadastro/([0-9]+)/' => array(
             'controller' => 'admin\controllers\essential\LogController',
-            'method' => 'view',
+            'method' => 'save',
         ),
         'admin/config/cadastro/' => array(
             'controller' => 'admin\controllers\essential\ConfigController',
