@@ -6,12 +6,9 @@ function errHandle ( $errNo, $errStr, $errFile, $errLine )
     // @ suppression used, don't worry about it
     return;
   }
+
   $msg = "$errStr in $errFile on line $errLine";
-  if ( $errNo == E_NOTICE || $errNo == E_WARNING ) {
-    throw new ErrorException($msg, $errNo);
-  } else {
-    echo $msg;
-  }
+  throw new ErrorException($msg, $errNo);
 }
 
 set_error_handler('errHandle');
