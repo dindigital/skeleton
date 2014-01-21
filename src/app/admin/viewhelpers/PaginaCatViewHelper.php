@@ -26,18 +26,9 @@ class PaginaCatViewHelper
 
   public static function formatRow ( $row )
   {
-    if ( !empty($row) ) {
-      $row['titulo'] = htmlspecialchars($row['titulo']);
-
-      $conteudo = $row['conteudo'];
-      $capa = $row['capa'];
-    } else {
-      $conteudo = '';
-      $capa = '';
-    }
-
-    $row['conteudo'] = Form::Ck('conteudo', $conteudo);
-    $row['capa'] = Form::Upload('capa', $capa, 'imagem');
+    $row['titulo'] = htmlspecialchars(@$row['titulo']);
+    $row['conteudo'] = Form::Ck('conteudo', @$row['conteudo']);
+    $row['capa'] = Form::Upload('capa', @$row['capa'], 'imagem');
 
     return $row;
   }

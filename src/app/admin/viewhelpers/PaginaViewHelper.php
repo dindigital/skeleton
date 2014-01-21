@@ -27,36 +27,21 @@ class PaginaViewHelper
 
   public static function formatRow ( $row, $pagina_cat_dropdown )
   {
-    if ( !empty($row) ) {
-      $row['titulo'] = htmlspecialchars($row['titulo']);
+    $row['titulo'] = htmlspecialchars(@$row['titulo']);
+    $row['conteudo'] = Form::Ck('conteudo', @$row['conteudo']);
+    $row['capa'] = Form::Upload('capa', @$row['capa'], 'imagem');
+    $row['id_pagina_cat'] = Form::Dropdown('id_pagina_cat', $pagina_cat_dropdown, @$row['id_pagina_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 
-      $conteudo = $row['conteudo'];
-      $capa = $row['capa'];
-      $id_pagina_cat = $row['id_pagina_cat'];
-      $infinito = $row['infinito'];
-    } else {
-      $conteudo = '';
-      $capa = '';
-      $id_pagina_cat = '';
-      $infinito = array();
-    }
-
-    $row['infinito'] = array();
-    foreach ( $infinito as $i => $drop ) {
+    foreach ( (array) @$row['infinito'] as $i => $drop ) {
       $addClass = 'other';
       $row['infinito'][] = self::format_infinity_dropdown($drop['dropdown'], $drop['selected'], $addClass);
     }
 
-    $row['id_pagina_cat'] = Form::Dropdown('id_pagina_cat', $pagina_cat_dropdown, $id_pagina_cat, 'Selecione um Menu', null, 'ajax_intinify_cat');
-    $row['conteudo'] = Form::Ck('conteudo', $conteudo);
-    $row['capa'] = Form::Upload('capa', $capa, 'imagem');
-
     return $row;
   }
 
-  public static function format_infinity_dropdown ( $dropdown, $selected = null, $addClass = null )
+  public static function format_infinity_dropdown ( $dropdown, $selected = null )
   {
-    $addClass = $addClass ? ' ' . $addClass : '';
     $dropdown = Form::Dropdown('id_parent[]', $dropdown, $selected, 'Subnível de Página', null, 'ajax_infinity');
 
     return $dropdown;
