@@ -19,4 +19,12 @@ class LixeiraViewHelper
     return $result;
   }
 
+  public static function formatFilters ( $arrFilters, $dropdown_secao )
+  {
+    $arrFilters['titulo'] = htmlspecialchars($arrFilters['titulo']);
+    $arrFilters['secao'] = Form::Dropdown('secao', $dropdown_secao, $arrFilters['secao'], 'Filtro por Seção');
+
+    return $arrFilters;
+  }
+
 }

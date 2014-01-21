@@ -87,7 +87,7 @@ class LixeiraModel extends BaseModelAdm
     }
   }
 
-  public function getDropdown ( $firstOption = '', $selected = null )
+  public function getDropdown ()
   {
     $arrOptions = array();
 
@@ -95,15 +95,7 @@ class LixeiraModel extends BaseModelAdm
       $arrOptions[$model['tbl']] = $model['secao'];
     }
 
-    $d = new Dropdown('secao');
-    $d->setOptionsArray($arrOptions);
-    $d->setClass('form-control');
-    $d->setSelected($selected);
-    if ( $firstOption != '' ) {
-      $d->setFirstOpt($firstOption);
-    }
-
-    return $d->getElement();
+    return $arrOptions;
   }
 
   public function validateRestaurar ( $tbl, $id )

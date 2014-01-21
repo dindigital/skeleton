@@ -33,11 +33,11 @@ class LixeiraController extends BaseControllerAdm
         'secao' => Get::text('secao')
     );
 
+    $dropdown_secao = $this->_model->getDropdown();
+
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
     $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
-    $this->_data['busca'] = $arrFilters;
-
-    $this->_data['secao'] = $this->_model->getDropdown('Filtro por Seção', $arrFilters['secao']);
+    $this->_data['busca'] = vh::formatFilters($arrFilters, $dropdown_secao);
 
     $this->setErrorSessionData();
 
