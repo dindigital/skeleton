@@ -168,7 +168,7 @@ abstract class BaseControllerAdm extends BaseController
 
     if ( Post::text('redirect') == 'previous' ) {
       $session = new Session('adm_session');
-      $session->set('previous', $info);
+      $session->set('previous_id', $id);
       $redirect = '/admin/' . $entity['tbl'] . '/cadastro/';
     }
 
@@ -179,17 +179,20 @@ abstract class BaseControllerAdm extends BaseController
   {
     $session = new Session('adm_session');
     $row = array();
-    if ( $session->is_set('previous') ) {
-      foreach ( $session->get('previous') as $index => $value ) {
-        if ( is_array($value) && (!count($value) || (isset($value[0]) && is_array($value[0]))) ) {
-          $row[$index] = null;
-        } elseif ( is_array($value) ) {
-          $row[$index] = json_encode($value);
-        } else {
-          $row[$index] = $value;
-        }
-      }
+    if ( $session->is_set('previous_id') ) {
+      $row = $this->_model->getById($session->get('previous_id'));
+
+//      foreach ( $session->get('previous') as $index => $value ) {
+//        if ( is_array($value) && (!count($value) || (isset($value[0]) && is_array($value[0]))) ) {
+//          $row[$index] = null;
+//        } elseif ( is_array($value) ) {
+//          $row[$index] = json_encode($value);
+//        } else {
+//          $row[$index] = $value;
+//        }
+//      }
     }
+
     $session->un_set('previous');
     return $row;
   }

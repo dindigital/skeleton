@@ -36,7 +36,7 @@ class VideoController extends BaseControllerAdm
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
     $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
-    $this->_data['busca'] = $arrFilters;
+    $this->_data['busca'] = vh::formatFilters($arrFilters);
 
     $this->setErrorSessionData();
 
@@ -46,7 +46,6 @@ class VideoController extends BaseControllerAdm
   public function get_cadastro ( $id = null )
   {
     $row = $id ? $this->_model->getById($id) : $this->getPrevious();
-
     $this->_data['table'] = vh::formatRow($row);
 
     $this->setCadastroTemplate('video_cadastro.phtml');
