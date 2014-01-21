@@ -175,25 +175,19 @@ abstract class BaseControllerAdm extends BaseController
     JsonViewHelper::redirect($redirect);
   }
 
-  protected function getPrevious ()
+  protected function getPrevious ( $exclude )
   {
     $session = new Session('adm_session');
     $row = array();
     if ( $session->is_set('previous_id') ) {
       $row = $this->_model->getById($session->get('previous_id'));
 
-//      foreach ( $session->get('previous') as $index => $value ) {
-//        if ( is_array($value) && (!count($value) || (isset($value[0]) && is_array($value[0]))) ) {
-//          $row[$index] = null;
-//        } elseif ( is_array($value) ) {
-//          $row[$index] = json_encode($value);
-//        } else {
-//          $row[$index] = $value;
-//        }
-//      }
+      foreach ( $exclude as $field ) {
+        unset($row[$field]);
+      }
     }
 
-    $session->un_set('previous');
+    $session->un_set('previous_id');
     return $row;
   }
 
