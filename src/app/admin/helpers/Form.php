@@ -3,10 +3,10 @@
 namespace src\app\admin\helpers;
 
 use src\app\admin\helpers\PluploadPainel;
-use Din\Form\Upload;
 use Din\Form\FileBrowser\CKFinder\CKFinder;
 use Din\Form\Dropdown\Dropdown;
 use Din\Form\Textarea\Ckeditor\Ckeditor;
+use Din\Form\Listbox\Listbox;
 
 class Form
 {
@@ -72,6 +72,16 @@ class Form
 
     if ( $id )
       $d->setId($id);
+
+    return $d->getElement();
+  }
+
+  public static function Listbox ( $name, $array, $selected = array() )
+  {
+    $d = new Listbox($name);
+    $d->setOptionsArray($array);
+    $d->setClass('form-control');
+    $d->setSelected($selected);
 
     return $d->getElement();
   }
