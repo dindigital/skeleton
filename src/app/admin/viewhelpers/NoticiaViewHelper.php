@@ -17,6 +17,13 @@ class NoticiaViewHelper
     return $result;
   }
 
+  public static function formatFilters ( $arrFilters )
+  {
+    $arrFilters['titulo'] = htmlspecialchars($arrFilters['titulo']);
+
+    return $arrFilters;
+  }
+
   public static function formatRow ( $row, $noticia_cat_dropdown )
   {
     if ( !empty($row) ) {
