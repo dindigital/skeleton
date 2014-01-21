@@ -5,13 +5,11 @@ namespace src\app\admin\controllers;
 use src\app\admin\models\FotoModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
-use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\helpers\Galeria;
-use Din\Filters\Date\DateFormat;
+use src\app\admin\viewhelpers\FotoViewHelper as vh;
 
 /**
  *
@@ -47,15 +45,9 @@ class FotoController extends BaseControllerAdm
 
   public function get_cadastro ( $id = null )
   {
-    if ( $id ) {
-      $this->_data['table'] = $this->_model->getById($id);
-      $this->_data['table']['data'] = DateFormat::filter_date($this->_data['table']['data']);
-    } else {
-      $this->_data['table'] = array();
-    }
+    $row = $id ? $this->_model->getById($id) : array();
 
-    $this->_data['table']['galeria_uploader'] = Form::Upload('galeria_uploader', @$this->_data['table']['galeria'], 'imagem', true, false);
-    $this->_data['table']['galeria'] = Galeria::get(@$this->_data['table']['galeria'], 'galeria');
+    $this->_data['table'] = vh::formatRow($row);
 
     $this->setCadastroTemplate('foto_cadastro.phtml');
   }
