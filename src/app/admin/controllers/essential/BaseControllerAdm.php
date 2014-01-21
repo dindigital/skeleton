@@ -175,7 +175,7 @@ abstract class BaseControllerAdm extends BaseController
     JsonViewHelper::redirect($redirect);
   }
 
-  protected function getPrevious ( $exclude )
+  protected function getPrevious ( $exclude = array() )
   {
     $session = new Session('adm_session');
     $row = array();
