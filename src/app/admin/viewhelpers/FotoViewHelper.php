@@ -18,6 +18,13 @@ class FotoViewHelper
     return $result;
   }
 
+  public static function formatFilters ( $arrFilters )
+  {
+    $arrFilters['titulo'] = htmlspecialchars($arrFilters['titulo']);
+
+    return $arrFilters;
+  }
+
   public static function formatRow ( $row )
   {
     if ( !empty($row) ) {
