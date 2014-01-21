@@ -28,15 +28,8 @@ class NoticiaCatViewHelper
 
   public static function formatRow ( $row )
   {
-    if ( !empty($row) ) {
-      $row['titulo'] = htmlspecialchars($row['titulo']);
-
-      $capa = $row['capa'];
-    } else {
-      $capa = '';
-    }
-
-    $row['capa'] = Form::Upload('capa', $capa, 'imagem');
+    $row['titulo'] = htmlspecialchars(@$row['titulo']);
+    $row['capa'] = Form::Upload('capa', @$row['capa'], 'imagem');
 
     return $row;
   }

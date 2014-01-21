@@ -50,7 +50,10 @@ class NoticiaCatController extends BaseControllerAdm
 
   public function get_cadastro ( $id = null )
   {
-    $row = $id ? $this->_model->getById($id) : $this->getPrevious();
+    $excluded_fields = array(
+        'capa'
+    );
+    $row = $id ? $this->_model->getById($id) : $this->getPrevious($excluded_fields);
 
     $this->_data['table'] = vh::formatRow($row);
 
