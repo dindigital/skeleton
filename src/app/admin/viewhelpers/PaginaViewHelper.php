@@ -11,10 +11,18 @@ class PaginaViewHelper
   public static function formatResult ( $result )
   {
     foreach ( $result as $i => $row ) {
-      $result[$i]['data'] = DateFormat::filter_date($row['data']);
+      $result[$i]['inc_data'] = DateFormat::filter_date($row['inc_data']);
     }
 
     return $result;
+  }
+
+  public static function formatFilters ( $arrFilters, $pagina_cat_dropdown )
+  {
+    $arrFilters['titulo'] = htmlspecialchars($arrFilters['titulo']);
+    $arrFilters['id_pagina_cat'] = Form::Dropdown('id_pagina_cat', $pagina_cat_dropdown, @$arrFilters['id_pagina_cat'], 'Filtro por Menu');
+
+    return $arrFilters;
   }
 
   public static function formatRow ( $row, $pagina_cat_dropdown )

@@ -39,14 +39,12 @@ class PaginaController extends BaseControllerAdm
         'id_pagina_cat' => Get::text('id_pagina_cat'),
     );
 
-    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
-    $this->_data['busca'] = $arrFilters;
-
     $pagina_cat = new PaginaCatModel();
     $pagina_cat_dropdown = $pagina_cat->getDropdown();
 
-    $this->_data['busca']['id_pagina_cat'] = Form::Dropdown('id_pagina_cat', $pagina_cat_dropdown, @$this->_data['busca']['id_pagina_cat'], 'Filtro por Menu');
+    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
+    $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
+    $this->_data['busca'] = vh::formatFilters($arrFilters, $pagina_cat_dropdown);
 
     $this->setErrorSessionData();
 
