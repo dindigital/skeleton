@@ -11,6 +11,7 @@ use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\helpers\Arrays;
+use src\app\admin\viewhelpers\NoticiaCatViewHelper as vh;
 
 /**
  *
@@ -48,16 +49,11 @@ class NoticiaCatController extends BaseControllerAdm
     $this->setListTemplate('noticiacat_lista.phtml', $paginator);
   }
 
-  public function get_cadastro (
-  $id = null )
+  public function get_cadastro ( $id = null )
   {
-    if ( $id ) {
-      $this->_data['table'] = $this->_model->getById($id);
-    } else {
-      $this->_data['table'] = array();
-    }
+    $row = $id ? $this->_model->getById($id) : array();
 
-    $this->_data['table']['capa'] = Form::Upload('capa', @$this->_data['table']['capa'], 'imagem');
+    $this->_data['table'] = vh::formatRow($row);
 
     $this->setCadastroTemplate('noticiacat_cadastro.phtml');
   }
