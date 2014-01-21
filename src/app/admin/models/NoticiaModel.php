@@ -21,6 +21,9 @@ class NoticiaModel extends BaseModelAdm
         'a.del = ?' => '0',
         'a.titulo LIKE ?' => '%' . $arrFilters['titulo'] . '%'
     );
+    if ( $arrFilters['id_noticia_cat'] != '' && $arrFilters['id_noticia_cat'] != '0' ) {
+      $arrCriteria['a.id_noticia_cat = ?'] = $arrFilters['id_noticia_cat'];
+    }
 
     $select = new Select('noticia');
     $select->addField('id_noticia');

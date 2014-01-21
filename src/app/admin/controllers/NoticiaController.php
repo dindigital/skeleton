@@ -33,11 +33,15 @@ class NoticiaController extends BaseControllerAdm
   {
     $arrFilters = array(
         'titulo' => Get::text('titulo'),
+        'id_noticia_cat' => Get::text('id_noticia_cat'),
     );
+
+    $noticia_cat = new NoticiaCatModel();
+    $noticia_cat_dropdown = $noticia_cat->getListArray();
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
     $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
-    $this->_data['busca'] = vh::formatFilters($arrFilters);
+    $this->_data['busca'] = vh::formatFilters($arrFilters, $noticia_cat_dropdown);
 
     $this->setErrorSessionData();
 
@@ -52,7 +56,7 @@ class NoticiaController extends BaseControllerAdm
     $row = $id ? $this->_model->getById($id) : $this->getPrevious($excluded_fields);
 
     $noticia_cat = new NoticiaCatModel();
-    $noticia_cat_dropdown = $noticia_cat->getDropdown();
+    $noticia_cat_dropdown = $noticia_cat->getListArray();
 
     $this->_data['table'] = vh::formatRow($row, $noticia_cat_dropdown);
 

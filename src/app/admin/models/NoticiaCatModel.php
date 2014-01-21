@@ -78,7 +78,7 @@ class NoticiaCatModel extends BaseModelAdm
     return $id;
   }
 
-  public function getDropdown ()
+  public function getListArray ()
   {
     $select = new Select('noticia_cat');
     $select->addField('id_noticia_cat');

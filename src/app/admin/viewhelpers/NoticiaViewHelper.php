@@ -17,9 +17,10 @@ class NoticiaViewHelper
     return $result;
   }
 
-  public static function formatFilters ( $arrFilters )
+  public static function formatFilters ( $arrFilters, $noticia_cat_dropdown )
   {
     $arrFilters['titulo'] = htmlspecialchars($arrFilters['titulo']);
+    $arrFilters['id_noticia_cat'] = Form::Dropdown('id_noticia_cat', $noticia_cat_dropdown, $arrFilters['id_noticia_cat'], 'Filtro por Categoria');
 
     return $arrFilters;
   }
