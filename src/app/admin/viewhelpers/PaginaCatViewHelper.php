@@ -11,10 +11,17 @@ class PaginaCatViewHelper
   public static function formatResult ( $result )
   {
     foreach ( $result as $i => $row ) {
-      $result[$i]['data'] = DateFormat::filter_date($row['data']);
+      $result[$i]['inc_data'] = DateFormat::filter_date($row['inc_data']);
     }
 
     return $result;
+  }
+
+  public static function formatFilters ( $arrFilters )
+  {
+    $arrFilters['titulo'] = htmlspecialchars($arrFilters['titulo']);
+
+    return $arrFilters;
   }
 
   public static function formatRow ( $row )
