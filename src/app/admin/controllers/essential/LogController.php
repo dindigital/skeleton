@@ -10,6 +10,7 @@ use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\essential\LogModel as model;
 use Din\Http\Header;
 use src\app\admin\models\essential\LixeiraModel;
+use src\app\admin\viewhelpers\LogViewHelper as vh;
 
 /**
  *
@@ -36,7 +37,7 @@ class LogController extends BaseControllerAdm
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = $this->_model->resultList($arrFilters, $paginator);
+    $this->_data['list'] = vh::formatResult($this->_model->resultList($arrFilters, $paginator));
     $this->_data['busca'] = $arrFilters;
     $this->_data['dropdown']['acao'] = $this->_model->getDropdownAction('Filtro por Ação', $arrFilters['acao']);
     $this->_data['dropdown']['name'] = $this->_model->getDropdownName('Filtro por Seção', $arrFilters['name']);
@@ -47,7 +48,7 @@ class LogController extends BaseControllerAdm
   public function get_save ( $id )
   {
     try {
-      $this->_data['table'] = $this->_model->getById($id);
+      $this->_data['table'] = vh::formatRow($this->_model->getById($id));
       $this->_view->addFile('src/app/admin/views/essential/log_view.phtml', '{$CONTENT}');
       $this->display_html();
     } catch (Exception $e) {

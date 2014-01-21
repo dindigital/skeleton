@@ -21,7 +21,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Data</label>
             <div class="col-sm-10">
-              <label class="checkbox-inline"><?php echo $data['DateFormat']::filter_date($data['table']['inc_data'], 'd/m/Y H:i'); ?></label>
+              <label class="checkbox-inline"><?php echo $data['table']['inc_data']; ?></label>
             </div>
           </div>
 
@@ -35,7 +35,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Ação</label>
             <div class="col-sm-10">
-              <label class="checkbox-inline"><?php echo $data['Arrays']::logAcao($data['table']['acao']); ?></label>
+              <label class="checkbox-inline"><?php echo $data['table']['acao']; ?></label>
             </div>
           </div>
 
@@ -53,14 +53,13 @@
             </div>
           </div>
 
-          <?php $conteudo = json_decode($data['table']['conteudo']); ?>
-          <?php if ( $conteudo ): ?>
+          <?php if ( $data['table']['conteudo'] ): ?>
 
             <div class="form-group">
               <label class="col-sm-3 control-label"><h2>Conteúdo</h2></label>
             </div>
 
-            <?php foreach ( $conteudo as $key => $row ): ?>
+            <?php foreach ( $data['table']['conteudo'] as $key => $row ): ?>
               <?php if ( is_object($row) ): ?>
                 <div class="form-group">
                   <label class="col-sm-2 control-label"><?php echo $key; ?></label>
