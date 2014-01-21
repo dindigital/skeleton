@@ -9,8 +9,6 @@ use Din\Session\Session;
 use Din\Image\Picuri;
 use Din\Http\Post;
 use Din\Http\Header;
-use Din\Filters\Date\DateFormat;
-use src\app\admin\helpers\Arrays;
 use src\app\admin\helpers\Entities;
 use src\app\admin\models\essential\PermissaoModel;
 use Din\ViewHelpers\JsonViewHelper;
@@ -28,7 +26,6 @@ abstract class BaseControllerAdm extends BaseController
     $this->setAssetsData();
     $this->setUserData();
     $this->setBasicTemplate();
-    $this->setViewHelpers();
     $this->setDefaultHeaders();
   }
 
@@ -79,12 +76,6 @@ abstract class BaseControllerAdm extends BaseController
   private function setAssetsData ()
   {
     $this->_data['assets'] = $this->getAssets();
-  }
-
-  public function setViewHelpers ()
-  {
-    $this->_data['DateFormat'] = new DateFormat;
-    $this->_data['Arrays'] = new Arrays;
   }
 
   /**
