@@ -77,7 +77,7 @@ class PaginaCatModel extends BaseModelAdm
     return $id;
   }
 
-  public function getDropdown ()
+  public function getListArray ()
   {
     $select = new Select('pagina_cat');
     $select->addField('id_pagina_cat');

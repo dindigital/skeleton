@@ -40,7 +40,7 @@ class PaginaController extends BaseControllerAdm
     );
 
     $pagina_cat = new PaginaCatModel();
-    $pagina_cat_dropdown = $pagina_cat->getDropdown();
+    $pagina_cat_dropdown = $pagina_cat->getListArray();
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
     $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
@@ -59,7 +59,7 @@ class PaginaController extends BaseControllerAdm
     $row = $id ? $this->_model->getById($id) : $this->getPrevious($exclude_previous);
 
     $pagina_cat = new PaginaCatModel();
-    $pagina_cat_dropdown = $pagina_cat->getDropdown();
+    $pagina_cat_dropdown = $pagina_cat->getListArray();
 
     $this->_data['table'] = vh::formatRow($row, $pagina_cat_dropdown);
 
