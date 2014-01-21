@@ -5,11 +5,11 @@ namespace src\app\admin\controllers;
 use src\app\admin\models\PaginaCatModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
-use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
+use src\app\admin\viewhelpers\PaginaCatViewHelper as vh;
 
 /**
  *
@@ -45,17 +45,11 @@ class PaginaCatController extends BaseControllerAdm
     $this->setListTemplate('paginacat_lista.phtml', $paginator);
   }
 
-  public function get_cadastro (
-  $id = null )
+  public function get_cadastro ( $id = null )
   {
-    if ( $id ) {
-      $this->_data['table'] = $this->_model->getById($id);
-    } else {
-      $this->_data['table'] = array();
-    }
+    $row = $id ? $this->_model->getById($id) : array();
 
-    $this->_data['table']['capa'] = Form::Upload('capa', @$this->_data['table']['capa'], 'imagem');
-    $this->_data['table']['conteudo'] = Form::Ck('conteudo', @$this->_data['table']['conteudo']);
+    $this->_data['table'] = vh::formatRow($row);
 
     $this->setCadastroTemplate('paginacat_cadastro.phtml');
   }
