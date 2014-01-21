@@ -9,6 +9,7 @@ use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\essential\LixeiraModel as model;
 use Din\Http\Header;
+use src\app\admin\viewhelpers\LixeiraViewHelper as vh;
 
 /**
  *
@@ -33,7 +34,7 @@ class LixeiraController extends BaseControllerAdm
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = $this->_model->listar($arrFilters, $paginator);
+    $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
     $this->_data['busca'] = $arrFilters;
 
     $this->_data['secao'] = $this->_model->getDropdown('Filtro por Seção', $arrFilters['secao']);
