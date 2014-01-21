@@ -28,7 +28,7 @@ class ConfiguracaoController extends BaseControllerAdm
 
   public function get_cadastro ()
   {
-    $this->_data['table'] = vh::formatRow($this->_model->getById(1));
+    $this->_data['table'] = vh::formatRow($this->_model->getById('1'));
     $this->setCadastroTemplate('configuracao_cadastro.phtml');
   }
 

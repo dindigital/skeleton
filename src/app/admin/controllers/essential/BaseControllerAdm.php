@@ -149,7 +149,7 @@ abstract class BaseControllerAdm extends BaseController
     $permissao->block($this->_model, $this->_data['user']);
   }
 
-  public function saveAndRedirect ( $info, $id )
+  public function saveAndRedirect ( $info, $id = null )
   {
     if ( !$id ) {
       $id = $this->_model->inserir($info);
