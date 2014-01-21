@@ -45,8 +45,8 @@ $(document).ready(function() {
     $("input[name='redirect']").val('lista');
   });
 
-  $('.submit_same').click(function() {
-    $("input[name='redirect']").val('same');
+  $('.submit_previous').click(function() {
+    $("input[name='redirect']").val('previous');
   });
 
   //_# EVENTO DE DOUBLE CLICK AO CLICAR EM FOTO DE GALERIA -> REMOVER ELEMENTO

@@ -23,7 +23,7 @@ class FotoViewHelper
     if ( !empty($row) ) {
       $row['titulo'] = htmlspecialchars($row['titulo']);
       $row['data'] = DateFormat::filter_date($row['data']);
-      $row['galeria'] = Galeria::get($row['galeria'], 'galeria');
+      $row['galeria'] = Galeria::get(@$row['galeria'], 'galeria');
     }
 
     $row['galeria_uploader'] = Form::Upload('galeria_uploader', '', 'imagem', true, false);

@@ -46,7 +46,7 @@ class NoticiaController extends BaseControllerAdm
 
   public function get_cadastro ( $id = null )
   {
-    $row = $id ? $this->_model->getById($id) : array();
+    $row = $id ? $this->_model->getById($id) : $this->getPrevious();
 
     $noticia_cat = new NoticiaCatModel();
     $noticia_cat_dropdown = $noticia_cat->getDropdown();

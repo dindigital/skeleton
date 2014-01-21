@@ -55,7 +55,7 @@ class PaginaController extends BaseControllerAdm
 
   public function get_cadastro ( $id = null )
   {
-    $row = $id ? $this->_model->getById($id) : array();
+    $row = $id ? $this->_model->getById($id) : $this->getPrevious();
 
     $pagina_cat = new PaginaCatModel();
     $pagina_cat_dropdown = $pagina_cat->getDropdown();

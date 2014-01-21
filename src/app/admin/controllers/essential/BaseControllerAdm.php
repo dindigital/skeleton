@@ -181,10 +181,12 @@ abstract class BaseControllerAdm extends BaseController
     $row = array();
     if ( $session->is_set('previous') ) {
       foreach ( $session->get('previous') as $index => $value ) {
-        if ( !is_array($value) ) {
-          $row[$index] = $value;
-        } else {
+        if ( is_array($value) && (!count($value) || (isset($value[0]) && is_array($value[0]))) ) {
           $row[$index] = null;
+        } elseif ( is_array($value) ) {
+          $row[$index] = json_encode($value);
+        } else {
+          $row[$index] = $value;
         }
       }
     }

@@ -47,7 +47,7 @@ class UsuarioController extends BaseControllerAdm
 
   public function get_cadastro ( $id = null )
   {
-    $row = $id ? $this->_model->getById($id) : array();
+    $row = $id ? $this->_model->getById($id) : $this->getPrevious();
 
     $permissao = new PermissaoModel();
     $permissao_listbox = $permissao->getListbox(@$this->_data['table']['permissao']);
