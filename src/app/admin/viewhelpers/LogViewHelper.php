@@ -22,6 +22,16 @@ class LogViewHelper
     return $result;
   }
 
+  public static function formatFilters ( $arrFilters, $dropdown_name )
+  {
+    $arrFilters['usuario'] = htmlspecialchars($arrFilters['usuario']);
+    $arrFilters['descricao'] = htmlspecialchars($arrFilters['descricao']);
+    $arrFilters['acao'] = Form::Dropdown('acao', Arrays::$logAcao, $arrFilters['acao'], 'Filtro por Ação');
+    $arrFilters['name'] = Form::Dropdown('name', $dropdown_name, $arrFilters['name'], 'Filtro por Seção');
+
+    return $arrFilters;
+  }
+
   public static function formatRow ( $row )
   {
     if ( !empty($row) ) {

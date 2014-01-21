@@ -68,21 +68,7 @@ class LogModel extends BaseModelAdm
     return $row;
   }
 
-  public function getDropdownAction ( $firstOption = '', $selected = null )
-  {
-    $arrOptions = Arrays::$logAcao;
-    $d = new Dropdown('acao');
-    $d->setOptionsArray($arrOptions);
-    $d->setClass('form-control');
-    $d->setSelected($selected);
-    if ( $firstOption != '' ) {
-      $d->setFirstOpt($firstOption);
-    }
-
-    return $d->getElement();
-  }
-
-  public function getDropdownName ( $firstOption = '', $selected = null )
+  public function getDropdownName ()
   {
     $arrOptions = array();
     foreach ( Entities::$entities as $row ) {
@@ -90,15 +76,7 @@ class LogModel extends BaseModelAdm
         $arrOptions[$row['name']] = $row['secao'];
     }
 
-    $d = new Dropdown('name');
-    $d->setOptionsArray($arrOptions);
-    $d->setClass('form-control');
-    $d->setSelected($selected);
-    if ( $firstOption != '' ) {
-      $d->setFirstOpt($firstOption);
-    }
-
-    return $d->getElement();
+    return $arrOptions;
   }
 
 }

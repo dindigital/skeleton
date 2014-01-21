@@ -4,12 +4,9 @@ namespace src\app\admin\controllers\essential;
 
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
-use Din\Http\Post;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\essential\LogModel as model;
-use Din\Http\Header;
-use src\app\admin\models\essential\LixeiraModel;
 use src\app\admin\viewhelpers\LogViewHelper as vh;
 
 /**
@@ -36,11 +33,11 @@ class LogController extends BaseControllerAdm
         'descricao' => Get::text('descricao')
     );
 
+    $dropdown_name = $this->_model->getDropdownName();
+
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
     $this->_data['list'] = vh::formatResult($this->_model->resultList($arrFilters, $paginator));
-    $this->_data['busca'] = $arrFilters;
-    $this->_data['dropdown']['acao'] = $this->_model->getDropdownAction('Filtro por Ação', $arrFilters['acao']);
-    $this->_data['dropdown']['name'] = $this->_model->getDropdownName('Filtro por Seção', $arrFilters['name']);
+    $this->_data['busca'] = vh::formatFilters($arrFilters, $dropdown_name);
 
     $this->setListTemplate('essential/log_lista.phtml', $paginator);
   }
