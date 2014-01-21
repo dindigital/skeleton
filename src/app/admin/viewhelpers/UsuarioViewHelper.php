@@ -17,6 +17,14 @@ class UsuarioViewHelper
     return $result;
   }
 
+  public static function formatFilters ( $arrFilters )
+  {
+    $arrFilters['nome'] = htmlspecialchars($arrFilters['nome']);
+    $arrFilters['email'] = htmlspecialchars($arrFilters['email']);
+
+    return $arrFilters;
+  }
+
   public static function formatRow ( $row, $permissao_listbox )
   {
     $row['nome'] = htmlspecialchars(@$row['nome']);
