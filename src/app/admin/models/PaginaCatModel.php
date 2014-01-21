@@ -77,7 +77,7 @@ class PaginaCatModel extends BaseModelAdm
     return $id;
   }
 
-  public function getDropdown ( $firstOption = '', $selected = null, $class = null )
+  public function getDropdown ()
   {
     $select = new Select('pagina_cat');
     $select->addField('id_pagina_cat');
@@ -88,19 +88,12 @@ class PaginaCatModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
-    $d = new Dropdown('id_pagina_cat');
-    $d->setOptionsResult($result, 'id_pagina_cat', 'titulo');
-    $d->setClass('form-control');
-    if ( $class ) {
-      $d->setClass('form-control ' . $class);
+    $arrOptions = array();
+    foreach ( $result as $row ) {
+      $arrOptions[$row['id_pagina_cat']] = $row['titulo'];
     }
 
-    $d->setSelected($selected);
-    if ( $firstOption != '' ) {
-      $d->setFirstOpt($firstOption);
-    }
-
-    return $d->getElement();
+    return $arrOptions;
   }
 
 }

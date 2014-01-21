@@ -7,7 +7,6 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
 use src\app\admin\helpers\Ordem;
-use Din\Form\Dropdown\Dropdown;
 
 /**
  *
@@ -88,7 +87,7 @@ class PaginaModel extends BaseModelAdm
     return $id;
   }
 
-  public function getDropdown ( $firstOption = '', $selected = null, $class = null, $id_pagina_cat = null, $id_parent = '', $exclude_id = null )
+  public function getDropdown ( $id_pagina_cat = null, $id_parent = '', $exclude_id = null )
   {
     $select = new Select('pagina');
     $select->addField('id_pagina');
@@ -114,33 +113,42 @@ class PaginaModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
-    $d = new Dropdown('id_parent[]');
-    $d->setOptionsResult($result, 'id_pagina', 'titulo');
-    $d->setClass('form-control');
-    if ( $class ) {
-      $d->setClass('form-control ' . $class);
-    }
-    $d->setSelected($selected);
-    if ( $firstOption != '' ) {
-      $d->setFirstOpt($firstOption);
+    $arrOptions = array();
+    foreach ( $result as $row ) {
+      $arrOptions[$row['id_pagina']] = $row['titulo'];
     }
 
-    return $d->getElement();
+    return $arrOptions;
+  }
+
+  public function getById ( $id )
+  {
+    $row = parent::getById($id);
+    $row['infinito'] = $this->loadInfinity($id);
+
+    return $row;
   }
 
   public function loadInfinity ( $id )
   {
     $r = array();
 
-    $first = $this->getById($id);
+    $first = parent::getById($id);
     $id_cat = $first['id_pagina_cat'];
     if ( $first['id_parent'] ) {
 
-      $last = $this->getDropdown('Subnível de Página', null, 'ajax_infinity', $id_cat, $first['id_parent'], $first['id_pagina']);
+      $last = array(
+          'dropdown' => $this->getDropdown($id_cat, $first['id_parent'], $first['id_pagina']),
+          'selected' => null
+      );
 
       while ($first['id_parent']) {
-        $second = $this->getById($first['id_parent']);
-        $r[] = $this->getDropdown('Subnível de Página', $first['id_parent'], 'ajax_infinity', $id_cat, $second['id_parent']);
+        $second = parent::getById($first['id_parent']);
+        $r[] = array(
+            'dropdown' => $this->getDropdown($id_cat, $second['id_parent']),
+            'selected' => $first['id_parent']
+        );
+
         $first = $second;
       }
 

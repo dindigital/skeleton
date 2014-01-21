@@ -32,8 +32,8 @@
           </div>
 
           <?php if ( @$data['table']['infinito'] ): ?>
-            <?php foreach ( $data['table']['infinito'] as $dropdown ): ?>
-              <div class="form-group drop_infinity_line">
+            <?php foreach ( $data['table']['infinito'] as $x => $dropdown ): ?>
+              <div class="form-group drop_infinity_line<?php echo ($x > 0) ? ' other' : ''; ?>">
                 <label class="col-sm-2 control-label">Página</label>
                 <div class="col-sm-10 drop_infinity_container">
                   <?php echo $dropdown ?>

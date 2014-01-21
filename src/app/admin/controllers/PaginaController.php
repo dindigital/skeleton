@@ -11,6 +11,7 @@ use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\PaginaCatModel;
+use src\app\admin\viewhelpers\PaginaViewHelper as vh;
 
 /**
  *
@@ -43,7 +44,9 @@ class PaginaController extends BaseControllerAdm
     $this->_data['busca'] = $arrFilters;
 
     $pagina_cat = new PaginaCatModel();
-    $this->_data['busca']['id_pagina_cat'] = $pagina_cat->getDropdown('Filtro por Menu', @$this->_data['busca']['id_pagina_cat']);
+    $pagina_cat_dropdown = $pagina_cat->getDropdown();
+
+    $this->_data['busca']['id_pagina_cat'] = Form::Dropdown('id_pagina_cat', $pagina_cat_dropdown, @$this->_data['busca']['id_pagina_cat'], 'Filtro por Menu');
 
     $this->setErrorSessionData();
 
@@ -52,18 +55,12 @@ class PaginaController extends BaseControllerAdm
 
   public function get_cadastro ( $id = null )
   {
-    if ( $id ) {
-      $this->_data['table'] = $this->_model->getById($id);
-      $this->_data['table']['infinito'] = $this->_model->loadInfinity($id);
-    } else {
-      $this->_data['table'] = array();
-    }
-
-    $this->_data['table']['capa'] = Form::Upload('capa', @$this->_data['table']['capa'], 'imagem');
-    $this->_data['table']['conteudo'] = Form::Ck('conteudo', @$this->_data['table']['conteudo']);
+    $row = $id ? $this->_model->getById($id) : array();
 
     $pagina_cat = new PaginaCatModel();
-    $this->_data['table']['id_pagina_cat'] = $pagina_cat->getDropdown('Selecione um Menu', @$this->_data['table']['id_pagina_cat'], 'ajax_intinify_cat');
+    $pagina_cat_dropdown = $pagina_cat->getDropdown();
+
+    $this->_data['table'] = vh::formatRow($row, $pagina_cat_dropdown);
 
     $this->setCadastroTemplate('pagina_cadastro.phtml');
   }
@@ -90,14 +87,14 @@ class PaginaController extends BaseControllerAdm
 
   public function get_ajax_intinify_cat ( $id_pagina_cat )
   {
-    $dorpdown = $this->_model->getDropdown('Subnível de Página', null, 'ajax_infinity', $id_pagina_cat, null);
-    die($dorpdown);
+    $dorpdown = $this->_model->getDropdown($id_pagina_cat, null);
+    die(vh::format_infinity_dropdown($dorpdown));
   }
 
   public function get_ajax_infinity ( $id_parent )
   {
-    $dorpdown = $this->_model->getDropdown('Subnível de Página', null, 'ajax_infinity', null, $id_parent);
-    die($dorpdown);
+    $dorpdown = $this->_model->getDropdown(null, $id_parent);
+    die(vh::format_infinity_dropdown($dorpdown));
   }
 
 }
