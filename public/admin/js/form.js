@@ -45,6 +45,10 @@ $(document).ready(function() {
     $("input[name='redirect']").val('lista');
   });
 
+  $('.submit_same').click(function() {
+    $("input[name='redirect']").val('same');
+  });
+
   //_# EVENTO DE DOUBLE CLICK AO CLICAR EM FOTO DE GALERIA -> REMOVER ELEMENTO
   $('.img_galeria').dblclick(function() {
     $(this).parents('li').remove();

@@ -166,7 +166,30 @@ abstract class BaseControllerAdm extends BaseController
       $redirect = '/admin/' . $entity['tbl'] . '/lista/';
     }
 
+    if ( Post::text('redirect') == 'previous' ) {
+      $session = new Session('adm_session');
+      $session->set('previous', $info);
+      $redirect = '/admin/' . $entity['tbl'] . '/cadastro/';
+    }
+
     JsonViewHelper::redirect($redirect);
+  }
+
+  protected function getPrevious ()
+  {
+    $session = new Session('adm_session');
+    $row = array();
+    if ( $session->is_set('previous') ) {
+      foreach ( $session->get('previous') as $index => $value ) {
+        if ( !is_array($value) ) {
+          $row[$index] = $value;
+        } else {
+          $row[$index] = null;
+        }
+      }
+    }
+    $session->un_set('previous');
+    return $row;
   }
 
   //_# OPERAÇÕES COMUNS
