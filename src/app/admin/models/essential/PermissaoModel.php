@@ -14,15 +14,13 @@ use Exception;
 class PermissaoModel extends BaseModelAdm
 {
 
-  public function getListbox ( $selected = array() )
+  public function getListbox ()
   {
-    if ( !is_array($selected) ) {
-      $selected = json_decode($selected);
-    }
     $arrOptions = array();
     foreach ( Entities::$entities as $tbl => $entity ) {
-      if ( isset($entity['secao']) )
+      if ( isset($entity['secao']) ) {
         $arrOptions[$entity['name']] = $entity['secao'];
+      }
     }
 
     return $arrOptions;
