@@ -45,9 +45,9 @@
             <tbody class="no-border-y">
               <?php foreach ( $data['list'] as $row ): ?>
                 <tr>
-                  <td><?php echo $data['DateFormat']::filter_date($row['inc_data'], 'd/m H:i'); ?></td>
+                  <td><?php echo $row['inc_data']; ?></td>
                   <td><?php echo $row['administrador']; ?></td>
-                  <td><?php echo $data['Arrays']::logAcao($row['acao']); ?></td>
+                  <td><?php echo $row['acao']; ?></td>
                   <td><?php echo $row['name']; ?></td>
                   <td><?php echo $row['descricao']; ?></td>
                   <td class="text-center">

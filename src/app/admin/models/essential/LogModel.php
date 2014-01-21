@@ -70,7 +70,7 @@ class LogModel extends BaseModelAdm
 
   public function getDropdownAction ( $firstOption = '', $selected = null )
   {
-    $arrOptions = Arrays::logAcao();
+    $arrOptions = Arrays::$logAcao;
     $d = new Dropdown('acao');
     $d->setOptionsArray($arrOptions);
     $d->setClass('form-control');
