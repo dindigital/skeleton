@@ -29,6 +29,8 @@ $(document).ready(function() {
     }
   });
 
+  $('.ajaxform').prop('onsubmit', false);
+
 });
 
 function ajaxformBeforeSubmit() {
