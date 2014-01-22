@@ -43,7 +43,7 @@ abstract class BaseControllerAdm extends BaseController
     $this->_view->addFile('src/app/admin/views/includes/nav.phtml', '{$NAV}');
   }
 
-  public function setCadastroTemplate ( $filename )
+  protected function setCadastroTemplate ( $filename )
   {
     $this->setRegistroSalvoData();
 
@@ -54,7 +54,7 @@ abstract class BaseControllerAdm extends BaseController
     $this->display_html();
   }
 
-  public function setListTemplate ( $filename, $paginator )
+  protected function setListTemplate ( $filename, $paginator )
   {
     $this->setRegistroSalvoData();
 
@@ -134,13 +134,13 @@ abstract class BaseControllerAdm extends BaseController
     $this->_data['entity'] = Entities::getThis($this->_model);
   }
 
-  public function require_permission ()
+  protected function require_permission ()
   {
     $permissao = new PermissaoModel();
     $permissao->block($this->_model, $this->_data['user']);
   }
 
-  public function saveAndRedirect ( $info, $id = null )
+  protected function saveAndRedirect ( $info, $id = null )
   {
     if ( !$id ) {
       $id = $this->_model->inserir($info);
@@ -182,7 +182,6 @@ abstract class BaseControllerAdm extends BaseController
     return $row;
   }
 
-  //_# OPERAÇÕES COMUNS
   public function post_excluir ()
   {
     try {
