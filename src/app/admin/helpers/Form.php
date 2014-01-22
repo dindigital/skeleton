@@ -62,7 +62,7 @@ class Form
     if ( $class )
       $d->setClass('form-control ' . $class);
     else
-      $d->setClass('form-control');
+      $d->setClass('select2');
 
     $d->setSelected($selected);
     $d->setOptionsArray($array);
