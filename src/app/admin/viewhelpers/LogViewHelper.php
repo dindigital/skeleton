@@ -6,6 +6,7 @@ use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use src\app\admin\helpers\Arrays;
 use src\app\admin\helpers\Entities;
+use Din\Filters\String\Html;
 
 class LogViewHelper
 {
@@ -24,8 +25,8 @@ class LogViewHelper
 
   public static function formatFilters ( $arrFilters, $dropdown_name )
   {
-    $arrFilters['usuario'] = htmlspecialchars($arrFilters['usuario']);
-    $arrFilters['descricao'] = htmlspecialchars($arrFilters['descricao']);
+    $arrFilters['usuario'] = Html::scape($arrFilters['usuario']);
+    $arrFilters['descricao'] = Html::scape($arrFilters['descricao']);
     $arrFilters['acao'] = Form::Dropdown('acao', Arrays::$logAcao, $arrFilters['acao'], 'Filtro por Ação');
     $arrFilters['name'] = Form::Dropdown('name', $dropdown_name, $arrFilters['name'], 'Filtro por Seção');
 
@@ -35,7 +36,7 @@ class LogViewHelper
   public static function formatRow ( $row )
   {
     if ( !empty($row) ) {
-      $row['descricao'] = htmlspecialchars($row['descricao']);
+      $row['descricao'] = Html::scape($row['descricao']);
       $row['inc_data'] = DateFormat::filter_date($row['inc_data']);
       $row['acao'] = Arrays::$logAcao[$row['acao']];
       $row['conteudo'] = json_decode($row['conteudo']);

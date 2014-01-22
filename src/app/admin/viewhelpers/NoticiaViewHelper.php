@@ -4,6 +4,7 @@ namespace src\app\admin\viewhelpers;
 
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
+use Din\Filters\String\Html;
 
 class NoticiaViewHelper
 {
@@ -19,7 +20,7 @@ class NoticiaViewHelper
 
   public static function formatFilters ( $arrFilters, $noticia_cat_dropdown )
   {
-    $arrFilters['titulo'] = htmlspecialchars($arrFilters['titulo']);
+    $arrFilters['titulo'] = Html::scape($arrFilters['titulo']);
     $arrFilters['id_noticia_cat'] = Form::Dropdown('id_noticia_cat', $noticia_cat_dropdown, $arrFilters['id_noticia_cat'], 'Filtro por Categoria');
 
     return $arrFilters;
@@ -27,9 +28,9 @@ class NoticiaViewHelper
 
   public static function formatRow ( $row, $noticia_cat_dropdown )
   {
-    $row['titulo'] = htmlspecialchars(@$row['titulo']);
+    $row['titulo'] = Html::scape(@$row['titulo']);
     $row['data'] = DateFormat::filter_date(@$row['data']);
-    $row['chamada'] = htmlspecialchars(@$row['chamada']);
+    $row['chamada'] = Html::scape(@$row['chamada']);
     $row['corpo'] = Form::Ck('corpo', @$row['corpo']);
     $row['capa'] = Form::Upload('capa', @$row['capa'], 'imagem');
     $row['id_noticia_cat'] = Form::Dropdown('id_noticia_cat', $noticia_cat_dropdown, @$row['id_noticia_cat'], 'Selecione um Menu');

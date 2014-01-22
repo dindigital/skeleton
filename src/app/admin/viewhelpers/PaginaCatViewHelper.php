@@ -4,6 +4,7 @@ namespace src\app\admin\viewhelpers;
 
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
+use Din\Filters\String\Html;
 
 class PaginaCatViewHelper
 {
@@ -19,14 +20,14 @@ class PaginaCatViewHelper
 
   public static function formatFilters ( $arrFilters )
   {
-    $arrFilters['titulo'] = htmlspecialchars($arrFilters['titulo']);
+    $arrFilters['titulo'] = Html::scape($arrFilters['titulo']);
 
     return $arrFilters;
   }
 
   public static function formatRow ( $row )
   {
-    $row['titulo'] = htmlspecialchars(@$row['titulo']);
+    $row['titulo'] = Html::scape(@$row['titulo']);
     $row['conteudo'] = Form::Ck('conteudo', @$row['conteudo']);
     $row['capa'] = Form::Upload('capa', @$row['capa'], 'imagem');
 

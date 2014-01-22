@@ -4,8 +4,7 @@ namespace src\app\admin\viewhelpers;
 
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
-use src\app\admin\helpers\Arrays;
-use src\app\admin\helpers\Entities;
+use Din\Filters\String\Html;
 
 class LixeiraViewHelper
 {
@@ -21,7 +20,7 @@ class LixeiraViewHelper
 
   public static function formatFilters ( $arrFilters, $dropdown_secao )
   {
-    $arrFilters['titulo'] = htmlspecialchars($arrFilters['titulo']);
+    $arrFilters['titulo'] = Html::scape($arrFilters['titulo']);
     $arrFilters['secao'] = Form::Dropdown('secao', $dropdown_secao, $arrFilters['secao'], 'Filtro por Seção');
 
     return $arrFilters;
