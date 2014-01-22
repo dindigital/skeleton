@@ -80,7 +80,7 @@ class Form
   {
     $d = new Listbox($name);
     $d->setOptionsArray($array);
-    $d->setClass('form-control');
+    $d->setClass('form-control multisorter indent');
     $d->setSelected($selected);
 
     return $d->getElement();

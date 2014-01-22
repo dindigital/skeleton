@@ -80,6 +80,8 @@ $(document).ready(function() {
 
   $(".sortable").sortable();
 
+  $(".multisorter").multiselect({});
+
   $(".color_basic").spectrum({
     color: "#f00",
     preferredFormat: "hex",
