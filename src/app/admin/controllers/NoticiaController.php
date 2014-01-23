@@ -11,6 +11,7 @@ use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\viewhelpers\NoticiaViewHelper as vh;
 use src\app\admin\models\NoticiaCatModel;
+use src\app\admin\models\FotoModel;
 
 /**
  *
@@ -58,7 +59,13 @@ class NoticiaController extends BaseControllerAdm
     $noticia_cat = new NoticiaCatModel();
     $noticia_cat_dropdown = $noticia_cat->getListArray();
 
-    $this->_data['table'] = vh::formatRow($row, $noticia_cat_dropdown);
+    $foto = new FotoModel();
+    $listbox = array(
+        'listbox_values' => $foto->getListArray(),
+        'listbox_selected' => $this->_model->getListArrayRelationship($id)
+    );
+
+    $this->_data['table'] = vh::formatRow($row, $noticia_cat_dropdown, $listbox);
 
     $this->setCadastroTemplate('noticia_cadastro.phtml');
   }
@@ -74,6 +81,7 @@ class NoticiaController extends BaseControllerAdm
           'chamada' => Post::text('chamada'),
           'corpo' => Post::text('corpo'),
           'capa' => Post::upload('capa'),
+          'r_noticia_foto' => Post::aray('r_noticia_foto'),
       );
 
       $this->saveAndRedirect($info, $id);

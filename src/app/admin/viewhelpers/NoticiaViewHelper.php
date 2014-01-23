@@ -26,7 +26,7 @@ class NoticiaViewHelper
     return $arrFilters;
   }
 
-  public static function formatRow ( $row, $noticia_cat_dropdown )
+  public static function formatRow ( $row, $noticia_cat_dropdown, $listbox )
   {
     $row['titulo'] = Html::scape(@$row['titulo']);
     $row['data'] = DateFormat::filter_date(@$row['data']);
@@ -34,7 +34,7 @@ class NoticiaViewHelper
     $row['corpo'] = Form::Ck('corpo', @$row['corpo']);
     $row['capa'] = Form::Upload('capa', @$row['capa'], 'imagem');
     $row['id_noticia_cat'] = Form::Dropdown('id_noticia_cat', $noticia_cat_dropdown, @$row['id_noticia_cat'], 'Selecione um Menu');
-
+    $row['r_noticia_foto'] = Form::Listbox('r_noticia_foto', $listbox['listbox_values'], $listbox['listbox_selected']);
 
     return $row;
   }

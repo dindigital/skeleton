@@ -61,6 +61,8 @@ class NoticiaModel extends BaseModelAdm
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['titulo'], $validator->getTable());
 
+    $this->insertRelationship('r_noticia_foto', 'id_noticia', $id, 'id_foto', $info['r_noticia_foto']);
+
     return $id;
   }
 
@@ -80,7 +82,14 @@ class NoticiaModel extends BaseModelAdm
     $this->_dao->update($validator->getTable(), array('id_noticia = ?' => $id));
     $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
 
+    $this->insertRelationship('r_noticia_foto', 'id_noticia', $id, 'id_foto', $info['r_noticia_foto']);
+
     return $id;
+  }
+
+  public function getListArrayRelationship ( $id )
+  {
+    return $this->getRelationship('r_noticia_foto', 'id_noticia', 'id_foto', $id);
   }
 
 }

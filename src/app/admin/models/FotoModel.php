@@ -28,7 +28,7 @@ class FotoModel extends BaseModelAdm
   {
     $arrCriteria = array(
         'del = ?' => '0',
-        'titulo LIKE ?' => '%' . $arrFilters['titulo'] . '%'
+        'titulo LIKE ?' => '%' . @$arrFilters['titulo'] . '%'
     );
 
     $select = new Select('foto');
@@ -37,7 +37,7 @@ class FotoModel extends BaseModelAdm
     $select->addField('titulo');
     $select->addField('data');
     $select->where($arrCriteria);
-    $select->order_by('titulo');
+    $select->order_by('data DESC');
 
     $result = $this->_dao->select($select);
 
@@ -79,6 +79,16 @@ class FotoModel extends BaseModelAdm
     $foto_item->saveFotos($info['galeria_uploader'], $id, $info['ordem'], $info['legenda'], $info['credito']);
 
     return $id;
+  }
+
+  public function getListArray ()
+  {
+    $foto = array();
+    $result = $this->listar();
+    foreach ( $result as $row ) {
+      $foto[$row['id_foto']] = $row['titulo'];
+    }
+    return $foto;
   }
 
 }
