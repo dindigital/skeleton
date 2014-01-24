@@ -7,6 +7,7 @@ use Din\Filters\String\Uri;
 use Din\File\Folder;
 use Din\Exception\JsonException;
 use src\app\admin\helpers\Entities;
+use Din\UrlShortener\Bitly\Bitly;
 
 class BaseValidator
 {
@@ -55,6 +56,25 @@ class BaseValidator
     $this->_table->ordem = $ordem;
   }
 
+  public function setDefaultLink ( $area, $title, $id )
+  {
+    $area = Uri::format($area);
+    $title = Uri::format($title);
+    $this->_table->link = "/{$area}/{$title}-{$id}/";
+  }
+
+  public function setShortenerLink ()
+  {
+    if ( URL && BITLY && $this->_table->link ) {
+      $url = URL . $this->_table->link;
+      $bitly = new Bitly(BITLY);
+      $bitly->shorten($url);
+      if ( $bitly->check() ) {
+        $this->_table->short_link = $bitly;
+      }
+    }
+  }
+
   public function setArquivo ( $fieldname, $file, $id = null )
   {
     $tmp_dir = 'tmp';
@@ -67,16 +87,16 @@ class BaseValidator
     } catch (Exception $e) {
       return JsonException::addException($e->getMessage());
     }
-
     try {
 
-      if ( !isset($file[0]) )
+      if ( !isset($file [0]) )
         throw new Exception($fieldname . ' é obrigatório');
 
       $file = $file[0]; // pegando apenas o primeiro arquivo, pois para multiplos
-      // utilizamos a setGaleria..
+// utilizamos a setGaleria..
 
-      $folder = $this->_table->getName();
+      $folder = $this->_table->
+              getName();
 
       if ( count($file) != 2 )
         throw new Exception($fieldname . ' é obrigatório');
@@ -84,7 +104,8 @@ class BaseValidator
       $tmp_name = $file['tmp_name'];
       $name = $file['name'];
 
-      $origin = $tmp_dir . DIRECTORY_SEPARATOR . $tmp_name;
+      $origin = $tmp_dir . DIRECTORY_SEPARATOR .
+              $tmp_name;
 
       if ( !is_file($origin) )
         throw new Exception($fieldname . ' é obrigatório ');
@@ -98,10 +119,9 @@ class BaseValidator
 
         $diretorio = dirname($destination);
         Folder::delete($diretorio);
-        Folder::make_writable($diretorio);
+        Folder:: make_writable($diretorio);
 
         rename($origin, $destination);
-
         $file = str_replace(PATH_REPLACE, '', $destination);
 
         $this->_table->$fieldname = $file;
@@ -112,12 +132,15 @@ class BaseValidator
       /* if ( $obg ) {
         return JsonException::addException($e->getMessage());
         } else */if ( is_null($id) ) {
-        $this->_table->$fieldname = null;
+        $this->
+                _table->$fieldname = null;
       }
     }
   }
 
-  public function getTable ()
+  public function
+
+  getTable ()
   {
     return $this->_table;
   }
