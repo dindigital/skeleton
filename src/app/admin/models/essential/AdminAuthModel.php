@@ -13,7 +13,7 @@ use Din\Exception\JsonException;
  *
  * @package app.models
  */
-class UsuarioAuthModel extends Auth
+class AdminAuthModel extends Auth
 {
 
   private $_session_name = 'adm_session';
@@ -32,9 +32,9 @@ class UsuarioAuthModel extends Auth
     parent::__construct($ADL, new Crypt(), new Session($this->_session_name));
   }
 
-  public function login ( $email, $senha, $is_crypted = false )
+  public function login ( $email, $password, $is_crypted = false )
   {
-    if ( !parent::login($email, $senha, $is_crypted) ) {
+    if ( !parent::login($email, $password, $is_crypted) ) {
       JsonException::addException("Dados inválidos. Usuário não encontrado.");
       JsonException::throwException();
     }

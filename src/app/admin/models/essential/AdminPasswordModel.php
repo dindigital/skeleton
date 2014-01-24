@@ -3,22 +3,22 @@
 namespace src\app\admin\models\essential;
 
 use Din\DataAccessLayer\Select;
-use src\app\admin\validators\UsuarioSenhaValidator;
+use src\app\admin\validators\AdminPasswordValidator as validator;
 
 /**
  *
  * @package app.models
  */
-class UsuarioSenhaModel extends BaseModelAdm
+class AdminPasswordModel extends BaseModelAdm
 {
 
   private $_token = null;
 
-  public function recuperar_senha ( $email )
+  public function recover_password ( $email )
   {
-    $validator = new UsuarioSenhaValidator($this->_dao);
+    $validator = new validator($this->_dao);
     $validator->setEmail($email);
-    $validator->setSenhaData(date('Y-m-d'));
+    $validator->setPasswordChangeDate(date('Y-m-d'));
     $validator->throwException();
 
     // Atualiza o campo senha_data para a data atual, com isso conseguiremos posteriormente
@@ -31,12 +31,12 @@ class UsuarioSenhaModel extends BaseModelAdm
   private function setToken ( $email )
   {
     // Retorno o ID do banco de dados
-    $select = new Select('usuario');
-    $select->addField('id_usuario');
+    $select = new Select('admin');
+    $select->addField('id_admin');
     $select->where(array('email = ?' => $email));
     $result = $this->_dao->select($select);
 
-    $this->_token = $result[0]['id_usuario'];
+    $this->_token = $result[0]['id_admin'];
   }
 
   public function getToken ()
@@ -44,16 +44,16 @@ class UsuarioSenhaModel extends BaseModelAdm
     return $this->_token;
   }
 
-  public function atualiza_senha ( $data )
+  public function update_password ( $data )
   {
-    $validator = new UsuarioSenhaValidator($this->_dao);
+    $validator = new validator($this->_dao);
     $validator->setToken($data['token']);
     $validator->throwException();
-    $validator->setSenha($data['senha'], $data['senha2']);
-    $validator->setSenhaData(null);
+    $validator->setPassword($data['password'], $data['password2']);
+    $validator->setPasswordChangeDate(null);
     $validator->throwException();
 
-    $this->_dao->update($validator->getTable(), array('id_usuario = ?' => $data['token']));
+    $this->_dao->update($validator->getTable(), array('id_admin = ?' => $data['token']));
   }
 
 }

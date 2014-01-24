@@ -3,7 +3,7 @@
 namespace src\app\admin\controllers\essential;
 
 use Din\Mvc\Controller\BaseController;
-use src\app\admin\models\essential\UsuarioSenhaModel;
+use src\app\admin\models\essential\AdminPasswordModel as model;
 use Din\Http\Post;
 use Exception;
 use Din\ViewHelpers\JsonViewHelper;
@@ -16,16 +16,24 @@ use Din\Session\Session;
  *
  * @package app.controllers
  */
-class UsuarioSenhaController extends BaseController
+class AdminPasswordController extends BaseController
 {
 
-  public function post_recuperar_senha ()
+  private $_model;
+
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->_model = new model();
+  }
+
+  public function post_recover_password ()
   {
     $email = Post::text('email');
+
     try {
-      $usuarioSenhaModel = new UsuarioSenhaModel();
-      $usuarioSenhaModel->recuperar_senha($email);
-      $this->enviar_email($email, $usuarioSenhaModel->getToken());
+      $this->_model->recover_password($email);
+      $this->send_email($email, $this->_model->getToken());
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
@@ -33,15 +41,15 @@ class UsuarioSenhaController extends BaseController
     JsonViewHelper::display_success_message('E-mail enviado com sucesso, por favor acesse sua conta de e-mail para gerar uma nova senha');
   }
 
-  private function enviar_email ( $user_email, $token )
+  private function send_email ( $user_email, $token )
   {
 
     $data = array(
-        'link' => URL . '/admin/usuario_senha/update/' . $token . '/'
+        'link' => URL . '/admin/admin_password/update/' . $token . '/'
     );
 
     $email_html = new View();
-    $email_html->addFile('src/app/admin/views/email/recuperar_senha.phtml');
+    $email_html->addFile('src/app/admin/views/email/recover_password.phtml');
     $email_html->setData($data);
 
     $email = new Email;
@@ -49,6 +57,7 @@ class UsuarioSenhaController extends BaseController
     $email->setTo($user_email);
     $email->setSubject('Recuperação de Senha - Painel de Controle');
     $email->setBody($email_html->getResult());
+    die($email_html->getResult());
 
     $sendmail = new SendEmail($email);
     $sendmail->setHost(SMTP_HOST);
@@ -64,7 +73,7 @@ class UsuarioSenhaController extends BaseController
     );
 
     $this->_view->addFile('src/app/admin/views/layouts/login.phtml');
-    $this->_view->addFile('src/app/admin/views/essential/recuperar_senha.phtml', '{$CONTENT}');
+    $this->_view->addFile('src/app/admin/views/essential/recover_password.phtml', '{$CONTENT}');
     $this->display_html();
   }
 
@@ -72,19 +81,18 @@ class UsuarioSenhaController extends BaseController
   {
     $data = array(
         'token' => $token,
-        'senha' => Post::text('senha'),
-        'senha2' => Post::text('confirmar_senha')
+        'password' => Post::text('password'),
+        'password2' => Post::text('password2')
     );
 
     try {
-      $usuarioSenhaModel = new UsuarioSenhaModel();
-      $usuarioSenhaModel->atualiza_senha($data);
+      $this->_model->update_password($data);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
 
     $session = new Session('adm_session');
-    $session->set('registro_salvo', 'Senha alterada com sucesso');
+    $session->set('saved_msg', 'Senha alterada com sucesso');
 
     JsonViewHelper::redirect('/admin/');
   }

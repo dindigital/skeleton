@@ -3,7 +3,7 @@
 namespace src\app\admin\controllers\essential;
 
 use Din\Mvc\Controller\BaseController;
-use src\app\admin\models\essential\UsuarioAuthModel;
+use src\app\admin\models\essential\AdminAuthModel as model;
 use Din\Http\Header;
 use Din\Http\Post;
 use Exception;
@@ -17,9 +17,12 @@ use Din\Session\Session;
 class AdminAuthController extends BaseController
 {
 
+  protected $_model;
+
   public function __construct ()
   {
     parent::__construct();
+    $this->_model = new model();
   }
 
   private function setAuthTemplate ()
@@ -29,10 +32,10 @@ class AdminAuthController extends BaseController
     );
 
     $session = new Session('adm_session');
-    if ( $session->is_set('registro_salvo') ) {
-      $this->_data['registro_salvo'] = $session->get('registro_salvo');
+    if ( $session->is_set('saved_msg') ) {
+      $this->_data['saved_msg'] = $session->get('saved_msg');
     }
-    $session->un_set('registro_salvo');
+    $session->un_set('saved_msg');
 
     $this->_view->addFile('src/app/admin/views/layouts/login.phtml');
   }
@@ -47,11 +50,10 @@ class AdminAuthController extends BaseController
   public function post_index ()
   {
     $email = Post::text('email');
-    $senha = Post::text('senha');
+    $password = Post::text('password');
 
     try {
-      $usuarioAuthModel = new UsuarioAuthModel();
-      $usuarioAuthModel->login($email, $senha);
+      $this->_model->login($email, $password);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
@@ -61,8 +63,7 @@ class AdminAuthController extends BaseController
 
   public function get_logout ()
   {
-    $usuarioAuthModel = new UsuarioAuthModel();
-    $usuarioAuthModel->logout();
+    $this->_model->logout();
 
     Header::redirect('/admin/');
   }

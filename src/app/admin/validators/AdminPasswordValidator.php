@@ -9,14 +9,14 @@ use Din\Exception\JsonException;
 use Din\DataAccessLayer\Select;
 use Din\Crypt\Crypt;
 
-class UsuarioSenhaValidator extends BaseValidator
+class AdminPasswordValidator extends BaseValidator
 {
 
   private $_dao;
 
   public function __construct ( $dao )
   {
-    $this->_table = new Table('usuario');
+    $this->_table = new Table('admin');
     $this->_dao = $dao;
   }
 
@@ -25,7 +25,7 @@ class UsuarioSenhaValidator extends BaseValidator
     if ( !v::email()->validate($email) )
       return JsonException::addException('E-mail inválido');
 
-    $select = new Select('usuario');
+    $select = new Select('admin');
     $select->where(array('email = ?' => $email));
     $result = $this->_dao->select_count($select);
 
@@ -37,16 +37,16 @@ class UsuarioSenhaValidator extends BaseValidator
 
   public function setToken ( $id )
   {
-    $select = new Select('usuario');
-    $select->addField('senha_data');
-    $select->where(array('id_usuario = ?' => $id));
+    $select = new Select('admin');
+    $select->addField('password_change_date');
+    $select->where(array('id_admin = ?' => $id));
     $result = $this->_dao->select($select);
 
     if ( !count($result) )
       return JsonException::addException('Token inválido, por favor gere um novo link de recuperação');
 
     $time_inicial = strtotime(date('Y-m-d'));
-    $time_final = strtotime($result[0]['senha_data']);
+    $time_final = strtotime($result[0]['password_change_date']);
 
     $diferenca = $time_final - $time_inicial;
     $dias = (int) floor($diferenca / (60 * 60 * 24));
@@ -55,21 +55,21 @@ class UsuarioSenhaValidator extends BaseValidator
       return JsonException::addException('Token expirado, por favor gere um novo link de recuperação');
   }
 
-  public function setSenha ( $senha, $senha2 )
+  public function setPassword ( $password, $password2 )
   {
-    if ( $senha != $senha2 )
+    if ( $password != $password2 )
       return JsonException::addException('As senhas não conferem');
 
-    if ( !v::string()->notEmpty()->validate($senha) )
+    if ( !v::string()->notEmpty()->validate($password) )
       return JsonException::addException('Por favor digite uma senha');
 
     $crypt = new Crypt();
-    $this->_table->senha = $crypt->crypt($senha);
+    $this->_table->password = $crypt->crypt($password);
   }
 
-  public function setSenhaData ( $data )
+  public function setPasswordChangeDate ( $date )
   {
-    $this->_table->senha_data = $data;
+    $this->_table->password_change_date = $date;
   }
 
 }

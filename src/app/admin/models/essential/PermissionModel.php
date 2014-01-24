@@ -3,7 +3,6 @@
 namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\BaseModelAdm;
-use Din\Form\Listbox\Listbox;
 use src\app\admin\helpers\Entities;
 use Exception;
 
@@ -11,7 +10,7 @@ use Exception;
  *
  * @package app.models
  */
-class PermissaoModel extends BaseModelAdm
+class PermissionModel extends BaseModelAdm
 {
 
   public function getListbox ()

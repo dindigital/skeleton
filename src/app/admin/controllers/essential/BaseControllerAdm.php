@@ -89,7 +89,7 @@ abstract class BaseControllerAdm extends BaseController
       Header::redirect('/admin/');
 
     $this->_data['admin'] = $adminAuthModel->getUser();
-    $this->_data['admin']['avatar_img'] = Picuri::picUri($this->_data['user']['avatar'], 30, 30, true);
+    $this->_data['admin']['avatar_img'] = Picuri::picUri($this->_data['admin']['avatar'], 30, 30, true);
 
     $permission = new PermissionModel();
     $permissions = $permission->getArray($this->_data['admin']);
