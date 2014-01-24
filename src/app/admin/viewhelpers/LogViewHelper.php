@@ -14,10 +14,10 @@ class LogViewHelper
   public static function formatResult ( $result )
   {
     foreach ( $result as $i => $row ) {
-      $result[$i]['acao'] = Arrays::$logAcao[$row['acao']];
-      $result[$i]['inc_data'] = DateFormat::filter_date($row['inc_data']);
+      $result[$i]['action'] = Arrays::$logAcao[$row['action']];
+      $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
       $atual = Entities::getEntityByName($row['name']);
-      $result[$i]['name'] = $atual['secao'];
+      $result[$i]['name'] = $atual['section'];
     }
 
     return $result;
@@ -25,9 +25,9 @@ class LogViewHelper
 
   public static function formatFilters ( $arrFilters, $dropdown_name )
   {
-    $arrFilters['usuario'] = Html::scape($arrFilters['usuario']);
-    $arrFilters['descricao'] = Html::scape($arrFilters['descricao']);
-    $arrFilters['acao'] = Form::Dropdown('acao', Arrays::$logAcao, $arrFilters['acao'], 'Filtro por Ação');
+    $arrFilters['admin'] = Html::scape($arrFilters['admin']);
+    $arrFilters['description'] = Html::scape($arrFilters['description']);
+    $arrFilters['action'] = Form::Dropdown('action', Arrays::$logAcao, $arrFilters['action'], 'Filtro por Ação');
     $arrFilters['name'] = Form::Dropdown('name', $dropdown_name, $arrFilters['name'], 'Filtro por Seção');
 
     return $arrFilters;
@@ -36,10 +36,10 @@ class LogViewHelper
   public static function formatRow ( $row )
   {
     if ( !empty($row) ) {
-      $row['descricao'] = Html::scape($row['descricao']);
-      $row['inc_data'] = DateFormat::filter_date($row['inc_data']);
-      $row['acao'] = Arrays::$logAcao[$row['acao']];
-      $row['conteudo'] = json_decode($row['conteudo']);
+      $row['description'] = Html::scape($row['description']);
+      $row['inc_date'] = DateFormat::filter_date($row['inc_date']);
+      $row['action'] = Arrays::$logAcao[$row['action']];
+      $row['cont'] = json_decode($row['content']);
     }
 
     return $row;

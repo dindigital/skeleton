@@ -115,8 +115,8 @@ class BaseModelAdm
     $this->deleteChildren($current['tbl'], $id);
     $tableHistory = $this->getById($id);
     $validator = new $current['validator'];
-    $validator->setDelData();
-    $validator->setDel('1');
+    $validator->setDelDate();
+    $validator->setIsDel('1');
     $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $id));
     $this->log('T', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
   }
@@ -134,7 +134,7 @@ class BaseModelAdm
 
     Sequence::setSequence($this, $validator, $tableHistory);
 
-    $validator->setDel('0');
+    $validator->setIsDel('0');
     $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $id));
     $this->log('R', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
   }

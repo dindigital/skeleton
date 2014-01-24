@@ -181,7 +181,7 @@ abstract class BaseControllerAdm extends BaseController
     return $row;
   }
 
-  public function post_excluir ()
+  public function post_delete ()
   {
     try {
       $itens = Post::aray('itens');

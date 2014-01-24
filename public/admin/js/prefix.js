@@ -95,7 +95,7 @@ $(document).ready(function() {
       var form = newForm();
 
       $('.delete:checked').each(function() {
-        var id = $(this).attr('id').replace('exc_', '');
+        var id = $(this).attr('id').replace('del_', '');
         form.append('<input type="hidden" name="itens[]" value="' + id + '" />');
       });
 

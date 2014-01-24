@@ -36,7 +36,7 @@ class LogController extends BaseControllerAdm
     $dropdownName = $this->_model->getDropdownName();
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->resultList($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
     $this->_data['search'] = vh::formatFilters($arrFilters, $dropdownName);
 
     $this->setListTemplate('essential/log_list.phtml', $paginator);
@@ -46,8 +46,7 @@ class LogController extends BaseControllerAdm
   {
     try {
       $this->_data['table'] = vh::formatRow($this->_model->getById($id));
-      $this->_view->addFile('src/app/admin/views/essential/log_view.phtml', '{$CONTENT}');
-      $this->display_html();
+      $this->setSaveTemplate('essential/log_view.phtml');
     } catch (Exception $e) {
 
     }
