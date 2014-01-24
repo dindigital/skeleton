@@ -15,7 +15,7 @@ use src\app\admin\helpers\Sequence;
 class NewsCatModel extends BaseModelAdm
 {
 
-  public function listar ( $arrFilters = array(), Paginator $paginator = null )
+  public function get_list ( $arrFilters = array(), Paginator $paginator = null )
   {
     $arrCriteria = array(
         'del = ?' => '0',

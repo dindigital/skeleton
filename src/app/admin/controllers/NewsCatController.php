@@ -15,7 +15,7 @@ use src\app\admin\viewhelpers\NewsCatViewHelper as vh;
  *
  * @package app.controllers
  */
-class NoticiaCatController extends BaseControllerAdm
+class NewsCatController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -29,7 +29,7 @@ class NoticiaCatController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_lista ()
+  public function get_list ()
   {
 
     $arrFilters = array(
@@ -38,7 +38,7 @@ class NoticiaCatController extends BaseControllerAdm
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->get_list($arrFilters, $paginator));
     $this->_data['search'] = vh::formatFilters($arrFilters);
 
     $this->setErrorSessionData();
@@ -46,7 +46,7 @@ class NoticiaCatController extends BaseControllerAdm
     $this->setListTemplate('newscat_lista.phtml', $paginator);
   }
 
-  public function get_cadastro ( $id = null )
+  public function get_save ( $id = null )
   {
     $excluded_fields = array(
         'cover'
@@ -55,7 +55,7 @@ class NoticiaCatController extends BaseControllerAdm
 
     $this->_data['table'] = vh::formatRow($row);
 
-    $this->setCadastroTemplate('newscat_cadastro.phtml');
+    $this->setSaveTemplate('newscat_cadastro.phtml');
   }
 
   public function post_cadastro ( $id = null )

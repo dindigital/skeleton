@@ -27,11 +27,11 @@ class Entities
     }
   }
 
-  public static function getLixeiraItens ()
+  public static function getTrashItens ()
   {
     $r = self::$entities;
     foreach ( self::$entities as $tbl => $item ) {
-      if ( !(isset($item['lixeira']) && $item['lixeira']) ) {
+      if ( !(isset($item['trash']) && $item['trash']) ) {
         unset($r[$tbl]);
       }
     }

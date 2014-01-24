@@ -14,23 +14,23 @@ class Sequence
     if ( !isset($current['sequence']) )
       return $result;
 
-    $dependencia_criteria = array();
+    $dependenceCriteria = array();
     if ( isset($current['sequence']['dependence']) ) {
-      $dependencia_field = $current['sequence']['dependence'];
+      $dependenceField = $current['sequence']['dependence'];
 
       foreach ( $arrCriteria as $field => $value ) {
-        if ( strpos($field, $dependencia_field) !== false ) {
-          $dependencia_criteria[$field] = $value;
+        if ( strpos($field, $dependenceField) !== false ) {
+          $dependenceCriteria[$field] = $value;
           break;
         }
       }
 
-      if ( !count($dependencia_criteria) )
+      if ( !count($dependenceCriteria) )
         return $result;
     }
 
-    $total = $model->getMaxOrdem($dependencia_criteria);
-    $opcional = $atual['ordem']['opcional'];
+    $total = $model->getMaxSequence($dependenceCriteria);
+    $optional = $current['sequence']['opcional'];
 
     $options = array();
     for ( $i = 1; $i <= $total; $i++ ) {
@@ -38,9 +38,9 @@ class Sequence
     }
 
     foreach ( $result as $i => $row ) {
-      $d = new Dropdown('ordem');
+      $d = new Dropdown('sequence');
 
-      if ( $opcional && $row['ordem'] == 0 ) {
+      if ( $optional && $row['sequence'] == 0 ) {
         $options2 = $options;
         $options2[(string) $total + 1] = (string) $total + 1;
         $d->setOptionsArray($options2);
@@ -48,13 +48,13 @@ class Sequence
         $d->setOptionsArray($options);
       }
 
-      $d->setClass('form-control drop_ordem');
-      $d->setSelected($row['ordem']);
-      $d->setId($row[$atual['id']]);
-      if ( $opcional )
+      $d->setClass('form-control drop_sequence');
+      $d->setSelected($row['sequence']);
+      $d->setId($row[$current['id']]);
+      if ( $optional )
         $d->setFirstOpt('');
 
-      $result[$i]['ordem'] = $d->getElement();
+      $result[$i]['sequence'] = $d->getElement();
     }
 
     return $result;
@@ -62,81 +62,81 @@ class Sequence
 
   public static function setSequence ( $model, $validator, $result = null )
   {
-    $atual = Entities::getThis($model);
-    if ( !isset($atual['ordem']) )
+    $current = Entities::getThis($model);
+    if ( !isset($current['sequence']) )
       return $result;
 
     $arrCriteria = array();
 
-    if ( $atual['ordem']['opcional'] ) {
+    if ( $current['sequence']['opcional'] ) {
       $validator->setOrdem(0);
     } else {
-      if ( isset($atual['ordem']['dependencia']) ) {
-        $dependencia_field = $atual['ordem']['dependencia'];
-        $dependencia_value = $result ? $result[$dependencia_field] : $validator->getTable()->{$dependencia_field};
+      if ( isset($current['sequence']['dependencia']) ) {
+        $dependenceField = $current['sequence']['dependencia'];
+        $dependencia_value = $result ? $result[$dependenceField] : $validator->getTable()->{$dependenceField};
 
         if ( is_null($dependencia_value) ) {
-          $arrCriteria[$dependencia_field . ' IS NULL'] = null;
+          $arrCriteria[$dependenceField . ' IS NULL'] = null;
         } else {
-          $arrCriteria[$dependencia_field . ' = ?'] = $dependencia_value;
+          $arrCriteria[$dependenceField . ' = ?'] = $dependencia_value;
         }
       }
 
-      $ordem = $model->getMaxOrdem($arrCriteria) + 1;
+      $sequence = $model->getMaxOrdem($arrCriteria) + 1;
 
-      $validator->setOrdem($ordem);
+      $validator->setOrdem($sequence);
     }
   }
 
-  public static function changeSequence ( $model, $id, $ordem )
+  public static function changeSequence ( $model, $id, $sequence )
   {
-    $atual = Entities::getThis($model);
+    $current = Entities::getThis($model);
 
-    if ( !isset($atual['ordem']) )
+    if ( !isset($current['sequence']) )
       return;
 
     $result = $model->getById($id);
-    $ordem_antiga = $result['ordem'];
+    $sequence_old = $result['sequence'];
 
     $arrCriteria = array();
 
-    if ( isset($atual['lixeira']) ) {
+    if ( isset($current['lixeira']) ) {
       $arrCriteria['del = 0'] = null;
     }
 
-    if ( isset($atual['ordem']['dependencia']) ) {
-      $dependencia_field = $atual['ordem']['dependencia'];
-      $dependencia_value = $result[$dependencia_field];
+    if ( isset($current['sequence']['dependencia']) ) {
+      $dependenceField = $current['sequence']['dependencia'];
+      $dependencia_value = $result[$dependenceField];
 
       if ( is_null($dependencia_value) ) {
-        $arrCriteria[$dependencia_field . ' IS NULL'] = null;
+        $arrCriteria[$dependenceField . ' IS NULL'] = null;
       } else {
-        $arrCriteria[$dependencia_field . ' = ?'] = $dependencia_value;
+        $arrCriteria[$dependenceField . ' = ?'] = $dependencia_value;
       }
     }
 
     //_# Opcionais
-    if ( $ordem_antiga == 0 ) {
-      $arrCriteria['ordem >= ?'] = $ordem;
-      $result = $model->operaOrdem('+', $arrCriteria);
-    } else if ( $ordem == 0 ) {
+    if ( $sequence_old == 0 ) {
+      $arrCriteria['sequence >= ?'] = $sequence;
+      $result = $model->operateSequence('+', $arrCriteria);
+    } else if ( $sequence == 0 ) {
 
-      $arrCriteria['ordem > ?'] = $ordem_antiga;
-      $result = $model->operaOrdem('-', $arrCriteria);
+      $arrCriteria['sequence > ?'] = $sequence_old;
+      $result = $model->operateSequence('-', $arrCriteria);
       //_# Obrigatórios
     } else {
-      if ( $ordem < $ordem_antiga ) {
-        $arrCriteria['ordem >= ?'] = $ordem;
-        $arrCriteria['ordem <= ?'] = $ordem_antiga;
-        $result = $model->operaOrdem('+', $arrCriteria);
+      if ( $sequence < $sequence_old ) {
+        $arrCriteria['sequence >= ?'] = $sequence;
+        $arrCriteria['sequence <= ?'] = $sequence_old;
+        $result = $model->operateSequence('+', $arrCriteria);
       } else {
-        $arrCriteria['ordem <= ?'] = $ordem;
-        $arrCriteria['ordem >= ?'] = $ordem_antiga;
-        $result = $model->operaOrdem('-', $arrCriteria);
+        $arrCriteria['sequence <= ?'] = $sequence;
+        $arrCriteria['sequence >= ?'] = $sequence_old;
+        $result = $model->operateSequence('-', $arrCriteria);
       }
     }
 
-    $model->atualizaOrdem($ordem, $id);
+    $model->updateSequence($sequence, $id);
   }
 
 }

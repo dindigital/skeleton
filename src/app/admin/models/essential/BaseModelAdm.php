@@ -7,7 +7,7 @@ use Din\DataAccessLayer\PDO\PDOBuilder;
 use src\app\admin\helpers\Entities;
 use Din\DataAccessLayer\Select;
 use Din\File\Folder;
-use src\app\admin\helpers\Ordem;
+use src\app\admin\helpers\Sequence;
 use Exception;
 use src\app\admin\models\essential\LogMySQLModel as log;
 
@@ -36,13 +36,13 @@ class BaseModelAdm
 
   public function getById ( $id )
   {
-    $atual = Entities::getThis($this);
+    $current = Entities::getThis($this);
 
     $arrCriteria = array(
-        $atual['id'] . ' = ?' => $id
+        $current['id'] . ' = ?' => $id
     );
 
-    $select = new Select($atual['tbl']);
+    $select = new Select($current['tbl']);
     $select->addField('*');
     $select->where($arrCriteria);
 
@@ -58,13 +58,13 @@ class BaseModelAdm
 
   public function getCount ( $id )
   {
-    $atual = Entities::getThis($this);
+    $current = Entities::getThis($this);
 
     $arrCriteria = array(
-        $atual['id'] . ' = ?' => $id
+        $current['id'] . ' = ?' => $id
     );
 
-    $select = new Select($atual['tbl']);
+    $select = new Select($current['tbl']);
     $select->where($arrCriteria);
 
     $result = $this->_dao->select_count($select);
@@ -72,25 +72,25 @@ class BaseModelAdm
     return $result;
   }
 
-  public function excluirFilhos ( $tbl, $id, $permanente = false )
+  public function deleteChildren ( $tbl, $id, $permanent = false )
   {
-    $atual = Entities::getEntity($tbl);
-    $filhos = Entities::getFilhos($tbl);
+    $current = Entities::getEntity($tbl);
+    $children = Entities::getFilhos($tbl);
 
-    foreach ( $filhos as $filho ) {
-      $select = new Select($filho['tbl']);
-      $select->addField($filho['id'], 'id_filho');
+    foreach ( $children as $child ) {
+      $select = new Select($child['tbl']);
+      $select->addField($child['id'], 'id_children');
       $select->where(array(
-          $atual['id'] . ' = ? ' => $id
+          $current['id'] . ' = ? ' => $id
       ));
       $result = $this->_dao->select($select);
 
       foreach ( $result as $row ) {
-        $model_inst = new $filho['model'];
-        if ( $permanente ) {
-          $model_inst->excluir_permanente($row['id_filho']);
+        $model = new $child['model'];
+        if ( $permanent ) {
+          $model->delete_permanent($row['id_children']);
         } else {
-          $model_inst->excluir($row['id_filho']);
+          $model->delete($row['id_children']);
         }
       }
     }
@@ -98,107 +98,107 @@ class BaseModelAdm
 
   public function log ( $action, $msg, $table, $tableHistory = null )
   {
-    $usuarioAuth = new UsuarioAuthModel();
-    $usuario = $usuarioAuth->getUser();
+    $adminAuth = new AdminAuthModel();
+    $admin = $adminAuth->getUser();
 
     $entities = Entities::getThis($this);
 
-    log::save($this->_dao, $usuario, $action, $msg, $entities['name'], $table, $tableHistory);
+    log::save($this->_dao, $admin, $action, $msg, $entities['name'], $table, $tableHistory);
   }
 
-  public function excluir ( $id )
+  public function delete ( $id )
   {
-    $atual = Entities::getThis($this);
+    $current = Entities::getThis($this);
 
-    Ordem::changeOrdem($this, $id, 0);
+    Sequence::changeSequence($this, $id, 0);
 
-    $this->excluirFilhos($atual['tbl'], $id);
+    $this->deleteChildren($current['tbl'], $id);
     $tableHistory = $this->getById($id);
-    $validator = new $atual['validator'];
+    $validator = new $current['validator'];
     $validator->setDelData();
     $validator->setDel('1');
-    $this->_dao->update($validator->getTable(), array($atual['id'] . ' = ?' => $id));
-    $this->log('T', $tableHistory[$atual['title']], $atual['tbl'], $tableHistory);
+    $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $id));
+    $this->log('T', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
   }
 
-  public function restaurar ( $id )
+  public function restore ( $id )
   {
-    $atual = Entities::getThis($this);
+    $current = Entities::getThis($this);
 
-    $lixeira = new LixeiraModel();
-    $lixeira->validateRestaurar($atual['tbl'], $id);
+    $trash = new TrashModel();
+    $trash->validateRestore($current['tbl'], $id);
 
     $tableHistory = $this->getById($id);
 
-    $validator = new $atual['validator'];
+    $validator = new $current['validator'];
 
-    Ordem::setOrdem($this, $validator, $tableHistory);
+    Sequence::setSequence($this, $validator, $tableHistory);
 
     $validator->setDel('0');
-    $this->_dao->update($validator->getTable(), array($atual['id'] . ' = ?' => $id));
-    $this->log('R', $tableHistory[$atual['title']], $atual['tbl'], $tableHistory);
+    $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $id));
+    $this->log('R', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
   }
 
-  public function excluir_permanente ( $id )
+  public function delete_permanent ( $id )
   {
-    $atual = Entities::getThis($this);
+    $current = Entities::getThis($this);
 
-    Ordem::changeOrdem($this, $id, 0);
+    Sequence::changeSequence($this, $id, 0);
 
-    $this->excluirFilhos($atual['tbl'], $id, true);
+    $this->deleteChildren($current['tbl'], $id, true);
 
     $tableHistory = $this->getById($id);
-    Folder::delete("public/system/uploads/{$atual['tbl']}/{$id}");
-    $this->_dao->delete($atual['tbl'], array($atual['id'] . ' = ?' => $id));
-    $this->log('D', $tableHistory[$atual['title']], $atual['tbl'], $tableHistory);
+    Folder::delete("public/system/uploads/{$current['tbl']}/{$id}");
+    $this->_dao->delete($current['tbl'], array($current['id'] . ' = ?' => $id));
+    $this->log('D', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
   }
 
-  public function toggleAtivo ( $id, $ativo )
+  public function toggleActive ( $id, $active )
   {
-    $atual = Entities::getThis($this);
+    $current = Entities::getThis($this);
 
     $tableHistory = $this->getById($id);
-    $validator = new $atual['validator'];
-    $validator->setAtivo($ativo);
-    $this->_dao->update($validator->getTable(), array($atual['id'] . ' = ?' => $id));
-    $this->log('U', $tableHistory[$atual['title']], $validator->getTable(), $tableHistory);
+    $validator = new $current['validator'];
+    $validator->setAtivo($active);
+    $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $id));
+    $this->log('U', $tableHistory[$current['title']], $validator->getTable(), $tableHistory);
   }
 
-  public function operaOrdem ( $operador, $arrCriteria )
+  public function operateSequence ( $operator, $arrCriteria )
   {
-    $atual = Entities::getThis($this);
+    $current = Entities::getThis($this);
 
-    $SQL = "UPDATE {$atual['tbl']} SET ordem = ordem {$operador} 1";
+    $SQL = "UPDATE {$current['tbl']} SET sequence = sequence {$operator} 1";
     $result = $this->_dao->execute($SQL, $arrCriteria);
 
     return $result;
   }
 
-  public function atualizaOrdem ( $ordem, $id )
+  public function updateSequence ( $sequence, $id )
   {
-    $atual = Entities::getThis($this);
+    $current = Entities::getThis($this);
 
-    $validator = new $atual['validator'];
-    $validator->setOrdem($ordem);
-    $this->_dao->update($validator->getTable(), array($atual['id'] . '= ? ' => $id));
+    $validator = new $current['validator'];
+    $validator->setSequence($sequence);
+    $this->_dao->update($validator->getTable(), array($current['id'] . '= ? ' => $id));
   }
 
-  public function changeOrdem ( $id, $ordem )
+  public function changeSequence ( $id, $sequence )
   {
-    Ordem::changeOrdem($this, $id, $ordem);
+    Sequence::changeSequence($this, $id, $sequence);
   }
 
-  public function getMaxOrdem ( $arrCriteria = array() )
+  public function getMaxSequence ( $arrCriteria = array() )
   {
-    $atual = Entities::getThis($this);
+    $current = Entities::getThis($this);
 
-    $select = new Select($atual['tbl']);
+    $select = new Select($current['tbl']);
 
-    if ( $atual['ordem']['opcional'] ) {
-      $arrCriteria['ordem > ?'] = '0';
+    if ( $current['sequence']['opcional'] ) {
+      $arrCriteria['sequence > ?'] = '0';
     }
 
-    if ( isset($atual['lixeira']) ) {
+    if ( isset($current['trash']) ) {
       $arrCriteria['del = 0'] = null;
     }
 

@@ -43,7 +43,7 @@ abstract class BaseControllerAdm extends BaseController
     $this->_view->addFile('src/app/admin/views/includes/nav.phtml', '{$NAV}');
   }
 
-  protected function setCadastroTemplate ( $filename )
+  protected function setSaveTemplate ( $filename )
   {
     $this->setSavedMsgData();
 
@@ -201,7 +201,7 @@ abstract class BaseControllerAdm extends BaseController
 
   public function post_active ()
   {
-    $this->_model->toggleAtivo(Post::text('id'), Post::checkbox('active'));
+    $this->_model->toggleActive(Post::text('id'), Post::checkbox('active'));
   }
 
   public function post_sequence ()
