@@ -24,18 +24,18 @@ class BaseValidator
     return $this->_table->{$property};
   }
 
-  public function setAtivo ( $ativo )
+  public function setActive ( $active )
   {
-    $ativo = intval($ativo);
+    $active = intval($active);
 
-    $this->_table->ativo = $ativo;
+    $this->_table->active = $active;
   }
 
-  public function setDel ( $del )
+  public function setIsDel ( $is_del )
   {
-    $del = intval($del);
+    $is_del = intval($is_del);
 
-    $this->_table->del = $del;
+    $this->_table->is_del = $is_del;
   }
 
   public function setIncDate ()
@@ -43,17 +43,17 @@ class BaseValidator
     $this->_table->inc_date = date('Y-m-d H:i:s');
   }
 
-  public function setDelData ()
+  public function setDelDate ()
   {
-    $this->_table->del_data = date('Y-m-d H:i:s');
+    $this->_table->del_date = date('Y-m-d H:i:s');
   }
 
-  public function setOrdem ( $ordem )
+  public function setSequence ( $sequence )
   {
-    if ( !is_numeric($ordem) )
+    if ( !is_numeric($sequence) )
       return JsonException::addException('ordem deve ser numérica');
 
-    $this->_table->ordem = $ordem;
+    $this->_table->sequence = $sequence;
   }
 
   public function setDefaultLink ( $area, $title, $id )
@@ -75,7 +75,7 @@ class BaseValidator
     }
   }
 
-  public function setArquivo ( $fieldname, $file, $id = null )
+  public function setFile ( $fieldname, $file, $id = null )
   {
     $tmp_dir = 'tmp';
 //    if ( is_null($tmp_dir) ) {
@@ -138,9 +138,7 @@ class BaseValidator
     }
   }
 
-  public function
-
-  getTable ()
+  public function getTable ()
   {
     return $this->_table;
   }
