@@ -8,20 +8,20 @@ use Respect\Validation\Validator as v;
 use Din\Crypt\Crypt;
 use Din\Exception\JsonException;
 
-class UsuarioValidator extends BaseValidator
+class AdminValidator extends BaseValidator
 {
 
   public function __construct ()
   {
-    $this->_table = new Table('usuario');
+    $this->_table = new Table('admin');
   }
 
-  public function setNome ( $nome )
+  public function setName ( $name )
   {
-    if ( !v::string()->notEmpty()->validate($nome) )
+    if ( !v::string()->notEmpty()->validate($name) )
       return JsonException::addException('Nome é obrigatório');
 
-    $this->_table->nome = $nome;
+    $this->_table->name = $name;
   }
 
   public function setEmail ( $email, $id = null )
@@ -29,27 +29,27 @@ class UsuarioValidator extends BaseValidator
     if ( !v::email()->validate($email) )
       return JsonException::addException('E-mail inválido');
 
-    // TO DO: Verificar se usuário existe no banco de dados, se existir
-    // não deixar usar o mesmo e-mail
+// TO DO: Verificar se usuário existe no banco de dados, se existir
+// não deixar usar o mesmo e-mail
 
     $this->_table->email = $email;
   }
 
-  public function setSenha ( $senha, $obg = true )
+  public function setPassword ( $password, $required = true )
   {
-    if ( !v::string()->notEmpty()->validate($senha) && $obg )
+    if ( !v::string()->notEmpty()->validate($password) && $required )
       return JsonException::addException('Senha é obrigatório');
 
-    if ( $senha != '' ) {
+    if ( $password != '' ) {
       $crypt = new Crypt();
-      $this->_table->senha = $crypt->crypt($senha);
+      $this->_table->password = $crypt->crypt($password);
     }
   }
 
-  public function setPermissao ( $permissao )
+  public function setPermission ( $permission )
   {
-    $permissao = json_encode($permissao);
-    $this->_table->permissao = $permissao;
+    $permission = json_encode($permission);
+    $this->_table->permission = $permission;
   }
 
 }

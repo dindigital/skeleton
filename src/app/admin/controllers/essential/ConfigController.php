@@ -2,8 +2,8 @@
 
 namespace src\app\admin\controllers\essential;
 
-use src\app\admin\models\UsuarioModel as model;
-use src\app\admin\models\essential\UsuarioAuthModel;
+use src\app\admin\models\AdminModel as model;
+use src\app\admin\models\essential\AdminAuthModel;
 use Din\Http\Post;
 use src\app\admin\helpers\Form;
 use Din\ViewHelpers\JsonViewHelper;
@@ -24,33 +24,34 @@ class ConfigController extends BaseControllerAdm
     $this->_model = new model();
   }
 
-  public function get_cadastro ()
+  public function get_save ()
   {
-    $this->_data['table'] = $this->_data['user'];
+    $this->_data['table'] = $this->_data['admin'];
     $this->_data['table']['avatar'] = Form::Upload('avatar', $this->_data['table']['avatar'], 'imagem', false);
 
-    $this->setCadastroTemplate('essential/config_cadastro.phtml');
+    $this->setSaveTemplate('essential/config_save.phtml');
   }
 
-  public function post_cadastro ()
+  public function post_save ()
   {
     try {
-      $id_usuario = $this->_data['user']['id_usuario'];
+      $id_admin = $this->_data['admin']['id_admin'];
 
-      $this->_model->salvar_config($id_usuario, array(
-          'nome' => Post::text('nome'),
+      $this->_model->save_config($id_admin, array(
+          'name' => Post::text('name'),
           'email' => Post::text('email'),
-          'senha' => Post::text('senha'),
+          'password' => Post::text('password'),
           'avatar' => Post::upload('avatar'),
       ));
 
-      $this->setRegistroSalvoSession();
+      $this->setSavedMsgSession();
 
-      $usuario = $this->_model->getById($id_usuario);
-      $usuarioAuth = new UsuarioAuthModel;
-      $usuarioAuth->login($usuario['email'], $usuario['senha'], true);
+      $admin = $this->_model->getById($id_admin);
 
-      JsonViewHelper::redirect('/admin/config/cadastro/');
+      $aam = new AdminAuthModel;
+      $aam->login($admin['email'], $admin['password'], true);
+
+      JsonViewHelper::redirect('/admin/config/save/');
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
