@@ -47,17 +47,11 @@ class VideoValidator extends BaseValidator
 
   public function setLinkYouTube ( $link_youtube )
   {
-    if ( !v::string()->length(1, 255)->validate($link_youtube) )
-      return JsonException::addException('Link Youtube pode ter no máximo 255 caracteres.');
-
     $this->_table->link_youtube = $link_youtube;
   }
 
   public function setLinkVimeo ( $link_vimeo )
   {
-    if ( !v::string()->length(1, 255)->validate($link_vimeo) )
-      return JsonException::addException('Link Vímeo pode ter no máximo 255 caracteres.');
-
     $this->_table->link_vimeo = $link_vimeo;
   }
 

@@ -44,6 +44,8 @@ class VideoModel extends BaseModelAdm
     $validator->setDescricao($info['descricao']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
+    $validator->setDefaultLink('video', $info['titulo'], $id);
+    $validator->setShortenerLink();
     $validator->setIncData();
     $validator->throwException();
 
@@ -62,6 +64,8 @@ class VideoModel extends BaseModelAdm
     $validator->setDescricao($info['descricao']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
+    $validator->setDefaultLink('video', $info['titulo'], $id);
+    $validator->setShortenerLink();
     $validator->throwException();
 
     $tableHistory = $this->getById($id);
