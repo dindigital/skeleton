@@ -6,7 +6,7 @@
       </div>
 
       <div class="content">
-        <form method="get" class="form_busca">
+        <form method="get" class="form_search">
           <input type="hidden" id="link_prefix" value="/admin/usuario/" />
           <div class="col-sm-4 col-md-4 col-lg-3">
             <input class="form-control daterange" readonly name="datas" type="text" placeholder="Intervalo entre datas" value="">
@@ -39,7 +39,7 @@
             </select>
           </div>
           <div class="col-sm-4 col-md-4 col-lg-3">
-            <input type="button" value="Limpar" class="limpar_busca btn btn-default btn-rad" />
+            <input type="button" value="Limpar" class="clean_search btn btn-default btn-rad" />
             <input type="submit" value="Buscar" class="btn btn-info btn-rad" />
           </div>
         </form>
@@ -60,7 +60,7 @@
           <table class="table no-border hover">
             <thead class="no-border">
               <tr>
-                <th style="width:2%;"><input type="checkbox" name="excluir[]" id="excluir_all"></th>
+                <th style="width:2%;"><input type="checkbox" name="delete[]" id="delete_all"></th>
                 <th style="width:5%;"><strong>Ativo</strong></th>
                 <th style="width:15%;"><strong>Nome</strong></th>
                 <th style="width:15%;"><strong>E-mail</strong></th>
@@ -71,7 +71,7 @@
             </thead>
             <tbody class="no-border-y">
               <tr>
-                <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_usuario_ca002c2c5a246ee4c00e249274300e04"></td>
+                <td><input class="excluir" type="checkbox" name="delete[]" id="del_usuario_ca002c2c5a246ee4c00e249274300e04"></td>
                 <td><input class="setAtivo" type="checkbox" checked="checked" id="ca002c2c5a246ee4c00e249274300e04"></td>
                 <td>Jair</td>
                 <td>junior@dindigital.com</td>
@@ -81,7 +81,7 @@
                   <a class="label label-default" href="#">
                     <i class="fa fa-pencil"></i>
                   </a>
-                  <a class="label label-danger excluir_shortcut" href="#">
+                  <a class="label label-danger delete_shortcut" href="#">
                     <i class="fa fa-times"></i>
                   </a>
                   <a class="label label-info" href="#">
@@ -90,7 +90,7 @@
                 </td>
               </tr>
               <tr>
-                <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_usuario_682cd390cd2547c1884dbe3fb2fea8bb"></td>
+                <td><input class="excluir" type="checkbox" name="delete[]" id="del_usuario_682cd390cd2547c1884dbe3fb2fea8bb"></td>
                 <td><input class="setAtivo" type="checkbox" checked="checked" id="682cd390cd2547c1884dbe3fb2fea8bb"></td>
                 <td>mariana</td>
                 <td>mariana@dindigital.com</td>
@@ -109,7 +109,7 @@
                 </td>
               </tr>
               <tr>
-                <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_usuario_5b472da4243fd1e8bc18904d5e1306b1"></td>
+                <td><input class="excluir" type="checkbox" name="delete[]" id="del_usuario_5b472da4243fd1e8bc18904d5e1306b1"></td>
                 <td><input class="setAtivo" type="checkbox" checked="checked" id="5b472da4243fd1e8bc18904d5e1306b1"></td>
                 <td>mario</td>
                 <td>mariosmello@live.com</td>
@@ -125,7 +125,7 @@
                 </td>
               </tr>
               <tr>
-                <td><input class="excluir" type="checkbox" name="excluir[]" id="exc_usuario_8952313ded74037a8e953c15e05033f0"></td>
+                <td><input class="excluir" type="checkbox" name="delete[]" id="del_usuario_8952313ded74037a8e953c15e05033f0"></td>
                 <td><input class="setAtivo" type="checkbox" checked="checked" id="8952313ded74037a8e953c15e05033f0"></td>
                 <td>Mário</td>
                 <td>mario@dindigital.com</td>
@@ -135,7 +135,7 @@
                   <a class="label label-default" href="#">
                     <i class="fa fa-pencil"></i>
                   </a>
-                  <a class="label label-danger excluir_shortcut" href="#">
+                  <a class="label label-danger delete_shortcut" href="#">
                     <i class="fa fa-times"></i>
                   </a>
                   <a class="label label-info" href="#">

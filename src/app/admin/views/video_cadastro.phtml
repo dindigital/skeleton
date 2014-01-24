@@ -1,4 +1,4 @@
-<input type="hidden" id="link_prefix" value="/admin/video/" />
+<input type="hidden" id="link_prefix" value="/admin/<?php echo $this->_data['entity']['tbl']; ?>/" />
 
 <div class="row">
   <div class="col-md-12">
@@ -13,14 +13,14 @@
 
         <form id="main_form" class="ajaxform form-horizontal group-border-dashed" method="post" style="border-radius: 0px;" onsubmit="return false;">
 
-          <input type="hidden" name="redirect" value="cadastro" />
+          <input type="hidden" name="redirect" value="save" />
 
           {$SUBMIT}
 
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="ativo">Ativo</label>
+            <label class="col-sm-2 control-label" for="active">Ativo</label>
             <div class="col-sm-10">
-              <label class="checkbox-inline"><input type="checkbox" name="ativo" id="ativo" <?php if ( @$data['table']['ativo'] == '1' ): ?>checked="checked"<?php endif; ?> /></label>
+              <label class="checkbox-inline"><input type="checkbox" name="active" id="active" <?php if ( @$data['table']['active'] == '1' ): ?>checked="checked"<?php endif; ?> /></label>
             </div>
           </div>
 
@@ -43,7 +43,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Data</label>
             <div class="col-sm-10">
-              <input name="data" type="text" value="<?php echo @$data['table']['data']; ?>" placeholder="Data" class="form-control dataMask">
+              <input name="data" type="text" value="<?php echo @$data['table']['data']; ?>" placeholder="Data" class="form-control dateMask">
             </div>
           </div>
 
