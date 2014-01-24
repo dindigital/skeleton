@@ -4,6 +4,7 @@ namespace src\app\admin\helpers;
 
 use Din\DataAccessLayer\DAO;
 use Din\DataAccessLayer\Select;
+use src\app\admin\validators\RelationshipValidator;
 
 class Listbox
 {
@@ -15,12 +16,30 @@ class Listbox
     $this->_dao = $dao;
   }
 
+  /**
+   * Insert records into the relationship table in the database
+   * @param String $tbl Table that receives the values
+   * @param String $tblField Name of Principal Field
+   * @param String $tblId Value of Principal Field
+   * @param String $relationshipField Name of Secondary  Field
+   * @param Array $relationship Value of Secondary  Field
+   */
+  public function insertRelationship ( $tbl, $tblField, $tblId, $relationshipField, $relationship )
+  {
+    $validator = new RelationshipValidator($tbl);
+    $validator->$tblField = $tblId;
+    $this->_dao->delete($tbl, array("{$tblField} = ?" => $tblId));
+    foreach ( $relationship as $row ) {
+      $validator->$relationshipField = $row;
+      $this->_dao->insert($validator->getTable());
+    }
+  }
+
   public function totalArray ( $tbl, $fieldId, $fieldLabel )
   {
     $select = new Select($tbl);
     $select->addField($fieldId);
     $select->addField($fieldLabel);
-    $select->order_by('inc_data DESC');
 
     $result = $this->_dao->select($select);
 
@@ -46,17 +65,10 @@ class Listbox
 
     $result = $this->_dao->select($select);
 
-    $selected = array();
-    $relationship = array();
+    $array = array();
     foreach ( $result as $row ) {
-      $selected[$row[$fieldId]] = $row[$fieldLabel];
-      $relationship[] = $row[$fieldId];
+      $array[$row[$fieldId]] = $row[$fieldLabel];
     }
-
-    $array = array(
-        'selected' => $selected,
-        'relationship' => $relationship
-    );
 
     return $array;
   }

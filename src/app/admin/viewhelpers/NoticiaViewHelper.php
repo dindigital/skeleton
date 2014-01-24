@@ -29,13 +29,13 @@ class NoticiaViewHelper
   public static function formatRow ( $row, $noticia_cat_dropdown, $listbox )
   {
     $row['titulo'] = Html::scape(@$row['titulo']);
-    $row['data'] = DateFormat::filter_date(@$row['data']);
+    $row['data'] = isset($row['data']) ? DateFormat::filter_date($row['data']) : date('d/m/Y');
     $row['chamada'] = Html::scape(@$row['chamada']);
     $row['corpo'] = Form::Ck('corpo', @$row['corpo']);
     $row['capa'] = Form::Upload('capa', @$row['capa'], 'imagem');
     $row['id_noticia_cat'] = Form::Dropdown('id_noticia_cat', $noticia_cat_dropdown, @$row['id_noticia_cat'], 'Selecione um Menu');
-    $row['r_noticia_foto'] = Form::Listbox('r_noticia_foto', $listbox['foto_values'], $listbox['foto_selected']);
-    $row['r_noticia_video'] = Form::Listbox('r_noticia_video', $listbox['video'][0], $listbox['video'][1], 'ajaxli');
+    $row['r_noticia_foto'] = Form::Listbox('r_noticia_foto', $listbox['foto_values'], array_keys($listbox['foto_selected']));
+    $row['r_noticia_video'] = Form::Listbox('r_noticia_video', $listbox['video'], array_keys($listbox['video']), 'ajaxli');
 
     return $row;
   }

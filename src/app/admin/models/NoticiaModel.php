@@ -16,6 +16,14 @@ use src\app\admin\helpers\Listbox;
 class NoticiaModel extends BaseModelAdm
 {
 
+  private $_listbox;
+
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->_listbox = new Listbox($this->_dao);
+  }
+
   public function listar ( $arrFilters = array(), Paginator $paginator = null )
   {
     $arrCriteria = array(
@@ -62,8 +70,8 @@ class NoticiaModel extends BaseModelAdm
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['titulo'], $validator->getTable());
 
-    $this->insertRelationship('r_noticia_foto', 'id_noticia', $id, 'id_foto', $info['r_noticia_foto']);
-    $this->insertRelationship('r_noticia_video', 'id_noticia', $id, 'id_video', $info['r_noticia_video']);
+    $this->_listbox->insertRelationship('r_noticia_foto', 'id_noticia', $id, 'id_foto', $info['r_noticia_foto']);
+    $this->_listbox->insertRelationship('r_noticia_video', 'id_noticia', $id, 'id_video', $info['r_noticia_video']);
 
     return $id;
   }
@@ -84,39 +92,30 @@ class NoticiaModel extends BaseModelAdm
     $this->_dao->update($validator->getTable(), array('id_noticia = ?' => $id));
     $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
 
-    $this->insertRelationship('r_noticia_foto', 'id_noticia', $id, 'id_foto', $info['r_noticia_foto']);
-    $this->insertRelationship('r_noticia_video', 'id_noticia', $id, 'id_video', $info['r_noticia_video']);
+    $this->_listbox->insertRelationship('r_noticia_foto', 'id_noticia', $id, 'id_foto', $info['r_noticia_foto']);
+    $this->_listbox->insertRelationship('r_noticia_video', 'id_noticia', $id, 'id_video', $info['r_noticia_video']);
 
     return $id;
   }
 
   public function arrayRelationshipFoto ()
   {
-    $listBox = new Listbox($this->_dao);
-    return $listBox->totalArray('foto', 'id_foto', 'titulo');
+    return $this->_listbox->totalArray('foto', 'id_foto', 'titulo');
   }
 
   public function selectedRelationshipFoto ( $id )
   {
-    $listBox = new Listbox($this->_dao);
-    $result = $listBox->selectedArray('foto', 'id_foto', 'titulo', 'r_noticia_foto', 'id_noticia', $id);
-    return $result['relationship'];
+    return $this->_listbox->selectedArray('foto', 'id_foto', 'titulo', 'r_noticia_foto', 'id_noticia', $id);
   }
 
   public function arrayRelationshipVideo ( $id )
   {
-    $listBox = new Listbox($this->_dao);
-    $result = $listBox->selectedArray('video', 'id_video', 'titulo', 'r_noticia_video', 'id_noticia', $id);
-    return array(
-        $result['selected'],
-        $result['relationship']
-    );
+    return $this->_listbox->selectedArray('video', 'id_video', 'titulo', 'r_noticia_video', 'id_noticia', $id);
   }
 
   public function ajaxRelationshipVideo ( $term )
   {
-    $listBox = new Listbox($this->_dao);
-    return $listBox->ajaxJson('video', 'id_video', 'titulo', $term);
+    return $this->_listbox->ajaxJson('video', 'id_video', 'titulo', $term);
   }
 
 }

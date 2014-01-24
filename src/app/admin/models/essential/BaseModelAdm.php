@@ -10,7 +10,6 @@ use Din\File\Folder;
 use src\app\admin\helpers\Ordem;
 use Exception;
 use src\app\admin\models\essential\LogMySQLModel as log;
-use src\app\admin\validators\RelationshipValidator;
 
 class BaseModelAdm
 {
@@ -206,50 +205,6 @@ class BaseModelAdm
     $select->where($arrCriteria);
 
     return $this->_dao->select_count($select);
-  }
-
-  /**
-   * Insert records into the relationship table in the database
-   * @param String $tbl Table that receives the values
-   * @param String $tblField Name of Principal Field
-   * @param String $tblId Value of Principal Field
-   * @param String $relationshipField Name of Secondary  Field
-   * @param Array $relationship Value of Secondary  Field
-   */
-  protected function insertRelationship ( $tbl, $tblField, $tblId, $relationshipField, $relationship )
-  {
-    $validator = new RelationshipValidator($tbl);
-    $validator->$tblField = $tblId;
-    $this->_dao->delete($tbl, array("{$tblField} = ?" => $tblId));
-    foreach ( $relationship as $row ) {
-      $validator->$relationshipField = $row;
-      $this->_dao->insert($validator->getTable());
-    }
-  }
-
-  protected function getRelationship ( $tbl, $tblField, $relationshipField, $tblId = null )
-  {
-
-    if ( !$tblId ) {
-      return array();
-    }
-
-    $arrCriteria = array(
-        "{$tblField} = ?" => $tblId,
-    );
-
-    $select = new Select($tbl);
-    $select->addField($relationshipField);
-    $select->where($arrCriteria);
-
-    $result = $this->_dao->select($select);
-    $relationship = array();
-
-    foreach ( $result as $row ) {
-      $relationship[] = $row[$relationshipField];
-    }
-
-    return $relationship;
   }
 
 }
