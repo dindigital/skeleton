@@ -60,13 +60,10 @@ class NoticiaController extends BaseControllerAdm
     $noticia_cat = new NoticiaCatModel();
     $noticia_cat_dropdown = $noticia_cat->getListArray();
 
-    $foto = new FotoModel();
-    $video = new VideoModel();
     $listbox = array(
-        'foto_values' => $foto->getListArray(),
-        'foto_selected' => $this->_model->getFotoArrayRelationship($id),
-        'video_values' => $video->getListSelectedArray($id),
-        'video_selected' => $this->_model->getVideoArrayRelationship($id)
+        'foto_values' => $this->_model->arrayRelationshipFoto(),
+        'foto_selected' => $this->_model->selectedRelationshipFoto($id),
+        'video' => $this->_model->arrayRelationshipVideo($id)
     );
 
     $this->_data['table'] = vh::formatRow($row, $noticia_cat_dropdown, $listbox);
@@ -97,9 +94,7 @@ class NoticiaController extends BaseControllerAdm
 
   public function post_r_noticia_video ()
   {
-    $model = new VideoModel();
-    $r = $model->getListAjaxArray(Post::text('term'));
-
+    $r = $this->_model->ajaxRelationshipVideo(Post::text('term'));
     die($r);
   }
 

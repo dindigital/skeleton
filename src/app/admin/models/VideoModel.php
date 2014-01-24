@@ -71,45 +71,4 @@ class VideoModel extends BaseModelAdm
     return $id;
   }
 
-  public function getListSelectedArray ( $id )
-  {
-    $arrCriteria = array(
-        'b.id_noticia = ?' => $id
-    );
-
-    $select = new Select('video');
-    $select->addField('id_video');
-    $select->addField('titulo');
-    $select->inner_join('id_video', Select::construct('r_noticia_video')
-                    ->addField('id_r_noticia_video'));
-    $select->where($arrCriteria);
-    $select->order_by('data DESC');
-
-    $result = $this->_dao->select($select);
-
-    $video = array();
-    foreach ( $result as $row ) {
-      $video[$row['id_video']] = $row['titulo'];
-    }
-
-    return $video;
-  }
-
-  public function getListAjaxArray ( $term )
-  {
-    $arrCriteria = array(
-        'titulo LIKE ?' => '%' . $term . '%'
-    );
-
-    $select = new Select('video');
-    $select->addField('id_video', 'id');
-    $select->addField('titulo', 'label');
-    $select->where($arrCriteria);
-    $select->order_by('data DESC');
-
-    $result = $this->_dao->select($select);
-
-    return json_encode($result);
-  }
-
 }

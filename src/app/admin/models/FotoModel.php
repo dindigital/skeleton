@@ -81,14 +81,5 @@ class FotoModel extends BaseModelAdm
     return $id;
   }
 
-  public function getListArray ()
-  {
-    $foto = array();
-    $result = $this->listar();
-    foreach ( $result as $row ) {
-      $foto[$row['id_foto']] = $row['titulo'];
-    }
-    return $foto;
-  }
-
 }
+

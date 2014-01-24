@@ -35,7 +35,7 @@ class NoticiaViewHelper
     $row['capa'] = Form::Upload('capa', @$row['capa'], 'imagem');
     $row['id_noticia_cat'] = Form::Dropdown('id_noticia_cat', $noticia_cat_dropdown, @$row['id_noticia_cat'], 'Selecione um Menu');
     $row['r_noticia_foto'] = Form::Listbox('r_noticia_foto', $listbox['foto_values'], $listbox['foto_selected']);
-    $row['r_noticia_video'] = Form::Listbox('r_noticia_video', $listbox['video_values'], $listbox['video_selected'], 'ajaxli');
+    $row['r_noticia_video'] = Form::Listbox('r_noticia_video', $listbox['video'][0], $listbox['video'][1], 'ajaxli');
 
     return $row;
   }

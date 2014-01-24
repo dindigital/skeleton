@@ -7,6 +7,7 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
 use src\app\admin\helpers\Ordem;
+use src\app\admin\helpers\Listbox;
 
 /**
  *
@@ -89,14 +90,33 @@ class NoticiaModel extends BaseModelAdm
     return $id;
   }
 
-  public function getFotoArrayRelationship ( $id )
+  public function arrayRelationshipFoto ()
   {
-    return $this->getRelationship('r_noticia_foto', 'id_noticia', 'id_foto', $id);
+    $listBox = new Listbox($this->_dao);
+    return $listBox->totalArray('foto', 'id_foto', 'titulo');
   }
 
-  public function getVideoArrayRelationship ( $id )
+  public function selectedRelationshipFoto ( $id )
   {
-    return $this->getRelationship('r_noticia_video', 'id_noticia', 'id_video', $id);
+    $listBox = new Listbox($this->_dao);
+    $result = $listBox->selectedArray('foto', 'id_foto', 'titulo', 'r_noticia_foto', 'id_noticia', $id);
+    return $result['relationship'];
+  }
+
+  public function arrayRelationshipVideo ( $id )
+  {
+    $listBox = new Listbox($this->_dao);
+    $result = $listBox->selectedArray('video', 'id_video', 'titulo', 'r_noticia_video', 'id_noticia', $id);
+    return array(
+        $result['selected'],
+        $result['relationship']
+    );
+  }
+
+  public function ajaxRelationshipVideo ( $term )
+  {
+    $listBox = new Listbox($this->_dao);
+    return $listBox->ajaxJson('video', 'id_video', 'titulo', $term);
   }
 
 }
