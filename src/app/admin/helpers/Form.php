@@ -76,11 +76,12 @@ class Form
     return $d->getElement();
   }
 
-  public static function Listbox ( $name, $array, $selected = array() )
+  public static function Listbox ( $name, $array, $selected = array(), $class = '' )
   {
     $d = new Listbox($name);
     $d->setOptionsArray($array);
-    $d->setClass('form-control multisorter indent');
+    $d->setId($name);
+    $d->setClass('form-control multisorter indent ' . $class);
     $d->setSelected($selected);
 
     return $d->getElement();

@@ -62,6 +62,7 @@ class NoticiaModel extends BaseModelAdm
     $this->log('C', $info['titulo'], $validator->getTable());
 
     $this->insertRelationship('r_noticia_foto', 'id_noticia', $id, 'id_foto', $info['r_noticia_foto']);
+    $this->insertRelationship('r_noticia_video', 'id_noticia', $id, 'id_video', $info['r_noticia_video']);
 
     return $id;
   }
@@ -83,13 +84,19 @@ class NoticiaModel extends BaseModelAdm
     $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
 
     $this->insertRelationship('r_noticia_foto', 'id_noticia', $id, 'id_foto', $info['r_noticia_foto']);
+    $this->insertRelationship('r_noticia_video', 'id_noticia', $id, 'id_video', $info['r_noticia_video']);
 
     return $id;
   }
 
-  public function getListArrayRelationship ( $id )
+  public function getFotoArrayRelationship ( $id )
   {
     return $this->getRelationship('r_noticia_foto', 'id_noticia', 'id_foto', $id);
+  }
+
+  public function getVideoArrayRelationship ( $id )
+  {
+    return $this->getRelationship('r_noticia_video', 'id_noticia', 'id_video', $id);
   }
 
 }

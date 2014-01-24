@@ -159,6 +159,12 @@ $(document).ready(function() {
     }
   });
 
+  $('.ajaxli').each(function() {
+    var busca = $(this).next('.ui-multiselect').find('.search');
+    busca.unbind();
+    busca.bind('keyup', ajaxli);
+  });
+
 });
 
 function getIdFromYoutube(text) {
@@ -171,4 +177,46 @@ function getIdFromVimeo(url)
   var parseUrl = regExp.exec(url);
   if (parseUrl != null)
     return parseUrl[5];
+}
+
+function ajaxli() {
+
+  var str = $(this).val();
+  var post = {};
+
+  var select = $(this).parents('.ui-multiselect').prev('select');
+  var avaliable = $(this).parents('.ui-multiselect').children('.available').find('.connected-list');
+
+  post['term'] = str;
+
+  var url = $('#link_prefix').val();
+
+  $.ajax({
+    type: "POST",
+    url: url + select.attr('id') + '/',
+    data: post,
+    success: ajaxliCallback,
+    dataType: 'json',
+    select: select,
+    avaliable: avaliable
+  });
+}
+
+function ajaxliCallback(data) {
+
+  var select = this.select;
+  var avaliable = this.avaliable;
+
+  avaliable.html('');
+  select.children('option').not(':selected').remove();
+
+  $.each(data, function(i, o) {
+    if (select.children('option[value="' + o.id + '"]').length == 0) {
+      select.append('<option value=' + o.id + '>' + o.label + '</option>');
+    }
+  });
+
+  select.multiselect('reload');
+  avaliable.children('li').show();
+
 }
