@@ -12,40 +12,40 @@ return array(
             'controller' => 'admin\controllers\essential\IndexController',
             'method' => 'index',
         ),
-        'admin/lixeira/lista/' => array(
-            'controller' => 'admin\controllers\essential\LixeiraController',
-            'method' => 'lista',
+        'admin/trash/list/' => array(
+            'controller' => 'admin\controllers\essential\TrashController',
+            'method' => 'list',
         ),
-        'admin/lixeira/restaurar/' => array(
-            'controller' => 'admin\controllers\essential\LixeiraController',
-            'method' => 'restaurar',
+        'admin/trash/restore/' => array(
+            'controller' => 'admin\controllers\essential\TrashController',
+            'method' => 'restore',
         ),
-        'admin/lixeira/excluir/' => array(
-            'controller' => 'admin\controllers\essential\LixeiraController',
-            'method' => 'excluir',
+        'admin/trash/delete/' => array(
+            'controller' => 'admin\controllers\essential\TrashController',
+            'method' => 'delete',
         ),
         'admin/log/list/' => array(
             'controller' => 'admin\controllers\essential\LogController',
             'method' => 'list',
         ),
-        'admin/log/cadastro/([0-9]+)/' => array(
+        'admin/log/save/([0-9]+)/' => array(
             'controller' => 'admin\controllers\essential\LogController',
             'method' => 'save',
         ),
-        'admin/config/cadastro/' => array(
+        'admin/config/save/' => array(
             'controller' => 'admin\controllers\essential\ConfigController',
-            'method' => 'cadastro',
+            'method' => 'save',
         ),
-        'admin/usuario_auth/logout/' => array(
-            'controller' => 'admin\controllers\essential\UsuarioAuthController',
+        'admin/admin_auth/logout/' => array(
+            'controller' => 'admin\controllers\essential\AdminAuthController',
             'method' => 'logout',
         ),
-        'admin/usuario_senha/recuperar_senha/' => array(
-            'controller' => 'admin\controllers\essential\UsuarioSenhaController',
-            'method' => 'recuperar_senha',
+        'admin/admin_password/recover_password/' => array(
+            'controller' => 'admin\controllers\essential\AdminPasswordController',
+            'method' => 'recover_password',
         ),
-        'admin/usuario_senha/update/([0-9]+)/' => array(
-            'controller' => 'admin\controllers\essential\UsuarioSenhaController',
+        'admin/admin_password/update/([0-9]+)/' => array(
+            'controller' => 'admin\controllers\essential\AdminPasswordController',
             'method' => 'update',
         ),
         'admin/(.*)' => array(
@@ -53,7 +53,7 @@ return array(
             'type' => RouteTypes::ACTION,
         ),
         '' => array(
-            'controller' => 'admin\controllers\essential\Erro404Controller',
+            'controller' => 'admin\controllers\essential\Error404Controller',
             'method' => 'display',
             'type' => RouteTypes::ERR_404,
         ),
