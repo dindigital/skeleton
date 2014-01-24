@@ -57,7 +57,6 @@ class AdminPasswordController extends BaseController
     $email->setTo($user_email);
     $email->setSubject('Recuperação de Senha - Painel de Controle');
     $email->setBody($email_html->getResult());
-    die($email_html->getResult());
 
     $sendmail = new SendEmail($email);
     $sendmail->setHost(SMTP_HOST);
