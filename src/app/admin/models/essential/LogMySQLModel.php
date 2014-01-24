@@ -9,11 +9,11 @@ use src\app\admin\models\essential\LogInterface;
 class LogMySQLModel extends LogAbstract implements LogInterface
 {
 
-  public static function save ( $dao, $usuario, $action, $msg, $name, $table, $tableHistory )
+  public static function save ( $dao, $admin, $action, $msg, $name, $table, $tableHistory )
   {
     $log = new self;
     $log->_dao = $dao;
-    $log->usuario = $usuario;
+    $log->admin = $admin;
     $log->msg = $msg;
     $log->name = $name;
     $log->table = $table;
@@ -25,12 +25,12 @@ class LogMySQLModel extends LogAbstract implements LogInterface
   public function insert ()
   {
     $validator = new LogValidator();
-    $validator->setAdministrador($this->usuario['nome']);
+    $validator->setAdmin($this->admin['name']);
     $validator->setName($this->name);
-    $validator->setAcao('C');
-    $validator->setDescricao($this->msg);
-    $validator->setConteudo(json_encode($this->table->setted_values));
-    $validator->setIncData();
+    $validator->setAction('C');
+    $validator->setDescription($this->msg);
+    $validator->setContent(json_encode($this->table->setted_values));
+    $validator->setIncDate();
 
     $this->_dao->insert($validator->getTable());
   }
@@ -50,18 +50,18 @@ class LogMySQLModel extends LogAbstract implements LogInterface
     }
 
     if ( count($diff) ) {
-      $conteudo = json_encode($diff);
+      $content = json_encode($diff);
     } else {
-      $conteudo = 'Não houveram alterações';
+      $content = 'Não houveram alterações';
     }
 
     $validator = new LogValidator();
-    $validator->setAdministrador($this->usuario['nome']);
+    $validator->setAdmin($this->admin['name']);
     $validator->setName($this->name);
-    $validator->setAcao('U');
-    $validator->setDescricao($this->msg);
-    $validator->setConteudo($conteudo);
-    $validator->setIncData();
+    $validator->setAction('U');
+    $validator->setDescription($this->msg);
+    $validator->setContent($content);
+    $validator->setIncDate();
 
     $this->_dao->insert($validator->getTable());
   }
@@ -69,12 +69,12 @@ class LogMySQLModel extends LogAbstract implements LogInterface
   public function deleteRestore ( $action )
   {
     $validator = new LogValidator();
-    $validator->setAdministrador($this->usuario['nome']);
+    $validator->setAdmin($this->admin['name']);
     $validator->setName($this->name);
-    $validator->setAcao($action);
-    $validator->setDescricao($this->msg);
-    $validator->setConteudo(json_encode($this->tableHistory));
-    $validator->setIncData();
+    $validator->setAction($action);
+    $validator->setDescription($this->msg);
+    $validator->setContent(json_encode($this->tableHistory));
+    $validator->setIncDate();
 
     $this->_dao->insert($validator->getTable());
   }

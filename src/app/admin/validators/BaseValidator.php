@@ -38,9 +38,9 @@ class BaseValidator
     $this->_table->del = $del;
   }
 
-  public function setIncData ()
+  public function setIncDate ()
   {
-    $this->_table->inc_data = date('Y-m-d H:i:s');
+    $this->_table->inc_date = date('Y-m-d H:i:s');
   }
 
   public function setDelData ()

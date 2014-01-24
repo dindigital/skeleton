@@ -12,7 +12,7 @@
         <div class="form-group form-group-submit">
           <span class="loadingsubmit"></span>
           <div class="input-group">
-            <a href="#" title="Voltar para a lista" class="btn btn-default btn-rad btn_lista btn_space">Voltar para lista</a>
+            <a href="#" title="Voltar para a lista" class="btn btn-default btn-rad btn_list btn_space">Voltar para lista</a>
           </div>
         </div>
 
@@ -21,21 +21,21 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Data</label>
             <div class="col-sm-10">
-              <label class="checkbox-inline"><?php echo $data['table']['inc_data']; ?></label>
+              <label class="checkbox-inline"><?php echo $data['table']['inc_date']; ?></label>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Administrador</label>
             <div class="col-sm-10">
-              <label class="checkbox-inline"><?php echo $data['table']['administrador']; ?></label>
+              <label class="checkbox-inline"><?php echo $data['table']['admin']; ?></label>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Ação</label>
             <div class="col-sm-10">
-              <label class="checkbox-inline"><?php echo $data['table']['acao']; ?></label>
+              <label class="checkbox-inline"><?php echo $data['table']['action']; ?></label>
             </div>
           </div>
 
@@ -49,11 +49,11 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Descrição</label>
             <div class="col-sm-10">
-              <label class="checkbox-inline"><?php echo $data['table']['descricao']; ?></label>
+              <label class="checkbox-inline"><?php echo $data['table']['description']; ?></label>
             </div>
           </div>
 
-          <?php if ( $data['table']['conteudo'] ): ?>
+          <?php if ( $data['table']['content'] ): ?>
 
             <div class="form-group">
               <label class="col-sm-3 control-label"><h2>Conteúdo</h2></label>

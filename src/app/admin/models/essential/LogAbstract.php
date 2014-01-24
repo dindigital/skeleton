@@ -6,7 +6,7 @@ abstract class LogAbstract
 {
 
   protected $_dao;
-  protected $usuario;
+  protected $admin;
   protected $msg;
   protected $name;
   protected $table;

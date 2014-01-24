@@ -13,9 +13,9 @@ class LogValidator extends BaseValidator
     $this->_table = new Table('log');
   }
 
-  public function setAdministrador ( $administrador )
+  public function setAdmin ( $admin )
   {
-    $this->_table->administrador = $administrador;
+    $this->_table->admin = $admin;
   }
 
   public function setName ( $name )
@@ -23,19 +23,19 @@ class LogValidator extends BaseValidator
     $this->_table->name = $name;
   }
 
-  public function setAcao ( $acao )
+  public function setAction ( $action )
   {
-    $this->_table->acao = $acao;
+    $this->_table->action = $action;
   }
 
-  public function setDescricao ( $descricao )
+  public function setDescription ( $description )
   {
-    $this->_table->descricao = $descricao;
+    $this->_table->description = $description;
   }
 
-  public function setConteudo ( $conteudo )
+  public function setContent ( $content )
   {
-    $this->_table->conteudo = $conteudo;
+    $this->_table->content = $content;
   }
 
 }

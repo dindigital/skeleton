@@ -5,7 +5,7 @@ namespace src\app\admin\models\essential;
 interface LogInterface
 {
 
-  public static function save ( $dao, $usuario, $action, $msg, $name, $table, $tableHistory );
+  public static function save ( $dao, $admin, $action, $msg, $name, $table, $tableHistory );
 
   public function insert ();
 

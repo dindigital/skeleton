@@ -27,19 +27,19 @@ class LogController extends BaseControllerAdm
   public function get_list ()
   {
     $arrFilters = array(
-        'usuario' => Get::text('usuario'),
-        'acao' => Get::text('acao'),
+        'admin' => Get::text('admin'),
+        'action' => Get::text('action'),
         'name' => Get::text('name'),
-        'descricao' => Get::text('descricao')
+        'description' => Get::text('description')
     );
 
-    $dropdown_name = $this->_model->getDropdownName();
+    $dropdownName = $this->_model->getDropdownName();
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
     $this->_data['list'] = vh::formatResult($this->_model->resultList($arrFilters, $paginator));
-    $this->_data['busca'] = vh::formatFilters($arrFilters, $dropdown_name);
+    $this->_data['search'] = vh::formatFilters($arrFilters, $dropdownName);
 
-    $this->setListTemplate('essential/log_lista.phtml', $paginator);
+    $this->setListTemplate('essential/log_list.phtml', $paginator);
   }
 
   public function get_save ( $id )
