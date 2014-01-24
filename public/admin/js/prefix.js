@@ -26,66 +26,66 @@ $(document).ready(function() {
 
   var link_prefix = $('#link_prefix').val();
 
-  $('.btn_lista').click(function() {
-    var action = link_prefix + 'lista/';
+  $('.btn_list').click(function() {
+    var action = link_prefix + 'list/';
     location.href = action;
     return false;
   });
 
-  $('.btn_cadastro').click(function() {
-    var action = link_prefix + 'cadastro/';
+  $('.btn_save').click(function() {
+    var action = link_prefix + 'save/';
     location.href = action;
     return false;
   });
 
-  $('.btn_edicao').click(function() {
+  $('.btn_edit').click(function() {
     var id = $(this).attr('href');
-    var action = link_prefix + 'cadastro/' + id + '/';
+    var action = link_prefix + 'save/' + id + '/';
     location.href = action;
     return false;
   });
 
-  $('.setAtivo').change(function() {
-    var ativo = ($(this).is(':checked')) ? '1' : '0';
-    var action = $('#link_prefix').val() + 'ativo/';
+  $('.setActive').change(function() {
+    var active = ($(this).is(':checked')) ? '1' : '0';
+    var action = $('#link_prefix').val() + 'active/';
     var id = $(this).attr('id');
 
     $.post(action, {
-      ativo: ativo,
+      active: active,
       id: id
     });
   });
 
-  $('.lixeira_re').click(function() {
+  $('.trash_re').click(function() {
 
-    if ($('.excluir').is(':checked') !== true) {
+    if ($('.delete').is(':checked') !== true) {
       alert('Não há nenhum ítem selecionado.');
       return;
     }
 
     var form = newForm();
 
-    $('.excluir:checked').each(function() {
+    $('.delete:checked').each(function() {
       var id = $(this).attr('id').replace('exc_', '');
       form.append('<input type="hidden" name="itens[]" value="' + id + '" />');
     });
 
-    var action = link_prefix + 'restaurar/';
+    var action = link_prefix + 'restore/';
 
     form.attr('action', action);
     form.submit();
   });
 
 
-  $('.lixeira_ex').click(function() {
+  $('.trash_ex').click(function() {
 
-    if ($('.excluir').is(':checked') !== true) {
+    if ($('.delete').is(':checked') !== true) {
       alert('Não há nenhum ítem selecionado.');
       return;
     }
 
     var msg = 'Deseja realmente excluir os ítens selecionados?';
-    if ($('.excluir:checked').length === 1) {
+    if ($('.delete:checked').length === 1) {
       msg = 'Deseja realmente excluir o item selecionado?';
     }
 
@@ -94,26 +94,26 @@ $(document).ready(function() {
     if (c) {
       var form = newForm();
 
-      $('.excluir:checked').each(function() {
+      $('.delete:checked').each(function() {
         var id = $(this).attr('id').replace('exc_', '');
         form.append('<input type="hidden" name="itens[]" value="' + id + '" />');
       });
 
-      var action = link_prefix + 'excluir/';
+      var action = link_prefix + 'delete/';
 
       form.attr('action', action);
       form.submit();
     }
   });
 
-  $('.drop_ordem').change(function() {
-    var ordem = $(this).val();
+  $('.drop_sequence').change(function() {
+    var sequence = $(this).val();
     var id = $(this).attr('id');
-    var link = $('#link_prefix').val() + 'ordem/';
+    var link = $('#link_prefix').val() + 'sequence/';
 
     var form = newForm();
 
-    form.append('<input type="hidden" name="ordem" value="' + ordem + '" />');
+    form.append('<input type="hidden" name="sequence" value="' + sequence + '" />');
     form.append('<input type="hidden" name="id" value="' + id + '" />');
     form.attr('action', link);
 
