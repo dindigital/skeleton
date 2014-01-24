@@ -2,7 +2,7 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\UsuarioModel as model;
+use src\app\admin\models\AdminModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
@@ -16,7 +16,7 @@ use src\app\admin\viewhelpers\UsuarioViewHelper as vh;
  *
  * @package app.controllers
  */
-class UsuarioController extends BaseControllerAdm
+class AdminController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -29,26 +29,26 @@ class UsuarioController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_lista ()
+  public function get_list ()
   {
     $arrFilters = array(
-        'nome' => Get::text('nome'),
+        'name' => Get::text('name'),
         'email' => Get::text('email'),
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
     $this->_data['busca'] = vh::formatFilters($arrFilters);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('usuario_lista.phtml', $paginator);
+    $this->setListTemplate('admin_list.phtml', $paginator);
   }
 
-  public function get_cadastro ( $id = null )
+  public function get_save ( $id = null )
   {
     $exclude_previous = array(
-        'avatar', 'avatar2', 'avatar3'
+        'avatar',
     );
     $row = $id ? $this->_model->getById($id) : $this->getPrevious($exclude_previous);
 
@@ -60,7 +60,7 @@ class UsuarioController extends BaseControllerAdm
     $this->setCadastroTemplate('usuario_cadastro.phtml');
   }
 
-  public function post_cadastro ( $id = null )
+  public function post_save ( $id = null )
   {
     try {
       $info = array(
@@ -69,8 +69,6 @@ class UsuarioController extends BaseControllerAdm
           'email' => Post::text('email'),
           'senha' => Post::text('senha'),
           'avatar' => Post::upload('avatar'),
-          'avatar2' => Post::upload('avatar2'),
-          'avatar3' => Post::upload('avatar3'),
           'permissao' => Post::aray('permissao'),
       );
 
