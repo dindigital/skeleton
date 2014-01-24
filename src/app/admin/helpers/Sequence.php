@@ -5,18 +5,18 @@ namespace src\app\admin\helpers;
 use src\app\admin\helpers\Entities;
 use Din\Form\Dropdown\Dropdown;
 
-class Ordem
+class Sequence
 {
 
   public static function setDropdown ( $model, $result, $arrCriteria )
   {
-    $atual = Entities::getThis($model);
-    if ( !isset($atual['ordem']) )
+    $current = Entities::getThis($model);
+    if ( !isset($current['sequence']) )
       return $result;
 
     $dependencia_criteria = array();
-    if ( isset($atual['ordem']['dependencia']) ) {
-      $dependencia_field = $atual['ordem']['dependencia'];
+    if ( isset($current['sequence']['dependence']) ) {
+      $dependencia_field = $current['sequence']['dependence'];
 
       foreach ( $arrCriteria as $field => $value ) {
         if ( strpos($field, $dependencia_field) !== false ) {
@@ -60,7 +60,7 @@ class Ordem
     return $result;
   }
 
-  public static function setOrdem ( $model, $validator, $result = null )
+  public static function setSequence ( $model, $validator, $result = null )
   {
     $atual = Entities::getThis($model);
     if ( !isset($atual['ordem']) )
@@ -88,7 +88,7 @@ class Ordem
     }
   }
 
-  public static function changeOrdem ( $model, $id, $ordem )
+  public static function changeSequence ( $model, $id, $ordem )
   {
     $atual = Entities::getThis($model);
 

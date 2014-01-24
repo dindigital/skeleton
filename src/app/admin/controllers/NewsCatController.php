@@ -2,16 +2,14 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\NoticiaCatModel as model;
+use src\app\admin\models\NewsCatModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
-use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\helpers\Arrays;
-use src\app\admin\viewhelpers\NoticiaCatViewHelper as vh;
+use src\app\admin\viewhelpers\NewsCatViewHelper as vh;
 
 /**
  *
@@ -35,39 +33,39 @@ class NoticiaCatController extends BaseControllerAdm
   {
 
     $arrFilters = array(
-        'titulo' => Get::text('titulo'),
-        'home' => Get::text('home'),
+        'title' => Get::text('title'),
+        'is_home' => Get::text('is_home'),
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
     $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
-    $this->_data['busca'] = vh::formatFilters($arrFilters);
+    $this->_data['search'] = vh::formatFilters($arrFilters);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('noticiacat_lista.phtml', $paginator);
+    $this->setListTemplate('newscat_lista.phtml', $paginator);
   }
 
   public function get_cadastro ( $id = null )
   {
     $excluded_fields = array(
-        'capa'
+        'cover'
     );
     $row = $id ? $this->_model->getById($id) : $this->getPrevious($excluded_fields);
 
     $this->_data['table'] = vh::formatRow($row);
 
-    $this->setCadastroTemplate('noticiacat_cadastro.phtml');
+    $this->setCadastroTemplate('newscat_cadastro.phtml');
   }
 
   public function post_cadastro ( $id = null )
   {
     try {
       $info = array(
-          'ativo' => Post::checkbox('ativo'),
-          'titulo' => Post::text('titulo'),
-          'home' => Post::checkbox('home'),
-          'capa' => Post::upload('capa')
+          'active' => Post::checkbox('active'),
+          'title' => Post::text('title'),
+          'is_home' => Post::checkbox('is_home'),
+          'cover' => Post::upload('cover')
       );
 
       $this->saveAndRedirect($info, $id);

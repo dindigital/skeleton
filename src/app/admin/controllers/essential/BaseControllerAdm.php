@@ -3,14 +3,14 @@
 namespace src\app\admin\controllers\essential;
 
 use Din\Mvc\Controller\BaseController;
-use src\app\admin\models\essential\UsuarioAuthModel;
+use src\app\admin\models\essential\AdminAuthModel;
 use Exception;
 use Din\Session\Session;
 use Din\Image\Picuri;
 use Din\Http\Post;
 use Din\Http\Header;
 use src\app\admin\helpers\Entities;
-use src\app\admin\models\essential\PermissaoModel;
+use src\app\admin\models\essential\PermissionModel;
 use Din\ViewHelpers\JsonViewHelper;
 
 /**
@@ -45,7 +45,7 @@ abstract class BaseControllerAdm extends BaseController
 
   protected function setCadastroTemplate ( $filename )
   {
-    $this->setRegistroSalvoData();
+    $this->setSavedMsgData();
 
     $this->_view->addFile('src/app/admin/views/includes/alerts.phtml', '{$ALERTS}');
     $this->_view->addFile('src/app/admin/views/includes/submit.phtml', '{$SUBMIT}');
@@ -56,14 +56,14 @@ abstract class BaseControllerAdm extends BaseController
 
   protected function setListTemplate ( $filename, $paginator )
   {
-    $this->setRegistroSalvoData();
+    $this->setSavedMsgData();
 
     $this->_data['paginator']['subtotal'] = $paginator->getSubTotal();
     $this->_data['paginator']['total'] = $paginator->getTotal();
     $this->_data['paginator']['numbers'] = $paginator->getNumbers();
 
     $this->_view->addFile('src/app/admin/views/includes/alert_lista.phtml', '{$ALERT}');
-    $this->_view->addFile('src/app/admin/views/includes/paginacao.phtml', '{$PAGINACAO}');
+    $this->_view->addFile('src/app/admin/views/includes/pagination.phtml', '{$PAGINACAO}');
     $this->_view->addFile('src/app/admin/views/includes/btns_lista_cad-exc.phtml', '{$BTN_LISTA_CAD-EXC}');
 
     $this->_view->addFile('src/app/admin/views/' . $filename, '{$CONTENT}');
@@ -84,32 +84,31 @@ abstract class BaseControllerAdm extends BaseController
    */
   private function setUserData ()
   {
-    $usuarioAuthModel = new UsuarioAuthModel();
-    if ( !$usuarioAuthModel->is_logged() )
-    //throw new Exception('Permissão negada, usuário deve estar logado.');
+    $adminAuthModel = new AdminAuthModel();
+    if ( !$adminAuthModel->is_logged() )
       Header::redirect('/admin/');
 
-    $this->_data['user'] = $usuarioAuthModel->getUser();
-    $this->_data['user']['avatar_img'] = Picuri::picUri($this->_data['user']['avatar'], 30, 30, true);
+    $this->_data['admin'] = $adminAuthModel->getUser();
+    $this->_data['admin']['avatar_img'] = Picuri::picUri($this->_data['user']['avatar'], 30, 30, true);
 
-    $permissao = new PermissaoModel();
-    $permissoes = $permissao->getArray($this->_data['user']);
-    $this->_data['permission'] = array_fill_keys($permissoes, '');
+    $permission = new PermissionModel();
+    $permissions = $permission->getArray($this->_data['admin']);
+    $this->_data['permission'] = array_fill_keys($permissions, '');
   }
 
-  protected function setRegistroSalvoSession ()
+  protected function setSavedMsgSession ()
   {
     $session = new Session('adm_session');
     $session->set('registro_salvo', 'Registro salvo com sucesso!');
   }
 
-  protected function setRegistroSalvoData ()
+  protected function setSavedMsgData ()
   {
     $session = new Session('adm_session');
-    if ( $session->is_set('registro_salvo') ) {
-      $this->_data['registro_salvo'] = $session->get('registro_salvo');
+    if ( $session->is_set('saved_msg') ) {
+      $this->_data['saved_msg'] = $session->get('saved_msg');
     }
-    $session->un_set('registro_salvo');
+    $session->un_set('saved_msg');
   }
 
   protected function setErrorSession ( $msg )
@@ -137,30 +136,30 @@ abstract class BaseControllerAdm extends BaseController
   protected function require_permission ()
   {
     $permissao = new PermissaoModel();
-    $permissao->block($this->_model, $this->_data['user']);
+    $permissao->block($this->_model, $this->_data['admin']);
   }
 
   protected function saveAndRedirect ( $info, $id = null )
   {
     if ( !$id ) {
-      $id = $this->_model->inserir($info);
+      $id = $this->_model->save($info);
     } else {
-      $this->_model->atualizar($id, $info);
+      $this->_model->update($id, $info);
     }
 
-    $this->setRegistroSalvoSession();
+    $this->setSavedMsgSession();
 
     $entity = Entities::getThis($this->_model);
 
-    $redirect = '/admin/' . $entity['tbl'] . '/cadastro/' . $id . '/';
-    if ( Post::text('redirect') == 'lista' ) {
-      $redirect = '/admin/' . $entity['tbl'] . '/lista/';
+    $redirect = '/admin/' . $entity['tbl'] . '/save/' . $id . '/';
+    if ( Post::text('redirect') == 'list' ) {
+      $redirect = '/admin/' . $entity['tbl'] . '/list/';
     }
 
     if ( Post::text('redirect') == 'previous' ) {
       $session = new Session('adm_session');
       $session->set('previous_id', $id);
-      $redirect = '/admin/' . $entity['tbl'] . '/cadastro/';
+      $redirect = '/admin/' . $entity['tbl'] . '/save/';
     }
 
     JsonViewHelper::redirect($redirect);
@@ -191,7 +190,7 @@ abstract class BaseControllerAdm extends BaseController
         list($tbl, $id) = explode('_', $item);
         $model_name = "\\src\\app\\admin\\models\\{$tbl}Model";
         $model = new $model_name;
-        $model->excluir($id);
+        $model->delete($id);
       }
 
       Header::redirect(Header::getReferer());
@@ -200,15 +199,15 @@ abstract class BaseControllerAdm extends BaseController
     }
   }
 
-  public function post_ativo ()
+  public function post_active ()
   {
-    $this->_model->toggleAtivo(Post::text('id'), Post::checkbox('ativo'));
+    $this->_model->toggleAtivo(Post::text('id'), Post::checkbox('active'));
   }
 
-  public function post_ordem ()
+  public function post_sequence ()
   {
     try {
-      $this->_model->changeOrdem(Post::text('id'), Post::text('ordem'));
+      $this->_model->changeSequence(Post::text('id'), Post::text('sequence'));
 
       Header::redirect(Header::getReferer());
     } catch (Exception $e) {
