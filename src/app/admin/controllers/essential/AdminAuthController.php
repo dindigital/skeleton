@@ -14,7 +14,7 @@ use Din\Session\Session;
  *
  * @package app.controllers
  */
-class UsuarioAuthController extends BaseController
+class AdminAuthController extends BaseController
 {
 
   public function __construct ()

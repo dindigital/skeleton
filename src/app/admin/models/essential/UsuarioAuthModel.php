@@ -20,11 +20,11 @@ class UsuarioAuthModel extends Auth
 
   public function __construct ()
   {
-    $tbl = 'usuario';
-    $pk_field = 'id_usuario';
+    $tbl = 'admin';
+    $pk_field = 'id_admin';
     $login_field = 'email';
-    $pass_field = 'senha';
-    $active_field = 'ativo';
+    $pass_field = 'password';
+    $active_field = 'active';
 
     $PDO = PDOBuilder::build(DB_TYPE, DB_HOST, DB_SCHEMA, DB_USER, DB_PASS);
     $ADL = new AuthDataLayer($PDO, $tbl, $login_field, $pass_field, $pk_field, $active_field);

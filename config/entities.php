@@ -1,97 +1,97 @@
 <?php
 
 return array(
-    'lixeira' => array(
-        'name' => 'Lixeira',
-        'secao' => 'Lixeira',
+    'trash' => array(
+        'name' => 'Trash',
+        'section' => 'Lixeira',
     ),
     'log' => array(
         'name' => 'Log',
-        'secao' => 'Log',
+        'section' => 'Log',
     ),
-    'configuracao' => array(
-        'tbl' => 'configuracao',
-        'name' => 'Configuracao',
-        'secao' => 'Configuração',
-        'id' => 'id_configuracao',
+    'settings' => array(
+        'tbl' => 'settings',
+        'name' => 'Settings',
+        'section' => 'Configuração',
+        'id' => 'id_settings',
     ),
-    'foto' => array(
-        'tbl' => 'foto',
-        'name' => 'Foto',
-        'secao' => 'Galeria de Fotos',
-        'id' => 'id_foto',
-        'title' => 'titulo',
-        'lixeira' => true,
+    'photo' => array(
+        'tbl' => 'photo',
+        'name' => 'Photo',
+        'section' => 'Galeria de Fotos',
+        'id' => 'id_photo',
+        'title' => 'title',
+        'trash' => true,
     ),
-    'foto_item' => array(
-        'tbl' => 'foto_item',
-        'name' => 'FotoItem',
-        'id' => 'id_foto_item',
+    'photo_item' => array(
+        'tbl' => 'photo_item',
+        'name' => 'PhotoItem',
+        'id' => 'id_photo_item',
     ),
-    'noticia' => array(
-        'tbl' => 'noticia',
-        'name' => 'Noticia',
-        'secao' => 'Notícias',
-        'id' => 'id_noticia',
-        'title' => 'titulo',
-        'pai' => 'noticia_cat',
-        'lixeira' => true,
-        'ordem' => array(
-            'opcional' => true,
+    'news' => array(
+        'tbl' => 'news',
+        'name' => 'News',
+        'section' => 'Notícias',
+        'id' => 'id_news',
+        'title' => 'title',
+        'parent' => 'news_cat',
+        'trash' => true,
+        'sequence' => array(
+            'optional' => true,
         )
     ),
-    'noticia_cat' => array(
-        'tbl' => 'noticia_cat',
-        'name' => 'NoticiaCat',
-        'secao' => 'Categoria de Notícias',
-        'id' => 'id_noticia_cat',
-        'title' => 'titulo',
-        'filho' => array(
-            'noticia'
+    'news_cat' => array(
+        'tbl' => 'news_cat',
+        'name' => 'NewsCat',
+        'section' => 'Categoria de Notícias',
+        'id' => 'id_news_cat',
+        'title' => 'title',
+        'children' => array(
+            'news'
         ),
-        'lixeira' => true,
-        'ordem' => array(
-            'opcional' => false,
-            'dependencia' => 'home'
+        'trash' => true,
+        'sequence' => array(
+            'optional' => false,
+            'dependency' => 'is_home'
         ),
     ),
-    'usuario' => array(
-        'tbl' => 'usuario',
-        'name' => 'Usuario',
-        'secao' => 'Usuários',
-        'id' => 'id_usuario',
-        'title' => 'nome',
-        'lixeira' => false,
+    'admin' => array(
+        'tbl' => 'admin',
+        'name' => 'Admin',
+        'section' => 'Usuários',
+        'id' => 'id_admin',
+        'title' => 'name',
+        'trash' => false,
     ),
     'video' => array(
         'tbl' => 'video',
         'name' => 'Video',
-        'secao' => 'Vídeos',
+        'section' => 'Vídeos',
         'id' => 'id_video',
-        'title' => 'titulo',
-        'lixeira' => true,
+        'title' => 'title',
+        'trash' => true,
     ),
-    'pagina_cat' => array(
-        'tbl' => 'pagina_cat',
-        'name' => 'PaginaCat',
-        'secao' => 'Menu',
-        'id' => 'id_pagina_cat',
-        'title' => 'titulo',
-        'lixeira' => true,
-        'ordem' => array(
-            'opcional' => false
+    'page_cat' => array(
+        'tbl' => 'page_cat',
+        'name' => 'PageCat',
+        'section' => 'Menu',
+        'id' => 'id_page_cat',
+        'title' => 'title',
+        'trash' => true,
+        'sequence' => array(
+            'optional' => false
         )
     ),
-    'pagina' => array(
-        'tbl' => 'pagina',
-        'name' => 'Pagina',
-        'secao' => 'Página',
-        'id' => 'id_pagina',
-        'title' => 'titulo',
-        'lixeira' => true,
-        'ordem' => array(
-            'opcional' => true,
-            'dependencia' => 'id_pagina_cat'
+    'page' => array(
+        'tbl' => 'page',
+        'name' => 'Page',
+        'section' => 'Página',
+        'id' => 'id_page',
+        'title' => 'title',
+        'trash' => true,
+        'sequence' => array(
+            'optional' => true,
+            'dependency' => 'id_page'
         )
     ),
 );

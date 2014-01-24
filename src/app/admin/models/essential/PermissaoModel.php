@@ -44,9 +44,8 @@ class PermissaoModel extends BaseModelAdm
         $permissoes[] = $entity['name'];
       }
     } else {
-      $permissoes = json_decode($user['permissao']);
+      $permissoes = json_decode($user['permission']);
     }
-
 
     return $permissoes;
   }

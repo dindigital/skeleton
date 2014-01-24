@@ -5,7 +5,7 @@ use Din\Router\RouteTypes;
 return array(
     '' => array(
         'admin/?$' => array(
-            'controller' => 'admin\controllers\essential\UsuarioAuthController',
+            'controller' => 'admin\controllers\essential\AdminAuthController',
             'method' => 'index'
         ),
         'admin/index/index/' => array(

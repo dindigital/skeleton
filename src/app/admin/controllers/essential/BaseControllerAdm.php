@@ -94,7 +94,7 @@ abstract class BaseControllerAdm extends BaseController
 
     $permissao = new PermissaoModel();
     $permissoes = $permissao->getArray($this->_data['user']);
-    $this->_data['permissao'] = array_fill_keys($permissoes, '');
+    $this->_data['permission'] = array_fill_keys($permissoes, '');
   }
 
   protected function setRegistroSalvoSession ()

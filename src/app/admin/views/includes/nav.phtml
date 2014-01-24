@@ -2,65 +2,65 @@
   <div class="cl-toggle"><i class="fa fa-bars"></i></div>
   <div class="cl-navblock">
     <ul class="cl-vnavigation">
-      <?php if ( isset($data['permissao']['Log']) ): ?>
+      <?php if ( isset($data['permission']['Log']) ): ?>
         <li>
           <a href="/admin/log/list/"><i class="fa fa-bug"></i>Log</a>
         </li>
       <?php endif; ?>
-      <?php if ( isset($data['permissao']['Configuracao']) ): ?>
+      <?php if ( isset($data['permission']['Settings']) ): ?>
         <li>
-          <a href="/admin/configuracao/cadastro/"><i class="fa fa-certificate"></i>Configurações</a>
+          <a href="/admin/settings/save/"><i class="fa fa-certificate"></i>Configurações</a>
         </li>
       <?php endif; ?>
-      <?php if ( isset($data['permissao']['Lixeira']) ): ?>
+      <?php if ( isset($data['permission']['Trash']) ): ?>
         <li>
-          <a href="/admin/lixeira/lista/"><i class="fa fa-trash-o"></i>Lixeira</a>
+          <a href="/admin/trash/list/"><i class="fa fa-trash-o"></i>Lixeira</a>
         </li>
       <?php endif; ?>
-      <?php if ( isset($data['permissao']['Usuario']) ): ?>
+      <?php if ( isset($data['permission']['Admin']) ): ?>
         <li>
-          <a href="/admin/usuario/lista/"><i class="fa fa-male"></i>Usuário</a>
+          <a href="/admin/admin/list/"><i class="fa fa-male"></i>Usuário</a>
         </li>
       <?php endif; ?>
-      <?php if ( isset($data['permissao']['Foto']) ): ?>
+      <?php if ( isset($data['permission']['Photo']) ): ?>
         <li>
-          <a href="/admin/foto/lista/"><i class="fa fa-picture-o"></i>Fotos</a>
+          <a href="/admin/photo/list/"><i class="fa fa-picture-o"></i>Fotos</a>
         </li>
       <?php endif; ?>
-      <?php if ( isset($data['permissao']['Video']) ): ?>
+      <?php if ( isset($data['permission']['Video']) ): ?>
         <li>
-          <a href="/admin/video/lista/"><i class="fa fa-video-camera"></i>Vídeos</a>
+          <a href="/admin/video/list/"><i class="fa fa-video-camera"></i>Vídeos</a>
         </li>
       <?php endif; ?>
-      <?php if ( isset($data['permissao']['Noticia']) || isset($data['permissao']['NoticiaCat']) ): ?>
+      <?php if ( isset($data['permission']['News']) || isset($data['permission']['NewsCat']) ): ?>
         <li>
           <a href="#"><i class="fa fa-paperclip"></i>Notícias</a>
           <ul class="sub-menu">
-            <?php if ( isset($data['permissao']['NoticiaCat']) ): ?>
+            <?php if ( isset($data['permission']['NewsCat']) ): ?>
               <li>
-                <a href="/admin/noticia_cat/lista/"><i class="fa fa-paperclip"></i>Categoria</a>
+                <a href="/admin/news_cat/list/"><i class="fa fa-paperclip"></i>Categoria</a>
               </li>
             <?php endif; ?>
-            <?php if ( isset($data['permissao']['Noticia']) ): ?>
+            <?php if ( isset($data['permission']['News']) ): ?>
               <li>
-                <a href="/admin/noticia/lista/"><i class="fa fa-paperclip"></i>Notícias</a>
+                <a href="/admin/news/list/"><i class="fa fa-paperclip"></i>Notícias</a>
               </li>
             <?php endif; ?>
           </ul>
         </li>
       <?php endif; ?>
-      <?php if ( isset($data['permissao']['PaginaCat']) || isset($data['permissao']['Pagina']) ): ?>
+      <?php if ( isset($data['permission']['PageCat']) || isset($data['permission']['Page']) ): ?>
         <li>
           <a href="#"><i class="fa fa-paperclip"></i>Páginas Insitucionais</a>
           <ul class="sub-menu">
-            <?php if ( isset($data['permissao']['PaginaCat']) ): ?>
+            <?php if ( isset($data['permission']['PageCat']) ): ?>
               <li>
-                <a href="/admin/pagina_cat/lista/"><i class="fa fa-paperclip"></i>Menu</a>
+                <a href="/admin/page_cat/list/"><i class="fa fa-paperclip"></i>Menu</a>
               </li>
             <?php endif; ?>
-            <?php if ( isset($data['permissao']['Pagina']) ): ?>
+            <?php if ( isset($data['permission']['Page']) ): ?>
               <li>
-                <a href="/admin/pagina/lista/"><i class="fa fa-paperclip"></i>Páginas</a>
+                <a href="/admin/page/list/"><i class="fa fa-paperclip"></i>Páginas</a>
               </li>
             <?php endif; ?>
           </ul>
@@ -69,7 +69,7 @@
       <li>
         <a href="#"><i class="fa fa-smile-o"></i>Exemplos</a>
         <ul class="sub-menu">
-          <li><a href="/admin/exemplo/lista/">Lista Completa</a></li>
+          <li><a href="/admin/exemplo/list/">Lista Completa</a></li>
           <li><a href="/admin/exemplo/cadastro/">Cadastro Completo</a></li>
           <li><a href="/admin/exemplo/galeria/">Galeria</a></li>
           <li><a href="/admin/exemplo/404/">Página 404</a></li>
