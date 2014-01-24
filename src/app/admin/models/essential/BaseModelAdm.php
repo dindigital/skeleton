@@ -159,7 +159,7 @@ class BaseModelAdm
 
     $tableHistory = $this->getById($id);
     $validator = new $current['validator'];
-    $validator->setAtivo($active);
+    $validator->setActive($active);
     $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $id));
     $this->log('U', $tableHistory[$current['title']], $validator->getTable(), $tableHistory);
   }
@@ -194,12 +194,12 @@ class BaseModelAdm
 
     $select = new Select($current['tbl']);
 
-    if ( $current['sequence']['opcional'] ) {
+    if ( $current['sequence']['optional'] ) {
       $arrCriteria['sequence > ?'] = '0';
     }
 
     if ( isset($current['trash']) ) {
-      $arrCriteria['del = 0'] = null;
+      $arrCriteria['is_del = 0'] = null;
     }
 
     $select->where($arrCriteria);

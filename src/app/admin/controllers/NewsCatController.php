@@ -58,7 +58,7 @@ class NewsCatController extends BaseControllerAdm
     $this->setSaveTemplate('newscat_cadastro.phtml');
   }
 
-  public function post_cadastro ( $id = null )
+  public function post_save ( $id = null )
   {
     try {
       $info = array(

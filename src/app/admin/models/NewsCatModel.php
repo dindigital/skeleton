@@ -18,7 +18,7 @@ class NewsCatModel extends BaseModelAdm
   public function get_list ( $arrFilters = array(), Paginator $paginator = null )
   {
     $arrCriteria = array(
-        'del = ?' => '0',
+        'is_del = ?' => '0',
         'title LIKE ?' => '%' . $arrFilters['title'] . '%'
     );
     if ( isset($arrFilters['is_home']) && $arrFilters['is_home'] == '1' ) {
@@ -48,7 +48,7 @@ class NewsCatModel extends BaseModelAdm
     $id = $validator->setId($this);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
-    $validator->setHome($info['is_home']);
+    $validator->setIsHome($info['is_home']);
     $validator->setIncDate();
     $validator->setFile('cover', $info['cover'], $id);
 
@@ -56,7 +56,7 @@ class NewsCatModel extends BaseModelAdm
     $validator->throwException();
 
     $this->_dao->insert($validator->getTable());
-    $this->log('C', $info['titulo'], $validator->getTable());
+    $this->log('C', $info['title'], $validator->getTable());
 
     return $id;
   }
@@ -66,7 +66,7 @@ class NewsCatModel extends BaseModelAdm
     $validator = new validator();
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
-    $validator->setHome($info['is_home']);
+    $validator->setIsHome($info['is_home']);
     $validator->setFile('cover', $info['cover'], $id);
     $validator->throwException();
 
@@ -83,7 +83,7 @@ class NewsCatModel extends BaseModelAdm
     $select->addField('id_news_cat');
     $select->addField('title');
     $select->where(array(
-        'del = ? ' => '0'
+        'is_del = ? ' => '0'
     ));
 
     $result = $this->_dao->select($select);

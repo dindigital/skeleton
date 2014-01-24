@@ -135,8 +135,8 @@ abstract class BaseControllerAdm extends BaseController
 
   protected function require_permission ()
   {
-    $permissao = new PermissaoModel();
-    $permissao->block($this->_model, $this->_data['admin']);
+    $permission = new PermissionModel();
+    $permission->block($this->_model, $this->_data['admin']);
   }
 
   protected function saveAndRedirect ( $info, $id = null )

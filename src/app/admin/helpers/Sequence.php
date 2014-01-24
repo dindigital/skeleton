@@ -30,7 +30,7 @@ class Sequence
     }
 
     $total = $model->getMaxSequence($dependenceCriteria);
-    $optional = $current['sequence']['opcional'];
+    $optional = $current['sequence']['optional'];
 
     $options = array();
     for ( $i = 1; $i <= $total; $i++ ) {
@@ -68,8 +68,8 @@ class Sequence
 
     $arrCriteria = array();
 
-    if ( $current['sequence']['opcional'] ) {
-      $validator->setOrdem(0);
+    if ( $current['sequence']['optional'] ) {
+      $validator->setSequence(0);
     } else {
       if ( isset($current['sequence']['dependencia']) ) {
         $dependenceField = $current['sequence']['dependencia'];
@@ -82,9 +82,9 @@ class Sequence
         }
       }
 
-      $sequence = $model->getMaxOrdem($arrCriteria) + 1;
+      $sequence = $model->getMaxSequence($arrCriteria) + 1;
 
-      $validator->setOrdem($sequence);
+      $validator->setSequence($sequence);
     }
   }
 
