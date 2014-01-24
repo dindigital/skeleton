@@ -7,7 +7,7 @@
 
     <div class="block-flat">
       <div class="header">
-        <h3>Lista de Usuários</h3>
+        <h3>Lista de <?php echo $this->_data['entity']['secao']; ?></h3>
       </div>
 
       <div class="content">
@@ -41,8 +41,8 @@
             <tbody class="no-border-y">
               <?php foreach ( $data['list'] as $row ): ?>
                 <tr>
-                  <td><input class="excluir" type="checkbox" name="delete[]" id="del_usuario_<?php echo $row['id_usuario']; ?>" /></td>
-                  <td><input class="setAtivo" type="checkbox" <?php if ( $row['active'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_usuario']; ?>" /></td>
+                  <td><input class="delete" type="checkbox" name="delete[]" id="del_usuario_<?php echo $row['id_usuario']; ?>" /></td>
+                  <td><input class="setActive" type="checkbox" <?php if ( $row['active'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_usuario']; ?>" /></td>
                   <td><?php echo $row['nome']; ?></td>
                   <td><?php echo $row['email']; ?></td>
                   <td><?php echo $row['inc_data']; ?></td>

@@ -38,7 +38,7 @@
               <?php foreach ( $data['list'] as $row ): ?>
                 <tr>
                   <td><input class="delete" type="checkbox" name="delete[]" id="del_foto_<?php echo $row['id_foto']; ?>" /></td>
-                  <td><input class="setAtivo" type="checkbox" <?php if ( $row['active'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_foto']; ?>" /></td>
+                  <td><input class="setActive" type="checkbox" <?php if ( $row['active'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_foto']; ?>" /></td>
                   <td><?php echo $row['data']; ?></td>
                   <td><?php echo $row['titulo']; ?></td>
                   <td class="text-center">
