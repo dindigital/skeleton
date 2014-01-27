@@ -14,6 +14,9 @@ class NewsCatViewHelper
   {
     foreach ( $result as $i => $row ) {
       $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
+      if ( isset($row['sequence_list_array']) ) {
+        $result[$i]['sequence'] = Form::Dropdown('sequence', $row['sequence_list_array'], $row['sequence'], '', $row['id_news_cat'], 'drop_sequence');
+      }
     }
 
     return $result;
