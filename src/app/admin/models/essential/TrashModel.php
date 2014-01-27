@@ -76,8 +76,6 @@ class TrashModel extends BaseModelAdm
   public function delete ( $itens )
   {
     foreach ( $itens as $item ) {
-      var_dump($item);
-      exit;
       $current = Entities::getEntityByName($item['name']);
       $model = new $current['model'];
       $model->delete_permanent($item['id']);
