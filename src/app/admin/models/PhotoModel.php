@@ -6,6 +6,7 @@ use src\app\admin\validators\PhotoValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
+use src\app\admin\models\essential\GalleryModel;
 
 /**
  *
@@ -14,12 +15,18 @@ use Din\Paginator\Paginator;
 class PhotoModel extends BaseModelAdm
 {
 
+  private $_gallery;
+
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->_gallery = new GalleryModel('photo', 'photo_item');
+  }
+
   public function getById ( $id )
   {
     $row = parent::getById($id);
-
-    $photo_item = new PhotoItemModel();
-    $row['gallery'] = $photo_item->getList(array('id_photo = ?' => $id));
+    $row['gallery'] = $this->_gallery->getList(array('id_photo = ?' => $id));
 
     return $row;
   }
@@ -57,8 +64,7 @@ class PhotoModel extends BaseModelAdm
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
 
-    $photo_item = new PhotoItemModel();
-    $photo_item->save($info['gallery_uploader'], $id);
+    $this->_gallery->save($info['gallery_uploader'], $id);
 
     return $id;
   }
@@ -75,8 +81,7 @@ class PhotoModel extends BaseModelAdm
     $this->_dao->update($validator->getTable(), array('id_photo = ?' => $id));
     $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
 
-    $photo_item = new PhotoItemModel();
-    $photo_item->save($info['gallery_uploader'], $id, $info['sequence'], $info['label'], $info['credit']);
+    $this->_gallery->save($info['gallery_uploader'], $id, $info['sequence'], $info['label'], $info['credit']);
 
     return $id;
   }
