@@ -1,4 +1,4 @@
-<input type="hidden" id="link_prefix" value="/admin/lixeira/" />
+<input type="hidden" id="link_prefix" value="/admin/trash/" />
 
 <div class="row">
   <div class="col-md-12">
@@ -13,10 +13,10 @@
       <div class="content">
         <form method="get" class="form_search">
           <div class="col-sm-4 col-md-4 col-lg-2">
-            <input class="form-control" name="titulo" type="text" placeholder="Busca por título" value="<?php echo $data['busca']['titulo']; ?>">
+            <input class="form-control" name="title" type="text" placeholder="Busca por título" value="<?php echo $data['busca']['title']; ?>">
           </div>
           <div class="col-sm-4 col-md-4 col-lg-2">
-            <?php echo $data['busca']['secao']; ?>
+            <?php echo $data['busca']['section']; ?>
           </div>
           <input type="button" value="Limpar" class="clean_search btn btn-default btn-rad" />
           <input type="submit" value="Buscar" class="btn btn-info btn-rad" />
@@ -25,8 +25,8 @@
 
       <div class="content">
         <div class="col-lg-12 pull-left">
-          <a href="#" title="Restaurar Selecionados" class="btn btn-primary btn-rad lixeira_re">Restaurar Selecionados</a>
-          <a href="#" title="Excluir Selecionados Permamentemente" class="lixeira_ex btn btn-danger btn-rad">Excluir Selecionados Permamentemente</a>
+          <a href="#" title="Restaurar Selecionados" class="btn btn-primary btn-rad trash_re">Restaurar Selecionados</a>
+          <a href="#" title="Excluir Selecionados Permamentemente" class="trash_ex btn btn-danger btn-rad">Excluir Selecionados Permamentemente</a>
         </div>
         <br style="clear: both;" />
       </div>
@@ -45,10 +45,10 @@
             <tbody class="no-border-y">
               <?php foreach ( $data['list'] as $row ): ?>
                 <tr>
-                  <td><input class="delete" type="checkbox" name="delete[]" id="del_<?php echo $row['name']; ?>_<?php echo $row['id']; ?>" /></td>
-                  <td><?php echo $row['del_data']; ?></td>
-                  <td><?php echo $row['titulo']; ?></td>
-                  <td><?php echo $row['secao']; ?></td>
+                  <td><input class="delete" type="checkbox" name="delete[]" id="<?php echo $row['name']; ?>_<?php echo $row['id']; ?>" /></td>
+                  <td><?php echo $row['del_date']; ?></td>
+                  <td><?php echo $row['title']; ?></td>
+                  <td><?php echo $row['section']; ?></td>
                 </tr>
               <?php endforeach; ?>
             </tbody>

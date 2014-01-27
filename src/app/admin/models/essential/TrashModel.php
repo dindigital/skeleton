@@ -15,7 +15,7 @@ use src\app\admin\helpers\Entities;
 class TrashModel extends BaseModelAdm
 {
 
-  public function get_list ( $arrFilters = array(), Paginator $paginator = null )
+  public function getList ( $arrFilters = array(), Paginator $paginator = null )
   {
     $itens = Entities::getTrashItens();
 
@@ -41,7 +41,7 @@ class TrashModel extends BaseModelAdm
       $select1->addSField('section', $section);
       $select1->addSField('name', $name);
       $select1->where(array(
-          'del = 1' => null,
+          'is_del = 1' => null,
           $title_field . ' LIKE ?' => '%' . $arrFilters['title'] . '%'
       ));
 
@@ -86,7 +86,7 @@ class TrashModel extends BaseModelAdm
     }
   }
 
-  public function getDropdown ()
+  public function getListArray ()
   {
     $arrOptions = array();
 
