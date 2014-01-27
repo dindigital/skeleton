@@ -44,14 +44,14 @@
             </thead>
             <tbody class="no-border-y">
               <?php foreach ( $data['list'] as $row ): ?>
-                <tr>
+                <tr name="Log" id="<?php echo $row['id_log']; ?>">
                   <td><?php echo $row['inc_date']; ?></td>
                   <td><?php echo $row['admin']; ?></td>
                   <td><?php echo $row['action']; ?></td>
                   <td><?php echo $row['name']; ?></td>
                   <td><?php echo $row['description']; ?></td>
                   <td class="text-center">
-                    <a class="label label-default btn_edit" href="<?php echo $row['id_log']; ?>">
+                    <a class="label label-default btn_edit" href="#">
                       <i class="fa fa-clipboard"></i>
                     </a>
                   </td>
