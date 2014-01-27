@@ -8,20 +8,27 @@ use Din\Exception\JsonException;
 use Din\File\Folder;
 use Din\DataAccessLayer\Select;
 
-class PhotoItemValidator extends BaseValidator
+class GalleryValidator extends BaseValidator
 {
 
   private $_dao;
 
-  public function __construct ( $dao )
+  public function __construct ( $dao, $table )
   {
-    $this->_table = new Table('photo_item');
+    $this->_table = new Table($table);
     $this->_dao = $dao;
   }
 
-  public function setIdPhoto ( $id_photo )
+  public function setId ( $property )
   {
-    $this->_table->id_photo = $id_photo;
+    $this->_table->{$property} = md5(uniqid());
+
+    return $this->_table->{$property};
+  }
+
+  public function setIdTbl ( $property, $id )
+  {
+    $this->_table->{$property} = $id;
   }
 
   public function setLabel ( $label )
@@ -34,12 +41,12 @@ class PhotoItemValidator extends BaseValidator
     $this->_table->credit = $credit;
   }
 
-  public function setSequence2 ( $sequence = null, $id_photo = null )
+  public function setGallerySequence ( $tbl, $field, $sequence = null, $id = null )
   {
-    if ( $id_photo ) {
-      $select = new Select('photo_item');
+    if ( $id ) {
+      $select = new Select($tbl);
       $select->addFField('sequence', 'COUNT(*)');
-      $select->where(array('id_photo = ?' => $id_photo));
+      $select->where(array("{$field} = ?" => $id));
 
       $result = $this->_dao->select($select);
       $sequence = ($result[0]['sequence'] + 1);
