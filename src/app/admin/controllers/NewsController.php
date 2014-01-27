@@ -40,7 +40,7 @@ class NewsController extends BaseControllerAdm
     $news_cat_dropdown = $news_cat->getListArray();
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->get_list($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
     $this->_data['search'] = vh::formatFilters($arrFilters, $news_cat_dropdown);
 
     $this->setErrorSessionData();

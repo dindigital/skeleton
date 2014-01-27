@@ -24,7 +24,7 @@ class NewsModel extends BaseModelAdm
     $this->_listbox = new Listbox($this->_dao);
   }
 
-  public function get_list ( $arrFilters = array(), Paginator $paginator = null )
+  public function getList ( $arrFilters = array(), Paginator $paginator = null )
   {
     $arrCriteria = array(
         'a.is_del = ?' => '0',

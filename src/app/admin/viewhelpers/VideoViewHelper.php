@@ -11,8 +11,8 @@ class VideoViewHelper
   public static function formatResult ( $result )
   {
     foreach ( $result as $i => $row ) {
-      $result[$i]['titulo'] = Html::scape($row['titulo']);
-      $result[$i]['data'] = DateFormat::filter_date($row['data']);
+      $result[$i]['title'] = Html::scape($row['title']);
+      $result[$i]['date'] = DateFormat::filter_date($row['date']);
     }
 
     return $result;
@@ -20,7 +20,7 @@ class VideoViewHelper
 
   public static function formatFilters ( $arrFilters )
   {
-    $arrFilters['titulo'] = Html::scape($arrFilters['titulo']);
+    $arrFilters['title'] = Html::scape($arrFilters['title']);
 
     return $arrFilters;
   }
@@ -28,8 +28,8 @@ class VideoViewHelper
   public static function formatRow ( $row )
   {
     if ( !empty($row) ) {
-      $row['titulo'] = Html::scape($row['titulo']);
-      $row['data'] = DateFormat::filter_date($row['data']);
+      $row['title'] = Html::scape($row['title']);
+      $row['date'] = DateFormat::filter_date($row['date']);
     }
 
     return $row;

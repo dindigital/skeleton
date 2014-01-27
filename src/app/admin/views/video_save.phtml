@@ -7,7 +7,7 @@
 
     <div class="block-flat">
       <div class="header">
-        <h3>Cadastro de Vídeo</h3>
+        <h3>Cadastro de <?php echo $this->_data['entity']['section']; ?></h3>
       </div>
       <div class="content">
 
@@ -27,7 +27,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Título</label>
             <div class="col-sm-10">
-              <input name="titulo" type="text" value="<?php echo @$data['table']['titulo']; ?>" placeholder="Título" class="limit_text form-control" maxlength="255">
+              <input name="title" type="text" value="<?php echo @$data['table']['title']; ?>" placeholder="Título" class="limit_text form-control" maxlength="255">
               <div class="limit_info"></div>
             </div>
           </div>
@@ -35,7 +35,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Descrição</label>
             <div class="col-sm-10">
-              <textarea name="descricao" class="form-control limit_text" rows="4" placeholder="Descrição" maxlength="150"><?php echo @$data['table']['descricao']; ?></textarea>
+              <textarea name="head" class="form-control limit_text" rows="4" placeholder="Descrição" maxlength="150"><?php echo @$data['table']['head']; ?></textarea>
               <div class="limit_info"></div>
             </div>
           </div>
@@ -43,7 +43,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Data</label>
             <div class="col-sm-10">
-              <input name="data" type="text" value="<?php echo @$data['table']['data']; ?>" placeholder="Data" class="form-control dateMask">
+              <input name="date" type="text" value="<?php echo @$data['table']['date']; ?>" placeholder="Data" class="form-control dateMask">
             </div>
           </div>
 

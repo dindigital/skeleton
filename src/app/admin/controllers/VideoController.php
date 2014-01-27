@@ -28,37 +28,37 @@ class VideoController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_lista ()
+  public function get_list ()
   {
     $arrFilters = array(
-        'titulo' => Get::text('titulo'),
+        'title' => Get::text('title'),
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
-    $this->_data['busca'] = vh::formatFilters($arrFilters);
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
+    $this->_data['search'] = vh::formatFilters($arrFilters);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('video_lista.phtml', $paginator);
+    $this->setListTemplate('video_list.phtml', $paginator);
   }
 
-  public function get_cadastro ( $id = null )
+  public function get_save ( $id = null )
   {
     $row = $id ? $this->_model->getById($id) : $this->getPrevious();
     $this->_data['table'] = vh::formatRow($row);
 
-    $this->setCadastroTemplate('video_cadastro.phtml');
+    $this->setSaveTemplate('video_save.phtml');
   }
 
-  public function post_cadastro ( $id = null )
+  public function post_save ( $id = null )
   {
     try {
       $info = array(
-          'ativo' => Post::checkbox('ativo'),
-          'titulo' => Post::text('titulo'),
-          'data' => Post::text('data'),
-          'descricao' => Post::text('descricao'),
+          'active' => Post::checkbox('active'),
+          'title' => Post::text('title'),
+          'date' => Post::text('date'),
+          'head' => Post::text('head'),
           'link_youtube' => Post::text('link_youtube'),
           'link_vimeo' => Post::text('link_vimeo'),
       );

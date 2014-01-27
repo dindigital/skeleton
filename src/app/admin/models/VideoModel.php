@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\VideoValidator;
+use src\app\admin\validators\VideoValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Paginator\Paginator;
@@ -14,39 +14,39 @@ use Din\Paginator\Paginator;
 class VideoModel extends BaseModelAdm
 {
 
-  public function listar ( $arrFilters = array(), Paginator $paginator = null )
+  public function getList ( $arrFilters = array(), Paginator $paginator = null )
   {
     $arrCriteria = array(
-        'del = ?' => '0',
-        'titulo LIKE ?' => '%' . $arrFilters['titulo'] . '%'
+        'is_del = ?' => '0',
+        'title LIKE ?' => '%' . $arrFilters['title'] . '%'
     );
 
     $select = new Select('video');
     $select->addField('id_video');
-    $select->addField('ativo');
-    $select->addField('titulo');
-    $select->addField('data');
+    $select->addField('active');
+    $select->addField('title');
+    $select->addField('date');
     $select->where($arrCriteria);
-    $select->order_by('data DESC');
+    $select->order_by('date DESC');
 
     $result = $this->_dao->select($select);
 
     return $result;
   }
 
-  public function inserir ( $info )
+  public function insert ( $info )
   {
-    $validator = new VideoValidator();
+    $validator = new validator();
     $id = $validator->setId($this);
-    $validator->setAtivo($info['ativo']);
-    $validator->setTitulo($info['titulo']);
-    $validator->setData($info['data']);
-    $validator->setDescricao($info['descricao']);
+    $validator->setActive($info['active']);
+    $validator->setTitle($info['title']);
+    $validator->setDate($info['date']);
+    $validator->setHead($info['head']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
-    $validator->setDefaultLink('video', $info['titulo'], $id);
+    $validator->setDefaultLink('video', $info['title'], $id);
     $validator->setShortenerLink();
-    $validator->setIncData();
+    $validator->setIncDate();
     $validator->throwException();
 
     $this->_dao->insert($validator->getTable());
@@ -55,22 +55,22 @@ class VideoModel extends BaseModelAdm
     return $id;
   }
 
-  public function atualizar ( $id, $info )
+  public function update ( $id, $info )
   {
-    $validator = new VideoValidator();
-    $validator->setAtivo($info['ativo']);
-    $validator->setTitulo($info['titulo']);
-    $validator->setData($info['data']);
-    $validator->setDescricao($info['descricao']);
+    $validator = new validator();
+    $validator->setActive($info['ativo']);
+    $validator->setTitle($info['title']);
+    $validator->setDate($info['date']);
+    $validator->setHead($info['head']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
-    $validator->setDefaultLink('video', $info['titulo'], $id);
+    $validator->setDefaultLink('video', $info['title'], $id);
     $validator->setShortenerLink();
     $validator->throwException();
 
     $tableHistory = $this->getById($id);
     $this->_dao->update($validator->getTable(), array('id_video = ?' => $id));
-    $this->log('U', $info['titulo'], $validator->getTable(), $tableHistory);
+    $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
 
     return $id;
   }
