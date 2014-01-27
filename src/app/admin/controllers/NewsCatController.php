@@ -43,7 +43,7 @@ class NewsCatController extends BaseControllerAdm
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('newscat_lista.phtml', $paginator);
+    $this->setListTemplate('newscat_list.phtml', $paginator);
   }
 
   public function get_save ( $id = null )
@@ -55,7 +55,7 @@ class NewsCatController extends BaseControllerAdm
 
     $this->_data['table'] = vh::formatRow($row);
 
-    $this->setSaveTemplate('newscat_cadastro.phtml');
+    $this->setSaveTemplate('newscat_save.phtml');
   }
 
   public function post_save ( $id = null )
