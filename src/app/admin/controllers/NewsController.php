@@ -1,0 +1,100 @@
+<?php
+
+namespace src\app\admin\controllers;
+
+use src\app\admin\models\NewsModel as model;
+use src\app\admin\helpers\PaginatorPainel;
+use Din\Http\Get;
+use Din\Http\Post;
+use Din\ViewHelpers\JsonViewHelper;
+use Exception;
+use src\app\admin\controllers\essential\BaseControllerAdm;
+use src\app\admin\viewhelpers\NewsViewHelper as vh;
+use src\app\admin\models\NewsCatModel;
+
+/**
+ *
+ * @package app.controllers
+ */
+class NewsController extends BaseControllerAdm
+{
+
+  protected $_model;
+
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->_model = new model();
+    $this->setEntityData();
+    $this->require_permission();
+  }
+
+  public function get_list ()
+  {
+    $arrFilters = array(
+        'title' => Get::text('title'),
+        'id_news_cat' => Get::text('id_news_cat'),
+    );
+
+    $news_cat = new NewsCatModel();
+    $news_cat_dropdown = $news_cat->getListArray();
+
+    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
+    $this->_data['list'] = vh::formatResult($this->_model->get_list($arrFilters, $paginator));
+    $this->_data['search'] = vh::formatFilters($arrFilters, $news_cat_dropdown);
+
+    $this->setErrorSessionData();
+
+    $this->setListTemplate('news_list.phtml', $paginator);
+  }
+
+  public function get_save ( $id = null )
+  {
+    $excluded_fields = array(
+        'cover'
+    );
+    $row = $id ? $this->_model->getById($id) : $this->getPrevious($excluded_fields);
+
+    $news_cat = new NewsCatModel();
+    $news_cat_dropdown = $news_cat->getListArray();
+
+    $listbox = array(
+        'photo_values' => $this->_model->arrayRelationshipPhoto(),
+        'photo_selected' => $this->_model->selectedRelationshipPhoto($id),
+        'video' => $this->_model->arrayRelationshipVideo($id)
+    );
+
+    $this->_data['table'] = vh::formatRow($row, $news_cat_dropdown, $listbox);
+
+    $this->setSaveTemplate('news_save.phtml');
+  }
+
+  public function post_save ( $id = null )
+  {
+    try {
+      $info = array(
+          'active' => Post::checkbox('active'),
+          'id_news_cat' => Post::text('id_news_cat'),
+          'title' => Post::text('title'),
+          'date' => Post::text('date'),
+          'head' => Post::text('head'),
+          'body' => Post::text('body'),
+          'cover' => Post::upload('cover'),
+          'r_news_photo' => Post::aray('r_news_photo'),
+          'r_news_video' => Post::aray('r_news_video'),
+      );
+
+      $this->saveAndRedirect($info, $id);
+    } catch (Exception $e) {
+      JsonViewHelper::display_error_message($e);
+    }
+  }
+
+  public function post_r_news_video ()
+  {
+    $r = $this->_model->ajaxRelationshipVideo(Post::text('term'));
+    die($r);
+  }
+
+}
+
