@@ -3,12 +3,11 @@
 namespace src\app\admin\helpers;
 
 use src\app\admin\helpers\Entities;
-use Din\Form\Dropdown\Dropdown;
 
 class Sequence
 {
 
-  public static function setDropdown ( $model, $result, $arrCriteria )
+  public static function setListArray ( $model, $result, $arrCriteria )
   {
     $current = Entities::getThis($model);
     if ( !isset($current['sequence']) )
@@ -37,24 +36,16 @@ class Sequence
       $options[$i] = $i;
     }
 
-    foreach ( $result as $i => $row ) {
-      $d = new Dropdown('sequence');
 
+    foreach ( $result as $i => $row ) {
       if ( $optional && $row['sequence'] == 0 ) {
         $options2 = $options;
         $options2[(string) $total + 1] = (string) $total + 1;
-        $d->setOptionsArray($options2);
+
+        $result[$i]['sequence_list_array'] = $options2;
       } else {
-        $d->setOptionsArray($options);
+        $result[$i]['sequence_list_array'] = $options;
       }
-
-      $d->setClass('form-control drop_sequence');
-      $d->setSelected($row['sequence']);
-      $d->setId($row[$current['id']]);
-      if ( $optional )
-        $d->setFirstOpt('');
-
-      $result[$i]['sequence'] = $d->getElement();
     }
 
     return $result;

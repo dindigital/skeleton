@@ -6,25 +6,25 @@ use src\app\admin\validators\BaseValidator;
 use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 
-class PaginaCatValidator extends BaseValidator
+class PageCatValidator extends BaseValidator
 {
 
   public function __construct ()
   {
-    $this->_table = new Table('pagina_cat');
+    $this->_table = new Table('page_cat');
   }
 
-  public function setTitulo ( $titulo )
+  public function setTitle ( $title )
   {
-    if ( $titulo == '' )
+    if ( $title == '' )
       return JsonException::addException('Titulo é obrigatório');
 
-    $this->_table->titulo = $titulo;
+    $this->_table->title = $title;
   }
 
-  public function setConteudo ( $conteudo )
+  public function setContent ( $content )
   {
-    $this->_table->conteudo = $conteudo;
+    $this->_table->content = $content;
   }
 
   public function setDescription ( $description )

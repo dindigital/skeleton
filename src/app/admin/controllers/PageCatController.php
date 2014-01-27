@@ -2,20 +2,20 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\PaginaCatModel as model;
+use src\app\admin\models\PageCatModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\viewhelpers\PaginaCatViewHelper as vh;
+use src\app\admin\viewhelpers\PageCatViewHelper as vh;
 
 /**
  *
  * @package app.controllers
  */
-class PaginaCatController extends BaseControllerAdm
+class PageCatController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -29,42 +29,42 @@ class PaginaCatController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_lista ()
+  public function get_list ()
   {
 
     $arrFilters = array(
-        'titulo' => Get::text('titulo'),
+        'title' => Get::text('title'),
     );
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
     $this->_data['busca'] = vh::formatFilters($arrFilters);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('paginacat_lista.phtml', $paginator);
+    $this->setListTemplate('pagecat_list.phtml', $paginator);
   }
 
-  public function get_cadastro ( $id = null )
+  public function get_save ( $id = null )
   {
     $excluded_fields = array(
-        'capa'
+        'cover'
     );
     $row = $id ? $this->_model->getById($id) : $this->getPrevious($excluded_fields);
 
     $this->_data['table'] = vh::formatRow($row);
 
-    $this->setCadastroTemplate('paginacat_cadastro.phtml');
+    $this->setSaveTemplate('pagecat_save.phtml');
   }
 
-  public function post_cadastro ( $id = null )
+  public function post_save ( $id = null )
   {
     try {
       $info = array(
-          'ativo' => Post::checkbox('ativo'),
-          'titulo' => Post::text('titulo'),
-          'capa' => Post::upload('capa'),
-          'conteudo' => Post::text('conteudo'),
+          'active' => Post::checkbox('active'),
+          'title' => Post::text('title'),
+          'cover' => Post::upload('cover'),
+          'content' => Post::text('content'),
           'description' => Post::text('description'),
           'keywords' => Post::text('keywords'),
       );
