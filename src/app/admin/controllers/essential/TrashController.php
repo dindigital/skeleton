@@ -7,15 +7,15 @@ use Din\Http\Get;
 use Din\Http\Post;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\models\essential\LixeiraModel as model;
+use src\app\admin\models\essential\TrashModel as model;
 use Din\Http\Header;
-use src\app\admin\viewhelpers\LixeiraViewHelper as vh;
+use src\app\admin\viewhelpers\TrashViewHelper as vh;
 
 /**
  *
  * @package app.controllers
  */
-class LixeiraController extends BaseControllerAdm
+class TrashController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -26,30 +26,30 @@ class LixeiraController extends BaseControllerAdm
     $this->_model = new model;
   }
 
-  public function get_lista ()
+  public function get_list ()
   {
     $arrFilters = array(
-        'titulo' => Get::text('titulo'),
-        'secao' => Get::text('secao')
+        'title' => Get::text('title'),
+        'section' => Get::text('section')
     );
 
-    $dropdown_secao = $this->_model->getDropdown();
+    $dropdown_secao = $this->_model->getListArray();
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
     $this->_data['busca'] = vh::formatFilters($arrFilters, $dropdown_secao);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('essential/lixeira_lista.phtml', $paginator);
+    $this->setListTemplate('essential/trash_list.phtml', $paginator);
   }
 
-  public function post_restaurar ()
+  public function post_restore ()
   {
     try {
       $itens = Post::aray('itens');
 
-      $this->_model->restaurar($itens);
+      $this->_model->restore($itens);
 
       Header::redirect(Header::getReferer());
     } catch (Exception $e) {
@@ -57,12 +57,12 @@ class LixeiraController extends BaseControllerAdm
     }
   }
 
-  public function post_excluir ()
+  public function post_delete ()
   {
     try {
       $itens = Post::aray('itens');
 
-      $this->_model->excluir($itens);
+      $this->_model->delete($itens);
 
       Header::redirect(Header::getReferer());
     } catch (Exception $e) {
