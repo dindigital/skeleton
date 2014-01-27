@@ -91,7 +91,7 @@ return array(
         'trash' => true,
         'sequence' => array(
             'optional' => true,
-            'dependency' => 'id_page_cat'
+            'dependence' => 'id_page_cat'
         )
     ),
 );
