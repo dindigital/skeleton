@@ -39,7 +39,7 @@ $(document).ready(function() {
   });
 
   $('.btn_edit').click(function() {
-    var id = $(this).attr('href');
+    var id = $(this).parents('tr').attr('id');
     var action = link_prefix + 'save/' + id + '/';
     location.href = action;
     return false;
@@ -48,7 +48,7 @@ $(document).ready(function() {
   $('.setActive').change(function() {
     var active = ($(this).is(':checked')) ? '1' : '0';
     var action = $('#link_prefix').val() + 'active/';
-    var id = $(this).attr('id');
+    var id = $(this).parents('tr').attr('id');
 
     $.post(action, {
       active: active,
@@ -65,9 +65,11 @@ $(document).ready(function() {
 
     var form = newForm();
 
-    $('.delete:checked').each(function() {
-      var id = $(this).attr('id').replace('exc_', '');
-      form.append('<input type="hidden" name="itens[]" value="' + id + '" />');
+    $('.delete:checked').each(function(i) {
+      var id = $(this).parents('tr').attr('id');
+      var name = $(this).parents('tr').attr('name');
+      form.append('<input type="hidden" name="itens[' + i + '][id]" value="' + id + '" />');
+      form.append('<input type="hidden" name="itens[' + i + '][name]" value="' + name + '" />');
     });
 
     var action = link_prefix + 'restore/';
@@ -94,9 +96,11 @@ $(document).ready(function() {
     if (c) {
       var form = newForm();
 
-      $('.delete:checked').each(function() {
-        var id = $(this).attr('id').replace('del_', '');
-        form.append('<input type="hidden" name="itens[]" value="' + id + '" />');
+      $('.delete:checked').each(function(i) {
+        var id = $(this).parents('tr').attr('id');
+        var name = $(this).parents('tr').attr('name');
+        form.append('<input type="hidden" name="itens[' + i + '][id]" value="' + id + '" />');
+        form.append('<input type="hidden" name="itens[' + i + '][name]" value="' + name + '" />');
       });
 
       var action = link_prefix + 'delete/';

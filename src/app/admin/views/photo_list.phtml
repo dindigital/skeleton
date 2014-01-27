@@ -36,13 +36,13 @@
             </thead>
             <tbody class="no-border-y">
               <?php foreach ( $data['list'] as $row ): ?>
-                <tr>
-                  <td><input class="delete" type="checkbox" name="delete[]" id="del_<?php echo $this->_data['entity']['name']; ?>_<?php echo $row[$this->_data['entity']['id']]; ?>" /></td>
-                  <td><input class="setActive" type="checkbox" <?php if ( $row['active'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row[$this->_data['entity']['id']]; ?>" /></td>
+                <tr name="<?php echo $this->_data['entity']['name']; ?>" id="<?php echo $row[$this->_data['entity']['id']]; ?>">
+                  <td><input class="delete" type="checkbox" name="delete[]" /></td>
+                  <td><input class="setActive" type="checkbox" <?php if ( $row['active'] == '1' ): ?> checked="checked"<?php endif; ?> /></td>
                   <td><?php echo $row['date']; ?></td>
                   <td><?php echo $row['title']; ?></td>
                   <td class="text-center">
-                    <a class="label label-default btn_edit" href="<?php echo $row[$this->_data['entity']['id']]; ?>">
+                    <a class="label label-default btn_edit" href="#">
                       <i class="fa fa-pencil"></i>
                     </a>
                     <a class="label label-danger delete_shortcut" href="#">

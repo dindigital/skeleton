@@ -187,10 +187,9 @@ abstract class BaseControllerAdm extends BaseController
       $itens = Post::aray('itens');
 
       foreach ( $itens as $item ) {
-        list($tbl, $id) = explode('_', $item);
-        $model_name = "\\src\\app\\admin\\models\\{$tbl}Model";
+        $model_name = "\\src\\app\\admin\\models\\{$item['name']}Model";
         $model = new $model_name;
-        $model->delete($id);
+        $model->delete($item['id']);
       }
 
       Header::redirect(Header::getReferer());

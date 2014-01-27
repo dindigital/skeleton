@@ -40,9 +40,9 @@
             </thead>
             <tbody class="no-border-y">
               <?php foreach ( $data['list'] as $row ): ?>
-                <tr>
-                  <td><input class="delete" type="checkbox" name="delete[]" id="del_usuario_<?php echo $row['id_usuario']; ?>" /></td>
-                  <td><input class="setActive" type="checkbox" <?php if ( $row['active'] == '1' ): ?> checked="checked"<?php endif; ?> id="<?php echo $row['id_usuario']; ?>" /></td>
+                <tr name="<?php echo $this->_data['entity']['name']; ?>" id="<?php echo $row[$this->_data['entity']['id']]; ?>">
+                  <td><input class="delete" type="checkbox" name="delete[]" /></td>
+                  <td><input class="setActive" type="checkbox" <?php if ( $row['active'] == '1' ): ?> checked="checked"<?php endif; ?> /></td>
                   <td><?php echo $row['nome']; ?></td>
                   <td><?php echo $row['email']; ?></td>
                   <td><?php echo $row['inc_data']; ?></td>
