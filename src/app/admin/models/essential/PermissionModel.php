@@ -17,8 +17,8 @@ class PermissionModel extends BaseModelAdm
   {
     $arrOptions = array();
     foreach ( Entities::$entities as $tbl => $entity ) {
-      if ( isset($entity['secao']) ) {
-        $arrOptions[$entity['name']] = $entity['secao'];
+      if ( isset($entity['section']) ) {
+        $arrOptions[$entity['name']] = $entity['section'];
       }
     }
 

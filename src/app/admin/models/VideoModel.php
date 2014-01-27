@@ -5,7 +5,7 @@ namespace src\app\admin\models;
 use src\app\admin\validators\VideoValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
-use Din\Paginator\Paginator;
+use src\app\admin\helpers\PaginatorAdmin;
 
 /**
  *
@@ -14,7 +14,7 @@ use Din\Paginator\Paginator;
 class VideoModel extends BaseModelAdm
 {
 
-  public function getList ( $arrFilters = array(), Paginator $paginator = null )
+  public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(
         'is_del = ?' => '0',
@@ -28,6 +28,9 @@ class VideoModel extends BaseModelAdm
     $select->addField('date');
     $select->where($arrCriteria);
     $select->order_by('date DESC');
+
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
 

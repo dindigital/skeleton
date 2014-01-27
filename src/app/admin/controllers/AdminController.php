@@ -3,14 +3,13 @@
 namespace src\app\admin\controllers;
 
 use src\app\admin\models\AdminModel as model;
-use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\models\essential\PermissaoModel;
-use src\app\admin\viewhelpers\UsuarioViewHelper as vh;
+use src\app\admin\models\essential\PermissionModel;
+use src\app\admin\viewhelpers\AdminViewHelper as vh;
 
 /**
  *
@@ -34,15 +33,15 @@ class AdminController extends BaseControllerAdm
     $arrFilters = array(
         'name' => Get::text('name'),
         'email' => Get::text('email'),
+        'pag' => Get::text('pag'),
     );
 
-    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
-    $this->_data['busca'] = vh::formatFilters($arrFilters);
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
+    $this->_data['search'] = vh::formatFilters($arrFilters);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('admin_list.phtml', $paginator);
+    $this->setListTemplate('admin_list.phtml');
   }
 
   public function get_save ( $id = null )
@@ -52,24 +51,24 @@ class AdminController extends BaseControllerAdm
     );
     $row = $id ? $this->_model->getById($id) : $this->getPrevious($exclude_previous);
 
-    $permissao = new PermissaoModel();
-    $permissao_listbox = $permissao->getListbox(@$this->_data['table']['permissao']);
+    $permission = new PermissionModel();
+    $permission_listbox = $permission->getListbox(@$this->_data['table']['permission']);
 
-    $this->_data['table'] = vh::formatRow($row, $permissao_listbox);
+    $this->_data['table'] = vh::formatRow($row, $permission_listbox);
 
-    $this->setCadastroTemplate('usuario_cadastro.phtml');
+    $this->setSaveTemplate('admin_save.phtml');
   }
 
   public function post_save ( $id = null )
   {
     try {
       $info = array(
-          'ativo' => Post::checkbox('ativo'),
-          'nome' => Post::text('nome'),
+          'active' => Post::checkbox('active'),
+          'name' => Post::text('name'),
           'email' => Post::text('email'),
-          'senha' => Post::text('senha'),
+          'password' => Post::text('password'),
           'avatar' => Post::upload('avatar'),
-          'permissao' => Post::aray('permissao'),
+          'permission' => Post::aray('permission'),
       );
 
       $this->saveAndRedirect($info, $id);

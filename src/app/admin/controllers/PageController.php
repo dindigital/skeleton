@@ -36,18 +36,18 @@ class PageController extends BaseControllerAdm
     $arrFilters = array(
         'title' => Get::text('title'),
         'id_page_cat' => Get::text('id_page_cat'),
+        'pag' => Get::text('pag'),
     );
 
     $pagina_cat = new PageCatModel;
     $pagina_cat_dropdown = $pagina_cat->getListArray();
 
-    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
     $this->_data['search'] = vh::formatFilters($arrFilters, $pagina_cat_dropdown);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('page_list.phtml', $paginator);
+    $this->setListTemplate('page_list.phtml');
   }
 
   public function get_save ( $id = null )

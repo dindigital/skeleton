@@ -54,9 +54,11 @@ abstract class BaseControllerAdm extends BaseController
     $this->display_html();
   }
 
-  protected function setListTemplate ( $filename, $paginator )
+  protected function setListTemplate ( $filename )
   {
     $this->setSavedMsgData();
+
+    $paginator = $this->_model->getPaginator();
 
     $this->_data['paginator']['subtotal'] = $paginator->getSubTotal();
     $this->_data['paginator']['total'] = $paginator->getTotal();

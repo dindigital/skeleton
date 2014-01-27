@@ -15,6 +15,8 @@ class BaseModelAdm
 {
 
   protected $_dao;
+  protected $_paginator = null;
+  protected $_itens_per_page = 1;
 
   public function __construct ()
   {
@@ -27,11 +29,11 @@ class BaseModelAdm
     Entities::readFile('config/entities.php');
   }
 
-  public function setPaginationSelect ( $select, $paginator )
+  public function setPaginationSelect ( $select )
   {
     $total = $this->_dao->select_count($select);
-    $limit_offet = $paginator->getLimitOffset($total);
-    $select->setLimit($limit_offet[0], $limit_offet[1]);
+    $offset = $this->_paginator->getOffset($total);
+    $select->setLimit($this->_itens_per_page, $offset);
   }
 
   public function getById ( $id )
@@ -203,6 +205,11 @@ class BaseModelAdm
     $select->where($arrCriteria);
 
     return $this->_dao->select_count($select);
+  }
+
+  public function getPaginator ()
+  {
+    return $this->_paginator;
   }
 
 }

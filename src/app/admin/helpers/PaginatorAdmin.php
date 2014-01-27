@@ -8,18 +8,12 @@ use Din\Paginator\Paginator;
  *
  * @package Paginator
  */
-class PaginatorPainel extends Paginator
+class PaginatorAdmin extends Paginator
 {
 
-  /**
-   *
-   * @param int $_itens_por_pag
-   * @param int $_qtd_numeros
-   * @param int $_atual_pag
-   */
-  public function __construct ( $_itens_por_pag, $_qtd_numeros, $_atual_pag = 0 )
+  public function __construct ( $itens_per_page, $current_pag = 0 )
   {
-    parent::__construct($_itens_por_pag, $_qtd_numeros, $_atual_pag);
+    parent::__construct($itens_per_page, 7, $current_pag);
 
     $this->_active_class = 'active';
     $this->_disabled_class = 'disabled';

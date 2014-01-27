@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use Din\Paginator\Paginator;
+use src\app\admin\helpers\PaginatorAdmin;
 use Din\DataAccessLayer\Select;
 use src\app\admin\validators\AdminValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
@@ -17,7 +17,7 @@ class AdminModel extends BaseModelAdm
   public function insert ( $info )
   {
     $validator = new validator;
-    $validator->setActive($info['ativo']);
+    $validator->setActive($info['active']);
     $validator->setName($info['name']);
     $validator->setEmail($info['email']);
     $validator->setPassword($info['password']);
@@ -29,7 +29,7 @@ class AdminModel extends BaseModelAdm
     $validator->throwException();
 
     $this->_dao->insert($validator->getTable());
-    $this->log('C', $info['nome'], $validator->getTable());
+    $this->log('C', $info['name'], $validator->getTable());
 
     return $id;
   }
@@ -37,7 +37,7 @@ class AdminModel extends BaseModelAdm
   public function update ( $id, $info )
   {
     $validator = new validator;
-    $validator->setActive($info['ativo']);
+    $validator->setActive($info['active']);
     $validator->setName($info['name']);
     $validator->setEmail($info['email']);
     $validator->setPassword($info['password']);
@@ -66,7 +66,7 @@ class AdminModel extends BaseModelAdm
     $this->log('U', $info['name'], $validator->getTable(), $tableHistory);
   }
 
-  public function getList ( $arrFilters = array(), Paginator $paginator = null )
+  public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(
         'name LIKE ?' => '%' . $arrFilters['name'] . '%',
@@ -83,7 +83,8 @@ class AdminModel extends BaseModelAdm
     $select->where($arrCriteria);
     $select->order_by('name');
 
-    $this->setPaginationSelect($select, $paginator);
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
 

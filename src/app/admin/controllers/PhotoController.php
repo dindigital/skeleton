@@ -32,15 +32,15 @@ class PhotoController extends BaseControllerAdm
   {
     $arrFilters = array(
         'title' => Get::text('title'),
+        'pag' => Get::text('pag'),
     );
 
-    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
     $this->_data['search'] = vh::formatFilters($arrFilters);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('photo_list.phtml', $paginator);
+    $this->setListTemplate('photo_list.phtml');
   }
 
   public function get_save ( $id = null )

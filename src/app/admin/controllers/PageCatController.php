@@ -34,15 +34,15 @@ class PageCatController extends BaseControllerAdm
 
     $arrFilters = array(
         'title' => Get::text('title'),
+        'pag' => Get::text('pag'),
     );
 
-    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
     $this->_data['busca'] = vh::formatFilters($arrFilters);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('pagecat_list.phtml', $paginator);
+    $this->setListTemplate('pagecat_list.phtml');
   }
 
   public function get_save ( $id = null )

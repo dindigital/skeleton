@@ -15,7 +15,7 @@ use src\app\admin\helpers\Sequence;
 class PageModel extends BaseModelAdm
 {
 
-  public function getList ( $arrFilters = array(), Paginator $paginator = null )
+  public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(
         'a.is_del = ?' => '0',
@@ -37,6 +37,9 @@ class PageModel extends BaseModelAdm
 
     $select->inner_join('id_page_cat', Select::construct('page_cat')
                     ->addField('title', 'menu'));
+
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
     $result = Sequence::setListArray($this, $result, $arrCriteria);

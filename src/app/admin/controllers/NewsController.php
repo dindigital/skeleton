@@ -3,7 +3,6 @@
 namespace src\app\admin\controllers;
 
 use src\app\admin\models\NewsModel as model;
-use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
@@ -34,18 +33,18 @@ class NewsController extends BaseControllerAdm
     $arrFilters = array(
         'title' => Get::text('title'),
         'id_news_cat' => Get::text('id_news_cat'),
+        'pag' => Get::text('pag'),
     );
 
     $news_cat = new NewsCatModel();
     $news_cat_dropdown = $news_cat->getListArray();
 
-    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
     $this->_data['search'] = vh::formatFilters($arrFilters, $news_cat_dropdown);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('news_list.phtml', $paginator);
+    $this->setListTemplate('news_list.phtml');
   }
 
   public function get_save ( $id = null )

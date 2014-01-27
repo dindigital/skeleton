@@ -31,7 +31,7 @@ class PhotoModel extends BaseModelAdm
     return $row;
   }
 
-  public function getList ( $arrFilters = array(), Paginator $paginator = null )
+  public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(
         'is_del = ?' => '0',
@@ -45,6 +45,9 @@ class PhotoModel extends BaseModelAdm
     $select->addField('date');
     $select->where($arrCriteria);
     $select->order_by('date DESC');
+
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
 

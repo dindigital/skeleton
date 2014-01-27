@@ -24,7 +24,7 @@ class NewsModel extends BaseModelAdm
     $this->_listbox = new Listbox($this->_dao);
   }
 
-  public function getList ( $arrFilters = array(), Paginator $paginator = null )
+  public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(
         'a.is_del = ?' => '0',
@@ -46,6 +46,9 @@ class NewsModel extends BaseModelAdm
 
     $select->inner_join('id_news_cat', Select::construct('news_cat')
                     ->addField('title', 'category'));
+
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
     $result = Sequence::setListArray($this, $result, $arrCriteria);

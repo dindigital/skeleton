@@ -3,7 +3,6 @@
 namespace src\app\admin\controllers;
 
 use src\app\admin\models\NewsCatModel as model;
-use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
@@ -35,15 +34,15 @@ class NewsCatController extends BaseControllerAdm
     $arrFilters = array(
         'title' => Get::text('title'),
         'is_home' => Get::text('is_home'),
+        'pag' => Get::text('pag'),
     );
 
-    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
     $this->_data['search'] = vh::formatFilters($arrFilters);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('newscat_list.phtml', $paginator);
+    $this->setListTemplate('newscat_list.phtml');
   }
 
   public function get_save ( $id = null )
