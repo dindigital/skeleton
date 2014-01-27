@@ -15,10 +15,10 @@ class Sequence
 
     $dependenceCriteria = array();
     if ( isset($current['sequence']['dependence']) ) {
-      $dependenceField = $current['sequence']['dependence'];
+      $dependence_field = $current['sequence']['dependence'];
 
       foreach ( $arrCriteria as $field => $value ) {
-        if ( strpos($field, $dependenceField) !== false ) {
+        if ( strpos($field, $dependence_field) !== false ) {
           $dependenceCriteria[$field] = $value;
           break;
         }
@@ -32,6 +32,11 @@ class Sequence
     $optional = $current['sequence']['optional'];
 
     $options = array();
+
+    if ( $optional ) {
+      $options[0] = '';
+    }
+
     for ( $i = 1; $i <= $total; $i++ ) {
       $options[$i] = $i;
     }
@@ -62,14 +67,14 @@ class Sequence
     if ( $current['sequence']['optional'] ) {
       $validator->setSequence(0);
     } else {
-      if ( isset($current['sequence']['dependencia']) ) {
-        $dependenceField = $current['sequence']['dependencia'];
-        $dependencia_value = $result ? $result[$dependenceField] : $validator->getTable()->{$dependenceField};
+      if ( isset($current['sequence']['dependence']) ) {
+        $dependence_field = $current['sequence']['dependence'];
+        $dependence_value = $result ? $result[$dependence_field] : $validator->getTable()->{$dependence_field};
 
-        if ( is_null($dependencia_value) ) {
-          $arrCriteria[$dependenceField . ' IS NULL'] = null;
+        if ( is_null($dependence_value) ) {
+          $arrCriteria[$dependence_field . ' IS NULL'] = null;
         } else {
-          $arrCriteria[$dependenceField . ' = ?'] = $dependencia_value;
+          $arrCriteria[$dependence_field . ' = ?'] = $dependence_value;
         }
       }
 
@@ -95,14 +100,14 @@ class Sequence
       $arrCriteria['del = 0'] = null;
     }
 
-    if ( isset($current['sequence']['dependencia']) ) {
-      $dependenceField = $current['sequence']['dependencia'];
-      $dependencia_value = $result[$dependenceField];
+    if ( isset($current['sequence']['dependence']) ) {
+      $dependence_field = $current['sequence']['dependence'];
+      $dependence_value = $result[$dependence_field];
 
-      if ( is_null($dependencia_value) ) {
-        $arrCriteria[$dependenceField . ' IS NULL'] = null;
+      if ( is_null($dependence_value) ) {
+        $arrCriteria[$dependence_field . ' IS NULL'] = null;
       } else {
-        $arrCriteria[$dependenceField . ' = ?'] = $dependencia_value;
+        $arrCriteria[$dependence_field . ' = ?'] = $dependence_value;
       }
     }
 
