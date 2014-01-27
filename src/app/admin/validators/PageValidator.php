@@ -5,24 +5,24 @@ namespace src\app\admin\validators;
 use src\app\admin\validators\BaseValidator;
 use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
-use src\app\admin\models\PaginaCatModel;
+use src\app\admin\models\PageCatModel;
 
-class PaginaValidator extends BaseValidator
+class PageValidator extends BaseValidator
 {
 
   public function __construct ()
   {
-    $this->_table = new Table('pagina');
+    $this->_table = new Table('page');
   }
 
-  public function setIdPaginaCat ( $id_pagina_cat )
+  public function setIdPageCat ( $id_page_cat )
   {
-    $pagina_cat = new PaginaCatModel();
-    $count = $pagina_cat->getCount($id_pagina_cat);
+    $pagina_cat = new PageCatModel;
+    $count = $pagina_cat->getCount($id_page_cat);
     if ( $count == 0 )
       return JsonException::addException('Menu não encontrado.');
 
-    $this->_table->id_pagina_cat = $id_pagina_cat;
+    $this->_table->id_page_cat = $id_page_cat;
 
     return $this;
   }
@@ -43,17 +43,17 @@ class PaginaValidator extends BaseValidator
     return $this;
   }
 
-  public function setTitulo ( $titulo )
+  public function setTitle ( $title )
   {
-    if ( $titulo == '' )
+    if ( $title == '' )
       return JsonException::addException('Titulo é obrigatório');
 
-    $this->_table->titulo = $titulo;
+    $this->_table->title = $title;
   }
 
-  public function setConteudo ( $conteudo )
+  public function setContent ( $content )
   {
-    $this->_table->conteudo = $conteudo;
+    $this->_table->content = $content;
   }
 
   public function setDescription ( $description )

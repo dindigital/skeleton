@@ -2,22 +2,21 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\PaginaModel as model;
+use src\app\admin\models\PageModel as model;
 use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
-use src\app\admin\helpers\Form;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\models\PaginaCatModel;
-use src\app\admin\viewhelpers\PaginaViewHelper as vh;
+use src\app\admin\models\PageCatModel;
+use src\app\admin\viewhelpers\PageViewHelper as vh;
 
 /**
  *
  * @package app.controllers
  */
-class PaginaController extends BaseControllerAdm
+class PageController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -31,51 +30,51 @@ class PaginaController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_lista ()
+  public function get_list ()
   {
 
     $arrFilters = array(
-        'titulo' => Get::text('titulo'),
-        'id_pagina_cat' => Get::text('id_pagina_cat'),
+        'title' => Get::text('title'),
+        'id_page_cat' => Get::text('id_page_cat'),
     );
 
-    $pagina_cat = new PaginaCatModel();
+    $pagina_cat = new PageCatModel;
     $pagina_cat_dropdown = $pagina_cat->getListArray();
 
     $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->listar($arrFilters, $paginator));
-    $this->_data['busca'] = vh::formatFilters($arrFilters, $pagina_cat_dropdown);
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
+    $this->_data['search'] = vh::formatFilters($arrFilters, $pagina_cat_dropdown);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('pagina_lista.phtml', $paginator);
+    $this->setListTemplate('page_list.phtml', $paginator);
   }
 
-  public function get_cadastro ( $id = null )
+  public function get_save ( $id = null )
   {
     $exclude_previous = array(
-        'capa'
+        'cover'
     );
     $row = $id ? $this->_model->getById($id) : $this->getPrevious($exclude_previous);
 
-    $pagina_cat = new PaginaCatModel();
+    $pagina_cat = new PageCatModel;
     $pagina_cat_dropdown = $pagina_cat->getListArray();
 
     $this->_data['table'] = vh::formatRow($row, $pagina_cat_dropdown);
 
-    $this->setCadastroTemplate('pagina_cadastro.phtml');
+    $this->setSaveTemplate('page_save.phtml');
   }
 
-  public function post_cadastro ( $id = null )
+  public function post_save ( $id = null )
   {
     try {
       $info = array(
-          'ativo' => Post::checkbox('ativo'),
-          'id_pagina_cat' => Post::text('id_pagina_cat'),
+          'active' => Post::checkbox('active'),
+          'id_page_cat' => Post::text('id_page_cat'),
           'id_parent' => Post::aray('id_parent'),
-          'titulo' => Post::text('titulo'),
-          'capa' => Post::upload('capa'),
-          'conteudo' => Post::text('conteudo'),
+          'title' => Post::text('title'),
+          'cover' => Post::upload('cover'),
+          'content' => Post::text('content'),
           'description' => Post::text('description'),
           'keywords' => Post::text('keywords'),
       );
@@ -88,14 +87,14 @@ class PaginaController extends BaseControllerAdm
 
   public function get_ajax_intinify_cat ( $id_pagina_cat )
   {
-    $dorpdown = $this->_model->getDropdown($id_pagina_cat, null);
-    die(vh::format_infinity_dropdown($dorpdown));
+    $dorpdown = $this->_model->getListArray($id_pagina_cat, null);
+    die(vh::formatInfiniteDropdown($dorpdown));
   }
 
   public function get_ajax_infinity ( $id_parent )
   {
-    $dorpdown = $this->_model->getDropdown(null, $id_parent);
-    die(vh::format_infinity_dropdown($dorpdown));
+    $dorpdown = $this->_model->getListArray(null, $id_parent);
+    die(vh::formatInfiniteDropdown($dorpdown));
   }
 
 }
