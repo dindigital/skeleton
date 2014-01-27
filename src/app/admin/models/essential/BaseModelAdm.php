@@ -143,8 +143,6 @@ class BaseModelAdm
   {
     $current = Entities::getThis($this);
 
-    Sequence::changeSequence($this, $id, 0);
-
     $this->deleteChildren($current['tbl'], $id, true);
 
     $tableHistory = $this->getById($id);
