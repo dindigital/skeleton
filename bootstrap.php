@@ -1,5 +1,7 @@
 <?php
 
+ob_start();
+
 function errHandle ( $errNo, $errStr, $errFile, $errLine )
 {
   if ( error_reporting() == 0 ) {
@@ -36,8 +38,9 @@ try {
 
   $fc->dispatch();
 } catch (Exception $e) {
+  ob_clean();
   $erro = new \src\app\admin\controllers\essential\Erro500Controller;
   $erro->get_display($e->getMessage());
 }
 
-//echo microtime(true) - $init;
+ob_end_flush();
