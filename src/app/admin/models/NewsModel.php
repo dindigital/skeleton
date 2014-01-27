@@ -52,7 +52,7 @@ class NewsModel extends BaseModelAdm
     return $result;
   }
 
-  public function save ( $info )
+  public function insert ( $info )
   {
     $validator = new validator();
     $id = $validator->setId($this);

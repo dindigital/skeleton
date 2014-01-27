@@ -58,7 +58,7 @@ class VideoController extends BaseControllerAdm
           'active' => Post::checkbox('active'),
           'title' => Post::text('title'),
           'date' => Post::text('date'),
-          'head' => Post::text('head'),
+          'description' => Post::text('description'),
           'link_youtube' => Post::text('link_youtube'),
           'link_vimeo' => Post::text('link_vimeo'),
       );

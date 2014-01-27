@@ -41,7 +41,7 @@ class VideoModel extends BaseModelAdm
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
-    $validator->setHead($info['head']);
+    $validator->setDescription($info['description']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
     $validator->setDefaultLink('video', $info['title'], $id);
@@ -50,7 +50,7 @@ class VideoModel extends BaseModelAdm
     $validator->throwException();
 
     $this->_dao->insert($validator->getTable());
-    $this->log('C', $info['titulo'], $validator->getTable());
+    $this->log('C', $info['title'], $validator->getTable());
 
     return $id;
   }
@@ -58,10 +58,10 @@ class VideoModel extends BaseModelAdm
   public function update ( $id, $info )
   {
     $validator = new validator();
-    $validator->setActive($info['ativo']);
+    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
-    $validator->setHead($info['head']);
+    $validator->setDescription($info['description']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
     $validator->setDefaultLink('video', $info['title'], $id);
