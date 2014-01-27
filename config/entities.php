@@ -52,7 +52,7 @@ return array(
         'trash' => true,
         'sequence' => array(
             'optional' => false,
-            'dependency' => 'is_home'
+            'dependence' => 'is_home'
         ),
     ),
     'admin' => array(
