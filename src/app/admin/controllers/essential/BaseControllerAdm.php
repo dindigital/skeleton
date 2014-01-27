@@ -99,7 +99,7 @@ abstract class BaseControllerAdm extends BaseController
   protected function setSavedMsgSession ()
   {
     $session = new Session('adm_session');
-    $session->set('registro_salvo', 'Registro salvo com sucesso!');
+    $session->set('saved_msg', 'Registro salvo com sucesso!');
   }
 
   protected function setSavedMsgData ()
@@ -142,7 +142,7 @@ abstract class BaseControllerAdm extends BaseController
   protected function saveAndRedirect ( $info, $id = null )
   {
     if ( !$id ) {
-      $id = $this->_model->save($info);
+      $id = $this->_model->insert($info);
     } else {
       $this->_model->update($id, $info);
     }
