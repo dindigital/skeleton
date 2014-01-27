@@ -8,47 +8,47 @@ use Din\Exception\JsonException;
 use Din\File\Folder;
 use Din\DataAccessLayer\Select;
 
-class FotoItemValidator extends BaseValidator
+class PhotoItemValidator extends BaseValidator
 {
 
   private $_dao;
 
   public function __construct ( $dao )
   {
-    $this->_table = new Table('foto_item');
+    $this->_table = new Table('photo_item');
     $this->_dao = $dao;
   }
 
-  public function setIdFoto ( $id_foto )
+  public function setIdPhoto ( $id_photo )
   {
-    $this->_table->id_foto = $id_foto;
+    $this->_table->id_photo = $id_photo;
   }
 
-  public function setLegenda ( $legenda )
+  public function setLabel ( $label )
   {
-    $this->_table->legenda = $legenda;
+    $this->_table->label = $label;
   }
 
-  public function setCredito ( $credito )
+  public function setCredit ( $credit )
   {
-    $this->_table->credito = $credito;
+    $this->_table->credit = $credit;
   }
 
-  public function setOrdem2 ( $ordem = null, $id_foto = null )
+  public function setSequence2 ( $sequence = null, $id_photo = null )
   {
-    if ( $id_foto ) {
-      $select = new Select('foto_item');
-      $select->addFField('ordem', 'COUNT(*)');
-      $select->where(array('id_foto = ?' => $id_foto));
+    if ( $id_photo ) {
+      $select = new Select('photo_item');
+      $select->addFField('sequence', 'COUNT(*)');
+      $select->where(array('id_photo = ?' => $id_photo));
 
       $result = $this->_dao->select($select);
-      $ordem = ($result[0]['ordem'] + 1);
+      $sequence = ($result[0]['sequence'] + 1);
     }
 
-    $this->_table->ordem = intval($ordem);
+    $this->_table->sequence = intval($sequence);
   }
 
-  public function setGaleria ( $file, $path )
+  public function setGallery ( $file, $path )
   {
     if ( count($file) != 2 )
       return JsonException::addException('Erro ao ler o nome do arquivo');
@@ -63,7 +63,6 @@ class FotoItemValidator extends BaseValidator
       return JsonException::addException('Arquivo não encontrado');
 
     $fileparts = pathinfo($name);
-    //$filename = \lib\Validation\StringTransform::amigavel($fileparts['filename']);
     $filename = $fileparts['filename'];
     $ext = '.' . strtolower($fileparts['extension']);
     $destination = 'public/system/uploads/' . $path . $filename . $ext;
@@ -74,7 +73,7 @@ class FotoItemValidator extends BaseValidator
 
     $file = str_replace(PATH_REPLACE, '', $destination);
 
-    $this->_table->arquivo = $file;
+    $this->_table->file = $file;
     $this->readTags($destination);
   }
 
@@ -85,19 +84,19 @@ class FotoItemValidator extends BaseValidator
 
     $exif = exif_read_data($file);
 
-    $legenda = '';
-    $credito = '';
+    $label = '';
+    $credit = '';
 
     if ( isset($exif['ImageDescription']) ) {
-      $legenda = $exif['ImageDescription'];
+      $label = $exif['ImageDescription'];
     }
 
     if ( isset($exif['Artist']) ) {
-      $credito = $exif['Artist'];
+      $credit = $exif['Artist'];
     }
 
-    $this->setLegenda($legenda);
-    $this->setCredito($credito);
+    $this->setLabel($label);
+    $this->setCredit($credit);
   }
 
 }

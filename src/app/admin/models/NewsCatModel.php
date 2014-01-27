@@ -37,7 +37,7 @@ class NewsCatModel extends BaseModelAdm
     $select->order_by('sequence');
 
     $result = $this->_dao->select($select);
-    $result = Sequence::setDropdown($this, $result, $arrCriteria);
+    $result = Sequence::setListArray($this, $result, $arrCriteria);
 
     return $result;
   }
