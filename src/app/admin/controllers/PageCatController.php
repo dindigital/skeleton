@@ -38,7 +38,7 @@ class PageCatController extends BaseControllerAdm
     );
 
     $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
-    $this->_data['busca'] = vh::formatFilters($arrFilters);
+    $this->_data['search'] = vh::formatFilters($arrFilters);
 
     $this->setErrorSessionData();
 
