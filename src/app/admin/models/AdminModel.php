@@ -40,7 +40,7 @@ class AdminModel extends BaseModelAdm
     $validator->setActive($info['active']);
     $validator->setName($info['name']);
     $validator->setEmail($info['email']);
-    $validator->setPassword($info['password']);
+    $validator->setPassword($info['password'], false);
     $validator->setPermission($info['permission']);
 
     $validator->setFile('avatar', $info['avatar'], $id, false);
