@@ -16,7 +16,7 @@ class BaseModelAdm
 
   protected $_dao;
   protected $_paginator = null;
-  protected $_itens_per_page = 1;
+  protected $_itens_per_page = 20;
 
   public function __construct ()
   {
