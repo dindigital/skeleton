@@ -4,7 +4,7 @@ namespace src\app\admin\helpers;
 
 use Din\Image\Picuri;
 
-class Galeria
+class Gallery
 {
 
   /**
@@ -12,33 +12,33 @@ class Galeria
    *
    * @param string $prop_name nome da propriedade que contém as fotos
    */
-  public static function get ( $galeria, $prop_name )
+  public static function get ( $gallery, $prop_name )
   {
-    if ( !count($galeria) ) {
+    if ( !count($gallery) ) {
       return '';
     }
 
     $html = '<ul class="gallery sortable" id="' . $prop_name . '_ul">' . PHP_EOL;
 
-    foreach ( $galeria as $item ) {
-      $attribs['alt'] = $item['legenda'];
-      $attribs['class'] = 'img_galeria';
-      $img = Picuri::picUri($item['arquivo'], 196, 150, true, $attribs);
+    foreach ( $gallery as $item ) {
+      $attribs['alt'] = $item['label'];
+      $attribs['class'] = 'img_gallery';
+      $img = Picuri::picUri($item['file'], 196, 150, true, $attribs);
 
-      $html .= '<li id="' . $item['id_foto_item'] . '">' . PHP_EOL;
+      $html .= '<li id="' . $item['id_photo_item'] . '">' . PHP_EOL;
       $html .= $img . PHP_EOL;
-      $html .= '<input placeholder="Legenda" name="legenda[]" type="text" value="' . $item['legenda'] . '" />' . PHP_EOL;
-      $html .= '<input placeholder="Crédito" name="credito[]" type="text" value="' . $item['credito'] . '" />' . PHP_EOL;
+      $html .= '<input placeholder="Legenda" name="label[]" type="text" value="' . $item['label'] . '" />' . PHP_EOL;
+      $html .= '<input placeholder="Crédito" name="credit[]" type="text" value="' . $item['credit'] . '" />' . PHP_EOL;
       $html .= '</li>' . PHP_EOL;
     }
 
     $html .= '</ul>' . PHP_EOL;
-    $html .= '<input type="hidden" name="' . $prop_name . '_ordem" id="' . $prop_name . '_ordem" />' . PHP_EOL;
+    $html .= '<input type="hidden" name="' . $prop_name . '_sequence" id="' . $prop_name . '_sequence" />' . PHP_EOL;
 
     //_# SCRIPT PARA ENVIAR A ORDEM DAS FOTOS
     $html .= '<script>' . PHP_EOL;
     $html .= '  $("#' . $prop_name . '_ul").parents("form").submit(function(){' . PHP_EOL;
-    $html .= '    $("#' . $prop_name . '_ordem").val($("#' . $prop_name . '_ul").sortable("toArray").toString());' . PHP_EOL;
+    $html .= '    $("#' . $prop_name . '_sequence").val($("#' . $prop_name . '_ul").sortable("toArray").toString());' . PHP_EOL;
     $html .= '  });' . PHP_EOL;
     $html .= '</script>' . PHP_EOL;
 

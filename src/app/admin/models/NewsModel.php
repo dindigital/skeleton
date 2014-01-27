@@ -36,6 +36,7 @@ class NewsModel extends BaseModelAdm
 
     $select = new Select('news');
     $select->addField('id_news');
+    $select->addField('id_news_cat');
     $select->addField('active');
     $select->addField('title');
     $select->addField('date');
@@ -47,7 +48,7 @@ class NewsModel extends BaseModelAdm
                     ->addField('title', 'category'));
 
     $result = $this->_dao->select($select);
-    $result = Sequence::setDropdown($this, $result, $arrCriteria);
+    $result = Sequence::setListArray($this, $result, $arrCriteria);
 
     return $result;
   }

@@ -6,28 +6,14 @@ use src\app\admin\validators\BaseValidator;
 use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 use Din\Filters\Date\DateToSql;
-use src\app\admin\models\NewsCatModel;
 use Respect\Validation\Validator as v;
 
-class NewsValidator extends BaseValidator
+class PhotoValidator extends BaseValidator
 {
 
   public function __construct ()
   {
-    $this->_table = new Table('news');
-  }
-
-  public function setIdNewsCat ( $id_news_cat )
-  {
-    $news_cat = new NewsCatModel();
-    $count = $news_cat->getCount($id_news_cat);
-
-    if ( $count == 0 )
-      return JsonException::addException('Categoria não encontrada.');
-
-    $this->_table->id_news_cat = $id_news_cat;
-
-    return $this;
+    $this->_table = new Table('photo');
   }
 
   public function setTitle ( $title )
@@ -49,16 +35,6 @@ class NewsValidator extends BaseValidator
     $date = DateToSql::filter_date($date);
 
     $this->_table->date = $date;
-  }
-
-  public function setHead ( $head )
-  {
-    $this->_table->head = $head;
-  }
-
-  public function setBody ( $body )
-  {
-    $this->_table->body = $body;
   }
 
 }
