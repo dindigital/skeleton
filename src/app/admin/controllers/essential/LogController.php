@@ -33,8 +33,10 @@ class LogController extends BaseControllerAdm
         'pag' => Get::text('pag'),
     );
 
+    $dropdownName = $this->_model->getDropdownName();
+
     $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
-    $this->_data['search'] = vh::formatFilters($arrFilters);
+    $this->_data['search'] = vh::formatFilters($arrFilters, $dropdownName);
 
     $this->setListTemplate('essential/log_list.phtml');
   }
