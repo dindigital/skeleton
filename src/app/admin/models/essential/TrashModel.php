@@ -5,7 +5,7 @@ namespace src\app\admin\models\essential;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Exception;
-use Din\Paginator\Paginator;
+use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\helpers\Entities;
 
 /**
@@ -15,7 +15,7 @@ use src\app\admin\helpers\Entities;
 class TrashModel extends BaseModelAdm
 {
 
-  public function getList ( $arrFilters = array(), Paginator $paginator = null )
+  public function getList ( $arrFilters = array() )
   {
     $itens = Entities::getTrashItens();
 
@@ -56,7 +56,8 @@ class TrashModel extends BaseModelAdm
 
     $select->order_by('del_date DESC');
 
-    $this->setPaginationSelect($select, $paginator);
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
 
@@ -66,23 +67,20 @@ class TrashModel extends BaseModelAdm
   public function restore ( $itens )
   {
     foreach ( $itens as $item ) {
-      list($name, $id) = explode('_', $item);
-
-      $current = Entities::getEntityByName($name);
-
+      $current = Entities::getEntityByName($item['name']);
       $model = new $current['model'];
-      $model->restore($id);
+      $model->restore($item['id']);
     }
   }
 
   public function delete ( $itens )
   {
     foreach ( $itens as $item ) {
-      list($name, $id) = explode('_', $item);
-
-      $current = Entities::getEntityByName($name);
+      var_dump($item);
+      exit;
+      $current = Entities::getEntityByName($item['name']);
       $model = new $current['model'];
-      $model->delete_permanent($id);
+      $model->delete_permanent($item['id']);
     }
   }
 

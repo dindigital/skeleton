@@ -2,7 +2,6 @@
 
 namespace src\app\admin\controllers\essential;
 
-use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Exception;
@@ -30,18 +29,18 @@ class TrashController extends BaseControllerAdm
   {
     $arrFilters = array(
         'title' => Get::text('title'),
-        'section' => Get::text('section')
+        'section' => Get::text('section'),
+        'pag' => Get::text('pag'),
     );
 
-    $dropdown_secao = $this->_model->getListArray();
+    $dropdown_section = $this->_model->getListArray();
 
-    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
-    $this->_data['busca'] = vh::formatFilters($arrFilters, $dropdown_secao);
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
+    $this->_data['search'] = vh::formatFilters($arrFilters, $dropdown_section);
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('essential/trash_list.phtml', $paginator);
+    $this->setListTemplate('essential/trash_list.phtml');
   }
 
   public function post_restore ()

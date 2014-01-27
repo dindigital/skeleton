@@ -2,7 +2,6 @@
 
 namespace src\app\admin\controllers\essential;
 
-use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
@@ -30,16 +29,14 @@ class LogController extends BaseControllerAdm
         'admin' => Get::text('admin'),
         'action' => Get::text('action'),
         'name' => Get::text('name'),
-        'description' => Get::text('description')
+        'description' => Get::text('description'),
+        'pag' => Get::text('pag'),
     );
 
-    $dropdownName = $this->_model->getDropdownName();
+    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
+    $this->_data['search'] = vh::formatFilters($arrFilters);
 
-    $paginator = new PaginatorPainel(20, 7, Get::text('pag'));
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters, $paginator));
-    $this->_data['search'] = vh::formatFilters($arrFilters, $dropdownName);
-
-    $this->setListTemplate('essential/log_list.phtml', $paginator);
+    $this->setListTemplate('essential/log_list.phtml');
   }
 
   public function get_save ( $id )

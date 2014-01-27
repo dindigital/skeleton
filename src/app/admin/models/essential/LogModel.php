@@ -5,7 +5,7 @@ namespace src\app\admin\models\essential;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Exception;
-use Din\Paginator\Paginator;
+use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\helpers\Entities;
 
 /**
@@ -15,7 +15,7 @@ use src\app\admin\helpers\Entities;
 class LogModel extends BaseModelAdm
 {
 
-  public function getList ( $arrFilters = array(), Paginator $paginator = null )
+  public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(
         'a.admin LIKE ?' => '%' . $arrFilters['admin'] . '%',
@@ -40,7 +40,9 @@ class LogModel extends BaseModelAdm
     $select->where($arrCriteria);
     $select->order_by('a.inc_date DESC');
 
-    $this->setPaginationSelect($select, $paginator);
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->setPaginationSelect($select);
+
     $result = $this->_dao->select($select);
 
     return $result;
