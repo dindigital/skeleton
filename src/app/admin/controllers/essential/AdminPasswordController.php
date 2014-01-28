@@ -24,7 +24,7 @@ class AdminPasswordController extends BaseController
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new model();
+    $this->_model = new model;
   }
 
   public function post_recover_password ()
@@ -48,7 +48,7 @@ class AdminPasswordController extends BaseController
         'link' => URL . '/admin/admin_password/update/' . $token . '/'
     );
 
-    $email_html = new View();
+    $email_html = new View;
     $email_html->addFile('src/app/admin/views/email/recover_password.phtml');
     $email_html->setData($data);
 

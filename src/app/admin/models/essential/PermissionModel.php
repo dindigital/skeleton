@@ -13,7 +13,7 @@ use Exception;
 class PermissionModel extends BaseModelAdm
 {
 
-  public function getListbox ()
+  public function getArrayList ()
   {
     $arrOptions = array();
     foreach ( Entities::$entities as $tbl => $entity ) {
@@ -27,7 +27,7 @@ class PermissionModel extends BaseModelAdm
 
   public function block ( $model, $user )
   {
-    $permissoes = $this->getArray($user);
+    $permissoes = $this->getByAdmin($user);
     $entity = Entities::getThis($model);
 
     if ( !in_array($entity['name'], $permissoes) ) {
@@ -35,7 +35,7 @@ class PermissionModel extends BaseModelAdm
     }
   }
 
-  public function getArray ( $user )
+  public function getByAdmin ( $user )
   {
     if ( $user['email'] == 'suporte@dindigital.com' ) {
       $permissoes = array();

@@ -3,7 +3,6 @@
 namespace src\app\admin\controllers;
 
 use src\app\admin\models\PhotoModel as model;
-use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
@@ -23,7 +22,7 @@ class PhotoController extends BaseControllerAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new model();
+    $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
   }

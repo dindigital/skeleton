@@ -21,7 +21,7 @@ class SettingsController extends BaseControllerAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new model();
+    $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
   }

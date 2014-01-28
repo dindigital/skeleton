@@ -23,7 +23,7 @@ class NewsCatController extends BaseControllerAdm
   {
     parent::__construct();
 
-    $this->_model = new model();
+    $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
   }

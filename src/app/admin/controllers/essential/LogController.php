@@ -3,7 +3,6 @@
 namespace src\app\admin\controllers\essential;
 
 use Din\Http\Get;
-use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\essential\LogModel as model;
 use src\app\admin\viewhelpers\LogViewHelper as vh;
@@ -43,12 +42,8 @@ class LogController extends BaseControllerAdm
 
   public function get_save ( $id )
   {
-    try {
-      $this->_data['table'] = vh::formatRow($this->_model->getById($id));
-      $this->setSaveTemplate('essential/log_view.phtml');
-    } catch (Exception $e) {
-
-    }
+    $this->_data['table'] = vh::formatRow($this->_model->getById($id));
+    $this->setSaveTemplate('essential/log_view.phtml');
   }
 
 }

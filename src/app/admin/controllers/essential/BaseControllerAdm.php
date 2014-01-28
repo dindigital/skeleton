@@ -86,15 +86,15 @@ abstract class BaseControllerAdm extends BaseController
    */
   private function setUserData ()
   {
-    $adminAuthModel = new AdminAuthModel();
+    $adminAuthModel = new AdminAuthModel;
     if ( !$adminAuthModel->is_logged() )
       Header::redirect('/admin/');
 
     $this->_data['admin'] = $adminAuthModel->getUser();
     $this->_data['admin']['avatar_img'] = Picuri::picUri($this->_data['admin']['avatar'], 30, 30, true);
 
-    $permission = new PermissionModel();
-    $permissions = $permission->getArray($this->_data['admin']);
+    $permission = new PermissionModel;
+    $permissions = $permission->getByAdmin($this->_data['admin']);
     $this->_data['permission'] = array_fill_keys($permissions, '');
   }
 
@@ -137,7 +137,7 @@ abstract class BaseControllerAdm extends BaseController
 
   protected function require_permission ()
   {
-    $permission = new PermissionModel();
+    $permission = new PermissionModel;
     $permission->block($this->_model, $this->_data['admin']);
   }
 

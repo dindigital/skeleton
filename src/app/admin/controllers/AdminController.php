@@ -23,7 +23,7 @@ class AdminController extends BaseControllerAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new model();
+    $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
   }
@@ -51,8 +51,8 @@ class AdminController extends BaseControllerAdm
     );
     $row = $id ? $this->_model->getById($id) : $this->getPrevious($exclude_previous);
 
-    $permission = new PermissionModel();
-    $permission_listbox = $permission->getListbox(@$this->_data['table']['permission']);
+    $permission = new PermissionModel;
+    $permission_listbox = $permission->getArrayList(@$this->_data['table']['permission']);
 
     $this->_data['table'] = vh::formatRow($row, $permission_listbox);
 

@@ -22,7 +22,7 @@ class AdminAuthController extends BaseController
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new model();
+    $this->_model = new model;
   }
 
   private function setAuthTemplate ()

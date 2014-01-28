@@ -23,7 +23,7 @@ class NewsController extends BaseControllerAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_model = new model();
+    $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
   }
@@ -36,7 +36,7 @@ class NewsController extends BaseControllerAdm
         'pag' => Get::text('pag'),
     );
 
-    $news_cat = new NewsCatModel();
+    $news_cat = new NewsCatModel;
     $news_cat_dropdown = $news_cat->getListArray();
 
     $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
@@ -54,7 +54,7 @@ class NewsController extends BaseControllerAdm
     );
     $row = $id ? $this->_model->getById($id) : $this->getPrevious($excluded_fields);
 
-    $news_cat = new NewsCatModel();
+    $news_cat = new NewsCatModel;
     $news_cat_dropdown = $news_cat->getListArray();
 
     $listbox = array(
@@ -96,4 +96,3 @@ class NewsController extends BaseControllerAdm
   }
 
 }
-

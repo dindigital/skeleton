@@ -3,7 +3,6 @@
 namespace src\app\admin\controllers;
 
 use src\app\admin\models\PageModel as model;
-use src\app\admin\helpers\PaginatorPainel;
 use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
@@ -25,7 +24,7 @@ class PageController extends BaseControllerAdm
   {
     parent::__construct();
 
-    $this->_model = new model();
+    $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
   }
