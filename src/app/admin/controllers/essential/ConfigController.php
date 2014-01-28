@@ -2,12 +2,11 @@
 
 namespace src\app\admin\controllers\essential;
 
-use src\app\admin\models\AdminModel as model;
-use src\app\admin\models\essential\AdminAuthModel;
+use src\app\admin\models\essential\ConfigModel as model;
 use Din\Http\Post;
-use src\app\admin\helpers\Form;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
+use src\app\admin\viewhelpers\ConfigViewHelper as vh;
 
 /**
  *
@@ -16,7 +15,7 @@ use Exception;
 class ConfigController extends BaseControllerAdm
 {
 
-  private $_model;
+  protected $_model;
 
   public function __construct ()
   {
@@ -26,8 +25,7 @@ class ConfigController extends BaseControllerAdm
 
   public function get_save ()
   {
-    $this->_data['table'] = $this->_data['admin'];
-    $this->_data['table']['avatar'] = Form::Upload('avatar', $this->_data['table']['avatar'], 'imagem', false);
+    $this->_data['table'] = vh::formatRow($this->_data['admin']);
 
     $this->setSaveTemplate('essential/config_save.phtml');
   }
@@ -35,22 +33,18 @@ class ConfigController extends BaseControllerAdm
   public function post_save ()
   {
     try {
-      $id_admin = $this->_data['admin']['id_admin'];
+      $id = $this->_data['admin']['id_admin'];
 
-      $this->_model->save_config($id_admin, array(
+      $info = array(
           'name' => Post::text('name'),
           'email' => Post::text('email'),
           'password' => Post::text('password'),
           'avatar' => Post::upload('avatar'),
-      ));
+      );
+
+      $this->_model->update($id, $info);
 
       $this->setSavedMsgSession();
-
-      $admin = $this->_model->getById($id_admin);
-
-      $aam = new AdminAuthModel;
-      $aam->login($admin['email'], $admin['password'], true);
-
       JsonViewHelper::redirect('/admin/config/save/');
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);

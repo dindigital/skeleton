@@ -35,12 +35,10 @@ class LogViewHelper
 
   public static function formatRow ( $row )
   {
-    if ( !empty($row) ) {
-      $row['description'] = Html::scape($row['description']);
-      $row['inc_date'] = DateFormat::filter_date($row['inc_date']);
-      $row['action'] = Arrays::$logAcao[$row['action']];
-      $row['cont'] = json_decode($row['content']);
-    }
+    $row['description'] = Html::scape($row['description']);
+    $row['inc_date'] = DateFormat::filter_date($row['inc_date']);
+    $row['action'] = Arrays::$logAcao[$row['action']];
+    $row['cont'] = json_decode($row['content']);
 
     return $row;
   }

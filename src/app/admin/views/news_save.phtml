@@ -20,63 +20,63 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" for="active">Ativo</label>
             <div class="col-sm-10">
-              <label class="checkbox-inline"><input type="checkbox" name="active" id="active" <?php if ( @$data['table']['active'] == '1' ): ?>checked="checked"<?php endif; ?> /></label>
+              <label class="checkbox-inline"><input type="checkbox" name="active" id="active" <?php if ( $data['table']['active'] == '1' ): ?>checked="checked"<?php endif; ?> /></label>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Categoria</label>
             <div class="col-sm-10">
-              <?php echo @$data['table']['id_news_cat']; ?>
+              <?php echo $data['table']['id_news_cat']; ?>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Título</label>
             <div class="col-sm-10">
-              <input name="title" type="text" value="<?php echo @$data['table']['title']; ?>" placeholder="Título" class="form-control">
+              <input name="title" type="text" value="<?php echo $data['table']['title']; ?>" placeholder="Título" class="form-control">
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Data</label>
             <div class="col-sm-10">
-              <input name="date" type="text" value="<?php echo @$data['table']['date']; ?>" placeholder="Data" class="form-control dateMask">
+              <input name="date" type="text" value="<?php echo $data['table']['date']; ?>" placeholder="Data" class="form-control dateMask">
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Chamada</label>
             <div class="col-sm-10">
-              <textarea name="head" placeholder="Chamada" class="form-control"><?php echo @$data['table']['head']; ?></textarea>
+              <textarea name="head" placeholder="Chamada" class="form-control"><?php echo $data['table']['head']; ?></textarea>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Capa</label>
             <div class="col-sm-10">
-              <?php echo @$data['table']['cover']; ?>
+              <?php echo $data['table']['cover']; ?>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Corpo</label>
             <div class="col-sm-10">
-              <?php echo @$data['table']['body']; ?>
+              <?php echo $data['table']['body']; ?>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Fotos Relacionadas</label>
             <div class="col-sm-10">
-              <?php echo @$data['table']['r_news_photo'] ?>
+              <?php echo $data['table']['r_news_photo'] ?>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Vídeos Relacionados</label>
             <div class="col-sm-10">
-              <?php echo @$data['table']['r_news_video'] ?>
+              <?php echo $data['table']['r_news_video'] ?>
             </div>
           </div>
 

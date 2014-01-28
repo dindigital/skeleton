@@ -24,25 +24,25 @@ class PageViewHelper
   public static function formatFilters ( $arrFilters, $page_cat_dropdown )
   {
     $arrFilters['title'] = Html::scape($arrFilters['title']);
-    $arrFilters['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, @$arrFilters['id_page_cat'], 'Filtro por Menu');
+    $arrFilters['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $arrFilters['id_page_cat'], 'Filtro por Menu');
 
     return $arrFilters;
   }
 
   public static function formatRow ( $row, $page_cat_dropdown )
   {
-    $row['title'] = Html::scape(@$row['title']);
-    $row['content'] = Form::Ck('content', @$row['content']);
-    $row['cover'] = Form::Upload('cover', @$row['cover'], 'image');
-    $row['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, @$row['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
+    $row['title'] = Html::scape($row['title']);
+    $row['content'] = Form::Ck('content', $row['content']);
+    $row['cover'] = Form::Upload('cover', $row['cover'], 'image');
+    $row['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $row['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 
     $infinite_drop = array();
-    foreach ( (array) @$row['infinite'] as $i => $drop ) {
+    foreach ( (array) $row['id_parent'] as $i => $drop ) {
       $addClass = 'other';
       $infinite_drop[] = self::formatInfiniteDropdown($drop['dropdown'], $drop['selected'], $addClass);
     }
 
-    $row['infinite'] = $infinite_drop;
+    $row['id_parent'] = $infinite_drop;
 
     return $row;
   }

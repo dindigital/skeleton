@@ -89,5 +89,18 @@ class PhotoModel extends BaseModelAdm
     return $id;
   }
 
-}
+  public function getNew ()
+  {
+    return array(
+        'id_photo' => null,
+        'active' => null,
+        'title' => null,
+        'date' => date('Y-m-d'),
+        'is_del' => null,
+        'del_date' => null,
+        'inc_date' => null,
+        'gallery' => null,
+    );
+  }
 
+}

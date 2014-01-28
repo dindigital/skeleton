@@ -27,10 +27,8 @@ class VideoViewHelper
 
   public static function formatRow ( $row )
   {
-    if ( !empty($row) ) {
-      $row['title'] = Html::scape($row['title']);
-      $row['date'] = DateFormat::filter_date($row['date']);
-    }
+    $row['title'] = Html::scape($row['title']);
+    $row['date'] = DateFormat::filter_date($row['date']);
 
     return $row;
   }

@@ -32,8 +32,8 @@ class NewsCatViewHelper
 
   public static function formatRow ( $row )
   {
-    $row['title'] = Html::scape(@$row['title']);
-    $row['cover'] = Form::Upload('cover', @$row['cover'], 'image');
+    $row['title'] = Html::scape($row['title']);
+    $row['cover'] = Form::Upload('cover', $row['cover'], 'image');
 
     return $row;
   }

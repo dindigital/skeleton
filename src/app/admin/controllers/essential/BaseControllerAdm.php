@@ -171,16 +171,21 @@ abstract class BaseControllerAdm extends BaseController
   protected function getPrevious ( $exclude = array() )
   {
     $session = new Session('adm_session');
-    $row = array();
+
     if ( $session->is_set('previous_id') ) {
+      $row = array();
       $row = $this->_model->getById($session->get('previous_id'));
 
       foreach ( $exclude as $field ) {
-        unset($row[$field]);
+        $row[$field] = null;
       }
+
+      $session->un_set('previous_id');
+    } else {
+      $row = $this->_model->getNew();
     }
 
-    $session->un_set('previous_id');
+
     return $row;
   }
 

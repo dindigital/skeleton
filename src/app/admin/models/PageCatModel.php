@@ -78,6 +78,22 @@ class PageCatModel extends BaseModelAdm
     return $id;
   }
 
+  public function getNew ()
+  {
+    return array(
+        'id_page_cat' => null,
+        'active' => null,
+        'title' => null,
+        'cover' => null,
+        'content' => null,
+        'description' => null,
+        'keywords' => null,
+        'inc_date' => null,
+        'del_date' => null,
+        'sequence' => null,
+    );
+  }
+
   public function getListArray ()
   {
     $select = new Select('page_cat');

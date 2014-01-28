@@ -80,6 +80,21 @@ class NewsCatModel extends BaseModelAdm
     return $id;
   }
 
+  public function getNew ()
+  {
+    return array(
+        'id_news_cat' => null,
+        'active' => null,
+        'title' => null,
+        'inc_date' => null,
+        'del_date' => null,
+        'is_del' => null,
+        'cover' => null,
+        'sequence' => null,
+        'is_home' => null,
+    );
+  }
+
   public function getListArray ()
   {
     $select = new Select('news_cat');

@@ -98,14 +98,17 @@ class BaseModelAdm
     }
   }
 
-  public function log ( $action, $msg, $table, $tableHistory = null )
+  public function log ( $action, $msg, $table, $tableHistory = null, $entityname = null )
   {
     $adminAuth = new AdminAuthModel();
     $admin = $adminAuth->getUser();
 
-    $entities = Entities::getThis($this);
+    if ( is_null($entityname) ) {
+      $entities = Entities::getThis($this);
+      $entityname = $entities['name'];
+    }
 
-    log::save($this->_dao, $admin, $action, $msg, $entities['name'], $table, $tableHistory);
+    log::save($this->_dao, $admin, $action, $msg, $entityname, $table, $tableHistory);
   }
 
   public function delete ( $id )

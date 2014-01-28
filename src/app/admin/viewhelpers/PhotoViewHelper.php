@@ -28,12 +28,10 @@ class PhotoViewHelper
 
   public static function formatRow ( $row )
   {
-    $row['title'] = Html::scape(@$row['title']);
-    if ( isset($row['date']) ) {
-      $row['date'] = DateFormat::filter_date($row['date']);
-    }
-    $row['gallery'] = Gallery::get(@$row['gallery'], 'gallery');
-    $row['gallery_uploader'] = Form::Upload('gallery_uploader', '', 'image', true, false);
+    $row['title'] = Html::scape($row['title']);
+    $row['date'] = DateFormat::filter_date($row['date']);
+    $uploader = Form::Upload('gallery_uploader', '', 'image', true, false);
+    $row['gallery'] = $uploader . Gallery::get($row['gallery'], 'gallery');
 
     return $row;
   }

@@ -52,7 +52,7 @@ class AdminController extends BaseControllerAdm
     $row = $id ? $this->_model->getById($id) : $this->getPrevious($exclude_previous);
 
     $permission = new PermissionModel;
-    $permission_listbox = $permission->getArrayList(@$this->_data['table']['permission']);
+    $permission_listbox = $permission->getArrayList();
 
     $this->_data['table'] = vh::formatRow($row, $permission_listbox);
 

@@ -51,19 +51,19 @@ class AdminModel extends BaseModelAdm
     $this->log('U', $info['name'], $validator->getTable(), $tableHistory);
   }
 
-  public function save_config ( $id, $info )
+  public function getNew ()
   {
-    $validator = new validator;
-    $validator->setName($info['name']);
-    $validator->setEmail($info['email']);
-    $validator->setPassword($info['password']);
-
-    $validator->setFile('avatar', $info['avatar'], $id, false);
-    $validator->throwException();
-
-    $tableHistory = $this->getById($id);
-    $this->_dao->update($validator->getTable(), array('id_admin = ?' => $id));
-    $this->log('U', $info['name'], $validator->getTable(), $tableHistory);
+    return array(
+        'id_admin' => null,
+        'active' => null,
+        'name' => null,
+        'email' => null,
+        'password' => null,
+        'avatar' => null,
+        'inc_date' => null,
+        'password_change_date' => null,
+        'permission' => null,
+    );
   }
 
   public function getList ( $arrFilters = array() )
