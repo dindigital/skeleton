@@ -33,7 +33,7 @@ class PhotoViewHelper
       $row['date'] = DateFormat::filter_date($row['date']);
     }
     $row['gallery'] = Gallery::get(@$row['gallery'], 'gallery');
-    $row['gallery_uploader'] = Form::Upload('gallery_uploader', '', 'imagem', true, false);
+    $row['gallery_uploader'] = Form::Upload('gallery_uploader', '', 'image', true, false);
 
     return $row;
   }

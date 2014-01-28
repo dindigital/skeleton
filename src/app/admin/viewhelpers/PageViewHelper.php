@@ -33,7 +33,7 @@ class PageViewHelper
   {
     $row['title'] = Html::scape(@$row['title']);
     $row['content'] = Form::Ck('content', @$row['content']);
-    $row['cover'] = Form::Upload('cover', @$row['cover'], 'imagem');
+    $row['cover'] = Form::Upload('cover', @$row['cover'], 'image');
     $row['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, @$row['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 
     $infinite_drop = array();

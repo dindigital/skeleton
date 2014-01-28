@@ -33,7 +33,7 @@ class NewsViewHelper
     $row['date'] = isset($row['date']) ? DateFormat::filter_date($row['date']) : date('d/m/Y');
     $row['head'] = Html::scape(@$row['head']);
     $row['body'] = Form::Ck('body', @$row['body']);
-    $row['cover'] = Form::Upload('cover', @$row['cover'], 'imagem');
+    $row['cover'] = Form::Upload('cover', @$row['cover'], 'image');
     $row['id_news_cat'] = Form::Dropdown('id_news_cat', $news_cat_dropdown, @$row['id_news_cat'], 'Selecione uma Categoria');
     $row['r_news_photo'] = Form::Listbox('r_news_photo', $listbox['photo_values'], array_keys($listbox['photo_selected']));
     $row['r_news_video'] = Form::Listbox('r_news_video', $listbox['video'], array_keys($listbox['video']), 'ajaxli');
