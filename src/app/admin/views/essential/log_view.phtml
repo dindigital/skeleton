@@ -68,7 +68,7 @@
                     <div><?php echo $row->after; ?></div>
                   </div>
                 </div>
-              <?php else: ?>
+              <?php elseif ( is_string($row) ): ?>
                 <div class="form-group">
                   <label class="col-sm-2 control-label"><?php echo $key; ?></label>
                   <div class="col-sm-10">
