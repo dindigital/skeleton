@@ -60,7 +60,8 @@ abstract class BaseControllerAdm extends BaseController
 
     $paginator = $this->_model->getPaginator();
 
-    $this->_data['paginator']['subtotal'] = $paginator->getSubTotal();
+    $this->_data['paginator']['itens_per_page'] = $paginator->getItensPerPage();
+    $this->_data['paginator']['offset'] = $paginator->getOffset() + 1;
     $this->_data['paginator']['total'] = $paginator->getTotal();
     $this->_data['paginator']['numbers'] = $paginator->getNumbers();
 

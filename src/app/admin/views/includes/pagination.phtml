@@ -7,7 +7,8 @@
     <div class="col-sm-12">
       <div class="pull-left">
         <div class="dataTables_info" id="datatable_info">
-          Exibindo <?php echo $data['paginator']['subtotal']; ?> de <?php echo $data['paginator']['total']; ?> resultados
+          Exibindo <?php echo $data['paginator']['itens_per_page']; ?> ítens por pagina a partir do <?php echo $data['paginator']['offset']; ?>.
+          <br /><strong>Total de registros: <?php echo $data['paginator']['total']; ?>.</strong>
         </div>
       </div>
       <div class="pull-right">
