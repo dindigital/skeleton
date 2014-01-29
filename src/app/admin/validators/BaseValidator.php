@@ -75,31 +75,25 @@ class BaseValidator
     }
   }
 
-  public function setFile ( $fieldname, $file, $id = null )
+  public function setFile ( $fieldname, $file, $id )
   {
     $tmp_dir = 'tmp';
-//    if ( is_null($tmp_dir) ) {
-//      $tmp_dir = 'tmp';
-//    }
 
     try {
       Folder::make_writable($tmp_dir);
     } catch (Exception $e) {
       return JsonException::addException($e->getMessage());
     }
+
     try {
 
       if ( !isset($file [0]) )
-        throw new Exception($fieldname . ' é obrigatório');
+        throw new Exception('Array de upload vazio');
 
-      $file = $file[0]; // pegando apenas o primeiro arquivo, pois para multiplos
-// utilizamos a setGaleria..
-
-      $folder = $this->_table->
-              getName();
+      $file = $file[0];
 
       if ( count($file) != 2 )
-        throw new Exception($fieldname . ' é obrigatório');
+        throw new Exception('Array de upload não é bidimensional');
 
       $tmp_name = $file['tmp_name'];
       $name = $file['name'];
@@ -108,33 +102,25 @@ class BaseValidator
               $tmp_name;
 
       if ( !is_file($origin) )
-        throw new Exception($fieldname . ' é obrigatório ');
+        throw new Exception('O arquivo de upload não foi encontrado: ' . $origin);
 
-      if ( $id ) {
-        $pathinfo = pathinfo($name);
-        $name = Uri::format($pathinfo['filename']) . '.' . $pathinfo['extension'];
+      $pathinfo = pathinfo($name);
+      $name = Uri::format($pathinfo['filename']) . '.' . $pathinfo['extension'];
 
-        $destination = 'public/system/uploads/' . $folder . '/' .
-                $id . '/' . $fieldname . '/' . $name;
+      $folder = $this->_table->getName();
+      $destination = 'public/system/uploads/' . $folder . '/' .
+              $id . '/' . $fieldname . '/' . $name;
 
-        $diretorio = dirname($destination);
-        Folder::delete($diretorio);
-        Folder:: make_writable($diretorio);
+      $diretorio = dirname($destination);
+      Folder::delete($diretorio);
+      Folder:: make_writable($diretorio);
 
-        rename($origin, $destination);
-        $file = str_replace(PATH_REPLACE, '', $destination);
+      rename($origin, $destination);
+      $file = str_replace(PATH_REPLACE, '', $destination);
 
-        $this->_table->$fieldname = $file;
-      } else {
-        return $origin;
-      }
+      $this->_table->$fieldname = $file;
     } catch (Exception $e) {
-      /* if ( $obg ) {
-        return JsonException::addException($e->getMessage());
-        } else */if ( is_null($id) ) {
-        $this->
-                _table->$fieldname = null;
-      }
+      //
     }
   }
 

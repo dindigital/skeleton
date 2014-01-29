@@ -24,9 +24,9 @@ class AdminModel extends BaseModelAdm
     $validator->setPermission($info['permission']);
     $validator->setIncDate();
     $id = $validator->setId($this);
-
-    $validator->setFile('avatar', $info['avatar'], $id, false);
     $validator->throwException();
+
+    $validator->setFile('avatar', $info['avatar'], $id);
 
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['name'], $validator->getTable());
@@ -42,9 +42,9 @@ class AdminModel extends BaseModelAdm
     $validator->setEmail($info['email']);
     $validator->setPassword($info['password'], false);
     $validator->setPermission($info['permission']);
-
-    $validator->setFile('avatar', $info['avatar'], $id, false);
     $validator->throwException();
+
+    $validator->setFile('avatar', $info['avatar'], $id);
 
     $tableHistory = $this->getById($id);
     $this->_dao->update($validator->getTable(), array('id_admin = ?' => $id));

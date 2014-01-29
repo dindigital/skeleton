@@ -50,10 +50,11 @@ class PageCatModel extends BaseModelAdm
     $validator->setDescription($info['description']);
     $validator->setKeywords($info['keywords']);
     $validator->setIncDate();
-    $validator->setFile('cover', $info['cover'], $id);
 
     Sequence::setSequence($this, $validator);
     $validator->throwException();
+
+    $validator->setFile('cover', $info['cover'], $id);
 
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
@@ -69,6 +70,8 @@ class PageCatModel extends BaseModelAdm
     $validator->setContent($info['content']);
     $validator->setDescription($info['description']);
     $validator->setKeywords($info['keywords']);
+    $validator->throwException();
+
     $validator->setFile('cover', $info['cover'], $id);
 
     $tableHistory = $this->getById($id);

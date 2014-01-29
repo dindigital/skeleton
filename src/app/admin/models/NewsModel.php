@@ -66,10 +66,11 @@ class NewsModel extends BaseModelAdm
     $validator->setDate($info['date']);
     $validator->setHead($info['head']);
     $validator->setBody($info['body']);
-    $validator->setFile('cover', $info['cover'], $id);
     Sequence::setSequence($this, $validator);
     $validator->setIncDate();
     $validator->throwException();
+
+    $validator->setFile('cover', $info['cover'], $id);
 
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
@@ -89,8 +90,9 @@ class NewsModel extends BaseModelAdm
     $validator->setDate($info['date']);
     $validator->setHead($info['head']);
     $validator->setBody($info['body']);
-    $validator->setFile('cover', $info['cover'], $id);
     $validator->throwException();
+
+    $validator->setFile('cover', $info['cover'], $id);
 
     $tableHistory = $this->getById($id);
     $this->_dao->update($validator->getTable(), array('id_news = ?' => $id));
