@@ -5,6 +5,7 @@ namespace src\app\admin\models\essential;
 use src\app\admin\validators\GalleryValidator as validator;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\Entities;
+use src\app\admin\helpers\MoveFiles;
 
 /**
  *
@@ -45,8 +46,11 @@ class GalleryModel extends BaseModelAdm
     $id = $validator->setId($this->_table_item['id']);
     $validator->setIdTbl($this->_table['id'], $info[$this->_table['id']]);
     $validator->setGallerySequence($this->_table_item['tbl'], $this->_table['id'], null, $info[$this->_table['id']]);
-    $validator->setGallery($info['file'], "{$this->_table['tbl']}/{$info[$this->_table['id']]}/file/{$id}/");
+    $mf = new MoveFiles;
+    $validator->setGallery($info['file'], "{$this->_table['tbl']}/{$info[$this->_table['id']]}/file/{$id}", $mf);
     $validator->throwException();
+
+    $mf->move();
 
     $this->_dao->insert($validator->getTable());
 

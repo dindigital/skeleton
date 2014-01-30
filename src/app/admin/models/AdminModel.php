@@ -6,6 +6,7 @@ use src\app\admin\helpers\PaginatorAdmin;
 use Din\DataAccessLayer\Select;
 use src\app\admin\validators\AdminValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
+use src\app\admin\helpers\MoveFiles;
 
 /**
  *
@@ -24,9 +25,11 @@ class AdminModel extends BaseModelAdm
     $validator->setPermission($info['permission']);
     $validator->setIncDate();
     $id = $validator->setId($this);
+    $mf = new MoveFiles;
+    $validator->setFile('avatar', $info['avatar'], $id, $mf);
     $validator->throwException();
 
-    $validator->setFile('avatar', $info['avatar'], $id);
+    $mf->move();
 
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['name'], $validator->getTable());
@@ -42,9 +45,11 @@ class AdminModel extends BaseModelAdm
     $validator->setEmail($info['email']);
     $validator->setPassword($info['password'], false);
     $validator->setPermission($info['permission']);
+    $mf = new MoveFiles;
+    $validator->setFile('avatar', $info['avatar'], $id, $mf);
     $validator->throwException();
 
-    $validator->setFile('avatar', $info['avatar'], $id);
+    $mf->move();
 
     $tableHistory = $this->getById($id);
     $this->_dao->update($validator->getTable(), array('id_admin = ?' => $id));

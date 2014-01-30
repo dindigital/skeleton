@@ -4,10 +4,10 @@ namespace src\app\admin\validators;
 
 use Exception;
 use Din\Filters\String\Uri;
-use Din\File\Folder;
 use Din\Exception\JsonException;
 use src\app\admin\helpers\Entities;
 use Din\UrlShortener\Bitly\Bitly;
+use src\app\admin\helpers\MoveFiles;
 
 class BaseValidator
 {
@@ -75,53 +75,43 @@ class BaseValidator
     }
   }
 
-  public function setFile ( $fieldname, $file, $id )
+  public function setFile ( $fieldname, $file, $id, MoveFiles $mf )
   {
-    $tmp_dir = 'tmp';
+    /**
+     * Início, verica se existe uma tentativa correta de realizar upload.
+     */
+    if ( !isset($file [0]) )
+      return; //Array de upload vazio
 
-    try {
-      Folder::make_writable($tmp_dir);
-    } catch (Exception $e) {
-      return JsonException::addException($e->getMessage());
-    }
+    $file = $file[0];
 
-    try {
+    if ( !(count($file) == 2 && isset($file['tmp_name']) && isset($file['name'])) )
+      return; //Array de upload não possui os índices necessários: tmp_name, name
 
-      if ( !isset($file [0]) )
-        throw new Exception('Array de upload vazio');
+    /**
+     *  Chegou até aqui, então possui a intenção correta de realizar um upload
+     *  Vamos validar e setar o valor do campo da tabela.
+     */
+    if ( !is_writable('public/system') )
+      throw new Exception('A pasta public/system precisa ter permissão de escrita');
 
-      $file = $file[0];
+    $tmp_name = $file['tmp_name'];
+    $name = $file['name'];
 
-      if ( count($file) != 2 )
-        throw new Exception('Array de upload não é bidimensional');
+    $origin = 'tmp' . DIRECTORY_SEPARATOR . $tmp_name;
 
-      $tmp_name = $file['tmp_name'];
-      $name = $file['name'];
+    if ( !is_file($origin) )
+      throw new Exception('O arquivo temporário de upload não foi encontrado, certifique-se de dar permissão a pasta tmp ');
 
-      $origin = $tmp_dir . DIRECTORY_SEPARATOR .
-              $tmp_name;
+    $pathinfo = pathinfo($name);
+    $name = Uri::format($pathinfo['filename']) . '.' . $pathinfo['extension'];
 
-      if ( !is_file($origin) )
-        throw new Exception('O arquivo de upload não foi encontrado: ' . $origin);
+    $table_folder = $this->_table->getName();
+    $destiny = "/system/uploads/{$table_folder}/{$id}/{$fieldname}/{$name}";
 
-      $pathinfo = pathinfo($name);
-      $name = Uri::format($pathinfo['filename']) . '.' . $pathinfo['extension'];
+    $this->_table->{$fieldname} = $destiny;
 
-      $folder = $this->_table->getName();
-      $destination = 'public/system/uploads/' . $folder . '/' .
-              $id . '/' . $fieldname . '/' . $name;
-
-      $diretorio = dirname($destination);
-      Folder::delete($diretorio);
-      Folder:: make_writable($diretorio);
-
-      rename($origin, $destination);
-      $file = str_replace(PATH_REPLACE, '', $destination);
-
-      $this->_table->$fieldname = $file;
-    } catch (Exception $e) {
-      //
-    }
+    $mf->addFile($origin, 'public' . $destiny);
   }
 
   public function getTable ()

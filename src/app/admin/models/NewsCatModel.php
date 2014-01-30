@@ -7,6 +7,7 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\helpers\Sequence;
+use src\app\admin\helpers\MoveFiles;
 
 /**
  *
@@ -53,11 +54,12 @@ class NewsCatModel extends BaseModelAdm
     $validator->setTitle($info['title']);
     $validator->setIsHome($info['is_home']);
     $validator->setIncDate();
-
+    $mf = new MoveFiles;
+    $validator->setFile('cover', $info['cover'], $id, $mf);
     Sequence::setSequence($this, $validator);
     $validator->throwException();
 
-    $validator->setFile('cover', $info['cover'], $id);
+    $mf->move();
 
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
@@ -71,9 +73,11 @@ class NewsCatModel extends BaseModelAdm
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setIsHome($info['is_home']);
+    $mf = new MoveFiles;
+    $validator->setFile('cover', $info['cover'], $id, $mf);
     $validator->throwException();
 
-    $validator->setFile('cover', $info['cover'], $id);
+    $mf->move();
 
     $tableHistory = $this->getById($id);
     $this->_dao->update($validator->getTable(), array('id_news_cat = ?' => $id));

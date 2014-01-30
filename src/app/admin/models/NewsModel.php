@@ -8,6 +8,7 @@ use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\helpers\Sequence;
 use src\app\admin\helpers\Listbox;
+use src\app\admin\helpers\MoveFiles;
 
 /**
  *
@@ -68,9 +69,11 @@ class NewsModel extends BaseModelAdm
     $validator->setBody($info['body']);
     Sequence::setSequence($this, $validator);
     $validator->setIncDate();
+    $mf = new MoveFiles;
+    $validator->setFile('cover', $info['cover'], $id, $mf);
     $validator->throwException();
 
-    $validator->setFile('cover', $info['cover'], $id);
+    $mf->move();
 
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
@@ -90,9 +93,11 @@ class NewsModel extends BaseModelAdm
     $validator->setDate($info['date']);
     $validator->setHead($info['head']);
     $validator->setBody($info['body']);
+    $mf = new MoveFiles;
+    $validator->setFile('cover', $info['cover'], $id, $mf);
     $validator->throwException();
 
-    $validator->setFile('cover', $info['cover'], $id);
+    $mf->move();
 
     $tableHistory = $this->getById($id);
     $this->_dao->update($validator->getTable(), array('id_news = ?' => $id));

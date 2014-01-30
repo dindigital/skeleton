@@ -7,6 +7,7 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\helpers\Sequence;
+use src\app\admin\helpers\MoveFiles;
 
 /**
  *
@@ -50,11 +51,12 @@ class PageCatModel extends BaseModelAdm
     $validator->setDescription($info['description']);
     $validator->setKeywords($info['keywords']);
     $validator->setIncDate();
-
+    $mf = new MoveFiles;
+    $validator->setFile('cover', $info['cover'], $id, $mf);
     Sequence::setSequence($this, $validator);
     $validator->throwException();
 
-    $validator->setFile('cover', $info['cover'], $id);
+    $mf->move();
 
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
@@ -70,9 +72,11 @@ class PageCatModel extends BaseModelAdm
     $validator->setContent($info['content']);
     $validator->setDescription($info['description']);
     $validator->setKeywords($info['keywords']);
+    $mf = new MoveFiles;
+    $validator->setFile('cover', $info['cover'], $id, $mf);
     $validator->throwException();
 
-    $validator->setFile('cover', $info['cover'], $id);
+    $mf->move();
 
     $tableHistory = $this->getById($id);
     $this->_dao->update($validator->getTable(), array('id_page_cat = ?' => $id));
