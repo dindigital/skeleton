@@ -13,7 +13,7 @@ class NewsViewHelper
   {
     foreach ( $result as $i => $row ) {
       $result[$i]['date'] = DateFormat::filter_date($row['date']);
-      $result[$i]['sequence'] = Form::Dropdown('sequence', $row['sequence_list_array'], $row['sequence'], '', $row['id_news_cat'], 'form-control drop_sequence');
+      $result[$i]['sequence'] = Form::Dropdown('sequence', $row['sequence_list_array'], $row['sequence'], '', $row['id_news'], 'form-control drop_sequence');
     }
 
     return $result;

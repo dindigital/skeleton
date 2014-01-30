@@ -132,14 +132,14 @@ class NewsModel extends BaseModelAdm
     return $this->_listbox->totalArray('photo', 'id_photo', 'title');
   }
 
-  public function selectedRelationshipPhoto ( $id )
+  public function selectedRelationshipPhoto ()
   {
-    return $this->_listbox->selectedArray('photo', 'id_photo', 'title', 'r_news_photo', 'id_news', $id);
+    return $this->_listbox->selectedArray('photo', 'id_photo', 'title', 'r_news_photo', 'id_news', $this->_id);
   }
 
-  public function arrayRelationshipVideo ( $id )
+  public function arrayRelationshipVideo ()
   {
-    return $this->_listbox->selectedArray('video', 'id_video', 'title', 'r_news_video', 'id_news', $id);
+    return $this->_listbox->selectedArray('video', 'id_video', 'title', 'r_news_video', 'id_news', $this->_id);
   }
 
   public function ajaxRelationshipVideo ( $term )

@@ -17,6 +17,7 @@ class BaseModelAdm
   protected $_dao;
   protected $_paginator = null;
   protected $_itens_per_page = 20;
+  protected $_id;
 
   public function __construct ()
   {
@@ -36,12 +37,26 @@ class BaseModelAdm
     $select->setLimit($this->_itens_per_page, $offset);
   }
 
-  public function getById ( $id )
+  public function setId ( $id )
   {
+    $this->_id = $id;
+  }
+
+  public function getId ()
+  {
+    return $this->_id;
+  }
+
+  public function getById ( $id = null )
+  {
+    if ( $id ) {
+      $this->setId($id);
+    }
+
     $current = Entities::getThis($this);
 
     $arrCriteria = array(
-        $current['id'] . ' = ?' => $id
+        $current['id'] . ' = ?' => $this->getId()
     );
 
     $select = new Select($current['tbl']);
@@ -56,6 +71,17 @@ class BaseModelAdm
     $row = $result[0];
 
     return $row;
+  }
+
+  public function save ( $info )
+  {
+    if ( !$this->getId() ) {
+      $this->setId($this->insert($info));
+    } else {
+      $this->update($this->getId(), $info);
+    }
+
+    return $this->getId();
   }
 
   public function getCount ( $id )

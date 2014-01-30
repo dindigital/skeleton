@@ -142,13 +142,9 @@ abstract class BaseControllerAdm extends BaseController
     $permission->block($this->_model, $this->_data['admin']);
   }
 
-  protected function saveAndRedirect ( $info, $id = null )
+  protected function saveAndRedirect ( $info )
   {
-    if ( !$id ) {
-      $id = $this->_model->insert($info);
-    } else {
-      $this->_model->update($id, $info);
-    }
+    $id = $this->_model->save($info);
 
     $this->setSavedMsgSession();
 
@@ -173,7 +169,7 @@ abstract class BaseControllerAdm extends BaseController
     $session = new Session('adm_session');
 
     if ( $session->is_set('previous_id') ) {
-      $row = array();
+      $this->_model->setId($session->get('previous_id'));
       $row = $this->_model->getById($session->get('previous_id'));
 
       foreach ( $exclude as $field ) {
