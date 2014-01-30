@@ -92,12 +92,13 @@ class Sequence
       return;
 
     $result = $model->getById($id);
-    $sequence_old = $result['sequence'];
+    $sequence_old = intval($result['sequence']);
+    $sequence = intval($sequence);
 
     $arrCriteria = array();
 
-    if ( isset($current['lixeira']) ) {
-      $arrCriteria['del = 0'] = null;
+    if ( isset($current['trash']) && $current['trash'] ) {
+      $arrCriteria['is_del = 0'] = null;
     }
 
     if ( isset($current['sequence']['dependence']) ) {
@@ -111,25 +112,22 @@ class Sequence
       }
     }
 
-    //_# Opcionais
-    if ( $sequence_old == 0 ) {
+    $optional = isset($current['sequence']['optional']) && $current['sequence']['optional'];
+
+    if ( $sequence == 0 ) {
+      $arrCriteria['sequence >= ?'] = $sequence_old;
+      $result = $model->operateSequence('-', $arrCriteria);
+    } else if ( $sequence_old == 0 ) {
       $arrCriteria['sequence >= ?'] = $sequence;
       $result = $model->operateSequence('+', $arrCriteria);
-    } else if ( $sequence == 0 ) {
-
-      $arrCriteria['sequence > ?'] = $sequence_old;
-      $result = $model->operateSequence('-', $arrCriteria);
-      //_# Obrigatórios
+    } else if ( $sequence < $sequence_old ) {
+      $arrCriteria['sequence >= ?'] = $sequence;
+      $arrCriteria['sequence <= ?'] = $sequence_old;
+      $result = $model->operateSequence('+', $arrCriteria);
     } else {
-      if ( $sequence < $sequence_old ) {
-        $arrCriteria['sequence >= ?'] = $sequence;
-        $arrCriteria['sequence <= ?'] = $sequence_old;
-        $result = $model->operateSequence('+', $arrCriteria);
-      } else {
-        $arrCriteria['sequence <= ?'] = $sequence;
-        $arrCriteria['sequence >= ?'] = $sequence_old;
-        $result = $model->operateSequence('-', $arrCriteria);
-      }
+      $arrCriteria['sequence <= ?'] = $sequence;
+      $arrCriteria['sequence >= ?'] = $sequence_old;
+      $result = $model->operateSequence('-', $arrCriteria);
     }
 
     $model->updateSequence($sequence, $id);
