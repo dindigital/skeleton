@@ -49,11 +49,11 @@ class NewsController extends BaseControllerAdm
 
   public function get_save ( $id = null )
   {
+    $this->_model->setId($id);
+
     $excluded_fields = array(
         'cover'
     );
-
-    $this->_model->setId($id);
 
     $row = $id ? $this->_model->getById() : $this->getPrevious($excluded_fields);
 

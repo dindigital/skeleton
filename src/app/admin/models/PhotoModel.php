@@ -23,10 +23,10 @@ class PhotoModel extends BaseModelAdm
     $this->_gallery = new GalleryModel('photo', 'photo_item');
   }
 
-  public function getById ( $id )
+  public function getById ( $id = null )
   {
     $row = parent::getById($id);
-    $row['gallery'] = $this->_gallery->getList(array('id_photo = ?' => $id));
+    $row['gallery'] = $this->_gallery->getList(array('id_photo = ?' => $this->getId()));
 
     return $row;
   }
@@ -57,7 +57,7 @@ class PhotoModel extends BaseModelAdm
   public function insert ( $info )
   {
     $validator = new validator();
-    $id = $validator->setId($this);
+    $this->setId($validator->setId($this));
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
@@ -66,13 +66,10 @@ class PhotoModel extends BaseModelAdm
 
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
-
-    $this->_gallery->save($info['gallery_uploader'], $id);
-
-    return $id;
+    $this->_gallery->saveGalery($info['gallery_uploader'], $this->getId());
   }
 
-  public function update ( $id, $info )
+  public function update ( $info )
   {
     $validator = new validator();
     $validator->setActive($info['active']);
@@ -80,13 +77,11 @@ class PhotoModel extends BaseModelAdm
     $validator->setDate($info['date']);
     $validator->throwException();
 
-    $tableHistory = $this->getById($id);
-    $this->_dao->update($validator->getTable(), array('id_photo = ?' => $id));
+    $tableHistory = $this->getById();
+    $this->_dao->update($validator->getTable(), array('id_photo = ?' => $this->getId()));
     $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
 
-    $this->_gallery->save($info['gallery_uploader'], $id, $info['sequence'], $info['label'], $info['credit']);
-
-    return $id;
+    $this->_gallery->saveGalery($info['gallery_uploader'], $this->getId(), $info['sequence'], $info['label'], $info['credit']);
   }
 
   public function getNew ()

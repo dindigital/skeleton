@@ -5,6 +5,7 @@ namespace src\app\admin\models\essential;
 use src\app\admin\validators\AdminValidator as validator;
 use src\app\admin\models\essential\AdminAuthModel;
 use src\app\admin\models\AdminModel;
+use src\app\admin\helpers\MoveFiles;
 
 /**
  *
@@ -19,9 +20,11 @@ class ConfigModel extends BaseModelAdm
     $validator->setName($info['name']);
     $validator->setEmail($info['email']);
     $validator->setPassword($info['password']);
-
-    $validator->setFile('avatar', $info['avatar'], $id, false);
+    $mf = new MoveFiles;
+    $validator->setFile('avatar', $info['avatar'], $id, $mf);
     $validator->throwException();
+
+    $mf->move();
 
     $admin_model = new AdminModel;
     $tableHistory = $admin_model->getById($id);

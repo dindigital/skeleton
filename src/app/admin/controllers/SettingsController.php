@@ -44,8 +44,9 @@ class SettingsController extends BaseControllerAdm
           'description' => Post::text('description'),
           'keywords' => Post::text('keywords'),
       );
+      $this->_model->setId('1');
 
-      $this->saveAndRedirect($info, '1');
+      $this->saveAndRedirect($info);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

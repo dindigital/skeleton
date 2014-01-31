@@ -48,10 +48,14 @@ class LogModel extends BaseModelAdm
     return $result;
   }
 
-  public function getById ( $id )
+  public function getById ( $id = null )
   {
+    if ( $id ) {
+      $this->setId($id);
+    }
+
     $arrCriteria = array(
-        'id_log = ?' => $id
+        'id_log = ?' => $this->getId()
     );
 
     $select = new Select('log');

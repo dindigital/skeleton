@@ -44,7 +44,7 @@ class PageCatModel extends BaseModelAdm
   public function insert ( $info )
   {
     $validator = new validator;
-    $id = $validator->setId($this);
+    $this->setId($validator->setId($this));
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setContent($info['content']);
@@ -52,7 +52,7 @@ class PageCatModel extends BaseModelAdm
     $validator->setKeywords($info['keywords']);
     $validator->setIncDate();
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $id, $mf);
+    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     Sequence::setSequence($this, $validator);
     $validator->throwException();
 
@@ -60,11 +60,9 @@ class PageCatModel extends BaseModelAdm
 
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
-
-    return $id;
   }
 
-  public function update ( $id, $info )
+  public function update ( $info )
   {
     $validator = new validator;
     $validator->setActive($info['active']);
@@ -73,16 +71,14 @@ class PageCatModel extends BaseModelAdm
     $validator->setDescription($info['description']);
     $validator->setKeywords($info['keywords']);
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $id, $mf);
+    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $tableHistory = $this->getById($id);
-    $this->_dao->update($validator->getTable(), array('id_page_cat = ?' => $id));
+    $tableHistory = $this->getById();
+    $this->_dao->update($validator->getTable(), array('id_page_cat = ?' => $this->getId()));
     $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
-
-    return $id;
   }
 
   public function getNew ()

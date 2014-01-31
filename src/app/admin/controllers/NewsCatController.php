@@ -47,10 +47,11 @@ class NewsCatController extends BaseControllerAdm
 
   public function get_save ( $id = null )
   {
+    $this->_model->setId($id);
     $excluded_fields = array(
         'cover'
     );
-    $row = $id ? $this->_model->getById($id) : $this->getPrevious($excluded_fields);
+    $row = $id ? $this->_model->getById() : $this->getPrevious($excluded_fields);
 
     $this->_data['table'] = vh::formatRow($row);
 
@@ -60,6 +61,8 @@ class NewsCatController extends BaseControllerAdm
   public function post_save ( $id = null )
   {
     try {
+      $this->_model->setId($id);
+
       $info = array(
           'active' => Post::checkbox('active'),
           'title' => Post::text('title'),
@@ -67,7 +70,7 @@ class NewsCatController extends BaseControllerAdm
           'cover' => Post::upload('cover')
       );
 
-      $this->saveAndRedirect($info, $id);
+      $this->saveAndRedirect($info);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

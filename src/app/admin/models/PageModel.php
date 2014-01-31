@@ -51,7 +51,7 @@ class PageModel extends BaseModelAdm
   public function insert ( $info )
   {
     $validator = new validator;
-    $id = $validator->setId($this);
+    $this->setId($validator->setId($this));
     $validator->setIdPageCat($info['id_page_cat']);
     $validator->setIdParent($info['id_parent']);
     $validator->setActive($info['active']);
@@ -61,7 +61,7 @@ class PageModel extends BaseModelAdm
     $validator->setKeywords($info['keywords']);
     $validator->setIncDate();
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $id, $mf);
+    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     Sequence::setSequence($this, $validator);
     $validator->throwException();
 
@@ -69,11 +69,9 @@ class PageModel extends BaseModelAdm
 
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
-
-    return $id;
   }
 
-  public function update ( $id, $info )
+  public function update ( $info )
   {
     $validator = new validator;
     $validator->setIdPageCat($info['id_page_cat']);
@@ -84,16 +82,14 @@ class PageModel extends BaseModelAdm
     $validator->setDescription($info['description']);
     $validator->setKeywords($info['keywords']);
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $id, $mf);
+    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $tableHistory = $this->getById($id);
-    $this->_dao->update($validator->getTable(), array('id_page = ?' => $id));
+    $tableHistory = $this->getById();
+    $this->_dao->update($validator->getTable(), array('id_page = ?' => $this->getId()));
     $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
-
-    return $id;
   }
 
   public function getNew ()
@@ -148,19 +144,19 @@ class PageModel extends BaseModelAdm
     return $arrOptions;
   }
 
-  public function getById ( $id )
+  public function getById ( $id = null )
   {
     $row = parent::getById($id);
-    $row['infinite'] = $this->loadInfinity($id);
+    $row['infinite'] = $this->loadInfinity();
 
     return $row;
   }
 
-  public function loadInfinity ( $id )
+  public function loadInfinity ()
   {
     $r = array();
 
-    $first = parent::getById($id);
+    $first = parent::getById();
     $id_cat = $first['id_page_cat'];
     if ( $first['id_parent'] ) {
 

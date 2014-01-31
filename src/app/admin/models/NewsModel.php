@@ -60,7 +60,7 @@ class NewsModel extends BaseModelAdm
   public function insert ( $info )
   {
     $validator = new validator();
-    $id = $validator->setId($this);
+    $this->setId($validator->setId($this));
     $validator->setIdNewsCat($info['id_news_cat']);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
@@ -70,7 +70,7 @@ class NewsModel extends BaseModelAdm
     Sequence::setSequence($this, $validator);
     $validator->setIncDate();
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $id, $mf);
+    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     $validator->throwException();
 
     $mf->move();
@@ -78,13 +78,11 @@ class NewsModel extends BaseModelAdm
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
 
-    $this->_listbox->insertRelationship('r_news_photo', 'id_news', $id, 'id_photo', $info['r_news_photo']);
-    $this->_listbox->insertRelationship('r_news_video', 'id_news', $id, 'id_video', $info['r_news_video']);
-
-    return $id;
+    $this->_listbox->insertRelationship('r_news_photo', 'id_news', $this->getId(), 'id_photo', $info['r_news_photo']);
+    $this->_listbox->insertRelationship('r_news_video', 'id_news', $this->getId(), 'id_video', $info['r_news_video']);
   }
 
-  public function update ( $id, $info )
+  public function update ( $info )
   {
     $validator = new validator();
     $validator->setIdNewsCat($info['id_news_cat']);
@@ -94,19 +92,17 @@ class NewsModel extends BaseModelAdm
     $validator->setHead($info['head']);
     $validator->setBody($info['body']);
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $id, $mf);
+    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $tableHistory = $this->getById($id);
-    $this->_dao->update($validator->getTable(), array('id_news = ?' => $id));
+    $tableHistory = $this->getById();
+    $this->_dao->update($validator->getTable(), array('id_news = ?' => $this->getId()));
     $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
 
-    $this->_listbox->insertRelationship('r_news_photo', 'id_news', $id, 'id_photo', $info['r_news_photo']);
-    $this->_listbox->insertRelationship('r_news_video', 'id_news', $id, 'id_video', $info['r_news_video']);
-
-    return $id;
+    $this->_listbox->insertRelationship('r_news_photo', 'id_news', $this->getId(), 'id_photo', $info['r_news_photo']);
+    $this->_listbox->insertRelationship('r_news_video', 'id_news', $this->getId(), 'id_video', $info['r_news_video']);
   }
 
   public function getNew ()

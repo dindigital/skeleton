@@ -37,7 +37,7 @@ class AdminModel extends BaseModelAdm
     return $id;
   }
 
-  public function update ( $id, $info )
+  public function update ( $info )
   {
     $validator = new validator;
     $validator->setActive($info['active']);
@@ -46,13 +46,13 @@ class AdminModel extends BaseModelAdm
     $validator->setPassword($info['password'], false);
     $validator->setPermission($info['permission']);
     $mf = new MoveFiles;
-    $validator->setFile('avatar', $info['avatar'], $id, $mf);
+    $validator->setFile('avatar', $info['avatar'], $this->getId(), $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $tableHistory = $this->getById($id);
-    $this->_dao->update($validator->getTable(), array('id_admin = ?' => $id));
+    $tableHistory = $this->getById($this->getId());
+    $this->_dao->update($validator->getTable(), array('id_admin = ?' => $this->getId()));
     $this->log('U', $info['name'], $validator->getTable(), $tableHistory);
   }
 

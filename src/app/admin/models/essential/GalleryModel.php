@@ -43,31 +43,26 @@ class GalleryModel extends BaseModelAdm
   {
 
     $validator = new validator($this->_dao, $this->_table_item['tbl']);
-    $id = $validator->setId($this->_table_item['id']);
+    $this->setId($validator->setId($this->_table_item['id']));
     $validator->setIdTbl($this->_table['id'], $info[$this->_table['id']]);
     $validator->setGallerySequence($this->_table_item['tbl'], $this->_table['id'], null, $info[$this->_table['id']]);
     $mf = new MoveFiles;
-    $validator->setGallery($info['file'], "{$this->_table['tbl']}/{$info[$this->_table['id']]}/file/{$id}", $mf);
+    $validator->setGallery($info['file'], "{$this->_table['tbl']}/{$info[$this->_table['id']]}/file/{$this->getId()}", $mf);
     $validator->throwException();
 
     $mf->move();
 
     $this->_dao->insert($validator->getTable());
-
-    return $id;
   }
 
-  public function update ( $id, $info )
+  public function update ( $info )
   {
-
     $validator = new validator($this->_dao, $this->_table_item['tbl']);
     $validator->setLabel($info['label']);
     $validator->setCredit($info['credit']);
     $validator->setGallerySequence($this->_table_item['tbl'], $this->_table['id'], $info['sequence']);
 
-    $this->_dao->update($validator->getTable(), array("{$this->_table_item['id']} = ?" => $id));
-
-    return $id;
+    $this->_dao->update($validator->getTable(), array("{$this->_table_item['id']} = ?" => $this->getId()));
   }
 
   public function remove ( $id, $gallery_sequence )
@@ -77,7 +72,7 @@ class GalleryModel extends BaseModelAdm
 
     $arrCriteria = array(
         "{$this->_table['id']} = ?" => $id,
-        "{$this->_table_item['id']} NOT IN ?" => $gallery_sequence,
+        "{$this->_table_item['id']} NOT IN (?)" => $gallery_sequence,
     );
 
     $select = new Select($this->_table_item['tbl']);
@@ -92,14 +87,14 @@ class GalleryModel extends BaseModelAdm
     $this->_dao->delete($this->_table_item['tbl'], $arrCriteria);
   }
 
-  public function save ( $upload, $id, $gallery_sequence = null, $label = null, $credit = null )
+  public function saveGalery ( $upload, $id, $gallery_sequence = null, $label = null, $credit = null )
   {
-
     $this->remove($id, $gallery_sequence);
     //_# RESOLVE A ORDEM
     if ( $gallery_sequence ) {
       foreach ( explode(',', $gallery_sequence) as $i => $id_item ) {
-        $this->update($id_item, array(
+        $this->setId($id_item);
+        $this->update(array(
             'label' => $label[$i],
             'credit' => $credit[$i],
             'sequence' => ($i + 1),

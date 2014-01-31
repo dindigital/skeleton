@@ -44,7 +44,9 @@ class VideoController extends BaseControllerAdm
 
   public function get_save ( $id = null )
   {
-    $row = $id ? $this->_model->getById($id) : $this->getPrevious();
+    $this->_model->setId($id);
+
+    $row = $id ? $this->_model->getById() : $this->getPrevious();
     $this->_data['table'] = vh::formatRow($row);
 
     $this->setSaveTemplate('video_save.phtml');
@@ -53,6 +55,8 @@ class VideoController extends BaseControllerAdm
   public function post_save ( $id = null )
   {
     try {
+      $this->_model->setId($id);
+
       $info = array(
           'active' => Post::checkbox('active'),
           'title' => Post::text('title'),
@@ -62,7 +66,7 @@ class VideoController extends BaseControllerAdm
           'link_vimeo' => Post::text('link_vimeo'),
       );
 
-      $this->saveAndRedirect($info, $id);
+      $this->saveAndRedirect($info);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

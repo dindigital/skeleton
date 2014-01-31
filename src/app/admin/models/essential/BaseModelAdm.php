@@ -76,9 +76,9 @@ class BaseModelAdm
   public function save ( $info )
   {
     if ( !$this->getId() ) {
-      $this->setId($this->insert($info));
+      $this->insert($info);
     } else {
-      $this->update($this->getId(), $info);
+      $this->update($info);
     }
 
     return $this->getId();

@@ -51,10 +51,12 @@ class PageController extends BaseControllerAdm
 
   public function get_save ( $id = null )
   {
+    $this->_model->setId($id);
+
     $exclude_previous = array(
         'cover'
     );
-    $row = $id ? $this->_model->getById($id) : $this->getPrevious($exclude_previous);
+    $row = $id ? $this->_model->getById() : $this->getPrevious($exclude_previous);
 
     $pagina_cat = new PageCatModel;
     $pagina_cat_dropdown = $pagina_cat->getListArray();
@@ -67,6 +69,8 @@ class PageController extends BaseControllerAdm
   public function post_save ( $id = null )
   {
     try {
+      $this->_model->setId($id);
+
       $info = array(
           'active' => Post::checkbox('active'),
           'id_page_cat' => Post::text('id_page_cat'),
@@ -78,7 +82,7 @@ class PageController extends BaseControllerAdm
           'keywords' => Post::text('keywords'),
       );
 
-      $this->saveAndRedirect($info, $id);
+      $this->saveAndRedirect($info);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

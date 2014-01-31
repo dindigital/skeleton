@@ -46,10 +46,11 @@ class AdminController extends BaseControllerAdm
 
   public function get_save ( $id = null )
   {
+    $this->_model->setId($id);
     $exclude_previous = array(
         'avatar',
     );
-    $row = $id ? $this->_model->getById($id) : $this->getPrevious($exclude_previous);
+    $row = $id ? $this->_model->getById() : $this->getPrevious($exclude_previous);
 
     $permission = new PermissionModel;
     $permission_listbox = $permission->getArrayList();
@@ -62,6 +63,8 @@ class AdminController extends BaseControllerAdm
   public function post_save ( $id = null )
   {
     try {
+      $this->_model->setId($id);
+
       $info = array(
           'active' => Post::checkbox('active'),
           'name' => Post::text('name'),
@@ -71,7 +74,7 @@ class AdminController extends BaseControllerAdm
           'permission' => Post::aray('permission'),
       );
 
-      $this->saveAndRedirect($info, $id);
+      $this->saveAndRedirect($info);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
