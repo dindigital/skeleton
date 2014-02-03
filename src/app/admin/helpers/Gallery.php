@@ -23,7 +23,7 @@ class Gallery
     foreach ( $gallery as $item ) {
       $attribs['alt'] = $item['label'];
       $attribs['class'] = 'img_gallery';
-      $img = Picuri::picUri($item['file'], 196, 150, true, $attribs);
+      $img = Picuri::picUri($item['file'], 200, 150, true, $attribs);
 
       $html .= '<li id="' . $item['id_photo_item'] . '">' . PHP_EOL;
       $html .= $img . PHP_EOL;
