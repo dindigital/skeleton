@@ -18,39 +18,9 @@ class ExemploController extends BaseControllerAdm
     parent::__construct();
   }
 
-  public function get_lista ()
+  public function get_exemplos ()
   {
-    $this->_view->addFile('src/app/admin/views/exemplo_lista.phtml', '{$CONTENT}');
-    $this->display_html();
-  }
-
-  public function get_cadastro ()
-  {
-    $this->setCadastroTemplate('exemplo_cadastro.phtml');
-  }
-
-  public function get_galeria ()
-  {
-    $this->setCadastroTemplate('exemplo_galeria.phtml');
-  }
-
-  public function get_404 ()
-  {
-    $this->_view->removeFiles();
-    $this->_view->addFile('src/app/admin/views/404.phtml');
-    $this->display_html();
-  }
-
-  public function get_500 ()
-  {
-    $this->_view->removeFiles();
-    $this->_view->addFile('src/app/admin/views/500.phtml');
-    $this->display_html();
-  }
-
-  public function get_institucional ()
-  {
-    $this->_view->addFile('src/app/admin/views/institucional.phtml', '{$CONTENT}');
+    $this->_view->addFile('src/app/admin/views/exemplos.phtml', '{$CONTENT}');
     $this->display_html();
   }
 
