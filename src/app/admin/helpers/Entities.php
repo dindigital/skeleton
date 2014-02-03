@@ -82,26 +82,25 @@ class Entities
     return $r;
   }
 
-  public static function getFilhos ( $tbl )
+  public static function getChildren ( $tbl )
   {
     $r = array();
 
-    $atual = self::getEntity($tbl);
-    if ( array_key_exists('filho', $atual) ) {
-      $filhos = $atual['filho'];
-      foreach ( $filhos as $filho ) {
-        $r[$filho] = self::$entities[$filho];
+    $current = self::getEntity($tbl);
+    if ( array_key_exists('children', $current) ) {
+      foreach ( $current['children'] as $children ) {
+        $r[$children] = self::$entities[$children];
       }
     }
 
     return $r;
   }
 
-  public static function getPai ( $tbl )
+  public static function getParent ( $tbl )
   {
-    $atual = self::getEntity($tbl);
-    if ( array_key_exists('pai', $atual) ) {
-      return self::$entities[$atual['pai']];
+    $current = self::getEntity($tbl);
+    if ( array_key_exists('parent', $current) ) {
+      return self::$entities[$current['parent']];
     }
   }
 

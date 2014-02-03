@@ -24,17 +24,15 @@ class AdminModel extends BaseModelAdm
     $validator->setPassword($info['password']);
     $validator->setPermission($info['permission']);
     $validator->setIncDate();
-    $id = $validator->setId($this);
+    $this->setId($validator->setId($this));
     $mf = new MoveFiles;
-    $validator->setFile('avatar', $info['avatar'], $id, $mf);
+    $validator->setFile('avatar', $info['avatar'], $this->getId(), $mf);
     $validator->throwException();
 
     $mf->move();
 
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['name'], $validator->getTable());
-
-    return $id;
   }
 
   public function update ( $info )
@@ -94,11 +92,6 @@ class AdminModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return $result;
-  }
-
-  public function delete ( $id )
-  {
-    $this->delete_permanent($id);
   }
 
 }

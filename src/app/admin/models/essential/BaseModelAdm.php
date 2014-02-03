@@ -100,30 +100,6 @@ class BaseModelAdm
     return $result;
   }
 
-  public function deleteChildren ( $tbl, $id, $permanent = false )
-  {
-    $current = Entities::getEntity($tbl);
-    $children = Entities::getFilhos($tbl);
-
-    foreach ( $children as $child ) {
-      $select = new Select($child['tbl']);
-      $select->addField($child['id'], 'id_children');
-      $select->where(array(
-          $current['id'] . ' = ? ' => $id
-      ));
-      $result = $this->_dao->select($select);
-
-      foreach ( $result as $row ) {
-        $model = new $child['model'];
-        if ( $permanent ) {
-          $model->delete_permanent($row['id_children']);
-        } else {
-          $model->delete($row['id_children']);
-        }
-      }
-    }
-  }
-
   public function log ( $action, $msg, $table, $tableHistory = null, $entityname = null )
   {
     $adminAuth = new AdminAuthModel();
@@ -137,49 +113,43 @@ class BaseModelAdm
     log::save($this->_dao, $admin, $action, $msg, $entityname, $table, $tableHistory);
   }
 
-  public function delete ( $id )
+  public function deleteChildren ( $tbl, $id )
   {
-    $current = Entities::getThis($this);
+    $current = Entities::getEntity($tbl);
+    $children = Entities::getChildren($tbl);
 
-    Sequence::changeSequence($this, $id, 0);
+    foreach ( $children as $child ) {
+      $select = new Select($child['tbl']);
+      $select->addField($child['id'], 'id_children');
+      $select->where(array(
+          $current['id'] . ' = ? ' => $id
+      ));
+      $result = $this->_dao->select($select);
 
-    $this->deleteChildren($current['tbl'], $id);
-    $tableHistory = $this->getById($id);
-    $validator = new $current['validator'];
-    $validator->setDelDate();
-    $validator->setIsDel('1');
-    $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $id));
-    $this->log('T', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
+      $arr_delete = array();
+      foreach ( $result as $row ) {
+        $arr_delete[] = array(
+            'id' => $row['id_children']
+        );
+      }
+
+      $child_model = new $child['model'];
+      $child_model->delete($arr_delete);
+    }
   }
 
-  public function restore ( $id )
+  public function delete ( $itens )
   {
-    $current = Entities::getThis($this);
+    foreach ( $itens as $item ) {
+      $current = Entities::getThis($this);
 
-    $trash = new TrashModel();
-    $trash->validateRestore($current['tbl'], $id);
+      $tableHistory = $this->getById($item['id']);
+      $this->deleteChildren($current['tbl'], $item['id']);
 
-    $tableHistory = $this->getById($id);
-
-    $validator = new $current['validator'];
-
-    Sequence::setSequence($this, $validator, $tableHistory);
-
-    $validator->setIsDel('0');
-    $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $id));
-    $this->log('R', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
-  }
-
-  public function delete_permanent ( $id )
-  {
-    $current = Entities::getThis($this);
-
-    $this->deleteChildren($current['tbl'], $id, true);
-
-    $tableHistory = $this->getById($id);
-    Folder::delete("public/system/uploads/{$current['tbl']}/{$id}");
-    $this->_dao->delete($current['tbl'], array($current['id'] . ' = ?' => $id));
-    $this->log('D', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
+      Folder::delete("public/system/uploads/{$current['tbl']}/{$item['id']}");
+      $this->_dao->delete($current['tbl'], array($current['id'] . ' = ?' => $item['id']));
+      $this->log('D', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
+    }
   }
 
   public function toggleActive ( $id, $active )

@@ -12,6 +12,7 @@ use Din\Http\Header;
 use src\app\admin\helpers\Entities;
 use src\app\admin\models\essential\PermissionModel;
 use Din\ViewHelpers\JsonViewHelper;
+use src\app\admin\models\essential\TrashModel;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -190,8 +191,12 @@ abstract class BaseControllerAdm extends BaseController
     try {
       $itens = Post::aray('itens');
 
-      foreach ( $itens as $item ) {
-        $this->_model->delete($item['id']);
+      $entity = Entities::getThis($this->_model);
+      if ( isset($entity['trash']) && $entity['trash'] ) {
+        $trash = new TrashModel();
+        $trash->delete($itens);
+      } else {
+        $this->_model->delete($itens);
       }
 
       Header::redirect(Header::getReferer());

@@ -80,6 +80,9 @@ return array(
         'trash' => true,
         'sequence' => array(
             'optional' => false
+        ),
+        'children' => array(
+            'page'
         )
     ),
     'page' => array(
@@ -92,6 +95,7 @@ return array(
         'sequence' => array(
             'optional' => true,
             'dependence' => 'id_page_cat'
-        )
+        ),
+        'parent' => 'page_cat'
     ),
 );

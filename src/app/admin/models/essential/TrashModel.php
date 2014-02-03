@@ -7,6 +7,7 @@ use Din\DataAccessLayer\Select;
 use Exception;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\helpers\Entities;
+use src\app\admin\helpers\Sequence;
 
 /**
  *
@@ -64,12 +65,71 @@ class TrashModel extends BaseModelAdm
     return $result;
   }
 
+  private function hasParentOnTrash ( $current, $table )
+  {
+    $parent = Entities::getParent($current['tbl']);
+    if ( $parent ) {
+      $parent_tbl = $parent['tbl'];
+      $parent_id_field = $parent['id'];
+
+      $parend_id_value = $table[$parent_id_field];
+
+      $select = new Select($parent_tbl);
+      $select->addField($parent['title'], 'title');
+      $select->where(array(
+          $parent_id_field . ' = ?' => $parend_id_value,
+          'is_del = ?' => 1,
+      ));
+
+      $result = $this->_dao->select($select);
+      if ( count($result) ) {
+        return $result[0]['title'];
+      }
+    }
+  }
+
   public function restore ( $itens )
   {
     foreach ( $itens as $item ) {
       $current = Entities::getEntityByName($item['name']);
       $model = new $current['model'];
-      $model->restore($item['id']);
+      $tableHistory = $model->getById($item['id']);
+
+      //
+      if ( $parent_title = $this->hasParentOnTrash($current, $tableHistory) ) {
+        throw new Exception('Favor restaurar o ítem ' . $parent_title . ' primeiro');
+      }
+      //
+
+      $validator = new $current['validator'];
+      Sequence::setSequence($model, $validator);
+      $validator->setIsDel('0');
+      $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $item['id']));
+      $this->log('R', $tableHistory[$current['title']], $current['tbl'], null, $current['name']);
+    }
+  }
+
+  public function deleteChildren ( $current, $id )
+  {
+    $children = Entities::getChildren($current['tbl']);
+
+    foreach ( $children as $child ) {
+      $select = new Select($child['tbl']);
+      $select->addField($child['id'], 'id_children');
+      $select->where(array(
+          $current['id'] . ' = ? ' => $id
+      ));
+      $result = $this->_dao->select($select);
+
+      $arr_delete = array();
+      foreach ( $result as $row ) {
+        $arr_delete[] = array(
+            'name' => $child['name'],
+            'id' => $row['id_children'],
+        );
+      }
+
+      $this->delete($arr_delete);
     }
   }
 
@@ -77,8 +137,38 @@ class TrashModel extends BaseModelAdm
   {
     foreach ( $itens as $item ) {
       $current = Entities::getEntityByName($item['name']);
+
       $model = new $current['model'];
-      $model->delete_permanent($item['id']);
+
+      Sequence::changeSequence($model, $item['id'], 0);
+
+      $this->deleteChildren($current, $item['id']);
+      $tableHistory = $model->getById($item['id']);
+      $validator = new $current['validator'];
+      $validator->setDelDate();
+      $validator->setIsDel('1');
+      $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $item['id']));
+      $this->log('T', $tableHistory[$current['title']], $current['tbl'], $tableHistory, $current['name']);
+    }
+  }
+
+  public function delete_permanent ( $itens )
+  {
+    foreach ( $itens as $item ) {
+      $current = Entities::getEntityByName($item['name']);
+
+      $model = new $current['model'];
+      $info = $model->getById($item['id']);
+
+      //
+      if ( $parent_title = $this->hasParentOnTrash($current, $info) ) {
+        throw new Exception('Favor excluir o ítem ' . $parent_title . ' primeiro');
+      }
+      //
+
+      $model->delete(array(array(
+              'id' => $item['id']
+      )));
     }
   }
 
@@ -91,31 +181,6 @@ class TrashModel extends BaseModelAdm
     }
 
     return $arrOptions;
-  }
-
-  public function validateRestore ( $tbl, $id )
-  {
-    $current = Entities::getEntity($tbl);
-    $parent = Entities::getPai($tbl);
-
-    if ( $parent ) {
-      $model = new $current['model'];
-      $row = $model->getById($id);
-      $id_parent = $row[$parent['id']];
-
-      $select = new Select($parent['tbl']);
-      $select->addField($parent['title'], 'title');
-      $select->where(array(
-          $parent['id'] . ' = ?' => $id_parent,
-          'del = ?' => '1'
-      ));
-
-      $result = $this->_dao->select($select);
-
-      if ( count($result) ) {
-        throw new Exception('É necessário restaurar o ítem: ' . $parent['section'] . ' - ' . $result[0]['title']);
-      }
-    }
   }
 
 }

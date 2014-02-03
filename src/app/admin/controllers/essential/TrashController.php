@@ -61,7 +61,7 @@ class TrashController extends BaseControllerAdm
     try {
       $itens = Post::aray('itens');
 
-      $this->_model->delete($itens);
+      $this->_model->delete_permanent($itens);
 
       Header::redirect(Header::getReferer());
     } catch (Exception $e) {
