@@ -92,24 +92,6 @@ class PageModel extends BaseModelAdm
     $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
   }
 
-  public function getNew ()
-  {
-    return array(
-        'id_page' => null,
-        'id_page_cat' => null,
-        'id_parent' => null,
-        'active' => null,
-        'title' => null,
-        'cover' => null,
-        'content' => null,
-        'description' => null,
-        'keywords' => null,
-        'inc_date' => null,
-        'del_date' => null,
-        'is_del' => null,
-    );
-  }
-
   public function getListArray ( $id_page_cat = null, $id_parent = '', $exclude_id = null )
   {
     $select = new Select('page');
