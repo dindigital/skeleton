@@ -9,6 +9,7 @@
     "dindigital/din": "dev-master",
     "imagine/imagine": "dev-master",
     "phpmailer/phpmailer": "dev-master",
-    "Respect/Validation": "dev-master"
+    "Respect/Validation": "dev-master",
+    "phpoffice/phpexcel": "dev-master"
   }
 }

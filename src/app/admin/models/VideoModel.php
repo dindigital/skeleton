@@ -47,7 +47,7 @@ class VideoModel extends BaseModelAdm
     $validator->setDescription($info['description']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
-    $validator->setDefaultLink('video', $info['title'], $this->getId());
+    $validator->setDefaultUri($info['title'], $this->getId(), 'video');
     $validator->setShortenerLink();
     $validator->setIncDate();
     $validator->throwException();
@@ -65,31 +65,13 @@ class VideoModel extends BaseModelAdm
     $validator->setDescription($info['description']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
-    $validator->setDefaultLink('video', $info['title'], $this->getId());
+    $validator->setDefaultUri($info['title'], $this->getId(), 'video', $info['uri']);
     $validator->setShortenerLink();
     $validator->throwException();
 
     $tableHistory = $this->getById();
     $this->_dao->update($validator->getTable(), array('id_video = ?' => $this->getId()));
     $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
-  }
-
-  public function getNew ()
-  {
-    return array(
-        'id_video' => null,
-        'active' => null,
-        'title' => null,
-        'date' => date('Y-m-d'),
-        'description' => null,
-        'link_youtube' => null,
-        'link_vimeo' => null,
-        'inc_date' => null,
-        'del_date' => null,
-        'is_del' => null,
-        'link' => null,
-        'short_link' => null,
-    );
   }
 
 }
