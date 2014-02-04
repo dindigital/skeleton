@@ -29,6 +29,7 @@ class PageCatModel extends BaseModelAdm
     $select->addField('title');
     $select->addField('inc_date');
     $select->addField('sequence');
+    $select->addField('uri');
     $select->where($arrCriteria);
     $select->order_by('sequence');
 

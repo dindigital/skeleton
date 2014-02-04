@@ -33,6 +33,7 @@ class PageModel extends BaseModelAdm
     $select->addField('title');
     $select->addField('inc_date');
     $select->addField('sequence');
+    $select->addField('uri');
     $select->where($arrCriteria);
     $select->order_by('a.sequence=0,a.sequence,a.title');
 

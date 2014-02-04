@@ -43,6 +43,7 @@ class PhotoModel extends BaseModelAdm
     $select->addField('active');
     $select->addField('title');
     $select->addField('date');
+    $select->addField('uri');
     $select->where($arrCriteria);
     $select->order_by('date DESC');
 

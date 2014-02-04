@@ -20,7 +20,7 @@
         </form>
       </div>
 
-      {$BTN_LISTA_CAD-EXC}
+      {$LIST_HEADER_BTN}
 
       <div class="content">
         <div class="table-responsive">
@@ -44,19 +44,24 @@
                   <td><?php echo $row['title']; ?></td>
                   <td><?php echo $row['inc_date']; ?></td>
                   <td class="text-center">
-                    <a class="label label-default btn_edit" href="#">
+                    <a class="label label-default btn_edit" href="#" title="Editar conteúdo">
                       <i class="fa fa-pencil"></i>
                     </a>
-                    <a class="label label-danger delete_shortcut" href="#">
+                    <a class="label label-danger delete_shortcut" href="#" title="Deletar conteúdo">
                       <i class="fa fa-times"></i>
                     </a>
+                    <?php if ( isset($row['uri']) ) : ?>
+                      <a class="label label-info" target="_blank" title="Visualizar conteúdo" href="<?php echo $row['uri']; ?>">
+                        <i class="fa fa-link"></i>
+                      </a>
+                    <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
             </tbody>
           </table>
 
-          {$PAGINACAO}
+          {$PAGINATION}
 
         </div>
       </div>

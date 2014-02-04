@@ -68,8 +68,8 @@ abstract class BaseControllerAdm extends BaseController
     $this->_data['paginator']['numbers'] = $paginator->getNumbers();
 
     $this->_view->addFile('src/app/admin/views/includes/alert_lista.phtml', '{$ALERT}');
-    $this->_view->addFile('src/app/admin/views/includes/pagination.phtml', '{$PAGINACAO}');
-    $this->_view->addFile('src/app/admin/views/includes/btns_lista_cad-exc.phtml', '{$BTN_LISTA_CAD-EXC}');
+    $this->_view->addFile('src/app/admin/views/includes/pagination.phtml', '{$PAGINATION}');
+    $this->_view->addFile('src/app/admin/views/includes/list_header_btn.phtml', '{$LIST_HEADER_BTN}');
 
     $this->_view->addFile('src/app/admin/views/' . $filename, '{$CONTENT}');
     $this->display_html();

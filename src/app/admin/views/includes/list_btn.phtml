@@ -1,0 +1,11 @@
+<a class="label label-default btn_edit" href="#" title="Editar conteúdo">
+  <i class="fa fa-pencil"></i>
+</a>
+<a class="label label-danger delete_shortcut" href="#" title="Deletar conteúdo">
+  <i class="fa fa-times"></i>
+</a>
+<?php if ( isset($row['uri']) ) : ?>
+  <a class="label label-danger" target="_blank" title="Visualizar conteúdo" href="<?php echo $row['uri']; ?>">
+    <i class="fa fa-link"></i>
+  </a>
+<?php endif; ?>
