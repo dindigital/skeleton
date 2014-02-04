@@ -98,4 +98,12 @@ return array(
         ),
         'parent' => 'page_cat'
     ),
+    'survey' => array(
+        'tbl' => 'survey',
+        'name' => 'Survey',
+        'section' => 'Enquete',
+        'id' => 'id_survey',
+        'title' => 'title',
+        'trash' => true,
+    ),
 );
