@@ -74,22 +74,4 @@ class VideoModel extends BaseModelAdm
     $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
   }
 
-  public function getNew ()
-  {
-    return array(
-        'id_video' => null,
-        'active' => null,
-        'title' => null,
-        'date' => date('Y-m-d'),
-        'description' => null,
-        'link_youtube' => null,
-        'link_vimeo' => null,
-        'inc_date' => null,
-        'del_date' => null,
-        'is_del' => null,
-        'uri' => null,
-        'short_link' => null,
-    );
-  }
-
 }
