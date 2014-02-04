@@ -86,16 +86,11 @@ class PhotoModel extends BaseModelAdm
 
   public function getNew ()
   {
-    return array(
-        'id_photo' => null,
-        'active' => null,
-        'title' => null,
-        'date' => date('Y-m-d'),
-        'is_del' => null,
-        'del_date' => null,
-        'inc_date' => null,
-        'gallery' => null,
-    );
+    $arr_return = parent::getNew();
+    $arr_return['date'] = date('Y-m-d');
+    $arr_return['gallery'] = array();
+
+    return $arr_return;
   }
 
 }

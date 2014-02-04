@@ -54,21 +54,6 @@ class AdminModel extends BaseModelAdm
     $this->log('U', $info['name'], $validator->getTable(), $tableHistory);
   }
 
-  public function getNew ()
-  {
-    return array(
-        'id_admin' => null,
-        'active' => null,
-        'name' => null,
-        'email' => null,
-        'password' => null,
-        'avatar' => null,
-        'inc_date' => null,
-        'password_change_date' => null,
-        'permission' => null,
-    );
-  }
-
   public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(

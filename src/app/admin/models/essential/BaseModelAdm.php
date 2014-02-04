@@ -73,6 +73,23 @@ class BaseModelAdm
     return $row;
   }
 
+  public function getNew ()
+  {
+    $current = Entities::getThis($this);
+
+    $SQL = "DESCRIBE {$current['tbl']}";
+
+    $result = $this->_dao->execute($SQL, array(), true);
+
+    $arr_return = array();
+
+    foreach ( $result as $row ) {
+      $arr_return[$row['Field']] = $row['Default'];
+    }
+
+    return $arr_return;
+  }
+
   public function save ( $info )
   {
     if ( !$this->getId() ) {

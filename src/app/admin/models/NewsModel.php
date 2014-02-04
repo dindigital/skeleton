@@ -105,24 +105,6 @@ class NewsModel extends BaseModelAdm
     $this->_listbox->insertRelationship('r_news_video', 'id_news', $this->getId(), 'id_video', $info['r_news_video']);
   }
 
-  public function getNew ()
-  {
-    return array(
-        'id_news' => null,
-        'id_news_cat' => null,
-        'active' => null,
-        'title' => null,
-        'date' => null,
-        'head' => null,
-        'body' => null,
-        'inc_date' => null,
-        'del_date' => null,
-        'is_del' => null,
-        'cover' => null,
-        'sequence' => null,
-    );
-  }
-
   public function arrayRelationshipPhoto ()
   {
     return $this->_listbox->totalArray('photo', 'id_photo', 'title');
