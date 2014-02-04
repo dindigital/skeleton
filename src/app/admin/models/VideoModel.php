@@ -47,7 +47,7 @@ class VideoModel extends BaseModelAdm
     $validator->setDescription($info['description']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
-    $validator->setDefaultLink('video', $info['title'], $this->getId());
+    $validator->setDefaultUri($info['title'], $this->getId(), 'video');
     $validator->setShortenerLink();
     $validator->setIncDate();
     $validator->throwException();
@@ -65,7 +65,7 @@ class VideoModel extends BaseModelAdm
     $validator->setDescription($info['description']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
-    $validator->setDefaultLink('video', $info['title'], $this->getId());
+    $validator->setDefaultUri($info['title'], $this->getId(), 'video', $info['uri']);
     $validator->setShortenerLink();
     $validator->throwException();
 
@@ -87,7 +87,7 @@ class VideoModel extends BaseModelAdm
         'inc_date' => null,
         'del_date' => null,
         'is_del' => null,
-        'link' => null,
+        'uri' => null,
         'short_link' => null,
     );
   }

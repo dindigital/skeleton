@@ -4,6 +4,7 @@ namespace src\app\admin\viewhelpers;
 
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
+use src\app\admin\helpers\Link;
 
 class VideoViewHelper
 {
@@ -29,6 +30,7 @@ class VideoViewHelper
   {
     $row['title'] = Html::scape($row['title']);
     $row['date'] = DateFormat::filter_date($row['date']);
+    $row['uri'] = Link::formatUri($row['uri']);
 
     return $row;
   }

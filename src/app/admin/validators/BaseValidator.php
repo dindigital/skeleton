@@ -56,17 +56,33 @@ class BaseValidator
     $this->_table->sequence = $sequence;
   }
 
-  public function setDefaultLink ( $area, $title, $id )
+  /**
+   * Adiciona o valor do campo LINK na tabela, seguindo o padrão de desenvolvimento.
+   * Caso haja necessidade de criação de um link diferente, criar um método setLink
+   * no validator da própria tabela.
+   * @param String $title - Titulo do conteúdo (obrigatório)
+   * @param String $id - ID do conteúdo (obrigatório)
+   * @param String $prefix - Prefixo para formar o padrão da URI, caso não adicione nada
+   *                      o link ficará como "/titulo-id/". Adicionando a string:
+   *                      "flores/rosas", teremos "/flores/rosas/titulo-id/"
+   * @param String $link - Usado no editar, possibilita que o administrador altere
+   *                       a formação do link (area do título), mantendo o
+   *                       padrão (prefixo e id).
+   */
+  public function setDefaultUri ( $title, $id, $prefix = '', $uri = null )
   {
-    $area = Uri::format($area);
-    $title = Uri::format($title);
-    $this->_table->link = "/{$area}/{$title}-{$id}/";
+    $id = substr($id, 0, 4);
+    $uri = is_null($uri) || $uri == '' ? Uri::format($title) : Uri::format($uri);
+    if ( $prefix != '' ) {
+      $prefix = '/' . $prefix;
+    }
+    $this->_table->uri = "{$prefix}/{$uri}-{$id}/";
   }
 
   public function setShortenerLink ()
   {
-    if ( URL && BITLY && $this->_table->link ) {
-      $url = URL . $this->_table->link;
+    if ( URL && BITLY && $this->_table->uri ) {
+      $url = URL . $this->_table->uri;
       $bitly = new Bitly(BITLY);
       $bitly->shorten($url);
       if ( $bitly->check() ) {
