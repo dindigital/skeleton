@@ -70,6 +70,7 @@ class PageCatController extends BaseControllerAdm
           'content' => Post::text('content'),
           'description' => Post::text('description'),
           'keywords' => Post::text('keywords'),
+          'uri' => Post::text('uri'),
       );
 
       $this->saveAndRedirect($info);

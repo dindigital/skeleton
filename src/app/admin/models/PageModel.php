@@ -59,6 +59,7 @@ class PageModel extends BaseModelAdm
     $validator->setContent($info['content']);
     $validator->setDescription($info['description']);
     $validator->setKeywords($info['keywords']);
+    $validator->setDefaultUri($info['title'], $this->getId(), 'page');
     $validator->setIncDate();
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
@@ -81,6 +82,7 @@ class PageModel extends BaseModelAdm
     $validator->setContent($info['content']);
     $validator->setDescription($info['description']);
     $validator->setKeywords($info['keywords']);
+    $validator->setDefaultUri($info['title'], $this->getId(), 'page', $info['uri']);
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     $validator->throwException();

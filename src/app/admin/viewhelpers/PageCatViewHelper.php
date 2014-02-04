@@ -5,6 +5,7 @@ namespace src\app\admin\viewhelpers;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use Din\Filters\String\Html;
+use src\app\admin\helpers\Link;
 
 class PageCatViewHelper
 {
@@ -31,6 +32,7 @@ class PageCatViewHelper
     $row['title'] = Html::scape($row['title']);
     $row['content'] = Form::Ck('content', $row['content']);
     $row['cover'] = Form::Upload('cover', $row['cover'], 'image');
+    $row['uri'] = Link::formatUri($row['uri']);
 
     return $row;
   }

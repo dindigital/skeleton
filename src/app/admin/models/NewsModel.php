@@ -67,6 +67,7 @@ class NewsModel extends BaseModelAdm
     $validator->setDate($info['date']);
     $validator->setHead($info['head']);
     $validator->setBody($info['body']);
+    $validator->setDefaultUri($info['title'], $this->getId());
     Sequence::setSequence($this, $validator);
     $validator->setIncDate();
     $mf = new MoveFiles;
@@ -91,6 +92,7 @@ class NewsModel extends BaseModelAdm
     $validator->setDate($info['date']);
     $validator->setHead($info['head']);
     $validator->setBody($info['body']);
+    $validator->setDefaultUri($info['title'], $this->getId(), '', $info['uri']);
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     $validator->throwException();

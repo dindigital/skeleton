@@ -53,6 +53,7 @@ class NewsCatModel extends BaseModelAdm
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setIsHome($info['is_home']);
+    $validator->setDefaultUri($info['title'], $this->getId(), 'news');
     $validator->setIncDate();
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
@@ -71,6 +72,7 @@ class NewsCatModel extends BaseModelAdm
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setIsHome($info['is_home']);
+    $validator->setDefaultUri($info['title'], $this->getId(), 'news', $info['uri']);
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     $validator->throwException();

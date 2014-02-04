@@ -6,6 +6,7 @@ use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use src\app\admin\helpers\Gallery;
 use Din\Filters\String\Html;
+use src\app\admin\helpers\Link;
 
 class PhotoViewHelper
 {
@@ -32,6 +33,7 @@ class PhotoViewHelper
     $row['date'] = DateFormat::filter_date($row['date']);
     $uploader = Form::Upload('gallery_uploader', '', 'image', true, false);
     $row['gallery'] = $uploader . Gallery::get($row['gallery'], 'gallery');
+    $row['uri'] = Link::formatUri($row['uri']);
 
     return $row;
   }

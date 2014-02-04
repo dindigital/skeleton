@@ -50,6 +50,7 @@ abstract class BaseControllerAdm extends BaseController
 
     $this->_view->addFile('src/app/admin/views/includes/alerts.phtml', '{$ALERTS}');
     $this->_view->addFile('src/app/admin/views/includes/submit.phtml', '{$SUBMIT}');
+    $this->_view->addFile('src/app/admin/views/includes/uri.phtml', '{$URI}');
 
     $this->_view->addFile('src/app/admin/views/' . $filename, '{$CONTENT}');
     $this->display_html();

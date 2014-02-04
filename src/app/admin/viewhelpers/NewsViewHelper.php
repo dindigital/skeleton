@@ -5,6 +5,7 @@ namespace src\app\admin\viewhelpers;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use Din\Filters\String\Html;
+use src\app\admin\helpers\Link;
 
 class NewsViewHelper
 {
@@ -33,6 +34,7 @@ class NewsViewHelper
     $row['date'] = isset($row['date']) ? DateFormat::filter_date($row['date']) : date('d/m/Y');
     $row['head'] = Html::scape($row['head']);
     $row['body'] = Form::Ck('body', $row['body']);
+    $row['uri'] = Link::formatUri($row['uri']);
     $row['cover'] = Form::Upload('cover', $row['cover'], 'image');
     $row['id_news_cat'] = Form::Dropdown('id_news_cat', $news_cat_dropdown, $row['id_news_cat'], 'Selecione uma Categoria');
     $row['r_news_photo'] = Form::Listbox('r_news_photo', $listbox['photo_values'], array_keys($listbox['photo_selected']));

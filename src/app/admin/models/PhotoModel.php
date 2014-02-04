@@ -61,6 +61,7 @@ class PhotoModel extends BaseModelAdm
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
+    $validator->setDefaultUri($info['title'], $this->getId(), 'photo');
     $validator->setIncDate();
     $validator->throwException();
 
@@ -75,6 +76,7 @@ class PhotoModel extends BaseModelAdm
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
+    $validator->setDefaultUri($info['title'], $this->getId(), 'photo', $info['uri']);
     $validator->throwException();
 
     $tableHistory = $this->getById();

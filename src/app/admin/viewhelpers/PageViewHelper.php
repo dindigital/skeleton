@@ -5,6 +5,7 @@ namespace src\app\admin\viewhelpers;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use Din\Filters\String\Html;
+use src\app\admin\helpers\Link;
 
 class PageViewHelper
 {
@@ -34,6 +35,7 @@ class PageViewHelper
     $row['title'] = Html::scape($row['title']);
     $row['content'] = Form::Ck('content', $row['content']);
     $row['cover'] = Form::Upload('cover', $row['cover'], 'image');
+    $row['uri'] = Link::formatUri($row['uri']);
     $row['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $row['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 
     $infinite_drop = array();

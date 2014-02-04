@@ -6,6 +6,7 @@ use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use src\app\admin\helpers\Arrays;
 use Din\Filters\String\Html;
+use src\app\admin\helpers\Link;
 
 class NewsCatViewHelper
 {
@@ -34,6 +35,7 @@ class NewsCatViewHelper
   {
     $row['title'] = Html::scape($row['title']);
     $row['cover'] = Form::Upload('cover', $row['cover'], 'image');
+    $row['uri'] = Link::formatUri($row['uri']);
 
     return $row;
   }

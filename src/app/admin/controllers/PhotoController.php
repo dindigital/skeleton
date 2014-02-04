@@ -69,6 +69,7 @@ class PhotoController extends BaseControllerAdm
           'sequence' => Post::text('gallery_sequence'),
           'label' => Post::aray('label'),
           'credit' => Post::aray('credit'),
+          'uri' => Post::text('uri'),
       );
 
       $this->saveAndRedirect($info);
