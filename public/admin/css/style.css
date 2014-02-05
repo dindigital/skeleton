@@ -3240,3 +3240,13 @@ button::-moz-focus-inner {
   height: auto;
   width: 80%;
 }
+
+.responseAjax {
+  display: block!important;
+  clear: both;
+  margin-top: -15px;
+}
+
+.responseAjax.danger {
+  color: red;
+}

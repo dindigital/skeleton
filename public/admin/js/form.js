@@ -124,6 +124,11 @@ $(document).ready(function() {
     search.bind('keyup', ajaxli);
   });
 
+  $('.select2-ajax').each(function() {
+    var url = '/admin/' + $(this).attr('id') + '/ajax/';
+    select2_ajax($(this), url);
+  });
+
 });
 
 function getIdFromYoutube(text) {
@@ -136,6 +141,35 @@ function getIdFromVimeo(url)
   var parseUrl = regExp.exec(url);
   if (parseUrl != null)
     return parseUrl[5];
+}
+
+function select2_ajax(element, url) {
+  $(element).select2({
+    placeholder: "Search for a movie",
+    minimumInputLength: 3,
+    multiple: true,
+    tokenSeparators: [","],
+    ajax: {
+      url: url,
+      dataType: 'json',
+      data: function(term) {
+        return {
+          q: term
+        };
+      },
+      results: function(data) {
+        return {results: data};
+      }
+    },
+    createSearchChoice: function(term, data) {
+      if ($(data).filter(function() {
+        return this.text.localeCompare(term) === 0;
+      }).length === 0) {
+        return {id: term, text: term};
+      }
+    }
+  });
+
 }
 
 function ajaxli() {

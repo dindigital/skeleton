@@ -2,19 +2,19 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\VideoModel as model;
+use src\app\admin\models\TagModel as model;
 use Din\Http\Get;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\viewhelpers\VideoViewHelper as vh;
+use src\app\admin\viewhelpers\TagViewHelper as vh;
 
 /**
  *
  * @package app.controllers
  */
-class VideoController extends BaseControllerAdm
+class TagController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -39,7 +39,7 @@ class VideoController extends BaseControllerAdm
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('video_list.phtml');
+    $this->setListTemplate('tag_list.phtml');
   }
 
   public function get_save ( $id = null )
@@ -49,7 +49,7 @@ class VideoController extends BaseControllerAdm
     $row = $id ? $this->_model->getById() : $this->getPrevious();
     $this->_data['table'] = vh::formatRow($row);
 
-    $this->setSaveTemplate('video_save.phtml');
+    $this->setSaveTemplate('tag_save.phtml');
   }
 
   public function post_save ( $id = null )
@@ -60,18 +60,18 @@ class VideoController extends BaseControllerAdm
       $info = array(
           'active' => Post::checkbox('active'),
           'title' => Post::text('title'),
-          'date' => Post::text('date'),
-          'description' => Post::text('description'),
-          'link_youtube' => Post::text('link_youtube'),
-          'link_vimeo' => Post::text('link_vimeo'),
-          'uri' => Post::text('uri'),
-          'tags' => Post::text('tags'),
       );
 
       $this->saveAndRedirect($info);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+  }
+
+  public function get_ajax ()
+  {
+    $result = $this->_model->getAjax(Get::text('q'));
+    die($result);
   }
 
 }

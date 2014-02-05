@@ -112,4 +112,12 @@ return array(
         'id' => 'id_survey_question',
         'title' => 'question',
     ),
+    'tag' => array(
+        'tbl' => 'tag',
+        'name' => 'Tag',
+        'section' => 'Tags',
+        'id' => 'id_tag',
+        'title' => 'title',
+        'trash' => true,
+    ),
 );
