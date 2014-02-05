@@ -68,4 +68,10 @@ class TagController extends BaseControllerAdm
     }
   }
 
+  public function get_ajax ()
+  {
+    $result = $this->_model->getAjax(Get::text('q'));
+    die($result);
+  }
+
 }

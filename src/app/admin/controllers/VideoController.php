@@ -65,6 +65,7 @@ class VideoController extends BaseControllerAdm
           'link_youtube' => Post::text('link_youtube'),
           'link_vimeo' => Post::text('link_vimeo'),
           'uri' => Post::text('uri'),
+          'tags' => Post::text('tags'),
       );
 
       $this->saveAndRedirect($info);
