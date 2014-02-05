@@ -129,6 +129,24 @@ $(document).ready(function() {
     select2_ajax($(this), url);
   });
 
+  //_# SISTEMA DE ADD/DEL
+  $('.duplication_container .add').click(function() {
+    var last_duplication = $(this).parents('.duplication_container').find('.duplicate_part').last();
+    last_duplication.after(last_duplication.clone());
+
+    $('.duplication_container .del').show();
+  });
+
+  $('.duplication_container .del').click(function() {
+    var duplications = $(this).parents('.duplication_container').find('.duplicate_part');
+    var last_duplication = duplications.last();
+    last_duplication.remove();
+
+    if (duplications.length == 2) {
+      $(this).hide();
+    }
+  });
+
 });
 
 function getIdFromYoutube(text) {
