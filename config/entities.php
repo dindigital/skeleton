@@ -106,4 +106,12 @@ return array(
         'title' => 'title',
         'trash' => true,
     ),
+    'tag' => array(
+        'tbl' => 'tag',
+        'name' => 'Tag',
+        'section' => 'Tags',
+        'id' => 'id_tag',
+        'title' => 'title',
+        'trash' => true,
+    ),
 );

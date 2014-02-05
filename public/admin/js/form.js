@@ -124,6 +124,11 @@ $(document).ready(function() {
     search.bind('keyup', ajaxli);
   });
 
+  $('.tokenInput').each(function() {
+    var url = '/admin/' + $(this).attr('id') + '/' + $(this).attr('name') + '/';
+    tokenInputAjax(url);
+  });
+
 });
 
 function getIdFromYoutube(text) {
@@ -136,6 +141,13 @@ function getIdFromVimeo(url)
   var parseUrl = regExp.exec(url);
   if (parseUrl != null)
     return parseUrl[5];
+}
+
+function tokenInputAjax(url) {
+  $(".tokenInput").tokenInput(url, {
+    method: 'POST',
+    minChars: 3
+  });
 }
 
 function ajaxli() {
