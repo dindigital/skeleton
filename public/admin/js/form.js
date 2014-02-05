@@ -126,6 +126,7 @@ $(document).ready(function() {
 
   $('.select2-ajax').each(function() {
     var url = '/admin/' + $(this).attr('id') + '/ajax/';
+    //var url_init = '/admin/' + $(this).attr('id') + '/ajax_init/';
     select2_ajax($(this), url);
   });
 
@@ -164,7 +165,7 @@ function getIdFromVimeo(url)
 function select2_ajax(element, url) {
   $(element).select2({
     placeholder: "Search for a movie",
-    minimumInputLength: 3,
+    minimumInputLength: 2,
     multiple: true,
     tokenSeparators: [","],
     ajax: {
@@ -179,12 +180,34 @@ function select2_ajax(element, url) {
         return {results: data};
       }
     },
+    initSelection: function(element, callback) {
+      $.ajax(url, {
+        type: 'POST',
+        dataType: "json",
+        data: {
+          id: element.val()
+        }
+      }).done(function(data) {
+        element.removeAttr('value');
+        callback(data);
+      });
+    },
     createSearchChoice: function(term, data) {
       if ($(data).filter(function() {
         return this.text.localeCompare(term) === 0;
       }).length === 0) {
         return {id: term, text: term};
       }
+    }
+  });
+
+  $(element).select2("container").find("ul.select2-choices").sortable({
+    containment: 'parent',
+    start: function() {
+      $(element).select2("onSortStart");
+    },
+    update: function() {
+      $(element).select2("onSortEnd");
     }
   });
 

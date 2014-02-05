@@ -29,11 +29,6 @@ class TagValidator extends BaseValidator
 
   public function setTag ( $dao, $row )
   {
-    if ( !v::string()->notEmpty()->validate($row) )
-      continue;
-
-    if ( !v::string()->length(1, 255)->validate($row) )
-      continue;
 
     $arrCriteria = array(
         'id_tag = ?' => $row

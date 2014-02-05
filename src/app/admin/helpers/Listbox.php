@@ -29,8 +29,9 @@ class Listbox
     $validator = new RelationshipValidator($tbl);
     $validator->$tblField = $tblId;
     $this->_dao->delete($tbl, array("{$tblField} = ?" => $tblId));
-    foreach ( $relationship as $row ) {
+    foreach ( $relationship as $index => $row ) {
       $validator->$relationshipField = $row;
+      $validator->sequence = $index;
       $this->_dao->insert($validator->getTable());
     }
   }
