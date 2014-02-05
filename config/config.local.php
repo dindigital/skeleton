@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'url' => 'http://framework.mariosmello.com',
+    'url' => 'http://framework.jairjunior.com.br',
     'smtp_host' => 'smtp.mandrillapp.com',
     'smtp_user' => 'financeiro@dindigital.com',
     'smtp_pass' => 'bIWsNmzxJIqaMif5nE2bEg',

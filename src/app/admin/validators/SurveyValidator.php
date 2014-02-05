@@ -26,4 +26,10 @@ class SurveyValidator extends BaseValidator
     $this->_table->title = $title;
   }
 
+  public function setTotalQuestions ( $count )
+  {
+    if ( $count == 0 )
+      return JsonException::addException('É necessário ter no mínimo 1 questão');
+  }
+
 }

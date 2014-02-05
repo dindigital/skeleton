@@ -6,6 +6,7 @@ use src\app\admin\validators\SurveyValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
+use src\app\admin\models\SurveyQuestionModel;
 
 /**
  *
@@ -17,7 +18,8 @@ class SurveyModel extends BaseModelAdm
   public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(
-        'title LIKE ?' => '%' . $arrFilters['title'] . '%'
+        'title LIKE ?' => '%' . $arrFilters['title'] . '%',
+        'is_del = ?' => '0'
     );
 
     $select = new Select('survey');
@@ -36,18 +38,59 @@ class SurveyModel extends BaseModelAdm
     return $result;
   }
 
+  public function getById ( $id = null )
+  {
+    $row = parent::getById($id);
+
+    $sq = new SurveyQuestionModel;
+    $row['question'] = $sq->getByIdSurvey($row['id_survey']);
+
+    return $row;
+  }
+
+  public function getNew ()
+  {
+    $row = parent::getNew();
+    $row['question'] = array();
+
+    return $row;
+  }
+
   public function insert ( $info )
   {
+    //_# Valida o questionario container
     $validator = new validator();
     $this->setId($validator->setId($this));
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
-    $validator->setDefaultUri($info['title'], $this->getId(), 'survey');
+    $validator->setTotalQuestions(count($info['question']));
+    $validator->setDefaultUri($info['title'], $this->getId(), 'opine');
     $validator->setIncDate();
+
+    //_# Valida e armazena as questões em array
+    $arr_sq = array();
+
+    foreach ( $info['question'] as $question ) {
+      $sq = new SurveyQuestionModel;
+      $sq->validate_insert(array(
+          'id_survey' => $this->getId(),
+          'question' => $question
+      ));
+
+      $arr_sq[] = $sq;
+    }
+
+    //_# Arremeça exceptions
     $validator->throwException();
 
+    //_# Salva o questionário container
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
+
+    //_# Salva as questões
+    foreach ( $arr_sq as $sq ) {
+      $sq->insert();
+    }
   }
 
   public function update ( $info )
@@ -55,12 +98,33 @@ class SurveyModel extends BaseModelAdm
     $validator = new validator();
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
-    $validator->setDefaultUri($info['title'], $this->getId(), 'survey', $info['uri']);
+    $validator->setDefaultUri($info['title'], $this->getId(), 'opine', $info['uri']);
+
+    //_# Valida e armazena as questões em array
+    $arr_sq = array();
+
+    foreach ( $info['question'] as $question_id => $question ) {
+      $sq = new SurveyQuestionModel;
+      $sq->setId($question_id);
+      $sq->validate_update(array(
+          'question' => $question,
+      ));
+
+      $arr_sq[] = $sq;
+    }
+
+    //_# Arremeça exceptions
     $validator->throwException();
 
+    //_# Salva o questionário container
     $tableHistory = $this->getById();
     $this->_dao->update($validator->getTable(), array('id_survey = ?' => $this->getId()));
     $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
+
+    //_# Salva as questões
+    foreach ( $arr_sq as $sq ) {
+      $sq->update();
+    }
   }
 
   public function getListArray ()

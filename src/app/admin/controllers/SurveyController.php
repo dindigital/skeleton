@@ -65,6 +65,7 @@ class SurveyController extends BaseControllerAdm
           'active' => Post::checkbox('active'),
           'title' => Post::text('title'),
           'uri' => Post::text('uri'),
+          'question' => Post::aray('question'),
       );
 
       $this->saveAndRedirect($info);
