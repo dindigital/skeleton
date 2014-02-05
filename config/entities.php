@@ -106,4 +106,10 @@ return array(
         'title' => 'title',
         'trash' => true,
     ),
+    'survey_question' => array(
+        'tbl' => 'survey_question',
+        'name' => 'SurveyQuestion',
+        'id' => 'id_survey_question',
+        'title' => 'question',
+    ),
 );
