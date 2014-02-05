@@ -101,7 +101,7 @@ return array(
     'survey' => array(
         'tbl' => 'survey',
         'name' => 'Survey',
-        'section' => 'Enquete',
+        'section' => 'Pesquisa de Satisfação',
         'id' => 'id_survey',
         'title' => 'title',
         'trash' => true,
