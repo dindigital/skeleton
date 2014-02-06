@@ -111,7 +111,7 @@ class NewsModel extends BaseModelAdm
     $relationshipModel = new RelationshipModel();
     $relationshipModel->setCurrentSection('news');
     $relationshipModel->setRelationshipSection($tbl);
-    $relationshipModel->insert2($this->getId(), $array);
+    $relationshipModel->smartInsert($this->getId(), $array);
   }
 
 }

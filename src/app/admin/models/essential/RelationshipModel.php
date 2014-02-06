@@ -111,21 +111,21 @@ class RelationshipModel extends BaseModelAdm
       }
     }
 
-    $this->insert_relationship($arrayId, $id);
+    $this->insertRelationship($arrayId, $id);
   }
 
-  public function insert2 ( $id, $item )
+  public function smartInsert ( $id, $item )
   {
     $arrayItem = explode(',', $item);
     $arrayId = array();
 
     foreach ( $arrayItem as $row ) {
-      if ( !$this->count($row) ) {
+      if ( $this->count($row) ) {
         $arrayId[] = $row;
       }
     }
 
-    $this->insert_relationship($arrayId, $id);
+    $this->insertRelationship($arrayId, $id);
   }
 
   private function count ( $row )
@@ -141,7 +141,7 @@ class RelationshipModel extends BaseModelAdm
     return (bool) count($result);
   }
 
-  private function insert_relationship ( $arrayId, $id )
+  private function insertRelationship ( $arrayId, $id )
   {
     $tablename_relationship = "r_{$this->currentSection['tbl']}_{$this->relationshipSection['tbl']}";
     $table_relashionship = new Table($tablename_relationship);
