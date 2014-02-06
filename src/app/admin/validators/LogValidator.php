@@ -3,15 +3,9 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use Din\DataAccessLayer\Table\Table;
 
 class LogValidator extends BaseValidator
 {
-
-  public function __construct ()
-  {
-    $this->_table = new Table('log');
-  }
 
   public function setAdmin ( $admin )
   {

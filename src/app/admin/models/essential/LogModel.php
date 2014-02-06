@@ -15,6 +15,12 @@ use src\app\admin\helpers\Entities;
 class LogModel extends BaseModelAdm
 {
 
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->setTable('log');
+  }
+
   public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(

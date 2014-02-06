@@ -8,6 +8,7 @@ return array(
     'log' => array(
         'name' => 'Log',
         'section' => 'Log',
+        'id' => 'id_log',
     ),
     'settings' => array(
         'tbl' => 'settings',

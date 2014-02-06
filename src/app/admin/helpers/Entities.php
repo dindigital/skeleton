@@ -22,11 +22,9 @@ class Entities
   private static function understandEntities ()
   {
     foreach ( self::$entities as $i => $entity ) {
-      if ( $entity['name'] == 'Gallery' ) {
-        self::$entities[$i]['model'] = '\src\app\admin\models\essential\\' . $entity['name'] . 'Model';
-      } else {
-        self::$entities[$i]['model'] = '\src\app\admin\models\\' . $entity['name'] . 'Model';
-      }
+      $add_path = in_array($entity['name'], array('Gallery', 'Log')) ? '\essential' : '';
+
+      self::$entities[$i]['model'] = '\src\app\admin\models' . $add_path . '\\' . $entity['name'] . 'Model';
       self::$entities[$i]['validator'] = '\src\app\admin\validators\\' . $entity['name'] . 'Validator';
     }
   }

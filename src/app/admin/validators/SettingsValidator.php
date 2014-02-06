@@ -10,14 +10,8 @@ use Din\Exception\JsonException;
 class SettingsValidator extends BaseValidator
 {
 
-  public function __construct ()
-  {
-    $this->_table = new Table('settings');
-  }
-
   public function setHomeTitle ( $home_title )
   {
-
     if ( !v::string()->notEmpty()->validate($home_title) )
       JsonException::addException('Title Home é obrigatório');
 

@@ -2,12 +2,20 @@
 
 namespace src\app\admin\models\essential;
 
-use src\app\admin\validators\LogValidator;
+use src\app\admin\validators\LogValidator as validator;
 use src\app\admin\models\essential\LogAbstract;
 use src\app\admin\models\essential\LogInterface;
+use Din\DataAccessLayer\Table\Table;
 
 class LogMySQLModel extends LogAbstract implements LogInterface
 {
+
+  protected $_table;
+
+  public function __construct ()
+  {
+    $this->_table = new Table('log');
+  }
 
   public static function save ( $dao, $admin, $action, $msg, $name, $table, $tableHistory )
   {
@@ -24,7 +32,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
 
   public function insert ()
   {
-    $validator = new LogValidator();
+    $validator = new validator($this->_table);
     $validator->setAdmin($this->admin['name']);
     $validator->setName($this->name);
     $validator->setAction('C');
@@ -32,7 +40,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
     $validator->setContent(json_encode($this->table->setted_values));
     $validator->setIncDate();
 
-    $this->_dao->insert($validator->getTable());
+    $this->_dao->insert($this->_table);
   }
 
   public function update ()
@@ -55,7 +63,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
       $content = 'Não houveram alterações';
     }
 
-    $validator = new LogValidator();
+    $validator = new validator($this->_table);
     $validator->setAdmin($this->admin['name']);
     $validator->setName($this->name);
     $validator->setAction('U');
@@ -63,12 +71,12 @@ class LogMySQLModel extends LogAbstract implements LogInterface
     $validator->setContent($content);
     $validator->setIncDate();
 
-    $this->_dao->insert($validator->getTable());
+    $this->_dao->insert($this->_table);
   }
 
   public function deleteRestore ( $action )
   {
-    $validator = new LogValidator();
+    $validator = new validator($this->_table);
     $validator->setAdmin($this->admin['name']);
     $validator->setName($this->name);
     $validator->setAction($action);
@@ -76,7 +84,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
     $validator->setContent(json_encode($this->tableHistory));
     $validator->setIncDate();
 
-    $this->_dao->insert($validator->getTable());
+    $this->_dao->insert($this->_table);
   }
 
 }

@@ -3,7 +3,6 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use Din\DataAccessLayer\Table\Table;
 use Respect\Validation\Validator as v;
 use Din\Exception\JsonException;
 use Din\DataAccessLayer\Select;
@@ -14,9 +13,9 @@ class AdminPasswordValidator extends BaseValidator
 
   private $_dao;
 
-  public function __construct ( $dao )
+  public function __construct ( $table, $dao )
   {
-    $this->_table = new Table('admin');
+    parent::__construct($table);
     $this->_dao = $dao;
   }
 
