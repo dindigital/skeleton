@@ -6,7 +6,6 @@ use src\app\admin\validators\TagValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
-use \src\app\admin\helpers\Listbox;
 
 /**
  *
@@ -66,6 +65,18 @@ class TagModel extends BaseModelAdm
     $tableHistory = $this->getById();
     $this->_dao->update($this->_table, array('id_tag = ?' => $this->getId()));
     $this->log('U', $info['title'], $this->_table, $tableHistory);
+  }
+
+  public function short_insert ( $title )
+  {
+    $this->setNewId();
+    $validator = new validator($this->_table);
+    $validator->setTitle($title);
+    $validator->setIncDate();
+    $validator->throwException();
+
+    $this->_dao->insert($this->_table);
+    $this->log('C', $title, $this->_table);
   }
 
 }

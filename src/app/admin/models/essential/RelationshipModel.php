@@ -5,7 +5,7 @@ namespace src\app\admin\models\essential;
 use src\app\admin\models\essential\BaseModelAdm;
 use src\app\admin\helpers\Entities;
 use Din\DataAccessLayer\Select;
-use src\app\admin\validators\RelationshipValidator;
+use Din\DataAccessLayer\Table\Table;
 
 class RelationshipModel extends BaseModelAdm
 {
@@ -97,23 +97,17 @@ class RelationshipModel extends BaseModelAdm
 
   public function insert ( $id, $item )
   {
-    $arrayItem = explode(',', $item);
+    $arrayItem = (trim($item) != '') ? explode(',', $item) : array();
     $arrayId = array();
 
-    $validator = new $this->relationshipSection['validator']();
-    $set = 'set' . ucfirst($this->relationshipSection['title']);
-    $model = new $this->relationshipSection['model']();
+    $model = new $this->relationshipSection['model'];
 
     foreach ( $arrayItem as $row ) {
-      $this->setId($validator->setId($model));
-      $validator->setActive(1);
-      $validator->setIncDate();
       if ( $this->count($row) ) {
-        $validator->$set($row);
-        $this->_dao->insert($validator->getTable());
-        $arrayId[] = $this->getId();
-      } else {
         $arrayId[] = $row;
+      } else {
+        $model->short_insert($row);
+        $arrayId[] = $model->getId();
       }
     }
 
@@ -144,27 +138,25 @@ class RelationshipModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
-    if ( count($result) )
-      return false;
-
-    return true;
+    return (bool) count($result);
   }
 
   private function insert_relationship ( $arrayId, $id )
   {
-    $tableRelationship = "r_{$this->currentSection['tbl']}_{$this->relationshipSection['tbl']}";
+    $tablename_relationship = "r_{$this->currentSection['tbl']}_{$this->relationshipSection['tbl']}";
+    $table_relashionship = new Table($tablename_relationship);
 
-    $validator = new RelationshipValidator($tableRelationship);
     $fieldCurrent = $this->currentSection['id'];
-    $validator->$fieldCurrent = $id;
-    $this->_dao->delete($tableRelationship, array("{$this->currentSection['id']} = ?" => $id));
     $fieldRelationship = $this->relationshipSection['id'];
+
+    $this->_dao->delete($tablename_relationship, array("{$fieldCurrent} = ?" => $id));
+
+    $table_relashionship->{$fieldCurrent} = $id;
     foreach ( $arrayId as $index => $row ) {
-      $validator->$fieldRelationship = $row;
-      $validator->sequence = $index;
-      $this->_dao->insert($validator->getTable());
+      $table_relashionship->$fieldRelationship = $row;
+      $table_relashionship->sequence = $index;
+      $this->_dao->insert($table_relashionship);
     }
   }
 
 }
-
