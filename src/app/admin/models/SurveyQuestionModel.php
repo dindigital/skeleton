@@ -13,40 +13,38 @@ use Din\DataAccessLayer\Select;
 class SurveyQuestionModel extends BaseModelAdm
 {
 
-  protected $_validator;
-
   public function __construct ()
   {
     parent::__construct();
-    $this->_validator = new validator;
+    $this->setTable('survey_question');
   }
 
   public function validate_insert ( $info )
   {
-    $this->setId($this->_validator->setId($this));
-    $this->_validator->setQuestion($info['question']);
-    $this->_validator->setIdSurvey($info['id_survey']);
+    $this->setNewId();
+    $validator = new validator($this->_table);
+    $validator->setQuestion($info['question']);
+    $validator->setIdSurvey($info['id_survey']);
   }
 
   public function validate_update ( $info )
   {
-    $this->_validator->setQuestion($info['question']);
+    $validator = new validator($this->_table);
+    $validator->setQuestion($info['question']);
   }
 
   public function insert ()
   {
-    $table = $this->_validator->getTable();
-    $this->_dao->insert($table);
-    $this->log('C', $table->question, $table);
+    $this->_dao->insert($this->_table);
+    $this->log('C', $this->_table->question, $this->_table);
   }
 
   public function update ()
   {
     $tableHistory = $this->getById();
 
-    $table = $this->_validator->getTable();
-    $this->_dao->update($table, array('id_survey_question = ?' => $this->getId()));
-    $this->log('U', $table->question, $table, $tableHistory);
+    $this->_dao->update($this->_table, array('id_survey_question = ?' => $this->getId()));
+    $this->log('U', $this->_table->question, $this->_table, $tableHistory);
   }
 
   public function getByIdSurvey ( $id_survey )

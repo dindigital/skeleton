@@ -23,6 +23,7 @@ class NewsModel extends BaseModelAdm
   {
     parent::__construct();
     $this->_listbox = new Listbox($this->_dao);
+    $this->setTable('news');
   }
 
   public function getList ( $arrFilters = array() )
@@ -60,8 +61,8 @@ class NewsModel extends BaseModelAdm
 
   public function insert ( $info )
   {
-    $validator = new validator();
-    $this->setId($validator->setId($this));
+    $this->setNewId();
+    $validator = new validator($this->_table);
     $validator->setIdNewsCat($info['id_news_cat']);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
@@ -77,8 +78,8 @@ class NewsModel extends BaseModelAdm
 
     $mf->move();
 
-    $this->_dao->insert($validator->getTable());
-    $this->log('C', $info['title'], $validator->getTable());
+    $this->_dao->insert($this->_table);
+    $this->log('C', $info['title'], $this->_table);
 
     $this->_listbox->insertRelationship('r_news_photo', 'id_news', $this->getId(), 'id_photo', $info['r_news_photo']);
     $this->_listbox->insertRelationship('r_news_video', 'id_news', $this->getId(), 'id_video', $info['r_news_video']);
@@ -86,7 +87,7 @@ class NewsModel extends BaseModelAdm
 
   public function update ( $info )
   {
-    $validator = new validator();
+    $validator = new validator($this->_table);
     $validator->setIdNewsCat($info['id_news_cat']);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
@@ -101,8 +102,8 @@ class NewsModel extends BaseModelAdm
     $mf->move();
 
     $tableHistory = $this->getById();
-    $this->_dao->update($validator->getTable(), array('id_news = ?' => $this->getId()));
-    $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
+    $this->_dao->update($this->_table, array('id_news = ?' => $this->getId()));
+    $this->log('U', $info['title'], $this->_table, $tableHistory);
 
     $this->_listbox->insertRelationship('r_news_photo', 'id_news', $this->getId(), 'id_photo', $info['r_news_photo']);
     $this->_listbox->insertRelationship('r_news_video', 'id_news', $this->getId(), 'id_video', $info['r_news_video']);
@@ -115,12 +116,12 @@ class NewsModel extends BaseModelAdm
 
   public function selectedRelationshipPhoto ()
   {
-    return $this->_listbox->selectedArray('photo', 'id_photo', 'title', 'r_news_photo', 'id_news', $this->_id);
+    return $this->_listbox->selectedArray('photo', 'id_photo', 'title', 'r_news_photo', 'id_news', $this->getId());
   }
 
   public function arrayRelationshipVideo ()
   {
-    return $this->_listbox->selectedArray('video', 'id_video', 'title', 'r_news_video', 'id_news', $this->_id);
+    return $this->_listbox->selectedArray('video', 'id_video', 'title', 'r_news_video', 'id_news', $this->getId());
   }
 
   public function ajaxRelationshipVideo ( $term )

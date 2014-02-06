@@ -14,8 +14,7 @@ use src\app\admin\helpers\MoveFiles;
 class GalleryModel extends BaseModelAdm
 {
 
-  private $_table;
-  private $_table_item;
+  protected $_table_item;
 
   public function __construct ( $table, $table_item )
   {

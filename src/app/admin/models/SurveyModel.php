@@ -15,6 +15,12 @@ use src\app\admin\models\SurveyQuestionModel;
 class SurveyModel extends BaseModelAdm
 {
 
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->setTable('survey');
+  }
+
   public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(
@@ -59,8 +65,8 @@ class SurveyModel extends BaseModelAdm
   public function insert ( $info )
   {
     //_# Valida o questionario container
-    $validator = new validator();
-    $this->setId($validator->setId($this));
+    $this->setNewId();
+    $validator = new validator($this->_table);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setTotalQuestions(count($info['question']));
@@ -84,8 +90,8 @@ class SurveyModel extends BaseModelAdm
     $validator->throwException();
 
     //_# Salva o questionário container
-    $this->_dao->insert($validator->getTable());
-    $this->log('C', $info['title'], $validator->getTable());
+    $this->_dao->insert($this->_table);
+    $this->log('C', $info['title'], $this->_table);
 
     //_# Salva as questões
     foreach ( $arr_sq as $sq ) {
@@ -95,7 +101,7 @@ class SurveyModel extends BaseModelAdm
 
   public function update ( $info )
   {
-    $validator = new validator();
+    $validator = new validator($this->_table);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDefaultUri($info['title'], $this->getId(), 'opine', $info['uri']);

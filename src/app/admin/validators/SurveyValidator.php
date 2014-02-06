@@ -3,17 +3,11 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 use Respect\Validation\Validator as v;
 
 class SurveyValidator extends BaseValidator
 {
-
-  public function __construct ()
-  {
-    $this->_table = new Table('survey');
-  }
 
   public function setTitle ( $title )
   {

@@ -8,11 +8,17 @@ use Din\Exception\JsonException;
 use src\app\admin\helpers\Entities;
 use Din\UrlShortener\Bitly\Bitly;
 use src\app\admin\helpers\MoveFiles;
+use Din\DataAccessLayer\Table\iTable;
 
 class BaseValidator
 {
 
   protected $_table;
+
+  public function __construct ( iTable $table )
+  {
+    $this->_table = $table;
+  }
 
   public function setId ( $model )
   {

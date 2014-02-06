@@ -3,17 +3,11 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 use src\app\admin\models\PageCatModel;
 
 class PageValidator extends BaseValidator
 {
-
-  public function __construct ()
-  {
-    $this->_table = new Table('page');
-  }
 
   public function setIdPageCat ( $id_page_cat )
   {

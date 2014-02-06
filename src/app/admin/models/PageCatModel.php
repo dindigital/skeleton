@@ -16,6 +16,12 @@ use src\app\admin\helpers\MoveFiles;
 class PageCatModel extends BaseModelAdm
 {
 
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->setTable('page_cat');
+  }
+
   public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(
@@ -44,8 +50,8 @@ class PageCatModel extends BaseModelAdm
 
   public function insert ( $info )
   {
-    $validator = new validator;
-    $this->setId($validator->setId($this));
+    $this->setNewId();
+    $validator = new validator($this->_table);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setContent($info['content']);
@@ -60,13 +66,13 @@ class PageCatModel extends BaseModelAdm
 
     $mf->move();
 
-    $this->_dao->insert($validator->getTable());
-    $this->log('C', $info['title'], $validator->getTable());
+    $this->_dao->insert($this->_table);
+    $this->log('C', $info['title'], $this->_table);
   }
 
   public function update ( $info )
   {
-    $validator = new validator;
+    $validator = new validator($this->_table);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setContent($info['content']);
@@ -80,8 +86,8 @@ class PageCatModel extends BaseModelAdm
     $mf->move();
 
     $tableHistory = $this->getById();
-    $this->_dao->update($validator->getTable(), array('id_page_cat = ?' => $this->getId()));
-    $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
+    $this->_dao->update($this->_table, array('id_page_cat = ?' => $this->getId()));
+    $this->log('U', $info['title'], $this->_table, $tableHistory);
   }
 
   public function getListArray ()

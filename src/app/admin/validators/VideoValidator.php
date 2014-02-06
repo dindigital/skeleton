@@ -3,18 +3,12 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 use Din\Filters\Date\DateToSql;
 use Respect\Validation\Validator as v;
 
 class VideoValidator extends BaseValidator
 {
-
-  public function __construct ()
-  {
-    $this->_table = new Table('video');
-  }
 
   public function setTitle ( $title )
   {

@@ -10,6 +10,7 @@ use Din\File\Folder;
 use src\app\admin\helpers\Sequence;
 use Exception;
 use src\app\admin\models\essential\LogMySQLModel as log;
+use Din\DataAccessLayer\Table\Table;
 
 class BaseModelAdm
 {
@@ -17,12 +18,38 @@ class BaseModelAdm
   protected $_dao;
   protected $_paginator = null;
   protected $_itens_per_page = 20;
-  protected $_id;
+  protected $_table;
 
   public function __construct ()
   {
     $this->_dao = new DAO(PDOBuilder::build(DB_TYPE, DB_HOST, DB_SCHEMA, DB_USER, DB_PASS));
     $this->setUpEntities();
+  }
+
+  public function setTable ( $tablename )
+  {
+    $this->_table = new Table($tablename);
+  }
+
+  public function setNewId ()
+  {
+    $this->setId(md5(uniqid()));
+  }
+
+  public function setId ( $id )
+  {
+    $entity = Entities::getThis($this);
+    $property = $entity['id'];
+
+    $this->_table->{$property} = $id;
+  }
+
+  public function getId ()
+  {
+    $entity = Entities::getThis($this);
+    $property = $entity['id'];
+
+    return $this->_table->{$property};
   }
 
   private function setUpEntities ()
@@ -35,16 +62,6 @@ class BaseModelAdm
     $total = $this->_dao->select_count($select);
     $offset = $this->_paginator->getOffset($total);
     $select->setLimit($this->_itens_per_page, $offset);
-  }
-
-  public function setId ( $id )
-  {
-    $this->_id = $id;
-  }
-
-  public function getId ()
-  {
-    return $this->_id;
   }
 
   public function getById ( $id = null )
@@ -174,7 +191,7 @@ class BaseModelAdm
     $current = Entities::getThis($this);
 
     $tableHistory = $this->getById($id);
-    $validator = new $current['validator'];
+    $validator = new $current['validator'](new Table($current['tbl']));
     $validator->setActive($active);
     $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $id));
     $this->log('U', $tableHistory[$current['title']], $validator->getTable(), $tableHistory);
@@ -194,7 +211,7 @@ class BaseModelAdm
   {
     $current = Entities::getThis($this);
 
-    $validator = new $current['validator'];
+    $validator = new $current['validator'](new Table($current['tbl']));
     $validator->setSequence($sequence);
     $this->_dao->update($validator->getTable(), array($current['id'] . '= ? ' => $id));
   }
