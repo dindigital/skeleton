@@ -130,6 +130,12 @@ $(document).ready(function() {
     select2_ajax($(this), currentSection, relationshipSection);
   });
 
+  $('.select2-static').each(function() {
+    var currentSection = $(this).attr('id');
+    var relationshipSection = $(this).attr('name');
+    select2_static($(this), currentSection, relationshipSection);
+  });
+
   //_# SISTEMA DE ADD/DEL
   $('.duplication_container .add').click(function() {
     var last_duplication = $(this).parents('.duplication_container').find('.duplicate_part').last();
@@ -208,6 +214,52 @@ function select2_ajax(element, currentSection, relationshipSection) {
     }
   });
 
+  select2_drag(element);
+
+}
+
+function select2_static(element, currentSection, relationshipSection) {
+
+  var url = '/admin/' + relationshipSection + '/ajax_relationship/';
+
+  $.ajax({
+    url: url,
+    dataType: 'json',
+    data: {
+      q: '',
+      currentSection: currentSection,
+      relationshipSection: relationshipSection
+    }
+  }).done(function(data) {
+
+    $(element).select2({
+      placeholder: "Selecionar",
+      multiple: true,
+      tokenSeparators: [","],
+      data: data,
+      initSelection: function(element, callback) {
+        $.ajax(url, {
+          type: 'POST',
+          dataType: "json",
+          data: {
+            id: element.val(),
+            currentSection: currentSection,
+            relationshipSection: relationshipSection
+          }
+        }).done(function(data) {
+          element.removeAttr('value');
+          callback(data);
+        });
+      }
+    });
+
+    select2_drag(element);
+
+  });
+
+}
+
+function select2_drag(element) {
   $(element).select2("container").find("ul.select2-choices").sortable({
     containment: 'parent',
     start: function() {

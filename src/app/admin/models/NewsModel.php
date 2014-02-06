@@ -9,6 +9,7 @@ use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\helpers\Sequence;
 use src\app\admin\helpers\Listbox;
 use src\app\admin\helpers\MoveFiles;
+use src\app\admin\models\essential\RelationshipModel;
 
 /**
  *
@@ -83,6 +84,8 @@ class NewsModel extends BaseModelAdm
 
     $this->_listbox->insertRelationship('r_news_photo', 'id_news', $this->getId(), 'id_photo', $info['r_news_photo']);
     $this->_listbox->insertRelationship('r_news_video', 'id_news', $this->getId(), 'id_video', $info['r_news_video']);
+
+    $this->relationship('photo', $info['photo']);
   }
 
   public function update ( $info )
@@ -107,6 +110,16 @@ class NewsModel extends BaseModelAdm
 
     $this->_listbox->insertRelationship('r_news_photo', 'id_news', $this->getId(), 'id_photo', $info['r_news_photo']);
     $this->_listbox->insertRelationship('r_news_video', 'id_news', $this->getId(), 'id_video', $info['r_news_video']);
+
+    $this->relationship('photo', $info['photo']);
+  }
+
+  private function relationship ( $tbl, $array )
+  {
+    $relationshipModel = new RelationshipModel();
+    $relationshipModel->setCurrentSection('news');
+    $relationshipModel->setRelationshipSection($tbl);
+    $relationshipModel->insert2($this->getId(), $array);
   }
 
   public function arrayRelationshipPhoto ()

@@ -87,6 +87,7 @@ class NewsController extends BaseControllerAdm
           'cover' => Post::upload('cover'),
           'r_news_photo' => Post::aray('r_news_photo'),
           'r_news_video' => Post::aray('r_news_video'),
+          'photo' => Post::text('photo'),
       );
 
       $this->saveAndRedirect($info);

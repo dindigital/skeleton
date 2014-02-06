@@ -7,12 +7,14 @@ use src\app\admin\models\essential\AdminAuthModel;
 use Exception;
 use Din\Session\Session;
 use Din\Image\Picuri;
+use Din\Http\Get;
 use Din\Http\Post;
 use Din\Http\Header;
 use src\app\admin\helpers\Entities;
 use src\app\admin\models\essential\PermissionModel;
 use Din\ViewHelpers\JsonViewHelper;
 use src\app\admin\models\essential\TrashModel;
+use src\app\admin\models\essential\RelationshipModel;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -220,6 +222,23 @@ abstract class BaseControllerAdm extends BaseController
     } catch (Exception $e) {
       $this->setErrorSession($e->getMessage());
     }
+  }
+
+  public function get_ajax_relationship ()
+  {
+    $relationshipModel = new RelationshipModel();
+    $relationshipModel->setRelationshipSection(Get::text('relationshipSection'));
+    $result = $relationshipModel->getAjax(Get::text('q'));
+    die($result);
+  }
+
+  public function post_ajax_relationship ()
+  {
+    $relationshipModel = new RelationshipModel();
+    $relationshipModel->setCurrentSection(Post::text('currentSection'));
+    $relationshipModel->setRelationshipSection(Post::text('relationshipSection'));
+    $result = $relationshipModel->getAjaxCurrent(Post::text('id'));
+    die($result);
   }
 
 }

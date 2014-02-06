@@ -46,7 +46,7 @@ class RelationshipModel extends BaseModelAdm
    */
   public function getAjax ( $q )
   {
-    $arrCriteria["{ $this->relationshipSection['title']} LIKE ?"] = '%' . $q . '%';
+    $arrCriteria["{$this->relationshipSection['title']} LIKE ?"] = '%' . $q . '%';
 
     if ( $this->relationshipSection['trash'] == true ) {
       $arrCriteria['is_del = ?'] = '0';
@@ -120,7 +120,7 @@ class RelationshipModel extends BaseModelAdm
     $this->insert_relationship($arrayId, $id);
   }
 
-  public function save ( $id, $item )
+  public function insert2 ( $id, $item )
   {
     $arrayItem = explode(',', $item);
     $arrayId = array();
