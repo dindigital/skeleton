@@ -15,7 +15,7 @@ class LogViewHelper
   {
     foreach ( $result as $i => $row ) {
       $result[$i]['action'] = Arrays::$logAcao[$row['action']];
-      $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
+      $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date'], 'd/m/Y H:i:s');
       $atual = Entities::getEntityByName($row['name']);
       $result[$i]['name'] = $atual['section'];
     }
@@ -36,7 +36,7 @@ class LogViewHelper
   public static function formatRow ( $row )
   {
     $row['description'] = Html::scape($row['description']);
-    $row['inc_date'] = DateFormat::filter_date($row['inc_date']);
+    $row['inc_date'] = DateFormat::filter_date($row['inc_date'], 'd/m/Y H:i:s');
     $row['action'] = Arrays::$logAcao[$row['action']];
     $row['cont'] = json_decode($row['content']);
 
