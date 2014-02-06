@@ -60,12 +60,11 @@ function select2_ajax(element, currentSection, relationshipSection) {
     }
   });
 
-  $(element).next().find('.select2-btn-all').remove();
-  select2_drag(element);
+  select2_drag(element, currentSection, relationshipSection, url);
 
 }
 
-function select2_static(element, currentSection, relationshipSection) {
+function select2_static(element, currentSection, relationshipSection, url) {
 
   var url = '/admin/' + relationshipSection + '/ajax_relationship/';
 
@@ -100,27 +99,13 @@ function select2_static(element, currentSection, relationshipSection) {
       }
     });
 
-    $(element).next().find('.select2-btn-all').click(function() {
-      $.ajax({
-        url: url,
-        dataType: 'json',
-        data: {
-          q: '',
-          currentSection: currentSection,
-          relationshipSection: relationshipSection
-        }
-      }).done(function(data) {
-        $(element).select2('data', data);
-      });
-    });
-
-    select2_drag(element);
+    select2_drag(element, currentSection, relationshipSection, url);
 
   });
 
 }
 
-function select2_drag(element) {
+function select2_drag(element, currentSection, relationshipSection, url) {
 
   $(element).select2("container").find("ul.select2-choices").sortable({
     containment: 'parent',
@@ -134,6 +119,20 @@ function select2_drag(element) {
 
   $(element).next().find('.select2-btn-clear').click(function() {
     $(element).select2("val", "");
+  });
+
+  $(element).next().find('.select2-btn-all').click(function() {
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      data: {
+        q: '',
+        currentSection: currentSection,
+        relationshipSection: relationshipSection
+      }
+    }).done(function(data) {
+      $(element).select2('data', data);
+    });
   });
 
 }
