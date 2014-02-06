@@ -9,6 +9,7 @@ use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\viewhelpers\AdminViewHelper as vh;
+use src\app\admin\models\essential\PermissionModel;
 
 /**
  *
@@ -51,7 +52,10 @@ class AdminController extends BaseControllerAdm
     );
     $row = $id ? $this->_model->getById() : $this->getPrevious($exclude_previous);
 
-    $this->_data['table'] = vh::formatRow($row);
+    $permission = new PermissionModel;
+    $permission_listbox = $permission->getArrayList();
+
+    $this->_data['table'] = vh::formatRow($row, $permission_listbox);
 
     $this->setSaveTemplate('admin_save.phtml');
   }
@@ -67,7 +71,7 @@ class AdminController extends BaseControllerAdm
           'email' => Post::text('email'),
           'password' => Post::text('password'),
           'avatar' => Post::upload('avatar'),
-          'permission' => Post::text('permission'),
+          'permission' => Post::aray('permission'),
       );
 
       $this->saveAndRedirect($info);

@@ -81,7 +81,7 @@ class Form
     $d = new Listbox($name);
     $d->setOptionsArray($array);
     $d->setId($name);
-    $d->setClass('form-control multisorter indent ' . $class);
+    $d->setClass('form-control listbox ' . $class);
     $d->setSelected($selected);
 
     return $d->getElement();
