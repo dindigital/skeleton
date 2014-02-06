@@ -26,11 +26,10 @@ class AdminViewHelper
     return $arrFilters;
   }
 
-  public static function formatRow ( $row, $permissao_listbox )
+  public static function formatRow ( $row )
   {
     $row['name'] = Html::scape($row['name']);
     $row['avatar'] = Form::Upload('avatar', $row['avatar'], 'image');
-    $row['permission'] = Form::Listbox('permission', $permissao_listbox, json_decode($row['permission']));
 
     return $row;
   }

@@ -60,13 +60,7 @@ class NewsController extends BaseControllerAdm
     $news_cat = new NewsCatModel;
     $news_cat_dropdown = $news_cat->getListArray();
 
-    $listbox = array(
-        'photo_values' => $this->_model->arrayRelationshipPhoto(),
-        'photo_selected' => $this->_model->selectedRelationshipPhoto(),
-        'video' => $this->_model->arrayRelationshipVideo()
-    );
-
-    $this->_data['table'] = vh::formatRow($row, $news_cat_dropdown, $listbox);
+    $this->_data['table'] = vh::formatRow($row, $news_cat_dropdown);
 
     $this->setSaveTemplate('news_save.phtml');
   }
@@ -88,18 +82,13 @@ class NewsController extends BaseControllerAdm
           'r_news_photo' => Post::aray('r_news_photo'),
           'r_news_video' => Post::aray('r_news_video'),
           'photo' => Post::text('photo'),
+          'video' => Post::text('video')
       );
 
       $this->saveAndRedirect($info);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
-  }
-
-  public function post_r_news_video ()
-  {
-    $r = $this->_model->ajaxRelationshipVideo(Post::text('term'));
-    die($r);
   }
 
 }

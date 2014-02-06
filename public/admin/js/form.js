@@ -80,8 +80,6 @@ $(document).ready(function() {
 
   $(".sortable").sortable();
 
-  $(".multisorter").multiselect({});
-
   $(".color_basic").spectrum({
     color: "#f00",
     preferredFormat: "hex",
@@ -118,24 +116,6 @@ $(document).ready(function() {
     }
   });
 
-  $('.ajaxli').each(function() {
-    var search = $(this).next('.ui-multiselect').find('.search');
-    search.unbind();
-    search.bind('keyup', ajaxli);
-  });
-
-  $('.select2-ajax').each(function() {
-    var currentSection = $(this).attr('id');
-    var relationshipSection = $(this).attr('name');
-    select2_ajax($(this), currentSection, relationshipSection);
-  });
-
-  $('.select2-static').each(function() {
-    var currentSection = $(this).attr('id');
-    var relationshipSection = $(this).attr('name');
-    select2_static($(this), currentSection, relationshipSection);
-  });
-
   //_# SISTEMA DE ADD/DEL
   $('.duplication_container .add').click(function() {
     var last_duplication = $(this).parents('.duplication_container').find('.duplicate_part').last();
@@ -166,154 +146,4 @@ function getIdFromVimeo(url)
   var parseUrl = regExp.exec(url);
   if (parseUrl != null)
     return parseUrl[5];
-}
-
-function select2_ajax(element, currentSection, relationshipSection) {
-
-  var url = '/admin/' + relationshipSection + '/ajax_relationship/';
-
-  $(element).select2({
-    placeholder: "Selecionar",
-    minimumInputLength: 2,
-    multiple: true,
-    tokenSeparators: [","],
-    ajax: {
-      url: url,
-      dataType: 'json',
-      data: function(term) {
-        return {
-          q: term,
-          currentSection: currentSection,
-          relationshipSection: relationshipSection
-        };
-      },
-      results: function(data) {
-        return {results: data};
-      }
-    },
-    initSelection: function(element, callback) {
-      $.ajax(url, {
-        type: 'POST',
-        dataType: "json",
-        data: {
-          id: element.val(),
-          currentSection: currentSection,
-          relationshipSection: relationshipSection
-        }
-      }).done(function(data) {
-        element.removeAttr('value');
-        callback(data);
-      });
-    },
-    createSearchChoice: function(term, data) {
-      if ($(data).filter(function() {
-        return this.text.localeCompare(term) === 0;
-      }).length === 0) {
-        return {id: term, text: term};
-      }
-    }
-  });
-
-  select2_drag(element);
-
-}
-
-function select2_static(element, currentSection, relationshipSection) {
-
-  var url = '/admin/' + relationshipSection + '/ajax_relationship/';
-
-  $.ajax({
-    url: url,
-    dataType: 'json',
-    data: {
-      q: '',
-      currentSection: currentSection,
-      relationshipSection: relationshipSection
-    }
-  }).done(function(data) {
-
-    $(element).select2({
-      placeholder: "Selecionar",
-      multiple: true,
-      tokenSeparators: [","],
-      data: data,
-      initSelection: function(element, callback) {
-        $.ajax(url, {
-          type: 'POST',
-          dataType: "json",
-          data: {
-            id: element.val(),
-            currentSection: currentSection,
-            relationshipSection: relationshipSection
-          }
-        }).done(function(data) {
-          element.removeAttr('value');
-          callback(data);
-        });
-      }
-    });
-
-    select2_drag(element);
-
-  });
-
-}
-
-function select2_drag(element) {
-  $(element).select2("container").find("ul.select2-choices").sortable({
-    containment: 'parent',
-    start: function() {
-      $(element).select2("onSortStart");
-    },
-    update: function() {
-      $(element).select2("onSortEnd");
-    }
-  });
-
-  $(element).next().find('.select2-btn-clear').click(function() {
-    $(element).select2("val", "");
-  });
-
-}
-
-function ajaxli() {
-
-  var str = $(this).val();
-  var post = {};
-
-  var select = $(this).parents('.ui-multiselect').prev('select');
-  var avaliable = $(this).parents('.ui-multiselect').children('.available').find('.connected-list');
-
-  post['term'] = str;
-
-  var url = $('#link_prefix').val();
-
-  $.ajax({
-    type: "POST",
-    url: url + select.attr('id') + '/',
-    data: post,
-    success: ajaxliCallback,
-    dataType: 'json',
-    select: select,
-    avaliable: avaliable
-  });
-}
-
-function ajaxliCallback(data) {
-
-  var select = this.select;
-  var avaliable = this.avaliable;
-
-  avaliable.html('');
-  select.children('option').not(':selected').remove();
-
-  $.each(data, function(i, o) {
-    if (select.children('option[value="' + o.id + '"]').length == 0) {
-      select.append('<option value=' + o.id + '>' + o.label + '</option>');
-    }
-  });
-
-  select.multiselect('reload');
-  avaliable.children('li').show();
-
 }

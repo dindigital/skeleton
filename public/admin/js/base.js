@@ -2,7 +2,7 @@ $(window).load(function() {
 
   hideLoadingOverlay();
 
-  $('.alert-success-fade').delay(3000).fadeOut('fast', function() {
+  $('.alert-success-fade').delay(5000).fadeOut('fast', function() {
     $(this).remove();
   });
 
@@ -19,6 +19,7 @@ function showLoadingOverlay() {
 }
 
 function boxError() {
+  $("html, body").animate({scrollTop: 0}, 600);
   $('.alert-danger').stop(true, true).slideDown('slow').animate({opacity: 1}, 8000, function() {
     $('.alert-danger').slideUp();
   });

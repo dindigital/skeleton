@@ -7,7 +7,6 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\helpers\Sequence;
-use src\app\admin\helpers\Listbox;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\models\essential\RelationshipModel;
 
@@ -18,12 +17,9 @@ use src\app\admin\models\essential\RelationshipModel;
 class NewsModel extends BaseModelAdm
 {
 
-  private $_listbox;
-
   public function __construct ()
   {
     parent::__construct();
-    $this->_listbox = new Listbox($this->_dao);
     $this->setTable('news');
   }
 
@@ -82,10 +78,8 @@ class NewsModel extends BaseModelAdm
     $this->_dao->insert($this->_table);
     $this->log('C', $info['title'], $this->_table);
 
-    $this->_listbox->insertRelationship('r_news_photo', 'id_news', $this->getId(), 'id_photo', $info['r_news_photo']);
-    $this->_listbox->insertRelationship('r_news_video', 'id_news', $this->getId(), 'id_video', $info['r_news_video']);
-
     $this->relationship('photo', $info['photo']);
+    $this->relationship('video', $info['video']);
   }
 
   public function update ( $info )
@@ -108,10 +102,8 @@ class NewsModel extends BaseModelAdm
     $this->_dao->update($this->_table, array('id_news = ?' => $this->getId()));
     $this->log('U', $info['title'], $this->_table, $tableHistory);
 
-    $this->_listbox->insertRelationship('r_news_photo', 'id_news', $this->getId(), 'id_photo', $info['r_news_photo']);
-    $this->_listbox->insertRelationship('r_news_video', 'id_news', $this->getId(), 'id_video', $info['r_news_video']);
-
     $this->relationship('photo', $info['photo']);
+    $this->relationship('video', $info['video']);
   }
 
   private function relationship ( $tbl, $array )
@@ -120,26 +112,6 @@ class NewsModel extends BaseModelAdm
     $relationshipModel->setCurrentSection('news');
     $relationshipModel->setRelationshipSection($tbl);
     $relationshipModel->insert2($this->getId(), $array);
-  }
-
-  public function arrayRelationshipPhoto ()
-  {
-    return $this->_listbox->totalArray('photo', 'id_photo', 'title');
-  }
-
-  public function selectedRelationshipPhoto ()
-  {
-    return $this->_listbox->selectedArray('photo', 'id_photo', 'title', 'r_news_photo', 'id_news', $this->getId());
-  }
-
-  public function arrayRelationshipVideo ()
-  {
-    return $this->_listbox->selectedArray('video', 'id_video', 'title', 'r_news_video', 'id_news', $this->getId());
-  }
-
-  public function ajaxRelationshipVideo ( $term )
-  {
-    return $this->_listbox->ajaxJson('video', 'id_video', 'title', $term);
   }
 
 }
