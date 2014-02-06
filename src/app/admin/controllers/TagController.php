@@ -9,6 +9,7 @@ use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\viewhelpers\TagViewHelper as vh;
+use src\app\admin\models\essential\RelationshipModel;
 
 /**
  *
@@ -68,15 +69,20 @@ class TagController extends BaseControllerAdm
     }
   }
 
-  public function get_ajax ()
+  public function get_ajax_relationship ()
   {
-    $result = $this->_model->getAjax(Get::text('q'));
+    $relationshipModel = new RelationshipModel();
+    $relationshipModel->setRelationshipSection(Get::text('relationshipSection'));
+    $result = $relationshipModel->getAjax(Get::text('q'));
     die($result);
   }
 
-  public function post_ajax ()
+  public function post_ajax_relationship ()
   {
-    $result = $this->_model->getAjaxCurrent(Post::text('id'));
+    $relationshipModel = new RelationshipModel();
+    $relationshipModel->setCurrentSection(Post::text('currentSection'));
+    $relationshipModel->setRelationshipSection(Post::text('relationshipSection'));
+    $result = $relationshipModel->getAjaxCurrent(Post::text('id'));
     die($result);
   }
 

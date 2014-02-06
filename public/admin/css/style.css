@@ -3241,12 +3241,8 @@ button::-moz-focus-inner {
   width: 80%;
 }
 
-.responseAjax {
-  display: block!important;
+.select2-btns {
+  display: block;
   clear: both;
-  margin-top: -15px;
-}
-
-.responseAjax.danger {
-  color: red;
+  padding: 5px 0 0 0;
 }

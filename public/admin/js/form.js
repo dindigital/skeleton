@@ -125,9 +125,9 @@ $(document).ready(function() {
   });
 
   $('.select2-ajax').each(function() {
-    var url = '/admin/' + $(this).attr('id') + '/ajax/';
-    //var url_init = '/admin/' + $(this).attr('id') + '/ajax_init/';
-    select2_ajax($(this), url);
+    var currentSection = $(this).attr('id');
+    var relationshipSection = $(this).attr('name');
+    select2_ajax($(this), currentSection, relationshipSection);
   });
 
   //_# SISTEMA DE ADD/DEL
@@ -162,9 +162,12 @@ function getIdFromVimeo(url)
     return parseUrl[5];
 }
 
-function select2_ajax(element, url) {
+function select2_ajax(element, currentSection, relationshipSection) {
+
+  var url = '/admin/' + relationshipSection + '/ajax_relationship/';
+
   $(element).select2({
-    placeholder: "Search for a movie",
+    placeholder: "Selecionar",
     minimumInputLength: 2,
     multiple: true,
     tokenSeparators: [","],
@@ -173,7 +176,9 @@ function select2_ajax(element, url) {
       dataType: 'json',
       data: function(term) {
         return {
-          q: term
+          q: term,
+          currentSection: currentSection,
+          relationshipSection: relationshipSection
         };
       },
       results: function(data) {
@@ -185,7 +190,9 @@ function select2_ajax(element, url) {
         type: 'POST',
         dataType: "json",
         data: {
-          id: element.val()
+          id: element.val(),
+          currentSection: currentSection,
+          relationshipSection: relationshipSection
         }
       }).done(function(data) {
         element.removeAttr('value');
@@ -209,6 +216,10 @@ function select2_ajax(element, url) {
     update: function() {
       $(element).select2("onSortEnd");
     }
+  });
+
+  $(element).next().find('.select2-btn-clear').click(function() {
+    $(element).select2("val", "");
   });
 
 }

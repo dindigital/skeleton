@@ -6,7 +6,7 @@ use src\app\admin\validators\VideoValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
-use src\app\admin\models\TagModel;
+use src\app\admin\models\essential\RelationshipModel;
 
 /**
  *
@@ -57,8 +57,7 @@ class VideoModel extends BaseModelAdm
     $this->_dao->insert($validator->getTable());
     $this->log('C', $info['title'], $validator->getTable());
 
-    $tagmodel = new TagModel();
-    $tagmodel->insertAjax($this->getId(), $info['tags']);
+    $this->relationship('tag', $info['tag']);
   }
 
   public function update ( $info )
@@ -78,8 +77,15 @@ class VideoModel extends BaseModelAdm
     $this->_dao->update($validator->getTable(), array('id_video = ?' => $this->getId()));
     $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
 
-    $tagmodel = new TagModel();
-    $tagmodel->insertAjax($this->getId(), $info['tags']);
+    $this->relationship('tag', $info['tag']);
+  }
+
+  private function relationship ( $tbl, $array )
+  {
+    $relationshipModel = new RelationshipModel();
+    $relationshipModel->setCurrentSection('video');
+    $relationshipModel->setRelationshipSection($tbl);
+    $relationshipModel->insert($this->getId(), $array);
   }
 
 }
