@@ -12,9 +12,15 @@ use src\app\admin\validators\SettingsValidator as validator;
 class SettingsModel extends BaseModelAdm
 {
 
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->setTable('settings');
+  }
+
   public function update ( $info )
   {
-    $validator = new validator();
+    $validator = new validator($this->_table);
     $validator->setHomeTitle($info['home_title']);
     $validator->setHomeDescription($info['home_description']);
     $validator->setHomeKeywords($info['home_keywords']);
@@ -24,8 +30,8 @@ class SettingsModel extends BaseModelAdm
     $validator->throwException();
 
     $tableHistory = $this->getById();
-    $this->_dao->update($validator->getTable(), array('id_settings = ?' => $this->getId()));
-    $this->log('U', 'Configurações', $validator->getTable(), $tableHistory);
+    $this->_dao->update($this->_table, array('id_settings = ?' => $this->getId()));
+    $this->log('U', 'Configurações', $this->_table, $tableHistory);
   }
 
 }

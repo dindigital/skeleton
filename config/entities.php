@@ -25,7 +25,7 @@ return array(
     ),
     'photo_item' => array(
         'tbl' => 'photo_item',
-        'name' => 'PhotoItem',
+        'name' => 'Gallery',
         'id' => 'id_photo_item',
     ),
     'news' => array(
@@ -105,12 +105,16 @@ return array(
         'id' => 'id_survey',
         'title' => 'title',
         'trash' => true,
+        'children' => array(
+            'survey_question'
+        )
     ),
     'survey_question' => array(
         'tbl' => 'survey_question',
         'name' => 'SurveyQuestion',
         'id' => 'id_survey_question',
         'title' => 'question',
+        'parent' => 'survey'
     ),
     'tag' => array(
         'tbl' => 'tag',

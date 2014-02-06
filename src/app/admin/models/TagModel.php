@@ -15,6 +15,12 @@ use \src\app\admin\helpers\Listbox;
 class TagModel extends BaseModelAdm
 {
 
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->setTable('tag');
+  }
+
   public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(
@@ -39,27 +45,27 @@ class TagModel extends BaseModelAdm
 
   public function insert ( $info )
   {
-    $validator = new validator();
-    $this->setId($validator->setId($this));
+    $this->setNewId();
+    $validator = new validator($this->_table);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setIncDate();
     $validator->throwException();
 
-    $this->_dao->insert($validator->getTable());
-    $this->log('C', $info['title'], $validator->getTable());
+    $this->_dao->insert($this->_table);
+    $this->log('C', $info['title'], $this->_table);
   }
 
   public function update ( $info )
   {
-    $validator = new validator();
+    $validator = new validator($this->_table);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->throwException();
 
     $tableHistory = $this->getById();
-    $this->_dao->update($validator->getTable(), array('id_tag = ?' => $this->getId()));
-    $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
+    $this->_dao->update($this->_table, array('id_tag = ?' => $this->getId()));
+    $this->log('U', $info['title'], $this->_table, $tableHistory);
   }
 
 }

@@ -15,6 +15,12 @@ use src\app\admin\models\essential\RelationshipModel;
 class VideoModel extends BaseModelAdm
 {
 
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->setTable('video');
+  }
+
   public function getList ( $arrFilters = array() )
   {
     $arrCriteria = array(
@@ -39,10 +45,18 @@ class VideoModel extends BaseModelAdm
     return $result;
   }
 
+  public function getNew ()
+  {
+    $row = parent::getNew();
+    $row['date'] = date('Y-m-d');
+
+    return $row;
+  }
+
   public function insert ( $info )
   {
-    $validator = new validator();
-    $this->setId($validator->setId($this));
+    $this->setNewId();
+    $validator = new validator($this->_table);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
@@ -54,15 +68,15 @@ class VideoModel extends BaseModelAdm
     $validator->setIncDate();
     $validator->throwException();
 
-    $this->_dao->insert($validator->getTable());
-    $this->log('C', $info['title'], $validator->getTable());
+    $this->_dao->insert($this->_table);
+    $this->log('C', $info['title'], $this->_table);
 
     $this->relationship('tag', $info['tag']);
   }
 
   public function update ( $info )
   {
-    $validator = new validator();
+    $validator = new validator($this->_table);
     $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
@@ -74,18 +88,18 @@ class VideoModel extends BaseModelAdm
     $validator->throwException();
 
     $tableHistory = $this->getById();
-    $this->_dao->update($validator->getTable(), array('id_video = ?' => $this->getId()));
-    $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
+    $this->_dao->update($this->_table, array('id_video = ?' => $this->getId()));
+    $this->log('U', $info['title'], $this->_table, $tableHistory);
 
     $this->relationship('tag', $info['tag']);
   }
 
   private function relationship ( $tbl, $array )
   {
-    $relationshipModel = new RelationshipModel();
-    $relationshipModel->setCurrentSection('video');
-    $relationshipModel->setRelationshipSection($tbl);
-    $relationshipModel->insert($this->getId(), $array);
+//    $relationshipModel = new RelationshipModel();
+//    $relationshipModel->setCurrentSection('video');
+//    $relationshipModel->setRelationshipSection($tbl);
+//    $relationshipModel->insert($this->getId(), $array);
   }
 
 }

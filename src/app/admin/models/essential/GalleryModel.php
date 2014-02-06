@@ -15,13 +15,15 @@ class GalleryModel extends BaseModelAdm
 {
 
   protected $_table_item;
+  protected $_entity;
 
   public function __construct ( $table, $table_item )
   {
     parent::__construct();
+    $this->setTable($table_item);
 
     $entities = new Entities();
-    $this->_table = $entities->getEntity($table);
+    $this->_entity = $entities->getEntity($table);
     $this->_table_item = $entities->getEntity($table_item);
   }
 
@@ -40,28 +42,28 @@ class GalleryModel extends BaseModelAdm
 
   public function insert ( $info )
   {
+    $this->setNewId();
+    $validator = new validator($this->_table, $this->_dao);
+    $validator->setIdTbl($this->_entity['id'], $info[$this->_entity['id']]);
+    $validator->setGallerySequence($this->_table_item['tbl'], $this->_entity['id'], null, $info[$this->_entity['id']]);
 
-    $validator = new validator($this->_dao, $this->_table_item['tbl']);
-    $this->setId($validator->setId($this->_table_item['id']));
-    $validator->setIdTbl($this->_table['id'], $info[$this->_table['id']]);
-    $validator->setGallerySequence($this->_table_item['tbl'], $this->_table['id'], null, $info[$this->_table['id']]);
     $mf = new MoveFiles;
-    $validator->setGallery($info['file'], "{$this->_table['tbl']}/{$info[$this->_table['id']]}/file/{$this->getId()}", $mf);
+    $validator->setGallery($info['file'], "{$this->_entity['tbl']}/{$info[$this->_entity['id']]}/file/{$this->getId()}", $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $this->_dao->insert($validator->getTable());
+    $this->_dao->insert($this->_table);
   }
 
   public function update ( $info )
   {
-    $validator = new validator($this->_dao, $this->_table_item['tbl']);
+    $validator = new validator($this->_table, $this->_dao);
     $validator->setLabel($info['label']);
     $validator->setCredit($info['credit']);
-    $validator->setGallerySequence($this->_table_item['tbl'], $this->_table['id'], $info['sequence']);
+    $validator->setGallerySequence($this->_table_item['tbl'], $this->_entity['id'], $info['sequence']);
 
-    $this->_dao->update($validator->getTable(), array("{$this->_table_item['id']} = ?" => $this->getId()));
+    $this->_dao->update($this->_table, array("{$this->_table_item['id']} = ?" => $this->getId()));
   }
 
   public function remove ( $id, $gallery_sequence )
@@ -70,7 +72,7 @@ class GalleryModel extends BaseModelAdm
     $gallery_sequence = explode(',', $gallery_sequence);
 
     $arrCriteria = array(
-        "{$this->_table['id']} = ?" => $id,
+        "{$this->_entity['id']} = ?" => $id,
         "{$this->_table_item['id']} NOT IN (?)" => $gallery_sequence,
     );
 
@@ -106,7 +108,7 @@ class GalleryModel extends BaseModelAdm
       if ( count($file) == 2 ) {
         $label = pathinfo($file['name'], PATHINFO_FILENAME);
         $this->insert(array(
-            $this->_table['id'] => $id,
+            $this->_entity['id'] => $id,
             'label' => $label,
             'file' => $file
         ));

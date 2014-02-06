@@ -3,18 +3,12 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 use Respect\Validation\Validator as v;
 use Din\DataAccessLayer\Select;
 
 class TagValidator extends BaseValidator
 {
-
-  public function __construct ()
-  {
-    $this->_table = new Table('tag');
-  }
 
   public function setTitle ( $title )
   {

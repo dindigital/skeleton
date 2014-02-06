@@ -3,21 +3,21 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use Din\DataAccessLayer\Table\Table;
 use Din\Exception\JsonException;
 use Din\File\Folder;
 use Din\DataAccessLayer\Select;
 use Din\Filters\String\Uri;
 use src\app\admin\helpers\MoveFiles;
+use Exception;
 
 class GalleryValidator extends BaseValidator
 {
 
   private $_dao;
 
-  public function __construct ( $dao, $table )
+  public function __construct ( $table, $dao )
   {
-    $this->_table = new Table($table);
+    parent::__construct($table);
     $this->_dao = $dao;
   }
 

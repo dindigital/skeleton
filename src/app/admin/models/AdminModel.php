@@ -15,29 +15,35 @@ use src\app\admin\helpers\MoveFiles;
 class AdminModel extends BaseModelAdm
 {
 
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->setTable('admin');
+  }
+
   public function insert ( $info )
   {
-    $validator = new validator;
+    $this->setNewId();
+    $validator = new validator($this->_table);
     $validator->setActive($info['active']);
     $validator->setName($info['name']);
     $validator->setEmail($info['email']);
     $validator->setPassword($info['password']);
     $validator->setPermission($info['permission']);
     $validator->setIncDate();
-    $this->setId($validator->setId($this));
     $mf = new MoveFiles;
     $validator->setFile('avatar', $info['avatar'], $this->getId(), $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $this->_dao->insert($validator->getTable());
-    $this->log('C', $info['name'], $validator->getTable());
+    $this->_dao->insert($this->_table);
+    $this->log('C', $info['name'], $this->_table);
   }
 
   public function update ( $info )
   {
-    $validator = new validator;
+    $validator = new validator($this->_table);
     $validator->setActive($info['active']);
     $validator->setName($info['name']);
     $validator->setEmail($info['email']);
@@ -50,8 +56,8 @@ class AdminModel extends BaseModelAdm
     $mf->move();
 
     $tableHistory = $this->getById($this->getId());
-    $this->_dao->update($validator->getTable(), array('id_admin = ?' => $this->getId()));
-    $this->log('U', $info['name'], $validator->getTable(), $tableHistory);
+    $this->_dao->update($this->_table, array('id_admin = ?' => $this->getId()));
+    $this->log('U', $info['name'], $this->_table, $tableHistory);
   }
 
   public function getList ( $arrFilters = array() )
