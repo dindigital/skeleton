@@ -46,7 +46,10 @@ class VideoController extends BaseControllerAdm
   {
     $this->_model->setId($id);
 
-    $row = $id ? $this->_model->getById() : $this->getPrevious();
+    $excluded_fields = array(
+        'uri'
+    );
+    $row = $id ? $this->_model->getById() : $this->getPrevious($excluded_fields);
     $this->_data['table'] = vh::formatRow($row);
 
     $this->setSaveTemplate('video_save.phtml');

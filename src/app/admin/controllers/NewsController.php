@@ -52,7 +52,8 @@ class NewsController extends BaseControllerAdm
     $this->_model->setId($id);
 
     $excluded_fields = array(
-        'cover'
+        'cover',
+        'uri'
     );
 
     $row = $id ? $this->_model->getById() : $this->getPrevious($excluded_fields);

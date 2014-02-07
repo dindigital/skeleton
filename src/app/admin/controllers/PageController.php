@@ -54,7 +54,8 @@ class PageController extends BaseControllerAdm
     $this->_model->setId($id);
 
     $exclude_previous = array(
-        'cover'
+        'cover',
+        'uri'
     );
     $row = $id ? $this->_model->getById() : $this->getPrevious($exclude_previous);
 
