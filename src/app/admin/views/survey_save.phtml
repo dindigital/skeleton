@@ -34,7 +34,7 @@
           {$URI}
 
           <fieldset class="duplication_container">
-            <?php if ( count($data['table']['question']) ): ?>
+            <?php if ( $data['table']['id_survey'] ): ?>
               <?php foreach ( $data['table']['question'] as $question ): ?>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Questão</label>

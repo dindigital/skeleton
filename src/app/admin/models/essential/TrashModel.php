@@ -140,15 +140,21 @@ class TrashModel extends BaseModelAdm
 
       $model = new $current['model'];
 
-      Sequence::changeSequence($model, $item['id'], 0);
+      //_# Se ele não possui lixeira, chama o deletar proprio do model
+      if ( !(isset($current['trash']) && $current['trash']) ) {
+        $model->delete(array(array('id' => $item['id'])));
+      } else {
 
-      $this->deleteChildren($current, $item['id']);
-      $tableHistory = $model->getById($item['id']);
-      $validator = new $current['validator'](new \Din\DataAccessLayer\Table\Table($current['tbl']));
-      $validator->setDelDate();
-      $validator->setIsDel('1');
-      $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $item['id']));
-      $this->log('T', $tableHistory[$current['title']], $current['tbl'], $tableHistory, $current['name']);
+        Sequence::changeSequence($model, $item['id'], 0);
+
+        $this->deleteChildren($current, $item['id']);
+        $tableHistory = $model->getById($item['id']);
+        $validator = new $current['validator'](new \Din\DataAccessLayer\Table\Table($current['tbl']));
+        $validator->setDelDate();
+        $validator->setIsDel('1');
+        $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $item['id']));
+        $this->log('T', $tableHistory[$current['title']], $current['tbl'], $tableHistory, $current['name']);
+      }
     }
   }
 
