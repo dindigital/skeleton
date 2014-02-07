@@ -71,6 +71,11 @@
           <a href="/admin/survey/list/"><i class="fa fa-picture-o"></i>Pesquisa de Satisfação</a>
         </li>
       <?php endif; ?>
+      <?php if ( isset($data['permission']['Poll']) ): ?>
+        <li>
+          <a href="/admin/poll/list/"><i class="fa fa-picture-o"></i>Enquete</a>
+        </li>
+      <?php endif; ?>
       <?php if ( isset($data['permission']['Tag']) ): ?>
         <li>
           <a href="/admin/tag/list/"><i class="fa fa-picture-o"></i>Tag</a>

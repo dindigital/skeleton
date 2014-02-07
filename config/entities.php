@@ -117,6 +117,24 @@ return array(
         'title' => 'question',
         'parent' => 'survey'
     ),
+    'poll' => array(
+        'tbl' => 'poll',
+        'name' => 'Poll',
+        'section' => 'Enquete',
+        'id' => 'id_poll',
+        'title' => 'question',
+        'trash' => true,
+        'children' => array(
+            'poll_option'
+        )
+    ),
+    'poll_option' => array(
+        'tbl' => 'poll_option',
+        'name' => 'PollOption',
+        'id' => 'id_poll_option',
+        'title' => 'option',
+        'parent' => 'poll'
+    ),
     'tag' => array(
         'tbl' => 'tag',
         'name' => 'Tag',
