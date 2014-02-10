@@ -139,7 +139,7 @@ class PageModel extends BaseModelAdm
   public function getById ( $id = null )
   {
     $row = parent::getById($id);
-    $row['infinite'] = $this->loadInfinity();
+    $row['id_parent'] = $this->loadInfinity();
 
     return $row;
   }
