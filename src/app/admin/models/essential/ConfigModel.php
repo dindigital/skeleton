@@ -14,9 +14,15 @@ use src\app\admin\helpers\MoveFiles;
 class ConfigModel extends BaseModelAdm
 {
 
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->setTable('admin');
+  }
+
   public function update ( $id, $info )
   {
-    $validator = new validator;
+    $validator = new validator($this->_table);
     $validator->setName($info['name']);
     $validator->setEmail($info['email']);
     $validator->setPassword($info['password']);
