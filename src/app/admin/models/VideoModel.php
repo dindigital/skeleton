@@ -58,7 +58,7 @@ class VideoModel extends BaseModelAdm
     $this->setNewId();
     $this->setTimestamp('inc_date');
     $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['title'], $this->getId(), 'video');
+    $this->setDefaultUri($info['title'], 'video');
     $this->setShortenerLink();
     $validator = new validator($this->_table);
     $validator->setTitle($info['title']);
@@ -78,7 +78,7 @@ class VideoModel extends BaseModelAdm
   public function update ( $info )
   {
     $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['title'], $this->getId(), 'video', $info['uri']);
+    $this->setDefaultUri($info['title'], 'video', $info['uri']);
     $this->setShortenerLink();
     $validator = new validator($this->_table);
     $validator->setTitle($info['title']);
