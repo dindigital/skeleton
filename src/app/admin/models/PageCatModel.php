@@ -51,17 +51,18 @@ class PageCatModel extends BaseModelAdm
   public function insert ( $info )
   {
     $this->setNewId();
+    $this->setIntval('active', $info['active']);
+    $this->setTimestamp('inc_date');
+    $this->setDefaultUri($info['title'], 'page');
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setContent($info['content']);
     $validator->setDescription($info['description']);
     $validator->setKeywords($info['keywords']);
-    $validator->setDefaultUri($info['title'], $this->getId(), 'page');
-    $validator->setIncDate();
+
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
-    Sequence::setSequence($this, $validator);
+    Sequence::setSequence($this);
     $validator->throwException();
 
     $mf->move();
@@ -72,13 +73,13 @@ class PageCatModel extends BaseModelAdm
 
   public function update ( $info )
   {
+    $this->setIntval('active', $info['active']);
+    $this->setDefaultUri($info['title'], 'page', $info['uri']);
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setContent($info['content']);
     $validator->setDescription($info['description']);
     $validator->setKeywords($info['keywords']);
-    $validator->setDefaultUri($info['title'], $this->getId(), 'page', $info['uri']);
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     $validator->throwException();

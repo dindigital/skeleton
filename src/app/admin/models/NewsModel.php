@@ -59,16 +59,18 @@ class NewsModel extends BaseModelAdm
   public function insert ( $info )
   {
     $this->setNewId();
+    $this->setIntval('active', $info['active']);
+    $this->setTimestamp('inc_date');
+    $this->setDefaultUri($info['title']);
+
     $validator = new validator($this->_table);
     $validator->setIdNewsCat($info['id_news_cat']);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
     $validator->setHead($info['head']);
     $validator->setBody($info['body']);
-    $validator->setDefaultUri($info['title'], $this->getId());
-    Sequence::setSequence($this, $validator);
-    $validator->setIncDate();
+
+    Sequence::setSequence($this);
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     $validator->throwException();
@@ -84,14 +86,15 @@ class NewsModel extends BaseModelAdm
 
   public function update ( $info )
   {
+    $this->setIntval('active', $info['active']);
+    $this->setDefaultUri($info['title'], '', $info['uri']);
+
     $validator = new validator($this->_table);
     $validator->setIdNewsCat($info['id_news_cat']);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
     $validator->setHead($info['head']);
     $validator->setBody($info['body']);
-    $validator->setDefaultUri($info['title'], $this->getId(), '', $info['uri']);
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     $validator->throwException();

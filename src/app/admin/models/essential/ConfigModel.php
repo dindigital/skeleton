@@ -28,8 +28,8 @@ class ConfigModel extends BaseModelAdm
 
     $admin_model = new AdminModel;
     $tableHistory = $admin_model->getById($id);
-    $this->_dao->update($validator->getTable(), array('id_admin = ?' => $id));
-    $this->log('U', $info['name'], $validator->getTable(), $tableHistory, 'Admin');
+    $this->_dao->update($this->_table, array('id_admin = ?' => $id));
+    $this->log('U', $info['name'], $this->_table, $tableHistory, 'Admin');
 
     $this->relogin($id);
   }

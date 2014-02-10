@@ -66,12 +66,12 @@ class PollModel extends BaseModelAdm
   {
     //_# Valida a Pergunta
     $this->setNewId();
+    $this->setTimestamp('inc_date');
+    $this->setIntval('active', $info['active']);
+    $this->setDefaultUri($info['question'], 'enquete');
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setQuestion($info['question']);
     $validator->setTotalOptions(count($info['option']));
-    $validator->setDefaultUri($info['question'], $this->getId(), 'enquete');
-    $validator->setIncDate();
 
     //_# Valida e armazena as opções em array
     $arr_opt = array();
@@ -102,10 +102,10 @@ class PollModel extends BaseModelAdm
   public function update ( $info )
   {
     //_# Valida a Pergunta
+    $this->setIntval('active', $info['active']);
+    $this->setDefaultUri($info['question'], 'enquete', $info['uri']);
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setQuestion($info['question']);
-    $validator->setDefaultUri($info['question'], $this->getId(), 'enquete');
 
     //_# Valida e armazena as opções em array
     $arr_opt = array();

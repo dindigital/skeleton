@@ -36,7 +36,7 @@ class SurveyQuestionModel extends BaseModelAdm
   public function insert ()
   {
     $this->_dao->insert($this->_table);
-    $this->log('C', $this->_table->question, $this->_table);
+    //$this->log('C', $this->_table->question, $this->_table);
   }
 
   public function update ()
@@ -44,7 +44,7 @@ class SurveyQuestionModel extends BaseModelAdm
     $tableHistory = $this->getById();
 
     $this->_dao->update($this->_table, array('id_survey_question = ?' => $this->getId()));
-    $this->log('U', $this->_table->question, $this->_table, $tableHistory);
+    //$this->log('U', $this->_table->question, $this->_table, $tableHistory);
   }
 
   public function getByIdSurvey ( $id_survey )

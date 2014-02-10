@@ -56,16 +56,17 @@ class VideoModel extends BaseModelAdm
   public function insert ( $info )
   {
     $this->setNewId();
+    $this->setTimestamp('inc_date');
+    $this->setIntval('active', $info['active']);
+    $this->setDefaultUri($info['title'], $this->getId(), 'video');
+    $this->setShortenerLink();
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
     $validator->setDescription($info['description']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
-    $validator->setDefaultUri($info['title'], $this->getId(), 'video');
-    $validator->setShortenerLink();
-    $validator->setIncDate();
+
     $validator->throwException();
 
     $this->_dao->insert($this->_table);
@@ -76,15 +77,16 @@ class VideoModel extends BaseModelAdm
 
   public function update ( $info )
   {
+    $this->setIntval('active', $info['active']);
+    $this->setDefaultUri($info['title'], $this->getId(), 'video', $info['uri']);
+    $this->setShortenerLink();
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
     $validator->setDescription($info['description']);
     $validator->setLinkYouTube($info['link_youtube']);
     $validator->setLinkVimeo($info['link_vimeo']);
-    $validator->setDefaultUri($info['title'], $this->getId(), 'video', $info['uri']);
-    $validator->setShortenerLink();
+
     $validator->throwException();
 
     $tableHistory = $this->getById();

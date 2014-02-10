@@ -45,10 +45,10 @@ class TagModel extends BaseModelAdm
   public function insert ( $info )
   {
     $this->setNewId();
+    $this->setTimestamp('inc_date');
+    $this->setIntval('active', $info['active']);
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
-    $validator->setIncDate();
     $validator->throwException();
 
     $this->_dao->insert($this->_table);
@@ -57,8 +57,8 @@ class TagModel extends BaseModelAdm
 
   public function update ( $info )
   {
+    $this->setIntval('active', $info['active']);
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->throwException();
 
@@ -70,9 +70,9 @@ class TagModel extends BaseModelAdm
   public function short_insert ( $title )
   {
     $this->setNewId();
+    $this->setTimestamp('inc_date');
     $validator = new validator($this->_table);
     $validator->setTitle($title);
-    $validator->setIncDate();
     $validator->throwException();
 
     $this->_dao->insert($this->_table);

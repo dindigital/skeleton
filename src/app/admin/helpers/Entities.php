@@ -25,7 +25,7 @@ class Entities
       $add_path = in_array($entity['name'], array('Gallery', 'Log')) ? '\essential' : '';
 
       self::$entities[$i]['model'] = '\src\app\admin\models' . $add_path . '\\' . $entity['name'] . 'Model';
-      self::$entities[$i]['validator'] = '\src\app\admin\validators\\' . $entity['name'] . 'Validator';
+      //self::$entities[$i]['validator'] = '\src\app\admin\validators\\' . $entity['name'] . 'Validator';
     }
   }
 

@@ -24,13 +24,14 @@ class AdminModel extends BaseModelAdm
   public function insert ( $info )
   {
     $this->setNewId();
+    $this->setIntval('active', $info['active']);
+    $this->setTimestamp('inc_date');
+
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setName($info['name']);
     $validator->setEmail($info['email']);
     $validator->setPassword($info['password']);
     $validator->setPermission($info['permission']);
-    $validator->setIncDate();
     $mf = new MoveFiles;
     $validator->setFile('avatar', $info['avatar'], $this->getId(), $mf);
     $validator->throwException();
@@ -43,8 +44,9 @@ class AdminModel extends BaseModelAdm
 
   public function update ( $info )
   {
+    $this->setIntval('active', $info['active']);
+
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setName($info['name']);
     $validator->setEmail($info['email']);
     $validator->setPassword($info['password'], false);

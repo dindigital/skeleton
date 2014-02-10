@@ -36,6 +36,8 @@ class LogModel extends BaseModelAdm
       $arrCriteria['a.name = ?'] = $arrFilters['name'];
     }
 
+    $arrCriteria['a.name IN (?)'] = array_keys($this->getDropdownName());
+
     $select = new Select('log');
     $select->addField('id_log');
     $select->addField('admin');

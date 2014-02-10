@@ -3,7 +3,6 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use Din\DataAccessLayer\Table\Table;
 use Respect\Validation\Validator as v;
 use Din\Exception\JsonException;
 

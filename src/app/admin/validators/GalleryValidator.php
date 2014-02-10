@@ -3,8 +3,6 @@
 namespace src\app\admin\validators;
 
 use src\app\admin\validators\BaseValidator;
-use Din\Exception\JsonException;
-use Din\File\Folder;
 use Din\DataAccessLayer\Select;
 use Din\Filters\String\Uri;
 use src\app\admin\helpers\MoveFiles;
@@ -89,35 +87,6 @@ class GalleryValidator extends BaseValidator
     $this->readTags($origin);
 
     $mf->addFile($origin, 'public' . $destiny);
-  }
-
-  public function setGallery_old ( $file, $path, MoveFiles $mf )
-  {
-    if ( count($file) != 2 )
-      return JsonException::addException('Erro ao ler o nome do arquivo');
-
-    $tmp_name = $file['tmp_name'];
-    $name = $file['name'];
-
-    $tmp_dir = 'tmp';
-    $origin = $tmp_dir . DIRECTORY_SEPARATOR . $tmp_name;
-
-    if ( !is_file($origin) )
-      return JsonException::addException('Arquivo não encontrado');
-
-    $fileparts = pathinfo($name);
-    $filename = $fileparts['filename'];
-    $ext = '.' . strtolower($fileparts['extension']);
-    $destination = 'public/system/uploads/' . $path . $filename . $ext;
-
-    Folder::make_writable(dirname($destination));
-
-    rename($origin, $destination);
-
-    $file = str_replace(PATH_REPLACE, '', $destination);
-
-    $this->_table->file = $file;
-    $this->readTags($destination);
   }
 
   private function readTags ( $file )

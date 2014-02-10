@@ -59,12 +59,12 @@ class PhotoModel extends BaseModelAdm
   public function insert ( $info )
   {
     $this->setNewId();
+    $this->setTimestamp('inc_date');
+    $this->setIntval('active', $info['active']);
+    $this->setDefaultUri($info['title'], 'photo');
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
-    $validator->setDefaultUri($info['title'], $this->getId(), 'photo');
-    $validator->setIncDate();
     $validator->throwException();
 
     $this->_dao->insert($this->_table);
@@ -74,11 +74,11 @@ class PhotoModel extends BaseModelAdm
 
   public function update ( $info )
   {
+    $this->setIntval('active', $info['active']);
+    $this->setDefaultUri($info['title'], 'photo', $info['uri']);
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setDate($info['date']);
-    $validator->setDefaultUri($info['title'], $this->getId(), 'photo', $info['uri']);
     $validator->throwException();
 
     $tableHistory = $this->getById();

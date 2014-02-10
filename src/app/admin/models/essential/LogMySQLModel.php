@@ -38,7 +38,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
     $validator->setAction('C');
     $validator->setDescription($this->msg);
     $validator->setContent(json_encode($this->table->setted_values));
-    $validator->setIncDate();
+    $this->_table->inc_date = date('Y-m-d H:i:s');
 
     $this->_dao->insert($this->_table);
   }
@@ -69,7 +69,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
     $validator->setAction('U');
     $validator->setDescription($this->msg);
     $validator->setContent($content);
-    $validator->setIncDate();
+    $this->_table->inc_date = date('Y-m-d H:i:s');
 
     $this->_dao->insert($this->_table);
   }
@@ -82,7 +82,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
     $validator->setAction($action);
     $validator->setDescription($this->msg);
     $validator->setContent(json_encode($this->tableHistory));
-    $validator->setIncDate();
+    $this->_table->inc_date = date('Y-m-d H:i:s');
 
     $this->_dao->insert($this->_table);
   }

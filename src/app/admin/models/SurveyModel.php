@@ -66,12 +66,13 @@ class SurveyModel extends BaseModelAdm
   {
     //_# Valida o questionario container
     $this->setNewId();
+    $this->setTimestamp('inc_date');
+    $this->setIntval('active', $info['active']);
+    $this->setDefaultUri($info['title'], 'opine');
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
     $validator->setTotalQuestions(count($info['question']));
-    $validator->setDefaultUri($info['title'], $this->getId(), 'opine');
-    $validator->setIncDate();
+
 
     //_# Valida e armazena as questões em array
     $arr_sq = array();
@@ -101,10 +102,10 @@ class SurveyModel extends BaseModelAdm
 
   public function update ( $info )
   {
+    $this->setIntval('active', $info['active']);
+    $this->setDefaultUri($info['title'], 'opine', $info['uri']);
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
-    $validator->setDefaultUri($info['title'], $this->getId(), 'opine', $info['uri']);
 
     //_# Valida e armazena as questões em array
     $arr_sq = array();
@@ -124,8 +125,8 @@ class SurveyModel extends BaseModelAdm
 
     //_# Salva o questionário container
     $tableHistory = $this->getById();
-    $this->_dao->update($validator->getTable(), array('id_survey = ?' => $this->getId()));
-    $this->log('U', $info['title'], $validator->getTable(), $tableHistory);
+    $this->_dao->update($this->_table, array('id_survey = ?' => $this->getId()));
+    $this->log('U', $info['title'], $this->_table, $tableHistory);
 
     //_# Salva as questões
     foreach ( $arr_sq as $sq ) {

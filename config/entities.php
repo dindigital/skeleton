@@ -53,7 +53,6 @@ return array(
         'trash' => true,
         'sequence' => array(
             'optional' => false,
-            'dependence' => 'is_home'
         ),
     ),
     'admin' => array(

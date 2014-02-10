@@ -20,11 +20,4 @@ class NewsCatValidator extends BaseValidator
     $this->_table->title = $title;
   }
 
-  public function setIsHome ( $is_home )
-  {
-    $is_home = intval($is_home);
-
-    $this->_table->is_home = $is_home;
-  }
-
 }

@@ -56,15 +56,17 @@ class NewsCatModel extends BaseModelAdm
   public function insert ( $info )
   {
     $this->setNewId();
+    $this->setIntval('active', $info['active']);
+    $this->setIntval('is_home', $info['is_home']);
+    $this->setTimestamp('inc_date');
+    $this->setDefaultUri($info['title'], 'news');
+
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
-    $validator->setIsHome($info['is_home']);
-    $validator->setDefaultUri($info['title'], $this->getId(), 'news');
-    $validator->setIncDate();
+
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
-    Sequence::setSequence($this, $validator);
+    Sequence::setSequence($this);
     $validator->throwException();
 
     $mf->move();
@@ -75,11 +77,13 @@ class NewsCatModel extends BaseModelAdm
 
   public function update ( $info )
   {
+    $this->setIntval('active', $info['active']);
+    $this->setIntval('is_home', $info['is_home']);
+    $this->setDefaultUri($info['title'], 'news', $info['uri']);
+
     $validator = new validator($this->_table);
-    $validator->setActive($info['active']);
     $validator->setTitle($info['title']);
-    $validator->setIsHome($info['is_home']);
-    $validator->setDefaultUri($info['title'], $this->getId(), 'news', $info['uri']);
+
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
     $validator->throwException();

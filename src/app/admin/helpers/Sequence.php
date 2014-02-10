@@ -56,7 +56,7 @@ class Sequence
     return $result;
   }
 
-  public static function setSequence ( $model, $validator, $result = null )
+  public static function setSequence ( $model, $result = null )
   {
     $current = Entities::getThis($model);
     if ( !isset($current['sequence']) )
@@ -65,11 +65,11 @@ class Sequence
     $arrCriteria = array();
 
     if ( $current['sequence']['optional'] ) {
-      $validator->setSequence(0);
+      $model->setIntval('sequence', 0);
     } else {
       if ( isset($current['sequence']['dependence']) ) {
         $dependence_field = $current['sequence']['dependence'];
-        $dependence_value = $result ? $result[$dependence_field] : $validator->getTable()->{$dependence_field};
+        $dependence_value = $result ? $result[$dependence_field] : $model->getTable()->{$dependence_field};
 
         if ( is_null($dependence_value) ) {
           $arrCriteria[$dependence_field . ' IS NULL'] = null;
@@ -80,7 +80,7 @@ class Sequence
 
       $sequence = $model->getMaxSequence($arrCriteria) + 1;
 
-      $validator->setSequence($sequence);
+      $model->setIntval('sequence', $sequence);
     }
   }
 

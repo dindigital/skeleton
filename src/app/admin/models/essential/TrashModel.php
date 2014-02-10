@@ -101,10 +101,9 @@ class TrashModel extends BaseModelAdm
       }
       //
 
-      $validator = new $current['validator'](new \Din\DataAccessLayer\Table\Table($current['tbl']));
-      Sequence::setSequence($model, $validator);
-      $validator->setIsDel('0');
-      $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $item['id']));
+      Sequence::setSequence($model);
+      $model->setIntval('is_del', 0);
+      $this->_dao->update($model->getTable(), array($current['id'] . ' = ?' => $item['id']));
       $this->log('R', $tableHistory[$current['title']], $current['tbl'], null, $current['name']);
     }
   }
@@ -149,10 +148,10 @@ class TrashModel extends BaseModelAdm
 
         $this->deleteChildren($current, $item['id']);
         $tableHistory = $model->getById($item['id']);
-        $validator = new $current['validator'](new \Din\DataAccessLayer\Table\Table($current['tbl']));
-        $validator->setDelDate();
-        $validator->setIsDel('1');
-        $this->_dao->update($validator->getTable(), array($current['id'] . ' = ?' => $item['id']));
+
+        $model->setTimestamp('del_date');
+        $model->setIntval('is_del', 1);
+        $this->_dao->update($model->getTable(), array($current['id'] . ' = ?' => $item['id']));
         $this->log('T', $tableHistory[$current['title']], $current['tbl'], $tableHistory, $current['name']);
       }
     }

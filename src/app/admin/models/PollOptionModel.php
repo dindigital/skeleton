@@ -36,7 +36,7 @@ class PollOptionModel extends BaseModelAdm
   public function insert ()
   {
     $this->_dao->insert($this->_table);
-    $this->log('C', $this->_table->option, $this->_table);
+    //$this->log('C', $this->_table->option, $this->_table);
   }
 
   public function update ()
@@ -44,7 +44,7 @@ class PollOptionModel extends BaseModelAdm
     $tableHistory = $this->getById();
 
     $this->_dao->update($this->_table, array('id_poll_option = ?' => $this->getId()));
-    $this->log('U', $this->_table->option, $this->_table, $tableHistory);
+    //$this->log('U', $this->_table->option, $this->_table, $tableHistory);
   }
 
   public function getByIdPoll ( $id_poll )
