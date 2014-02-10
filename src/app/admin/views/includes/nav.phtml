@@ -81,6 +81,11 @@
           <a href="/admin/tag/list/"><i class="fa fa-picture-o"></i>Tag</a>
         </li>
       <?php endif; ?>
+      <?php if ( isset($data['permission']['Publication']) ): ?>
+        <li>
+          <a href="/admin/publication/list/"><i class="fa fa-picture-o"></i>Publicações</a>
+        </li>
+      <?php endif; ?>
 
     </ul>
   </div>

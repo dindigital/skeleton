@@ -142,4 +142,12 @@ return array(
         'title' => 'title',
         'trash' => true,
     ),
+    'publication' => array(
+        'tbl' => 'publication',
+        'name' => 'Publication',
+        'section' => 'Publicações',
+        'id' => 'id_publication',
+        'title' => 'title',
+        'trash' => true,
+    ),
 );
