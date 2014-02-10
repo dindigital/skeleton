@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers;
+namespace src\app\admin\controllers\essential;
 
 use src\app\admin\models\essential\RelationshipModel as model;
 use Din\Http\Get;

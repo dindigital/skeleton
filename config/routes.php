@@ -48,6 +48,10 @@ return array(
             'controller' => 'admin\controllers\essential\AdminPasswordController',
             'method' => 'update',
         ),
+        'admin/relashionship/ajax/' => array(
+            'controller' => 'admin\controllers\essential\RelashionshipController',
+            'method' => 'ajax',
+        ),
         'admin/(.*)' => array(
             'path' => 'admin\controllers\\',
             'type' => RouteTypes::ACTION,
