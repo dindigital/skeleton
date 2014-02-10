@@ -60,9 +60,7 @@ class RelationshipModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
-    $jsonResult = json_encode($result);
-
-    return $jsonResult;
+    return $result;
   }
 
   /**
@@ -90,9 +88,7 @@ class RelationshipModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
-    $jsonResult = json_encode($result);
-
-    return $jsonResult;
+    return $result;
   }
 
   public function insert ( $id, $item )
