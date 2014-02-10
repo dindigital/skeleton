@@ -4,15 +4,15 @@ namespace src\app\admin\controllers\essential;
 
 use Din\Http\Post;
 use src\app\admin\helpers\Entities;
-use Din\Http\Header;
+use src\app\admin\controllers\essential\BaseControllerAdm;
 use Exception;
-use Din\Session\Session;
+use Din\Http\Header;
 
 /**
  *
  * @package app.controllers
  */
-class SequenceController
+class SequenceController extends BaseControllerAdm
 {
 
   public function post_change ()
@@ -26,10 +26,7 @@ class SequenceController
 
       Header::redirect(Header::getReferer());
     } catch (Exception $e) {
-      $session = new Session('adm_session');
-      $session->set('error', $e->getMessage());
-
-      Header::redirect(Header::getReferer());
+      $this->setErrorSession($e->getMessage());
     }
   }
 

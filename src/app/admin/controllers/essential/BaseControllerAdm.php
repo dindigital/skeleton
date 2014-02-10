@@ -24,28 +24,36 @@ abstract class BaseControllerAdm extends BaseController
   {
     parent::__construct();
 
-    $this->setAssetsData();
     $this->setUserData();
-    $this->setBasicTemplate();
     $this->setDefaultHeaders();
   }
 
-  private function setDefaultHeaders ()
+  protected function setDefaultHeaders ()
   {
     Header::setNoCache();
   }
 
   /**
+   * Seta os assets
+   */
+  protected function setAssetsData ()
+  {
+    $this->_data['assets'] = $this->getAssets();
+  }
+
+  /**
    * Seta os arquivos que compõem o layout do adm
    */
-  private function setBasicTemplate ()
+  protected function setBasicTemplate ()
   {
+    $this->setAssetsData();
     $this->_view->addFile('src/app/admin/views/layouts/layout.phtml');
     $this->_view->addFile('src/app/admin/views/includes/nav.phtml', '{$NAV}');
   }
 
   protected function setSaveTemplate ( $filename )
   {
+    $this->setBasicTemplate();
     $this->setSavedMsgData();
 
     $this->_view->addFile('src/app/admin/views/includes/alerts.phtml', '{$ALERTS}');
@@ -58,6 +66,7 @@ abstract class BaseControllerAdm extends BaseController
 
   protected function setListTemplate ( $filename )
   {
+    $this->setBasicTemplate();
     $this->setSavedMsgData();
 
     $paginator = $this->_model->getPaginator();
@@ -76,18 +85,10 @@ abstract class BaseControllerAdm extends BaseController
   }
 
   /**
-   * Seta os assets
-   */
-  private function setAssetsData ()
-  {
-    $this->_data['assets'] = $this->getAssets();
-  }
-
-  /**
    * Verifica se usuário está logado e seta os dados de usuário
    * @throws Exception - Caso o usuário não esteja logado
    */
-  private function setUserData ()
+  protected function setUserData ()
   {
     $adminAuthModel = new AdminAuthModel;
     if ( !$adminAuthModel->is_logged() )
