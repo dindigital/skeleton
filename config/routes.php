@@ -52,6 +52,10 @@ return array(
             'controller' => 'admin\controllers\essential\RelashionshipController',
             'method' => 'ajax',
         ),
+        'admin/sequence/change/' => array(
+            'controller' => 'admin\controllers\essential\SequenceController',
+            'method' => 'change',
+        ),
         'admin/(.*)' => array(
             'path' => 'admin\controllers\\',
             'type' => RouteTypes::ACTION,

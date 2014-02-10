@@ -300,6 +300,7 @@ class BaseModelAdm
     $current = Entities::getThis($this);
 
     $this->setIntval('sequence', $sequence);
+    $this->setId($id);
     $this->_dao->update($this->_table, array($current['id'] . ' = ? ' => $id));
   }
 

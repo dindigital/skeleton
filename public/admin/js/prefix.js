@@ -113,10 +113,12 @@ $(document).ready(function() {
   $('.drop_sequence').change(function() {
     var sequence = $(this).val();
     var id = $(this).attr('id');
-    var link = $('#link_prefix').val() + 'sequence/';
+    var name = $(this).parents('tr').attr('name');
+    var link = '/admin/sequence/change/';
 
     var form = newForm();
 
+    form.append('<input type="hidden" name="name" value="' + name + '" />');
     form.append('<input type="hidden" name="sequence" value="' + sequence + '" />');
     form.append('<input type="hidden" name="id" value="' + id + '" />');
     form.attr('action', link);

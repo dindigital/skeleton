@@ -211,15 +211,4 @@ abstract class BaseControllerAdm extends BaseController
     $this->_model->toggleActive(Post::text('id'), Post::checkbox('active'));
   }
 
-  public function post_sequence ()
-  {
-    try {
-      $this->_model->changeSequence(Post::text('id'), Post::text('sequence'));
-
-      Header::redirect(Header::getReferer());
-    } catch (Exception $e) {
-      $this->setErrorSession($e->getMessage());
-    }
-  }
-
 }
