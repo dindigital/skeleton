@@ -61,6 +61,7 @@ class MailingController extends BaseControllerAdm
       $info = array(
           'name' => Post::text('name'),
           'email' => Post::text('email'),
+          'mailing_group' => Post::text('mailing_group'),
       );
 
       $this->saveAndRedirect($info);

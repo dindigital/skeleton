@@ -6,6 +6,7 @@ use src\app\admin\validators\MailingValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
+use src\app\admin\models\essential\RelationshipModel;
 
 /**
  *
@@ -45,6 +46,7 @@ class MailingModel extends BaseModelAdm
   public function insert ( $info )
   {
     $this->setNewId();
+    $this->setTimestamp('inc_date');
     $validator = new validator($this->_table, $this->_dao);
     $validator->setName($info['name']);
     $validator->setEmail($info['email']);
@@ -52,6 +54,8 @@ class MailingModel extends BaseModelAdm
 
     $this->_dao->insert($this->_table);
     $this->log('C', $info['name'], $this->_table);
+
+    $this->save_relationship('mailing_group', $info['mailing_group']);
   }
 
   public function update ( $info )
@@ -64,6 +68,16 @@ class MailingModel extends BaseModelAdm
     $tableHistory = $this->getById();
     $this->_dao->update($this->_table, array('id_mailing = ?' => $this->getId()));
     $this->log('U', $info['name'], $this->_table, $tableHistory);
+
+    $this->save_relationship('mailing_group', $info['mailing_group']);
+  }
+
+  private function save_relationship ( $tbl, $array )
+  {
+    $relationshipModel = new RelationshipModel();
+    $relationshipModel->setCurrentSection('mailing');
+    $relationshipModel->setRelationshipSection($tbl);
+    $relationshipModel->insert($this->getId(), $array);
   }
 
 }

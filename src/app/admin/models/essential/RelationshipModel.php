@@ -48,7 +48,7 @@ class RelationshipModel extends BaseModelAdm
   {
     $arrCriteria["{$this->relationshipSection['title']} LIKE ?"] = '%' . $q . '%';
 
-    if ( $this->relationshipSection['trash'] == true ) {
+    if ( isset($this->relationshipSection['trash']) && $this->relationshipSection['trash'] == true ) {
       $arrCriteria['is_del = ?'] = '0';
     }
 
@@ -75,7 +75,7 @@ class RelationshipModel extends BaseModelAdm
 
     $arrCriteria["{$this->currentSection['id']} = ?"] = $id;
 
-    if ( $this->currentSection['trash'] == true ) {
+    if ( isset($this->relationshipSection['trash']) && $this->currentSection['trash'] == true ) {
       $arrCriteria['is_del = ?'] = '0';
     }
 

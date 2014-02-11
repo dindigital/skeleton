@@ -62,4 +62,15 @@ class MailingGroupModel extends BaseModelAdm
     $this->log('U', $info['name'], $this->_table, $tableHistory);
   }
 
+  public function short_insert ( $name )
+  {
+    $this->setNewId();
+    $validator = new validator($this->_table);
+    $validator->setName($name);
+    $validator->throwException();
+
+    $this->_dao->insert($this->_table);
+    $this->log('C', $name, $this->_table);
+  }
+
 }
