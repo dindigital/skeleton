@@ -6,9 +6,20 @@ use src\app\admin\validators\BaseValidator;
 use Respect\Validation\Validator as v;
 use Din\Crypt\Crypt;
 use Din\Exception\JsonException;
+use src\app\admin\helpers\Record;
+use Din\DataAccessLayer\Table\iTable;
+use Din\DataAccessLayer\DAO;
 
 class AdminValidator extends BaseValidator
 {
+
+  protected $_dao;
+
+  public function __construct ( iTable $table, DAO $dao )
+  {
+    parent::__construct($table);
+    $this->_dao = $dao;
+  }
 
   public function setName ( $name )
   {
@@ -18,13 +29,24 @@ class AdminValidator extends BaseValidator
     $this->_table->name = $name;
   }
 
-  public function setEmail ( $email, $id = null )
+  public function setEmail ( $email, $ignore_id = null )
   {
     if ( !v::email()->validate($email) )
       return JsonException::addException('E-mail inválido');
 
-// TO DO: Verificar se usuário existe no banco de dados, se existir
-// não deixar usar o mesmo e-mail
+    $arrCriteria = array(
+        'email = ?' => $email
+    );
+
+    if ( $ignore_id ) {
+      $arrCriteria['id_admin <> ?'] = $ignore_id;
+    }
+
+    $record = new Record($this->_dao);
+    $record->setTable('admin');
+    $record->setCriteria($arrCriteria);
+    if ( $record->exists() )
+      return JsonException::addException('Já existe um registro com este e-mail');
 
     $this->_table->email = $email;
   }

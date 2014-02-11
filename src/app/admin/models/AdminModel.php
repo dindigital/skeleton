@@ -27,7 +27,7 @@ class AdminModel extends BaseModelAdm
     $this->setIntval('active', $info['active']);
     $this->setTimestamp('inc_date');
 
-    $validator = new validator($this->_table);
+    $validator = new validator($this->_table, $this->_dao);
     $validator->setName($info['name']);
     $validator->setEmail($info['email']);
     $validator->setPassword($info['password']);
@@ -46,9 +46,9 @@ class AdminModel extends BaseModelAdm
   {
     $this->setIntval('active', $info['active']);
 
-    $validator = new validator($this->_table);
+    $validator = new validator($this->_table, $this->_dao);
     $validator->setName($info['name']);
-    $validator->setEmail($info['email']);
+    $validator->setEmail($info['email'], $this->getId());
     $validator->setPassword($info['password'], false);
     $validator->setPermission($info['permission']);
     $mf = new MoveFiles;
