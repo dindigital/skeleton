@@ -4,17 +4,20 @@ return array(
     'trash' => array(
         'name' => 'Trash',
         'section' => 'Lixeira',
+        'index' => 'list',
     ),
     'log' => array(
         'name' => 'Log',
         'section' => 'Log',
         'id' => 'id_log',
+        'index' => 'list',
     ),
     'settings' => array(
         'tbl' => 'settings',
         'name' => 'Settings',
         'section' => 'Configuração',
         'id' => 'id_settings',
+        'index' => 'save',
     ),
     'photo' => array(
         'tbl' => 'photo',
@@ -23,6 +26,7 @@ return array(
         'id' => 'id_photo',
         'title' => 'title',
         'trash' => true,
+        'index' => 'list',
     ),
     'photo_item' => array(
         'tbl' => 'photo_item',
@@ -39,7 +43,8 @@ return array(
         'trash' => true,
         'sequence' => array(
             'optional' => true,
-        )
+        ),
+        'index' => 'list',
     ),
     'news_cat' => array(
         'tbl' => 'news_cat',
@@ -54,6 +59,7 @@ return array(
         'sequence' => array(
             'optional' => false,
         ),
+        'index' => 'list',
     ),
     'admin' => array(
         'tbl' => 'admin',
@@ -62,6 +68,7 @@ return array(
         'id' => 'id_admin',
         'title' => 'name',
         'trash' => false,
+        'index' => 'list',
     ),
     'video' => array(
         'tbl' => 'video',
@@ -70,6 +77,7 @@ return array(
         'id' => 'id_video',
         'title' => 'title',
         'trash' => true,
+        'index' => 'list',
     ),
     'page_cat' => array(
         'tbl' => 'page_cat',
@@ -83,7 +91,8 @@ return array(
         ),
         'children' => array(
             'page'
-        )
+        ),
+        'index' => 'list',
     ),
     'page' => array(
         'tbl' => 'page',
@@ -96,7 +105,8 @@ return array(
             'optional' => true,
             'dependence' => 'id_page_cat'
         ),
-        'parent' => 'page_cat'
+        'parent' => 'page_cat',
+        'index' => 'list',
     ),
     'survey' => array(
         'tbl' => 'survey',
@@ -107,14 +117,15 @@ return array(
         'trash' => true,
         'children' => array(
             'survey_question'
-        )
+        ),
+        'index' => 'list',
     ),
     'survey_question' => array(
         'tbl' => 'survey_question',
         'name' => 'SurveyQuestion',
         'id' => 'id_survey_question',
         'title' => 'question',
-        'parent' => 'survey'
+        'parent' => 'survey',
     ),
     'poll' => array(
         'tbl' => 'poll',
@@ -125,7 +136,8 @@ return array(
         'trash' => true,
         'children' => array(
             'poll_option'
-        )
+        ),
+        'index' => 'list',
     ),
     'poll_option' => array(
         'tbl' => 'poll_option',
@@ -141,6 +153,7 @@ return array(
         'id' => 'id_tag',
         'title' => 'title',
         'trash' => true,
+        'index' => 'list',
     ),
     'publication' => array(
         'tbl' => 'publication',
@@ -149,5 +162,6 @@ return array(
         'id' => 'id_publication',
         'title' => 'title',
         'trash' => true,
+        'index' => 'list',
     ),
 );

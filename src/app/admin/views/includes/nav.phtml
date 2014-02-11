@@ -2,90 +2,26 @@
   <div class="cl-toggle"><i class="fa fa-bars"></i></div>
   <div class="cl-navblock">
     <ul class="cl-vnavigation">
-      <?php if ( isset($data['permission']['Log']) ): ?>
+
+      <?php foreach ( $data['permission'] as $specs ): ?>
         <li>
-          <a href="/admin/log/list/"><i class="fa fa-bug"></i>Log</a>
-        </li>
-      <?php endif; ?>
-      <?php if ( isset($data['permission']['Settings']) ): ?>
-        <li>
-          <a href="/admin/settings/save/"><i class="fa fa-certificate"></i>Configurações</a>
-        </li>
-      <?php endif; ?>
-      <?php if ( isset($data['permission']['Trash']) ): ?>
-        <li>
-          <a href="/admin/trash/list/"><i class="fa fa-trash-o"></i>Lixeira</a>
-        </li>
-      <?php endif; ?>
-      <?php if ( isset($data['permission']['Admin']) ): ?>
-        <li>
-          <a href="/admin/admin/list/"><i class="fa fa-male"></i>Usuário</a>
-        </li>
-      <?php endif; ?>
-      <?php if ( isset($data['permission']['Photo']) ): ?>
-        <li>
-          <a href="/admin/photo/list/"><i class="fa fa-picture-o"></i>Fotos</a>
-        </li>
-      <?php endif; ?>
-      <?php if ( isset($data['permission']['Video']) ): ?>
-        <li>
-          <a href="/admin/video/list/"><i class="fa fa-video-camera"></i>Vídeos</a>
-        </li>
-      <?php endif; ?>
-      <?php if ( isset($data['permission']['News']) || isset($data['permission']['NewsCat']) ): ?>
-        <li>
-          <a href="#"><i class="fa fa-paperclip"></i>Notícias</a>
-          <ul class="sub-menu">
-            <?php if ( isset($data['permission']['NewsCat']) ): ?>
+          <?php if ( isset($specs['children']) ): ?>
+            <a href="#"><i class="fa fa-bars"></i><?php echo $specs['section']; ?></a>
+            <ul class="sub-menu">
               <li>
-                <a href="/admin/news_cat/list/"><i class="fa fa-paperclip"></i>Categoria</a>
+                <a href="<?php echo $specs['uri']; ?>"><i class="fa fa-bars"></i><?php echo $specs['section']; ?></a>
               </li>
+              <?php foreach ( $specs['children'] as $child_specs ): ?>
+                <li>
+                  <a href="<?php echo $child_specs['uri']; ?>"><i class="fa fa-bars"></i><?php echo $child_specs['section']; ?></a>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          <?php else: ?>
+            <a href="<?php echo $specs['uri']; ?>"><i class="fa fa-bars"></i><?php echo $specs['section']; ?></a>
             <?php endif; ?>
-            <?php if ( isset($data['permission']['News']) ): ?>
-              <li>
-                <a href="/admin/news/list/"><i class="fa fa-paperclip"></i>Notícias</a>
-              </li>
-            <?php endif; ?>
-          </ul>
         </li>
-      <?php endif; ?>
-      <?php if ( isset($data['permission']['PageCat']) || isset($data['permission']['Page']) ): ?>
-        <li>
-          <a href="#"><i class="fa fa-paperclip"></i>Páginas Insitucionais</a>
-          <ul class="sub-menu">
-            <?php if ( isset($data['permission']['PageCat']) ): ?>
-              <li>
-                <a href="/admin/page_cat/list/"><i class="fa fa-paperclip"></i>Menu</a>
-              </li>
-            <?php endif; ?>
-            <?php if ( isset($data['permission']['Page']) ): ?>
-              <li>
-                <a href="/admin/page/list/"><i class="fa fa-paperclip"></i>Páginas</a>
-              </li>
-            <?php endif; ?>
-          </ul>
-        </li>
-      <?php endif; ?>
-      <?php if ( isset($data['permission']['Survey']) ): ?>
-        <li>
-          <a href="/admin/survey/list/"><i class="fa fa-picture-o"></i>Pesquisa de Satisfação</a>
-        </li>
-      <?php endif; ?>
-      <?php if ( isset($data['permission']['Poll']) ): ?>
-        <li>
-          <a href="/admin/poll/list/"><i class="fa fa-picture-o"></i>Enquete</a>
-        </li>
-      <?php endif; ?>
-      <?php if ( isset($data['permission']['Tag']) ): ?>
-        <li>
-          <a href="/admin/tag/list/"><i class="fa fa-picture-o"></i>Tag</a>
-        </li>
-      <?php endif; ?>
-      <?php if ( isset($data['permission']['Publication']) ): ?>
-        <li>
-          <a href="/admin/publication/list/"><i class="fa fa-picture-o"></i>Publicações</a>
-        </li>
-      <?php endif; ?>
+      <?php endforeach; ?>
 
     </ul>
   </div>

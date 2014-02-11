@@ -98,8 +98,7 @@ abstract class BaseControllerAdm extends BaseController
     $this->_data['admin']['avatar_img'] = Picuri::picUri($this->_data['admin']['avatar'], 30, 30, true);
 
     $permission = new PermissionModel;
-    $permissions = $permission->getByAdmin($this->_data['admin']);
-    $this->_data['permission'] = array_fill_keys($permissions, '');
+    $this->_data['permission'] = $permission->getMenu($this->_data['admin']);
   }
 
   protected function setSavedMsgSession ()
