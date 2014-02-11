@@ -6,7 +6,7 @@ use src\app\admin\validators\NewsCatValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
-use src\app\admin\helpers\Sequence;
+use src\app\admin\models\essential\SequenceModel;
 use src\app\admin\helpers\MoveFiles;
 
 /**
@@ -48,7 +48,9 @@ class NewsCatModel extends BaseModelAdm
     $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
-    $result = Sequence::setListArray($this, $result, $arrCriteria);
+
+    $seq = new SequenceModel($this);
+    $result = $seq->setListArray($result, $arrCriteria);
 
     return $result;
   }
@@ -66,8 +68,10 @@ class NewsCatModel extends BaseModelAdm
 
     $mf = new MoveFiles;
     $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
-    Sequence::setSequence($this);
     $validator->throwException();
+
+    $seq = new SequenceModel($this);
+    $seq->setSequence();
 
     $mf->move();
 
