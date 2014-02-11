@@ -73,4 +73,20 @@ class MailingGroupModel extends BaseModelAdm
     $this->log('C', $name, $this->_table);
   }
 
+  public function getListArray ()
+  {
+    $select = new Select('mailing_group');
+    $select->addField('id_mailing_group');
+    $select->addField('name');
+
+    $result = $this->_dao->select($select);
+
+    $arrOptions = array();
+    foreach ( $result as $row ) {
+      $arrOptions[$row['id_mailing_group']] = $row['name'];
+    }
+
+    return $arrOptions;
+  }
+
 }

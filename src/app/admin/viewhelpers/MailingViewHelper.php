@@ -3,6 +3,7 @@
 namespace src\app\admin\viewhelpers;
 
 use Din\Filters\String\Html;
+use src\app\admin\helpers\Form;
 
 class MailingViewHelper
 {
@@ -16,10 +17,11 @@ class MailingViewHelper
     return $result;
   }
 
-  public static function formatFilters ( $arrFilters )
+  public static function formatFilters ( $arrFilters, $mg_list )
   {
     $arrFilters['name'] = Html::scape($arrFilters['name']);
     $arrFilters['email'] = Html::scape($arrFilters['email']);
+    $arrFilters['mailing_group'] = Form::Dropdown('mailing_group', $mg_list, $arrFilters['mailing_group'], 'Filtro por Grupo');
 
     return $arrFilters;
   }

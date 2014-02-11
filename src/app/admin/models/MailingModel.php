@@ -28,12 +28,19 @@ class MailingModel extends BaseModelAdm
         'email LIKE ?' => '%' . $arrFilters['email'] . '%',
     );
 
+    if ( $arrFilters['mailing_group'] != '' && $arrFilters['mailing_group'] != '0' ) {
+      $arrCriteria['id_mailing_group = ?'] = $arrFilters['mailing_group'];
+    }
+
     $select = new Select('mailing');
     $select->addField('id_mailing');
     $select->addField('name');
     $select->addField('email');
     $select->where($arrCriteria);
     $select->order_by('email');
+    $select->group_by('a.id_mailing');
+
+    $select->inner_join('id_mailing', Select::construct('r_mailing_mailing_group'));
 
     $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
     $this->setPaginationSelect($select);

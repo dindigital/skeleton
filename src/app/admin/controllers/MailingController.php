@@ -9,6 +9,7 @@ use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\viewhelpers\MailingViewHelper as vh;
+use src\app\admin\models\MailingGroupModel;
 
 /**
  *
@@ -32,11 +33,15 @@ class MailingController extends BaseControllerAdm
     $arrFilters = array(
         'name' => Get::text('name'),
         'email' => Get::text('email'),
+        'mailing_group' => Get::text('mailing_group'),
         'pag' => Get::text('pag')
     );
 
+    $mg = new MailingGroupModel;
+    $mg_list = $mg->getListArray();
+
     $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
-    $this->_data['search'] = vh::formatFilters($arrFilters);
+    $this->_data['search'] = vh::formatFilters($arrFilters, $mg_list);
 
     $this->setErrorSessionData();
 
