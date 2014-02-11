@@ -207,9 +207,4 @@ abstract class BaseControllerAdm extends BaseController
     }
   }
 
-  public function post_active ()
-  {
-    $this->_model->toggleActive(Post::text('id'), Post::checkbox('active'));
-  }
-
 }

@@ -47,12 +47,14 @@ $(document).ready(function() {
 
   $('.setActive').change(function() {
     var active = ($(this).is(':checked')) ? '1' : '0';
-    var action = $('#link_prefix').val() + 'active/';
+    var action = '/admin/active/change/';
     var id = $(this).parents('tr').attr('id');
+    var name = $(this).parents('tr').attr('name');
 
     $.post(action, {
       active: active,
-      id: id
+      id: id,
+      name: name
     });
   });
 

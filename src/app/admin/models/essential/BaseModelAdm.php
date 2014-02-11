@@ -262,20 +262,4 @@ class BaseModelAdm
     log::save($this->_dao, $admin, $action, $msg, $entityname, $table, $tableHistory);
   }
 
-  /*
-   * ===========================================================================
-   * ACTIVATABLE
-   * ===========================================================================
-   */
-
-  public function toggleActive ( $id, $active )
-  {
-    $current = Entities::getThis($this);
-
-    $tableHistory = $this->getById($id);
-    $this->setIntval('active', $active);
-    $this->_dao->update($this->_table, array($current['id'] . ' = ?' => $id));
-    $this->log('U', $tableHistory[$current['title']], $this->_table, $tableHistory);
-  }
-
 }

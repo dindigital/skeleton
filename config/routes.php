@@ -56,6 +56,10 @@ return array(
             'controller' => 'admin\controllers\essential\SequenceController',
             'method' => 'change',
         ),
+        'admin/active/change/' => array(
+            'controller' => 'admin\controllers\essential\ActiveController',
+            'method' => 'change',
+        ),
         'admin/(.*)' => array(
             'path' => 'admin\controllers\\',
             'type' => RouteTypes::ACTION,
