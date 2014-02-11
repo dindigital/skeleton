@@ -7,7 +7,6 @@ use Din\DataAccessLayer\PDO\PDOBuilder;
 use src\app\admin\helpers\Entities;
 use Din\DataAccessLayer\Select;
 use Din\File\Folder;
-use src\app\admin\helpers\Sequence;
 use Exception;
 use src\app\admin\models\essential\LogMySQLModel as log;
 use Din\DataAccessLayer\Table\Table;
@@ -277,55 +276,6 @@ class BaseModelAdm
     $this->setIntval('active', $active);
     $this->_dao->update($this->_table, array($current['id'] . ' = ?' => $id));
     $this->log('U', $tableHistory[$current['title']], $this->_table, $tableHistory);
-  }
-
-  /*
-   * ===========================================================================
-   * SORTABLE
-   * ===========================================================================
-   */
-
-  public function operateSequence ( $operator, $arrCriteria )
-  {
-    $current = Entities::getThis($this);
-
-    $SQL = "UPDATE {$current['tbl']} SET sequence = sequence {$operator} 1";
-    $result = $this->_dao->execute($SQL, $arrCriteria);
-
-    return $result;
-  }
-
-  public function updateSequence ( $sequence, $id )
-  {
-    $current = Entities::getThis($this);
-
-    $this->setIntval('sequence', $sequence);
-    $this->setId($id);
-    $this->_dao->update($this->_table, array($current['id'] . ' = ? ' => $id));
-  }
-
-  public function changeSequence ( $id, $sequence )
-  {
-    Sequence::changeSequence($this, $id, $sequence);
-  }
-
-  public function getMaxSequence ( $arrCriteria = array() )
-  {
-    $current = Entities::getThis($this);
-
-    $select = new Select($current['tbl']);
-
-    if ( $current['sequence']['optional'] ) {
-      $arrCriteria['sequence > ?'] = '0';
-    }
-
-    if ( isset($current['trash']) ) {
-      $arrCriteria['is_del = 0'] = null;
-    }
-
-    $select->where($arrCriteria);
-
-    return $this->_dao->select_count($select);
   }
 
 }

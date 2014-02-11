@@ -7,7 +7,7 @@ use Din\DataAccessLayer\Select;
 use Exception;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\helpers\Entities;
-use src\app\admin\helpers\Sequence;
+use src\app\admin\models\essential\SequenceModel;
 
 /**
  *
@@ -101,7 +101,9 @@ class TrashModel extends BaseModelAdm
       }
       //
 
-      Sequence::setSequence($model);
+      $seq = new SequenceModel($model);
+      $seq->setSequence();
+
       $model->setIntval('is_del', 0);
       $this->_dao->update($model->getTable(), array($current['id'] . ' = ?' => $item['id']));
       $this->log('R', $tableHistory[$current['title']], $current['tbl'], null, $current['name']);
@@ -144,7 +146,8 @@ class TrashModel extends BaseModelAdm
         $model->delete(array(array('id' => $item['id'])));
       } else {
 
-        Sequence::changeSequence($model, $item['id'], 0);
+        $seq = new SequenceModel($model);
+        $seq->changeSequence($item['id'], 0);
 
         $this->deleteChildren($current, $item['id']);
         $tableHistory = $model->getById($item['id']);
