@@ -149,4 +149,18 @@ return array(
         'trash' => true,
         'index' => 'list',
     ),
+    'mailing_group' => array(
+        'name' => 'MailingGroup',
+        'section' => 'Grupo de E-mail',
+        'id' => 'id_mailing_group',
+        'title' => 'name',
+        'index' => 'list',
+    ),
+    'mailing' => array(
+        'name' => 'Mailing',
+        'section' => 'E-mails',
+        'id' => 'id_mailing',
+        'title' => 'name',
+        'index' => 'list',
+    ),
 );
