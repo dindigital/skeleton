@@ -13,14 +13,12 @@ return array(
         'index' => 'list',
     ),
     'settings' => array(
-        'tbl' => 'settings',
         'name' => 'Settings',
         'section' => 'Configuração',
         'id' => 'id_settings',
         'index' => 'save',
     ),
     'photo' => array(
-        'tbl' => 'photo',
         'name' => 'Photo',
         'section' => 'Galeria de Fotos',
         'id' => 'id_photo',
@@ -29,12 +27,10 @@ return array(
         'index' => 'list',
     ),
     'photo_item' => array(
-        'tbl' => 'photo_item',
         'name' => 'Gallery',
         'id' => 'id_photo_item',
     ),
     'news' => array(
-        'tbl' => 'news',
         'name' => 'News',
         'section' => 'Notícias',
         'id' => 'id_news',
@@ -47,7 +43,6 @@ return array(
         'index' => 'list',
     ),
     'news_cat' => array(
-        'tbl' => 'news_cat',
         'name' => 'NewsCat',
         'section' => 'Categoria de Notícias',
         'id' => 'id_news_cat',
@@ -62,7 +57,6 @@ return array(
         'index' => 'list',
     ),
     'admin' => array(
-        'tbl' => 'admin',
         'name' => 'Admin',
         'section' => 'Usuários',
         'id' => 'id_admin',
@@ -71,7 +65,6 @@ return array(
         'index' => 'list',
     ),
     'video' => array(
-        'tbl' => 'video',
         'name' => 'Video',
         'section' => 'Vídeos',
         'id' => 'id_video',
@@ -80,7 +73,6 @@ return array(
         'index' => 'list',
     ),
     'page_cat' => array(
-        'tbl' => 'page_cat',
         'name' => 'PageCat',
         'section' => 'Menu',
         'id' => 'id_page_cat',
@@ -95,7 +87,6 @@ return array(
         'index' => 'list',
     ),
     'page' => array(
-        'tbl' => 'page',
         'name' => 'Page',
         'section' => 'Página',
         'id' => 'id_page',
@@ -109,7 +100,6 @@ return array(
         'index' => 'list',
     ),
     'survey' => array(
-        'tbl' => 'survey',
         'name' => 'Survey',
         'section' => 'Pesquisa de Satisfação',
         'id' => 'id_survey',
@@ -121,14 +111,12 @@ return array(
         'index' => 'list',
     ),
     'survey_question' => array(
-        'tbl' => 'survey_question',
         'name' => 'SurveyQuestion',
         'id' => 'id_survey_question',
         'title' => 'question',
         'parent' => 'survey',
     ),
     'poll' => array(
-        'tbl' => 'poll',
         'name' => 'Poll',
         'section' => 'Enquete',
         'id' => 'id_poll',
@@ -140,14 +128,12 @@ return array(
         'index' => 'list',
     ),
     'poll_option' => array(
-        'tbl' => 'poll_option',
         'name' => 'PollOption',
         'id' => 'id_poll_option',
         'title' => 'option',
         'parent' => 'poll'
     ),
     'tag' => array(
-        'tbl' => 'tag',
         'name' => 'Tag',
         'section' => 'Tags',
         'id' => 'id_tag',
@@ -156,7 +142,6 @@ return array(
         'index' => 'list',
     ),
     'publication' => array(
-        'tbl' => 'publication',
         'name' => 'Publication',
         'section' => 'Publicações',
         'id' => 'id_publication',
