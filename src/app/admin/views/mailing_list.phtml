@@ -26,7 +26,15 @@
         </form>
       </div>
 
-      {$LIST_HEADER_BTN}
+      <div class="content">
+        <div class="col-lg-12 pull-left">
+          <a href="#" title="Novo Registro" class="btn btn-primary btn-rad btn_save">Novo Registro</a>
+          <a href="#" title="Excluir Selecionados" class="trash_ex btn btn-danger btn-rad">Excluir Selecionados</a>
+          <a href="/admin/mailing_import/xls/" title="Importar" class="btn btn-primary btn-rad">Importar</a>
+          <a href="#" title="Exportar" class="btn btn-primary btn-rad mailing_export" querystring="<?php echo http_build_query($_GET); ?>">Exportar</a>
+        </div>
+        <br style="clear: both;" />
+      </div>
 
       <div class="content">
         <div class="table-responsive">
