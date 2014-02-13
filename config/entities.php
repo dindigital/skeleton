@@ -4,19 +4,16 @@ return array(
     'trash' => array(
         'name' => 'Trash',
         'section' => 'Lixeira',
-        'index' => 'list',
     ),
     'log' => array(
         'name' => 'Log',
         'section' => 'Log',
         'id' => 'id_log',
-        'index' => 'list',
     ),
     'settings' => array(
         'name' => 'Settings',
         'section' => 'Configuração',
         'id' => 'id_settings',
-        'index' => 'save',
     ),
     'photo' => array(
         'name' => 'Photo',
@@ -24,7 +21,6 @@ return array(
         'id' => 'id_photo',
         'title' => 'title',
         'trash' => true,
-        'index' => 'list',
     ),
     'photo_item' => array(
         'name' => 'Gallery',
@@ -40,7 +36,6 @@ return array(
         'sequence' => array(
             'optional' => true,
         ),
-        'index' => 'list',
     ),
     'news_cat' => array(
         'name' => 'NewsCat',
@@ -54,7 +49,6 @@ return array(
         'sequence' => array(
             'optional' => false,
         ),
-        'index' => 'list',
     ),
     'admin' => array(
         'name' => 'Admin',
@@ -62,7 +56,6 @@ return array(
         'id' => 'id_admin',
         'title' => 'name',
         'trash' => false,
-        'index' => 'list',
     ),
     'video' => array(
         'name' => 'Video',
@@ -70,7 +63,6 @@ return array(
         'id' => 'id_video',
         'title' => 'title',
         'trash' => true,
-        'index' => 'list',
     ),
     'page_cat' => array(
         'name' => 'PageCat',
@@ -84,7 +76,6 @@ return array(
         'children' => array(
             'page'
         ),
-        'index' => 'list',
     ),
     'page' => array(
         'name' => 'Page',
@@ -97,7 +88,6 @@ return array(
             'dependence' => 'id_page_cat'
         ),
         'parent' => 'page_cat',
-        'index' => 'list',
     ),
     'survey' => array(
         'name' => 'Survey',
@@ -108,7 +98,6 @@ return array(
         'children' => array(
             'survey_question'
         ),
-        'index' => 'list',
     ),
     'survey_question' => array(
         'name' => 'SurveyQuestion',
@@ -125,7 +114,6 @@ return array(
         'children' => array(
             'poll_option'
         ),
-        'index' => 'list',
     ),
     'poll_option' => array(
         'name' => 'PollOption',
@@ -139,7 +127,6 @@ return array(
         'id' => 'id_tag',
         'title' => 'title',
         'trash' => true,
-        'index' => 'list',
     ),
     'publication' => array(
         'name' => 'Publication',
@@ -147,21 +134,18 @@ return array(
         'id' => 'id_publication',
         'title' => 'title',
         'trash' => true,
-        'index' => 'list',
     ),
     'mailing_group' => array(
         'name' => 'MailingGroup',
         'section' => 'Grupo de E-mail',
         'id' => 'id_mailing_group',
         'title' => 'name',
-        'index' => 'list',
     ),
     'mailing' => array(
         'name' => 'Mailing',
         'section' => 'E-mails',
         'id' => 'id_mailing',
         'title' => 'name',
-        'index' => 'list',
     ),
     'mailing_import' => array(
         'name' => 'MailingImport',

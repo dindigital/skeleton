@@ -3,22 +3,19 @@
   <div class="cl-navblock">
     <ul class="cl-vnavigation">
 
-      <?php foreach ( $data['permission'] as $specs ): ?>
+      <?php foreach ( $data['menu'] as $section => $specs ): ?>
         <li>
-          <?php if ( isset($specs['children']) ): ?>
-            <a href="#"><i class="fa fa-bars"></i><?php echo $specs['section']; ?></a>
+          <?php if ( array_key_exists('submenu', $specs) ): ?>
+            <a href="#"><i class="fa fa-bars"></i><?php echo $section; ?></a>
             <ul class="sub-menu">
-              <li>
-                <a href="<?php echo $specs['uri']; ?>"><i class="fa fa-bars"></i><?php echo $specs['section']; ?></a>
-              </li>
-              <?php foreach ( $specs['children'] as $child_specs ): ?>
+              <?php foreach ( $specs['submenu'] as $subsection => $subspecs ): ?>
                 <li>
-                  <a href="<?php echo $child_specs['uri']; ?>"><i class="fa fa-bars"></i><?php echo $child_specs['section']; ?></a>
+                  <a href="<?php echo $subspecs['index']; ?>"><i class="fa fa-bars"></i><?php echo $subsection; ?></a>
                 </li>
               <?php endforeach; ?>
             </ul>
           <?php else: ?>
-            <a href="<?php echo $specs['uri']; ?>"><i class="fa fa-bars"></i><?php echo $specs['section']; ?></a>
+            <a href="<?php echo $specs['index']; ?>"><i class="fa fa-bars"></i><?php echo $section; ?></a>
             <?php endif; ?>
         </li>
       <?php endforeach; ?>

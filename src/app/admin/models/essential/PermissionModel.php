@@ -55,49 +55,31 @@ class PermissionModel extends BaseModelAdm
   {
     $user_permissions = $this->getByAdmin($user);
 
-    $menu = array();
+    $m = new FileMenu('config/menu.php');
+    $full_menu = $m->getArray();
 
-    foreach ( $user_permissions as $name => $val ) {
-      $entity = Entities::getEntityByName($name);
+    $user_menu = array();
+    foreach ( $full_menu as $section => $specs ) {
+      if ( array_key_exists('submenu', $specs) ) {
+        foreach ( $specs['submenu'] as $subsection => $subspecs ) {
+          if ( array_key_exists($subspecs['name'], $user_permissions) ) {
+            $user_menu[$section]['submenu'][$subsection] = $subspecs;
 
-      if ( !isset($entity['index']) ) {
-        continue;
-      }
-
-      $menu[$name]['uri'] = "/admin/{$entity['tbl']}/{$entity['index']}/";
-      $menu[$name]['section'] = $entity['section'];
-
-      if ( isset($entity['children']) ) {
-
-        foreach ( $entity['children'] as $child ) {
-          $child_entity = Entities::$entities[$child];
-
-          if ( !isset($child_entity['index']) || !isset($user_permissions[$child_entity['name']]) ) {
-            continue;
+            $entity = Entities::getEntityByName($subspecs['name']);
+            $user_menu[$section]['submenu'][$subsection]['index'] = "/admin/{$entity['tbl']}/{$subspecs['index']}/";
           }
+        }
+      } else {
+        if ( array_key_exists($specs['name'], $user_permissions) ) {
+          $user_menu[$section] = $specs;
 
-          $menu[$name]['children'][$child_entity['name']] = array(
-              'uri' => "/admin/{$child_entity['tbl']}/{$child_entity['index']}/",
-              'section' => $child_entity['section'],
-          );
+          $entity = Entities::getEntityByName($specs['name']);
+          $user_menu[$section]['index'] = "/admin/{$entity['tbl']}/{$specs['index']}/";
         }
       }
     }
 
-    return $this->remove_duplication($menu);
-  }
-
-  protected function remove_duplication ( $menu )
-  {
-    foreach ( $menu as $name => $spec ) {
-      if ( isset($spec['children']) ) {
-        foreach ( $spec['children'] as $children_name => $children_spec ) {
-          unset($menu[$children_name]);
-        }
-      }
-    }
-
-    return $menu;
+    return $user_menu;
   }
 
 }
