@@ -101,6 +101,8 @@ class RelationshipModel extends BaseModelAdm
     foreach ( $arrayItem as $row ) {
       if ( $this->count($row) ) {
         $arrayId[] = $row;
+      } else if ( $discoverId = $this->getIdByTitle($row) ) {
+        $arrayId[] = $discoverId;
       } else {
         $model->short_insert($row);
         $arrayId[] = $model->getId();
@@ -135,6 +137,19 @@ class RelationshipModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return (bool) count($result);
+  }
+
+  private function getIdByTitle ( $row )
+  {
+    $arrCriteria["{$this->relationshipSection['title']} = ?"] = $row;
+
+    $select = new Select($this->relationshipSection['tbl']);
+    $select->addField($this->relationshipSection['id'], 'id');
+    $select->where($arrCriteria);
+
+    $result = $this->_dao->select($select);
+
+    return count($result) ? $result[0]['id'] : false;
   }
 
   private function insertRelationship ( $arrayId, $id )
