@@ -22,6 +22,7 @@ class MailingImportController extends BaseControllerAdm
   {
     parent::__construct();
     $this->_model = new model;
+    $this->require_permission();
   }
 
   public function get_xls ( $id = null )

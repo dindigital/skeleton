@@ -25,6 +25,7 @@ abstract class LogAbstract
       case 'T':
       case 'R':
       case 'I':
+      case 'E':
         $this->deleteRestore($action);
         break;
     }

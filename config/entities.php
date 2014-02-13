@@ -167,4 +167,8 @@ return array(
         'name' => 'MailingImport',
         'section' => 'Importação de E-mail',
     ),
+    'mailing_export' => array(
+        'name' => 'MailingExport',
+        'section' => 'Exportação de E-mail',
+    ),
 );

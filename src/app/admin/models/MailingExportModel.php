@@ -35,6 +35,8 @@ class MailingExportModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
+    $total = count($result);
+    $this->log('E', "Exportou {$total} e-mails", 'mailing');
 
     $xls = new ExportExcel('mailing_' . date('ymd-His'));
     $xls->setResult($result);
