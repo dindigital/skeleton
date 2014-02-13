@@ -36,7 +36,7 @@ class LogModel extends BaseModelAdm
       $arrCriteria['a.name = ?'] = $arrFilters['name'];
     }
 
-    $arrCriteria['a.name IN (?)'] = array_keys($this->getDropdownName());
+    //$arrCriteria['a.name IN (?)'] = array_keys($this->getDropdownName());
 
     $select = new Select('log');
     $select->addField('id_log');
@@ -84,7 +84,7 @@ class LogModel extends BaseModelAdm
   {
     $arrOptions = array();
     foreach ( Entities::$entities as $row ) {
-      if ( isset($row['section']) && isset($row['tbl']) && isset($row['name']) )
+      if ( isset($row['section']) && /* isset($row['tbl']) && */ isset($row['name']) )
         $arrOptions[$row['name']] = $row['section'];
     }
 

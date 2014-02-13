@@ -14,7 +14,8 @@ class Arrays
       'U' => 'Atualizar',
       'D' => 'Deletar',
       'T' => 'Enviar para lixeira',
-      'R' => 'Restaurar da lixeira'
+      'R' => 'Restaurar da lixeira',
+      'I' => 'Importar conteúdo'
   );
 
 }
