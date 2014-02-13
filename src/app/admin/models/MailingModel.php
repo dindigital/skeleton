@@ -50,7 +50,7 @@ class MailingModel extends BaseModelAdm
     return $result;
   }
 
-  public function insert ( $info )
+  public function insert ( $info, $log = true )
   {
     $this->setNewId();
     $this->setTimestamp('inc_date');
@@ -60,7 +60,9 @@ class MailingModel extends BaseModelAdm
     $validator->throwException();
 
     $this->_dao->insert($this->_table);
-    $this->log('C', $info['name'], $this->_table);
+    if ( $log ) {
+      $this->log('C', $info['name'], $this->_table);
+    }
 
     $this->save_relationship('mailing_group', $info['mailing_group']);
   }

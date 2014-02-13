@@ -163,4 +163,8 @@ return array(
         'title' => 'name',
         'index' => 'list',
     ),
+    'mailing_import' => array(
+        'name' => 'MailingImport',
+        'section' => 'Importação de E-mail',
+    ),
 );
