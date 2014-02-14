@@ -46,7 +46,7 @@ return array(
         'index' => 'list',
     ),
     'Galeria de Vídeos' => array(
-        'name' => 'Photo',
+        'name' => 'Video',
         'index' => 'list',
     ),
     'Publicações' => array(
