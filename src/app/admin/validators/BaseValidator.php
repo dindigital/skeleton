@@ -49,6 +49,17 @@ class BaseValidator
     return $this->_input[$prop];
   }
 
+  public function throwException ()
+  {
+    JsonException::throwException();
+  }
+
+  /*
+   * ============================================================================
+   * SETTERS. Validam e setam
+   * ===========================================================================
+   */
+
   public function setFile ( $fieldname, MoveFiles $mf )
   {
     $file = $this->getValue($fieldname);
@@ -189,6 +200,23 @@ class BaseValidator
     }
   }
 
+  public function setEqualValues ( $prop1, $prop2, $label )
+  {
+    $value1 = $this->getValue($prop1);
+    $value2 = $this->getValue($prop2);
+
+    if ( $value1 != $value2 )
+      return JsonException::addException("Os campos de {$label} devem conter o mesmo valor");
+
+    $this->_table->{$prop1} = $value1;
+  }
+
+  /*
+   * ===========================================================================
+   * Apenas validam. Sem setar.
+   * ===========================================================================
+   */
+
   public function requireRecord ( $prop, $label )
   {
     $value = $this->getValue($prop);
@@ -204,28 +232,12 @@ class BaseValidator
       return JsonException::addException("{$label} não encontrado");
   }
 
-  public function setEqualValues ( $prop1, $prop2, $label )
-  {
-    $value1 = $this->getValue($prop1);
-    $value2 = $this->getValue($prop2);
-
-    if ( $value1 != $value2 )
-      return JsonException::addException("Os campos de {$label} devem conter o mesmo valor");
-
-    $this->_table->{$prop1} = $value1;
-  }
-
   public function validateArrayNotEmpty ( $prop, $label )
   {
     $value = $this->getValue($prop);
 
     if ( count($prop) == 0 )
       return JsonException::addException("É necessáio pelo menos 1 {$label}");
-  }
-
-  public function throwException ()
-  {
-    JsonException::throwException();
   }
 
 }
