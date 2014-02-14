@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\TagValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -42,41 +42,47 @@ class TagModel extends BaseModelAdm
     return $result;
   }
 
-  public function insert ( $info )
+  public function insert ( $input )
   {
     $this->setNewId();
     $this->setTimestamp('inc_date');
-    $this->setIntval('active', $info['active']);
+    $this->setIntval('active', $input['active']);
+
     $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
+    $validator->setInput($input);
+    $validator->setDao($this->_dao);
+    $validator->setUniqueValue('title', 'Título');
     $validator->throwException();
 
-    $this->_dao->insert($this->_table);
-    $this->log('C', $info['title'], $this->_table);
+    $this->dao_insert();
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
-    $this->setIntval('active', $info['active']);
+    $this->setIntval('active', $input['active']);
+
     $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
+    $validator->setId($this->getId());
+    $validator->setInput($input);
+    $validator->setDao($this->_dao);
+    $validator->setUniqueValue('title', 'Título', $this->getIdName());
     $validator->throwException();
 
-    $tableHistory = $this->getById();
-    $this->_dao->update($this->_table, array('id_tag = ?' => $this->getId()));
-    $this->log('U', $info['title'], $this->_table, $tableHistory);
+    $this->dao_update();
   }
 
   public function short_insert ( $title )
   {
     $this->setNewId();
     $this->setTimestamp('inc_date');
+
     $validator = new validator($this->_table);
-    $validator->setTitle($title);
+    $validator->setInput(array('title' => $title));
+    $validator->setDao($this->_dao);
+    $validator->setUniqueValue('title', 'Título');
     $validator->throwException();
 
-    $this->_dao->insert($this->_table);
-    $this->log('C', $title, $this->_table);
+    $this->dao_insert();
   }
 
 }

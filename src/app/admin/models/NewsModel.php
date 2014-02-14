@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\NewsValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -58,22 +58,24 @@ class NewsModel extends BaseModelAdm
     return $result;
   }
 
-  public function insert ( $info )
+  public function insert ( $input )
   {
     $this->setNewId();
-    $this->setIntval('active', $info['active']);
+    $this->setIntval('active', $input['active']);
     $this->setTimestamp('inc_date');
-    $this->setDefaultUri($info['title']);
+    $this->setDefaultUri($input['title']);
+    $this->_table->head = $input['head'];
+    $this->_table->body = $input['body'];
 
     $validator = new validator($this->_table);
-    $validator->setIdNewsCat($info['id_news_cat']);
-    $validator->setTitle($info['title']);
-    $validator->setDate($info['date']);
-    $validator->setHead($info['head']);
-    $validator->setBody($info['body']);
+    $validator->setDao($this->_dao);
+    $validator->setInput($input);
+    $validator->setFk('id_news_cat', 'Categoria', 'news_cat');
+    $validator->setRequiredString('title', 'Título');
+    $validator->setRequiredDate('date', 'Data');
 
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
+    $validator->setFile('cover', $mf);
     $validator->throwException();
 
     $seq = new SequenceModel($this);
@@ -81,36 +83,36 @@ class NewsModel extends BaseModelAdm
 
     $mf->move();
 
-    $this->_dao->insert($this->_table);
-    $this->log('C', $info['title'], $this->_table);
+    $this->dao_insert($input);
 
-    $this->relationship('photo', $info['photo']);
-    $this->relationship('video', $info['video']);
+    $this->relationship('photo', $input['photo']);
+    $this->relationship('video', $input['video']);
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
-    $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['title'], '', $info['uri']);
+    $this->setIntval('active', $input['active']);
+    $this->setDefaultUri($input['title'], '', $input['uri']);
+    $this->_table->head = $input['head'];
+    $this->_table->body = $input['body'];
 
     $validator = new validator($this->_table);
-    $validator->setIdNewsCat($info['id_news_cat']);
-    $validator->setTitle($info['title']);
-    $validator->setDate($info['date']);
-    $validator->setHead($info['head']);
-    $validator->setBody($info['body']);
+    $validator->setDao($this->_dao);
+    $validator->setInput($input);
+    $validator->setFk('id_news_cat', 'Categoria', 'news_cat');
+    $validator->setRequiredString('title', 'Título');
+    $validator->setRequiredDate('date', 'Data');
+
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
+    $validator->setFile('cover', $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $tableHistory = $this->getById();
-    $this->_dao->update($this->_table, array('id_news = ?' => $this->getId()));
-    $this->log('U', $info['title'], $this->_table, $tableHistory);
+    $this->dao_update($input);
 
-    $this->relationship('photo', $info['photo']);
-    $this->relationship('video', $info['video']);
+    $this->relationship('photo', $input['photo']);
+    $this->relationship('video', $input['video']);
   }
 
   private function relationship ( $tbl, $array )

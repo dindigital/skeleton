@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\PollValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -62,21 +62,23 @@ class PollModel extends BaseModelAdm
     return $row;
   }
 
-  public function insert ( $info )
+  public function insert ( $input )
   {
     //_# Valida a Pergunta
     $this->setNewId();
     $this->setTimestamp('inc_date');
-    $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['question'], 'enquete');
+    $this->setIntval('active', $input['active']);
+    $this->setDefaultUri($input['question'], 'enquete');
+
     $validator = new validator($this->_table);
-    $validator->setQuestion($info['question']);
-    $validator->setTotalOptions(count($info['option']));
+    $validator->setInput($input);
+    $validator->setRequiredString('question', 'Pergunta');
+    $validator->validateArrayNotEmpty('option', 'Alternativa');
 
     //_# Valida e armazena as opções em array
     $arr_opt = array();
 
-    foreach ( $info['option'] as $option ) {
+    foreach ( $input['option'] as $option ) {
       $opt = new PollOptionModel;
       $opt->validate_insert(array(
           'id_poll' => $this->getId(),
@@ -90,8 +92,7 @@ class PollModel extends BaseModelAdm
     $validator->throwException();
 
     //_# Salva o questionário container
-    $this->_dao->insert($this->_table);
-    $this->log('C', $info['question'], $this->_table);
+    $this->dao_insert();
 
     //_# Salva as questões
     foreach ( $arr_opt as $opt ) {
@@ -99,18 +100,20 @@ class PollModel extends BaseModelAdm
     }
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
     //_# Valida a Pergunta
-    $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['question'], 'enquete', $info['uri']);
+    $this->setIntval('active', $input['active']);
+    $this->setDefaultUri($input['question'], 'enquete', $input['uri']);
+
     $validator = new validator($this->_table);
-    $validator->setQuestion($info['question']);
+    $validator->setInput($input);
+    $validator->setRequiredString('question', 'Pergunta');
 
     //_# Valida e armazena as opções em array
     $arr_opt = array();
 
-    foreach ( $info['option'] as $option_id => $option ) {
+    foreach ( $input['option'] as $option_id => $option ) {
       $opt = new PollOptionModel;
       $opt->setId($option_id);
       $opt->validate_update(array(
@@ -124,9 +127,7 @@ class PollModel extends BaseModelAdm
     $validator->throwException();
 
     //_# Salva o questionário container
-    $tableHistory = $this->getById();
-    $this->_dao->update($this->_table, array('id_poll = ?' => $this->getId()));
-    $this->log('U', $info['question'], $this->_table, $tableHistory);
+    $this->dao_update();
 
     //_# Salva as questões
     foreach ( $arr_opt as $opt ) {

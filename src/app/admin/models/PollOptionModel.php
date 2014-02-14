@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\PollOptionValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 
@@ -19,32 +19,31 @@ class PollOptionModel extends BaseModelAdm
     $this->setTable('poll_option');
   }
 
-  public function validate_insert ( $info )
+  public function validate_insert ( $input )
   {
     $this->setNewId();
+    $this->_table->id_poll = $input['id_poll'];
+
     $validator = new validator($this->_table);
-    $validator->setOption($info['option']);
-    $validator->setIdPoll($info['id_poll']);
+    $validator->setInput($input);
+    $validator->setRequiredString('option', 'Alternativa');
   }
 
-  public function validate_update ( $info )
+  public function validate_update ( $input )
   {
     $validator = new validator($this->_table);
-    $validator->setOption($info['option']);
+    $validator->setInput($input);
+    $validator->setRequiredString('option', 'Alternativa');
   }
 
   public function insert ()
   {
-    $this->_dao->insert($this->_table);
-    //$this->log('C', $this->_table->option, $this->_table);
+    $this->dao_insert(false);
   }
 
   public function update ()
   {
-    $tableHistory = $this->getById();
-
-    $this->_dao->update($this->_table, array('id_poll_option = ?' => $this->getId()));
-    //$this->log('U', $this->_table->option, $this->_table, $tableHistory);
+    $this->dao_update(false);
   }
 
   public function getByIdPoll ( $id_poll )

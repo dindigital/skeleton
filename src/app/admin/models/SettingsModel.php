@@ -3,7 +3,7 @@
 namespace src\app\admin\models;
 
 use src\app\admin\models\essential\BaseModelAdm;
-use src\app\admin\validators\SettingsValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 
 /**
  *
@@ -21,17 +21,16 @@ class SettingsModel extends BaseModelAdm
   public function update ( $info )
   {
     $validator = new validator($this->_table);
-    $validator->setHomeTitle($info['home_title']);
-    $validator->setHomeDescription($info['home_description']);
-    $validator->setHomeKeywords($info['home_keywords']);
-    $validator->setTitle($info['title']);
-    $validator->setDescription($info['description']);
-    $validator->setKeywords($info['keywords']);
+    $validator->setInput($info);
+    $validator->setRequiredString('home_title', 'Título Home');
+    $validator->setRequiredString('home_description', 'Description Home');
+    $validator->setRequiredString('home_keywords', 'Keywords Home');
+    $validator->setRequiredString('title', 'Título Internas');
+    $validator->setRequiredString('description', 'Description Internas');
+    $validator->setRequiredString('keywords', 'Keywords Internas');
     $validator->throwException();
 
-    $tableHistory = $this->getById();
-    $this->_dao->update($this->_table, array('id_settings = ?' => $this->getId()));
-    $this->log('U', 'Configurações', $this->_table, $tableHistory);
+    $this->dao_update();
   }
 
 }

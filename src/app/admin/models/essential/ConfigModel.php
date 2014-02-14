@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models\essential;
 
-use src\app\admin\validators\AdminValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\AdminAuthModel;
 use src\app\admin\models\AdminModel;
 use src\app\admin\helpers\MoveFiles;
@@ -11,39 +11,32 @@ use src\app\admin\helpers\MoveFiles;
  *
  * @package app.models
  */
-class ConfigModel extends BaseModelAdm
+class ConfigModel extends AdminModel
 {
 
-  public function __construct ()
-  {
-    parent::__construct();
-    $this->setTable('admin');
-  }
-
-  public function update ( $id, $info )
+  public function update ( $input )
   {
     $validator = new validator($this->_table);
-    $validator->setName($info['name']);
-    $validator->setEmail($info['email']);
-    $validator->setPassword($info['password']);
+    $validator->setInput($input);
+    $validator->setDao($this->_dao);
+    $validator->setId($this->getId());
+    $validator->setRequiredString('name', 'Nome');
+    $validator->setEmail('email', 'E-mail');
+    $validator->setPassword('password', 'Senha', false);
+
     $mf = new MoveFiles;
-    $validator->setFile('avatar', $info['avatar'], $id, $mf);
+    $validator->setFile('avatar', $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $admin_model = new AdminModel;
-    $tableHistory = $admin_model->getById($id);
-    $this->_dao->update($this->_table, array('id_admin = ?' => $id));
-    $this->log('U', $info['name'], $this->_table, $tableHistory, 'Admin');
-
-    $this->relogin($id);
+    $this->dao_update();
+    $this->relogin();
   }
 
-  public function relogin ( $id )
+  public function relogin ()
   {
-    $admin_model = new AdminModel;
-    $admin = $admin_model->getById($id);
+    $admin = $this->getById($this->getId());
 
     $aam = new AdminAuthModel;
     $aam->login($admin['email'], $admin['password'], true);

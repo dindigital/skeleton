@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\VideoValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -53,47 +53,46 @@ class VideoModel extends BaseModelAdm
     return $row;
   }
 
-  public function insert ( $info )
+  public function insert ( $input )
   {
     $this->setNewId();
     $this->setTimestamp('inc_date');
-    $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['title'], 'video');
+    $this->setIntval('active', $input['active']);
+    $this->setDefaultUri($input['title'], 'video');
     $this->setShortenerLink();
-    $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
-    $validator->setDate($info['date']);
-    $validator->setDescription($info['description']);
-    $validator->setLinkYouTube($info['link_youtube']);
-    $validator->setLinkVimeo($info['link_vimeo']);
+    $this->_table->link_youtube = $input['link_youtube'];
+    $this->_table->link_vimeo = $input['link_vimeo'];
 
+    $validator = new validator($this->_table);
+    $validator->setInput($input);
+    $validator->setRequiredString('title', 'Título');
+    $validator->setRequiredDate('date', 'Data');
+    $validator->setRequiredString('description', 'Descrição');
     $validator->throwException();
 
-    $this->_dao->insert($this->_table);
-    $this->log('C', $info['title'], $this->_table);
+    $this->dao_insert();
 
-    $this->relationship('tag', $info['tag']);
+    $this->relationship('tag', $input['tag']);
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
-    $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['title'], 'video', $info['uri']);
+    $this->setIntval('active', $input['active']);
+    $this->setDefaultUri($input['title'], 'video', $input['uri']);
     $this->setShortenerLink();
-    $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
-    $validator->setDate($info['date']);
-    $validator->setDescription($info['description']);
-    $validator->setLinkYouTube($info['link_youtube']);
-    $validator->setLinkVimeo($info['link_vimeo']);
+    $this->_table->link_youtube = $input['link_youtube'];
+    $this->_table->link_vimeo = $input['link_vimeo'];
 
+    $validator = new validator($this->_table);
+    $validator->setInput($input);
+    $validator->setRequiredString('title', 'Título');
+    $validator->setRequiredDate('date', 'Data');
+    $validator->setRequiredString('description', 'Título');
     $validator->throwException();
 
-    $tableHistory = $this->getById();
-    $this->_dao->update($this->_table, array('id_video = ?' => $this->getId()));
-    $this->log('U', $info['title'], $this->_table, $tableHistory);
+    $this->dao_update();
 
-    $this->relationship('tag', $info['tag']);
+    $this->relationship('tag', $input['tag']);
   }
 
   private function relationship ( $tbl, $array )

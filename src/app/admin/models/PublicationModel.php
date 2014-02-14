@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\PublicationValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -43,41 +43,42 @@ class PublicationModel extends BaseModelAdm
     return $result;
   }
 
-  public function insert ( $info )
+  public function insert ( $input )
   {
     $this->setNewId();
     $this->setTimestamp('inc_date');
-    $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['title'], 'publicacoes');
+    $this->setIntval('active', $input['active']);
+    $this->setDefaultUri($input['title'], 'publicacoes');
 
     $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
+    $validator->setInput($input);
+    $validator->setId($this->getId());
+    $validator->setRequiredString('title', 'Título');
     $mf = new MoveFiles;
-    $validator->setFile('file', $info['file'], $this->getId(), $mf);
+    $validator->setFile('file', $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $this->_dao->insert($this->_table);
-    $this->log('C', $info['title'], $this->_table);
+    $this->dao_insert();
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
-    $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['title'], 'publicacoes', $info['uri']);
+    $this->setIntval('active', $input['active']);
+    $this->setDefaultUri($input['title'], 'publicacoes', $input['uri']);
 
     $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
+    $validator->setInput($input);
+    $validator->setId($this->getId());
+    $validator->setRequiredString('title', 'Título');
     $mf = new MoveFiles;
-    $validator->setFile('file', $info['file'], $this->getId(), $mf);
+    $validator->setFile('file', $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $tableHistory = $this->getById();
-    $this->_dao->update($this->_table, array('id_publication = ?' => $this->getId()));
-    $this->log('U', $info['title'], $this->_table, $tableHistory);
+    $this->dao_update();
   }
 
 }

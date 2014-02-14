@@ -40,28 +40,34 @@ class GalleryModel extends BaseModelAdm
     return $result;
   }
 
-  public function insert ( $info )
+  public function insert ( $input )
   {
     $this->setNewId();
-    $validator = new validator($this->_table, $this->_dao);
-    $validator->setIdTbl($this->_entity['id'], $info[$this->_entity['id']]);
-    $validator->setGallerySequence($this->_table_item['tbl'], $this->_entity['id'], null, $info[$this->_entity['id']]);
+    $this->_table->{$this->_entity['id']} = $input[$this->_entity['id']];
+
+    $validator = new validator($this->_table);
+    $validator->setDao($this->_dao);
+    $validator->setGallerySequence($this->_table_item['tbl'], $this->_entity['id'], null, $input[$this->_entity['id']]);
 
     $mf = new MoveFiles;
-    $validator->setGallery($info['file'], "{$this->_entity['tbl']}/{$info[$this->_entity['id']]}/file/{$this->getId()}", $mf);
+    $path = "{$this->_entity['tbl']}/{$input[$this->_entity['id']]}/file/{$this->getId()}"; // photo/1/file/1/
+    $validator->setGallery('file', $path, $mf);
     $validator->throwException();
+
+    $this->readTags($mf->getFiles());
 
     $mf->move();
 
     $this->_dao->insert($this->_table);
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
+    $this->_table->label = $input['label'];
+    $this->_table->credit = $input['credit'];
+
     $validator = new validator($this->_table, $this->_dao);
-    $validator->setLabel($info['label']);
-    $validator->setCredit($info['credit']);
-    $validator->setGallerySequence($this->_table_item['tbl'], $this->_entity['id'], $info['sequence']);
+    $validator->setGallerySequence($this->_table_item['tbl'], $this->_entity['id'], $input['sequence']);
 
     $this->_dao->update($this->_table, array("{$this->_table_item['id']} = ?" => $this->getId()));
   }
@@ -113,6 +119,24 @@ class GalleryModel extends BaseModelAdm
             'file' => $file
         ));
       }
+    }
+  }
+
+  protected function readTags ( $file )
+  {
+    $file = $file[0]['origin'];
+
+    if ( !in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), array('jpg', 'tiff')) )
+      return;
+
+    $exif = exif_read_data($file);
+
+    if ( isset($exif['ImageDescription']) ) {
+      $this->_table->label = $exif['ImageDescription'];
+    }
+
+    if ( isset($exif['Artist']) ) {
+      $this->_table->credit = $exif['Artist'];
     }
   }
 

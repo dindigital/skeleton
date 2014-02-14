@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\MailingGroupValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -40,37 +40,41 @@ class MailingGroupModel extends BaseModelAdm
     return $result;
   }
 
-  public function insert ( $info )
+  public function insert ( $input )
   {
     $this->setNewId();
+
     $validator = new validator($this->_table);
-    $validator->setName($info['name']);
+    $validator->setInput($input);
+    $validator->setDao($this->_dao);
+    $validator->setUniqueValue('name', 'Nome');
     $validator->throwException();
 
-    $this->_dao->insert($this->_table);
-    $this->log('C', $info['name'], $this->_table);
+    $this->dao_insert();
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
     $validator = new validator($this->_table);
-    $validator->setName($info['name']);
+    $validator->setInput($input);
+    $validator->setDao($this->_dao);
+    $validator->setUniqueValue('name', 'Nome', $this->getIdName());
     $validator->throwException();
 
-    $tableHistory = $this->getById();
-    $this->_dao->update($this->_table, array('id_mailing_group = ?' => $this->getId()));
-    $this->log('U', $info['name'], $this->_table, $tableHistory);
+    $this->dao_update();
   }
 
   public function short_insert ( $name )
   {
     $this->setNewId();
+
     $validator = new validator($this->_table);
-    $validator->setName($name);
+    $validator->setInput(array('name' => $name));
+    $validator->setDao($this->_dao);
+    $validator->setUniqueValue('name', 'Nome');
     $validator->throwException();
 
-    $this->_dao->insert($this->_table);
-    $this->log('C', $name, $this->_table);
+    $this->dao_insert();
   }
 
   public function getListArray ()

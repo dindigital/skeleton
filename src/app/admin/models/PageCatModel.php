@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\PageCatValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -50,20 +50,23 @@ class PageCatModel extends BaseModelAdm
     return $result;
   }
 
-  public function insert ( $info )
+  public function insert ( $input )
   {
     $this->setNewId();
-    $this->setIntval('active', $info['active']);
+    $this->setIntval('active', $input['active']);
     $this->setTimestamp('inc_date');
-    $this->setDefaultUri($info['title'], 'page');
+    $this->setDefaultUri($input['title'], 'page');
+    $this->_table->content = $input['content'];
+    $this->_table->description = $input['description'];
+    $this->_table->keywords = $input['keywords'];
+
     $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
-    $validator->setContent($info['content']);
-    $validator->setDescription($info['description']);
-    $validator->setKeywords($info['keywords']);
+    $validator->setInput($input);
+    $validator->setId($this->getId());
+    $validator->setRequiredString('title', 'Título');
 
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
+    $validator->setFile('cover', $mf);
     $validator->throwException();
 
     $seq = new SequenceModel($this);
@@ -71,28 +74,29 @@ class PageCatModel extends BaseModelAdm
 
     $mf->move();
 
-    $this->_dao->insert($this->_table);
-    $this->log('C', $info['title'], $this->_table);
+    $this->dao_insert();
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
-    $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['title'], 'page', $info['uri']);
+    $this->setIntval('active', $input['active']);
+    $this->setDefaultUri($input['title'], 'page', $input['uri']);
+    $this->_table->content = $input['content'];
+    $this->_table->description = $input['description'];
+    $this->_table->keywords = $input['keywords'];
+
     $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
-    $validator->setContent($info['content']);
-    $validator->setDescription($info['description']);
-    $validator->setKeywords($info['keywords']);
+    $validator->setInput($input);
+    $validator->setId($this->getId());
+    $validator->setRequiredString('title', 'Título');
+
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
+    $validator->setFile('cover', $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $tableHistory = $this->getById();
-    $this->_dao->update($this->_table, array('id_page_cat = ?' => $this->getId()));
-    $this->log('U', $info['title'], $this->_table, $tableHistory);
+    $this->dao_update();
   }
 
   public function getListArray ()

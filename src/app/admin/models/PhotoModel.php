@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\PhotoValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -56,36 +56,36 @@ class PhotoModel extends BaseModelAdm
     return $result;
   }
 
-  public function insert ( $info )
+  public function insert ( $input )
   {
     $this->setNewId();
     $this->setTimestamp('inc_date');
-    $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['title'], 'photo');
+    $this->setIntval('active', $input['active']);
+    $this->setDefaultUri($input['title'], 'photo');
+
     $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
-    $validator->setDate($info['date']);
+    $validator->setInput($input);
+    $validator->setRequiredString('title', 'Título');
+    $validator->setRequiredDate('date', 'Data');
     $validator->throwException();
 
-    $this->_dao->insert($this->_table);
-    $this->log('C', $info['title'], $this->_table);
-    $this->_gallery->saveGalery($info['gallery_uploader'], $this->getId());
+    $this->dao_insert();
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
-    $this->setIntval('active', $info['active']);
-    $this->setDefaultUri($info['title'], 'photo', $info['uri']);
+    $this->setIntval('active', $input['active']);
+    $this->setDefaultUri($input['title'], 'photo', $input['uri']);
+
     $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
-    $validator->setDate($info['date']);
+    $validator->setInput($input);
+    $validator->setRequiredString('title', 'Título');
+    $validator->setRequiredDate('date', 'Data');
     $validator->throwException();
 
-    $tableHistory = $this->getById();
-    $this->_dao->update($this->_table, array('id_photo = ?' => $this->getId()));
-    $this->log('U', $info['title'], $this->_table, $tableHistory);
+    $this->dao_update();
 
-    $this->_gallery->saveGalery($info['gallery_uploader'], $this->getId(), $info['sequence'], $info['label'], $info['credit']);
+    $this->_gallery->saveGalery($input['gallery_uploader'], $this->getId(), $input['sequence'], $input['label'], $input['credit']);
   }
 
   public function getNew ()

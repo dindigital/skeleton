@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models\essential;
 
-use src\app\admin\validators\LogValidator as validator;
 use src\app\admin\models\essential\LogAbstract;
 use src\app\admin\models\essential\LogInterface;
 use Din\DataAccessLayer\Table\Table;
@@ -32,12 +31,11 @@ class LogMySQLModel extends LogAbstract implements LogInterface
 
   public function insert ()
   {
-    $validator = new validator($this->_table);
-    $validator->setAdmin($this->admin['name']);
-    $validator->setName($this->name);
-    $validator->setAction('C');
-    $validator->setDescription($this->msg);
-    $validator->setContent(json_encode($this->table->setted_values));
+    $this->_table->admin = $this->admin['name'];
+    $this->_table->name = $this->name;
+    $this->_table->action = 'C';
+    $this->_table->description = $this->msg;
+    $this->_table->content = json_encode($this->table->setted_values);
     $this->_table->inc_date = date('Y-m-d H:i:s');
 
     $this->_dao->insert($this->_table);
@@ -63,12 +61,11 @@ class LogMySQLModel extends LogAbstract implements LogInterface
       $content = 'Não houveram alterações';
     }
 
-    $validator = new validator($this->_table);
-    $validator->setAdmin($this->admin['name']);
-    $validator->setName($this->name);
-    $validator->setAction('U');
-    $validator->setDescription($this->msg);
-    $validator->setContent($content);
+    $this->_table->admin = $this->admin['name'];
+    $this->_table->name = $this->name;
+    $this->_table->action = 'U';
+    $this->_table->description = $this->msg;
+    $this->_table->content = $content;
     $this->_table->inc_date = date('Y-m-d H:i:s');
 
     $this->_dao->insert($this->_table);
@@ -76,12 +73,11 @@ class LogMySQLModel extends LogAbstract implements LogInterface
 
   public function deleteRestore ( $action )
   {
-    $validator = new validator($this->_table);
-    $validator->setAdmin($this->admin['name']);
-    $validator->setName($this->name);
-    $validator->setAction($action);
-    $validator->setDescription($this->msg);
-    $validator->setContent(json_encode($this->tableHistory));
+    $this->_table->admin = $this->admin['name'];
+    $this->_table->name = $this->name;
+    $this->_table->action = $action;
+    $this->_table->description = $this->msg;
+    $this->_table->content = json_encode($this->tableHistory);
     $this->_table->inc_date = date('Y-m-d H:i:s');
 
     $this->_dao->insert($this->_table);

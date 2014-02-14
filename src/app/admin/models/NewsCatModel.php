@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\NewsCatValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -55,19 +55,20 @@ class NewsCatModel extends BaseModelAdm
     return $result;
   }
 
-  public function insert ( $info )
+  public function insert ( $input )
   {
     $this->setNewId();
-    $this->setIntval('active', $info['active']);
-    $this->setIntval('is_home', $info['is_home']);
+    $this->setIntval('active', $input['active']);
+    $this->setIntval('is_home', $input['is_home']);
     $this->setTimestamp('inc_date');
-    $this->setDefaultUri($info['title'], 'news');
+    $this->setDefaultUri($input['title'], 'news');
 
     $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
+    $validator->setInput($input);
+    $validator->setRequiredString('title', 'Título');
 
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
+    $validator->setFile('cover', $mf);
     $validator->throwException();
 
     $seq = new SequenceModel($this);
@@ -75,28 +76,26 @@ class NewsCatModel extends BaseModelAdm
 
     $mf->move();
 
-    $this->_dao->insert($this->_table);
-    $this->log('C', $info['title'], $this->_table);
+    $this->dao_insert($input);
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
-    $this->setIntval('active', $info['active']);
-    $this->setIntval('is_home', $info['is_home']);
-    $this->setDefaultUri($info['title'], 'news', $info['uri']);
+    $this->setIntval('active', $input['active']);
+    $this->setIntval('is_home', $input['is_home']);
+    $this->setDefaultUri($input['title'], 'news', $input['uri']);
 
     $validator = new validator($this->_table);
-    $validator->setTitle($info['title']);
+    $validator->setInput($input);
+    $validator->setRequiredString('title', 'Título');
 
     $mf = new MoveFiles;
-    $validator->setFile('cover', $info['cover'], $this->getId(), $mf);
+    $validator->setFile('cover', $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $tableHistory = $this->getById();
-    $this->_dao->update($this->_table, array('id_news_cat = ?' => $this->getId()));
-    $this->log('U', $info['title'], $this->_table, $tableHistory);
+    $this->dao_update($input);
   }
 
   public function getListArray ()

@@ -2,7 +2,7 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\MailingValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -50,35 +50,35 @@ class MailingModel extends BaseModelAdm
     return $result;
   }
 
-  public function insert ( $info, $log = true )
+  public function insert ( $input, $log = true )
   {
     $this->setNewId();
     $this->setTimestamp('inc_date');
-    $validator = new validator($this->_table, $this->_dao);
-    $validator->setName($info['name']);
-    $validator->setEmail($info['email']);
+
+    $validator = new validator($this->_table);
+    $validator->setInput($input);
+    $validator->setDao($this->_dao);
+    $validator->setRequiredString('name', 'Nome');
+    $validator->setUniqueValue('email', 'E-mail');
     $validator->throwException();
 
-    $this->_dao->insert($this->_table);
-    if ( $log ) {
-      $this->log('C', $info['name'], $this->_table);
-    }
+    $this->dao_insert(false);
 
-    $this->save_relationship('mailing_group', $info['mailing_group']);
+    $this->save_relationship('mailing_group', $input['mailing_group']);
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
-    $validator = new validator($this->_table, $this->_dao);
-    $validator->setName($info['name']);
-    $validator->setEmail($info['email'], $this->getId());
+    $validator = new validator($this->_table);
+    $validator->setInput($input);
+    $validator->setDao($this->_dao);
+    $validator->setRequiredString('name', 'Nome');
+    $validator->setUniqueValue('email', 'E-mail', $this->getIdName());
     $validator->throwException();
 
-    $tableHistory = $this->getById();
-    $this->_dao->update($this->_table, array('id_mailing = ?' => $this->getId()));
-    $this->log('U', $info['name'], $this->_table, $tableHistory);
+    $this->dao_update();
 
-    $this->save_relationship('mailing_group', $info['mailing_group']);
+    $this->save_relationship('mailing_group', $input['mailing_group']);
   }
 
   private function save_relationship ( $tbl, $array )

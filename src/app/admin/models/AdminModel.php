@@ -4,7 +4,7 @@ namespace src\app\admin\models;
 
 use src\app\admin\helpers\PaginatorAdmin;
 use Din\DataAccessLayer\Select;
-use src\app\admin\validators\AdminValidator as validator;
+use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use src\app\admin\helpers\MoveFiles;
 
@@ -21,45 +21,52 @@ class AdminModel extends BaseModelAdm
     $this->setTable('admin');
   }
 
-  public function insert ( $info )
+  public function insert ( $input )
   {
     $this->setNewId();
-    $this->setIntval('active', $info['active']);
+    $this->setIntval('active', $input['active']);
     $this->setTimestamp('inc_date');
+    $this->_table->permission = json_encode($input['permission']);
 
-    $validator = new validator($this->_table, $this->_dao);
-    $validator->setName($info['name']);
-    $validator->setEmail($info['email']);
-    $validator->setPassword($info['password']);
-    $validator->setPermission($info['permission']);
+    $validator = new validator($this->_table);
+    $validator->setInput($input);
+    $validator->setDao($this->_dao);
+    $validator->setId($this->getId());
+    $validator->setRequiredString('name', 'Nome');
+    $validator->setEmail('email', 'E-mail');
+    $validator->setUniqueValue('email', 'E-mail');
+    $validator->setPassword('password', 'Senha', true);
+
     $mf = new MoveFiles;
-    $validator->setFile('avatar', $info['avatar'], $this->getId(), $mf);
+    $validator->setFile('avatar', $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $this->_dao->insert($this->_table);
-    $this->log('C', $info['name'], $this->_table);
+    $this->dao_insert();
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
-    $this->setIntval('active', $info['active']);
+    $this->setIntval('active', $input['active']);
+    $this->_table->permission = json_encode($input['permission']);
 
-    $validator = new validator($this->_table, $this->_dao);
-    $validator->setName($info['name']);
-    $validator->setEmail($info['email'], $this->getId());
-    $validator->setPassword($info['password'], false);
-    $validator->setPermission($info['permission']);
+    $validator = new validator($this->_table);
+    $validator->setInput($input);
+    $validator->setDao($this->_dao);
+    $validator->setId($this->getId());
+    $validator->setRequiredString('name', 'Nome');
+    $validator->setUniqueValue('email', 'E-mail', $this->getIdName());
+    $validator->setEmail('email', 'E-mail');
+    $validator->setPassword('password', 'Senha', false);
+
     $mf = new MoveFiles;
-    $validator->setFile('avatar', $info['avatar'], $this->getId(), $mf);
+    $validator->setFile('avatar', $mf);
     $validator->throwException();
 
     $mf->move();
 
-    $tableHistory = $this->getById($this->getId());
-    $this->_dao->update($this->_table, array('id_admin = ?' => $this->getId()));
-    $this->log('U', $info['name'], $this->_table, $tableHistory);
+    $this->dao_update();
   }
 
   public function getList ( $arrFilters = array() )

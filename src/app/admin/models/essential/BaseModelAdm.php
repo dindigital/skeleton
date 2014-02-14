@@ -48,18 +48,23 @@ class BaseModelAdm
     $this->setId(md5(uniqid()));
   }
 
-  public function setId ( $id )
+  public function getIdName ()
   {
     $entity = Entities::getThis($this);
     $property = $entity['id'];
 
+    return $property;
+  }
+
+  public function setId ( $id )
+  {
+    $property = $this->getIdName();
     $this->_table->{$property} = $id;
   }
 
   public function getId ()
   {
-    $entity = Entities::getThis($this);
-    $property = $entity['id'];
+    $property = $this->getIdName();
 
     return $this->_table->{$property};
   }
@@ -241,6 +246,31 @@ class BaseModelAdm
     $result = $this->_dao->select_count($select);
 
     return $result;
+  }
+
+  protected function dao_insert ( $log = true )
+  {
+    $this->_dao->insert($this->_table);
+
+    if ( $log ) {
+      $current = Entities::getThis($this);
+      $this->log('C', $this->_table->{$current['title']}, $this->_table);
+    }
+  }
+
+  public function dao_update ( $log = true )
+  {
+    $current = Entities::getThis($this);
+
+    if ( $log ) {
+      $tableHistory = $this->getById();
+    }
+
+    $this->_dao->update($this->_table, array("{$current['id']} = ?" => $this->getId()));
+
+    if ( $log ) {
+      $this->log('U', $this->_table->{$current['title']}, $this->_table, $tableHistory);
+    }
   }
 
   /*
