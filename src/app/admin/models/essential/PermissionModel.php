@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models\essential;
 
-use src\app\admin\models\essential\BaseModelAdm;
 use src\app\admin\helpers\Entities;
 use Exception;
 
@@ -10,8 +9,13 @@ use Exception;
  *
  * @package app.models
  */
-class PermissionModel extends BaseModelAdm
+class PermissionModel
 {
+
+  public function __construct ()
+  {
+    Entities::readFile('config/entities.php');
+  }
 
   public function getArrayList ()
   {
