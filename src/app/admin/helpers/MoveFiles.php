@@ -25,4 +25,9 @@ class MoveFiles
     }
   }
 
+  public function getFiles ()
+  {
+    return $this->_files;
+  }
+
 }
