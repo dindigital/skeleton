@@ -42,7 +42,8 @@ class ConfigController extends BaseControllerAdm
           'avatar' => Post::upload('avatar'),
       );
 
-      $this->_model->update($id, $info);
+      $this->_model->setId($id);
+      $this->_model->update($info);
 
       $this->setSavedMsgSession();
       JsonViewHelper::redirect('/admin/config/save/');
