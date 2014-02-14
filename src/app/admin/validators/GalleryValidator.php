@@ -11,36 +11,6 @@ use Exception;
 class GalleryValidator extends BaseValidator
 {
 
-  private $_dao;
-
-  public function __construct ( $table, $dao )
-  {
-    parent::__construct($table);
-    $this->_dao = $dao;
-  }
-
-  public function setId ( $property )
-  {
-    $this->_table->{$property} = md5(uniqid());
-
-    return $this->_table->{$property};
-  }
-
-  public function setIdTbl ( $property, $id )
-  {
-    $this->_table->{$property} = $id;
-  }
-
-  public function setLabel ( $label )
-  {
-    $this->_table->label = $label;
-  }
-
-  public function setCredit ( $credit )
-  {
-    $this->_table->credit = $credit;
-  }
-
   public function setGallerySequence ( $tbl, $field, $sequence = null, $id = null )
   {
     if ( $id ) {
@@ -55,8 +25,10 @@ class GalleryValidator extends BaseValidator
     $this->_table->sequence = intval($sequence);
   }
 
-  public function setGallery ( $file, $path, MoveFiles $mf )
+  public function setGallery ( $prop, $path, MoveFiles $mf )
   {
+    $file = $this->getValue($prop);
+
     /**
      * Início, verica se existe uma tentativa correta de realizar upload.
      */
@@ -84,31 +56,8 @@ class GalleryValidator extends BaseValidator
     $destiny = "/system/uploads/{$path}/{$name}";
 
     $this->_table->file = $destiny;
-    $this->readTags($origin);
 
     $mf->addFile($origin, 'public' . $destiny);
-  }
-
-  private function readTags ( $file )
-  {
-    if ( !in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), array('jpg', 'tiff')) )
-      return;
-
-    $exif = exif_read_data($file);
-
-    $label = '';
-    $credit = '';
-
-    if ( isset($exif['ImageDescription']) ) {
-      $label = $exif['ImageDescription'];
-    }
-
-    if ( isset($exif['Artist']) ) {
-      $credit = $exif['Artist'];
-    }
-
-    $this->setLabel($label);
-    $this->setCredit($credit);
   }
 
 }
