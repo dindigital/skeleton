@@ -31,7 +31,7 @@ class GalleryModel extends BaseModelAdm
   {
 
     $select = new Select($this->_table_item['tbl']);
-    $select->addField('*');
+    $select->addAllFields();
     $select->where($arrCriteria);
     $select->order_by('sequence');
 

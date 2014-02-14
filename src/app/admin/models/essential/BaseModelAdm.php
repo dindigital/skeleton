@@ -191,7 +191,7 @@ class BaseModelAdm
     );
 
     $select = new Select($current['tbl']);
-    $select->addField('*');
+    $select->addAllFields();
     $select->where($arrCriteria);
 
     $result = $this->_dao->select($select);

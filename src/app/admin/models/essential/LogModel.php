@@ -67,7 +67,7 @@ class LogModel extends BaseModelAdm
     );
 
     $select = new Select('log');
-    $select->addField('*');
+    $select->addAllFields();
     $select->where($arrCriteria);
 
     $result = $this->_dao->select($select);
