@@ -98,8 +98,8 @@ class VideoModel extends BaseModelAdm
   private function relationship ( $tbl, $array )
   {
     $relationshipModel = new RelationshipModel();
-    $relationshipModel->setCurrentSection('video');
-    $relationshipModel->setRelationshipSection($tbl);
+    $relationshipModel->setCurrentEntity('video');
+    $relationshipModel->setForeignEntity($tbl);
     $relationshipModel->insert($this->getId(), $array);
   }
 

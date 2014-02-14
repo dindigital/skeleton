@@ -23,7 +23,7 @@ class RelashionshipController
 
   public function get_ajax ()
   {
-    $this->_model->setRelationshipSection(Get::text('relationshipSection'));
+    $this->_model->setForeignEntity(Get::text('relationshipSection'));
     $result = $this->_model->getAjax(Get::text('q'));
 
     JsonViewHelper::display($result);
@@ -31,8 +31,8 @@ class RelashionshipController
 
   public function post_ajax ()
   {
-    $this->_model->setCurrentSection(Post::text('currentSection'));
-    $this->_model->setRelationshipSection(Post::text('relationshipSection'));
+    $this->_model->setCurrentEntity(Post::text('currentSection'));
+    $this->_model->setForeignEntity(Post::text('relationshipSection'));
     $result = $this->_model->getAjaxCurrent(Post::text('id'));
 
     JsonViewHelper::display($result);

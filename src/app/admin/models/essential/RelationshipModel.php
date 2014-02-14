@@ -10,32 +10,25 @@ use Din\DataAccessLayer\Table\Table;
 class RelationshipModel extends BaseModelAdm
 {
 
-  private $currentSection;
-  private $relationshipSection;
-  private $entities;
-
-  public function __construct ()
-  {
-    parent::__construct();
-    $this->entities = new Entities();
-  }
+  protected $_current_entity;
+  protected $_foreign_entity;
 
   /**
    * Seta a entidade da página atual
    * @param String $tbl
    */
-  public function setCurrentSection ( $tbl )
+  public function setCurrentEntity ( $tbl )
   {
-    $this->currentSection = $this->entities->getEntity($tbl);
+    $this->_current_entity = Entities::getEntity($tbl);
   }
 
   /**
    * Seta a entidade da página que será relacionada com a atual
    * @param String $tbl
    */
-  public function setRelationshipSection ( $tbl )
+  public function setForeignEntity ( $tbl )
   {
-    $this->relationshipSection = $this->entities->getEntity($tbl);
+    $this->_foreign_entity = Entities::getEntity($tbl);
   }
 
   /**
@@ -46,17 +39,17 @@ class RelationshipModel extends BaseModelAdm
    */
   public function getAjax ( $q )
   {
-    $arrCriteria["{$this->relationshipSection['title']} LIKE ?"] = '%' . $q . '%';
+    $arrCriteria["{$this->_foreign_entity['title']} LIKE ?"] = '%' . $q . '%';
 
-    if ( isset($this->relationshipSection['trash']) && $this->relationshipSection['trash'] == true ) {
+    if ( isset($this->_foreign_entity['trash']) && $this->_foreign_entity['trash'] == true ) {
       $arrCriteria['is_del = ?'] = '0';
     }
 
-    $select = new Select($this->relationshipSection['tbl']);
-    $select->addField($this->relationshipSection['id'], 'id');
-    $select->addField($this->relationshipSection['title'], 'text');
+    $select = new Select($this->_foreign_entity['tbl']);
+    $select->addField($this->_foreign_entity['id'], 'id');
+    $select->addField($this->_foreign_entity['title'], 'text');
     $select->where($arrCriteria);
-    $select->order_by($this->relationshipSection['title']);
+    $select->order_by($this->_foreign_entity['title']);
 
     $result = $this->_dao->select($select);
 
@@ -71,18 +64,18 @@ class RelationshipModel extends BaseModelAdm
   public function getAjaxCurrent ( $id )
   {
 
-    $tableRelationship = "r_{$this->currentSection['tbl']}_{$this->relationshipSection['tbl']}";
+    $tableRelationship = "r_{$this->_current_entity['tbl']}_{$this->_foreign_entity['tbl']}";
 
-    $arrCriteria["{$this->currentSection['id']} = ?"] = $id;
+    $arrCriteria["{$this->_current_entity['id']} = ?"] = $id;
 
-    if ( isset($this->relationshipSection['trash']) && $this->currentSection['trash'] == true ) {
+    if ( isset($this->_foreign_entity['trash']) && $this->_current_entity['trash'] == true ) {
       $arrCriteria['is_del = ?'] = '0';
     }
 
-    $select = new Select($this->relationshipSection['tbl']);
-    $select->addField($this->relationshipSection['id'], 'id');
-    $select->addField($this->relationshipSection['title'], 'text');
-    $select->inner_join($this->relationshipSection['id'], Select::construct($tableRelationship));
+    $select = new Select($this->_foreign_entity['tbl']);
+    $select->addField($this->_foreign_entity['id'], 'id');
+    $select->addField($this->_foreign_entity['title'], 'text');
+    $select->inner_join($this->_foreign_entity['id'], Select::construct($tableRelationship));
     $select->where($arrCriteria);
     $select->order_by('b.sequence');
 
@@ -96,7 +89,7 @@ class RelationshipModel extends BaseModelAdm
     $arrayItem = (trim($item) != '') ? explode(',', $item) : array();
     $arrayId = array();
 
-    $model = new $this->relationshipSection['model'];
+    $model = new $this->_foreign_entity['model'];
 
     foreach ( $arrayItem as $row ) {
       if ( $this->count($row) ) {
@@ -128,10 +121,10 @@ class RelationshipModel extends BaseModelAdm
 
   private function count ( $row )
   {
-    $arrCriteria["{$this->relationshipSection['id']} = ?"] = $row;
+    $arrCriteria["{$this->_foreign_entity['id']} = ?"] = $row;
 
-    $select = new Select($this->relationshipSection['tbl']);
-    $select->addField($this->relationshipSection['id']);
+    $select = new Select($this->_foreign_entity['tbl']);
+    $select->addField($this->_foreign_entity['id']);
     $select->where($arrCriteria);
 
     $result = $this->_dao->select($select);
@@ -141,10 +134,10 @@ class RelationshipModel extends BaseModelAdm
 
   private function getIdByTitle ( $row )
   {
-    $arrCriteria["{$this->relationshipSection['title']} = ?"] = $row;
+    $arrCriteria["{$this->_foreign_entity['title']} = ?"] = $row;
 
-    $select = new Select($this->relationshipSection['tbl']);
-    $select->addField($this->relationshipSection['id'], 'id');
+    $select = new Select($this->_foreign_entity['tbl']);
+    $select->addField($this->_foreign_entity['id'], 'id');
     $select->where($arrCriteria);
 
     $result = $this->_dao->select($select);
@@ -154,11 +147,11 @@ class RelationshipModel extends BaseModelAdm
 
   private function insertRelationship ( $arrayId, $id )
   {
-    $tablename_relationship = "r_{$this->currentSection['tbl']}_{$this->relationshipSection['tbl']}";
+    $tablename_relationship = "r_{$this->_current_entity['tbl']}_{$this->_foreign_entity['tbl']}";
     $table_relashionship = new Table($tablename_relationship);
 
-    $fieldCurrent = $this->currentSection['id'];
-    $fieldRelationship = $this->relationshipSection['id'];
+    $fieldCurrent = $this->_current_entity['id'];
+    $fieldRelationship = $this->_foreign_entity['id'];
 
     $this->_dao->delete($tablename_relationship, array("{$fieldCurrent} = ?" => $id));
 

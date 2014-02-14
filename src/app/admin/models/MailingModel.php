@@ -84,8 +84,8 @@ class MailingModel extends BaseModelAdm
   private function save_relationship ( $tbl, $array )
   {
     $relationshipModel = new RelationshipModel();
-    $relationshipModel->setCurrentSection('mailing');
-    $relationshipModel->setRelationshipSection($tbl);
+    $relationshipModel->setCurrentEntity('mailing');
+    $relationshipModel->setForeignEntity($tbl);
     $relationshipModel->insert($this->getId(), $array);
   }
 

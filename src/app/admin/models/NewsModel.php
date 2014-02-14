@@ -118,8 +118,8 @@ class NewsModel extends BaseModelAdm
   private function relationship ( $tbl, $array )
   {
     $relationshipModel = new RelationshipModel();
-    $relationshipModel->setCurrentSection('news');
-    $relationshipModel->setRelationshipSection($tbl);
+    $relationshipModel->setCurrentEntity('news');
+    $relationshipModel->setForeignEntity($tbl);
     $relationshipModel->smartInsert($this->getId(), $array);
   }
 
