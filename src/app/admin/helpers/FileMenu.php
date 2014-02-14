@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\models\essential;
+namespace src\app\admin\helpers;
 
 use Din\File\Files;
 use Exception;
