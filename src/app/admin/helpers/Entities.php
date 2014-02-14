@@ -79,6 +79,19 @@ class Entities
       }
     }
 
+    if ( $r == '' ) {
+      foreach ( self::$entities as $tbl ) {
+        if ( isset($tbl['names']) ) {
+          foreach ( $tbl['names'] as $names ) {
+            if ( $names == $namespace ) {
+              $r = $tbl;
+              break;
+            }
+          }
+        }
+      }
+    }
+
     if ( $r == '' )
       throw new Exception('Model não cadastrado na entidade: ' . $namespace);
 

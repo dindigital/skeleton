@@ -14,6 +14,7 @@ return array(
         'name' => 'Settings',
         'section' => 'Configuração',
         'id' => 'id_settings',
+        'title' => 'title',
     ),
     'photo' => array(
         'name' => 'Photo',
@@ -55,7 +56,7 @@ return array(
         'section' => 'Usuários',
         'id' => 'id_admin',
         'title' => 'name',
-        'trash' => false,
+        'names' => array('\src\app\admin\models\essential\ConfigModel')
     ),
     'video' => array(
         'name' => 'Video',
