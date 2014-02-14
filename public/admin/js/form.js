@@ -89,7 +89,10 @@ $(document).ready(function() {
   $('.limit_text').each(function() {
     var e = $(this);
     var maxlength = parseInt(e.attr('maxlength'));
-    var e_target = e.next();
+    var e_target = $('<div class="limit_info"></div>');
+
+    //create holder element after this
+    e.after(e_target);
 
     var current = $(e).val().length;
     e_target.html(current + ' de ' + maxlength);
