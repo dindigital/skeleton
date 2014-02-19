@@ -60,6 +60,7 @@ class CustomerController extends BaseControllerAdm
       $this->_model->setId($id);
 
       $info = array(
+          'business_name' => Post::text('business_name'),
           'name' => Post::text('name'),
           'document' => Post::text('document'),
           'email' => Post::text('email'),

@@ -156,4 +156,10 @@ return array(
         'name' => 'MailingExport',
         'section' => 'Exportação de E-mail',
     ),
+    'customer' => array(
+        'name' => 'Customer',
+        'section' => 'Clientes',
+        'id' => 'id_customer',
+        'title' => 'name',
+    ),
 );

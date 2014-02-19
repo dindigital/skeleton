@@ -62,8 +62,9 @@ class CustomerModel extends BaseModelAdm
     $validator->setRequiredString('address_city', 'Cidade');
     $validator->setRequiredString('phone_ddd', 'DDD');
     $validator->setRequiredString('phone_number', 'Telefone');
+    $validator->throwException();
 
-    $this->dao_insert($input);
+    $this->dao_insert();
   }
 
   public function update ( $input )
@@ -84,8 +85,9 @@ class CustomerModel extends BaseModelAdm
     $validator->setRequiredString('address_city', 'Cidade');
     $validator->setRequiredString('phone_ddd', 'DDD');
     $validator->setRequiredString('phone_number', 'Telefone');
+    $validator->throwException();
 
-    $this->dao_update($input);
+    $this->dao_update();
   }
 
 }

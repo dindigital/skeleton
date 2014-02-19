@@ -77,4 +77,8 @@ return array(
             ),
         )
     ),
+    'Clientes' => array(
+        'name' => 'Customer',
+        'index' => 'list',
+    ),
 );

@@ -1,0 +1,96 @@
+<input type="hidden" id="link_prefix" value="/admin/<?php echo $this->_data['entity']['tbl']; ?>/" />
+
+<div class="row">
+  <div class="col-md-12">
+
+    {$ALERTS}
+
+    <div class="block-flat">
+      <div class="header">
+        <h3>Cadastro de <?php echo $this->_data['entity']['section']; ?></h3>
+      </div>
+      <div class="content">
+
+        <form id="main_form" class="form-horizontal group-border-dashed ajaxform" method="post" style="border-radius: 0px;" onsubmit="return false;">
+
+          <input type="hidden" name="redirect" value="save" />
+
+          {$SUBMIT}
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Nome</label>
+            <div class="col-sm-10">
+              <input name="name" type="text" value="<?php echo $data['table']['name']; ?>" placeholder="Nome" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Razão Social</label>
+            <div class="col-sm-10">
+              <input name="business_name" type="text" value="<?php echo $data['table']['business_name']; ?>" placeholder="Razão Social" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Documento</label>
+            <div class="col-sm-10">
+              <input name="document" type="text" value="<?php echo $data['table']['document']; ?>" placeholder="Documento" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">E-mail</label>
+            <div class="col-sm-10">
+              <input name="email" type="text" value="<?php echo $data['table']['email']; ?>" placeholder="E-mail" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">CEP</label>
+            <div class="col-sm-2">
+              <input name="address_postcode" type="text" value="<?php echo $data['table']['address_postcode']; ?>" placeholder="CEP" class="form-control">
+            </div>
+            <label class="col-sm-1 control-label">Estado</label>
+            <div class="col-sm-2">
+              <input name="address_state" type="text" value="<?php echo $data['table']['address_state']; ?>" placeholder="Estado" class="form-control">
+            </div>
+            <label class="col-sm-1 control-label">Cidade</label>
+            <div class="col-sm-4">
+              <input name="address_city" type="text" value="<?php echo $data['table']['address_city']; ?>" placeholder="Cidade" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Endereço</label>
+            <div class="col-sm-5">
+              <input name="address_street" type="text" value="<?php echo $data['table']['address_street']; ?>" placeholder="Endereço" class="form-control">
+            </div>
+            <label class="col-sm-1 control-label">Número</label>
+            <div class="col-sm-1">
+              <input name="address_number" type="text" value="<?php echo $data['table']['address_number']; ?>" placeholder="Número" class="form-control">
+            </div>
+            <label class="col-sm-1 control-label">Complemento</label>
+            <div class="col-sm-2">
+              <input name="address_complement" type="text" value="<?php echo $data['table']['address_complement']; ?>" placeholder="Complemento" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">DDD</label>
+            <div class="col-sm-1">
+              <input name="phone_ddd" type="text" value="<?php echo $data['table']['phone_ddd']; ?>" placeholder="DDD" class="form-control">
+            </div>
+            <label class="col-sm-1 control-label">Telefone</label>
+            <div class="col-sm-4">
+              <input name="phone_number" type="text" value="<?php echo $data['table']['phone_number']; ?>" placeholder="Telefone" class="form-control">
+            </div>
+          </div>
+
+          {$SUBMIT}
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
