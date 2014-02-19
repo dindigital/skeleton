@@ -2,10 +2,7 @@
 
 namespace src\app\admin\viewhelpers;
 
-use Din\Filters\Date\DateFormat;
-use src\app\admin\helpers\Form;
 use Din\Filters\String\Html;
-use src\app\admin\helpers\Link;
 
 class CustomerViewHelper
 {
@@ -20,6 +17,7 @@ class CustomerViewHelper
 
   public static function formatRow ( $row )
   {
+    $row['business_name'] = Html::scape($row['business_name']);
     $row['name'] = Html::scape($row['name']);
     $row['document'] = Html::scape($row['document']);
     $row['email'] = Html::scape($row['email']);
