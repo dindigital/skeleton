@@ -140,6 +140,13 @@ $(document).ready(function() {
     }
   });
 
+  $('.jumpField').on('keyup', function() {
+    var $this = $(this);
+    if ($this.val().length == $this.attr('maxlength')) {
+      $("input[tabindex='" + (parseInt($this.attr('tabindex')) + 1) + "']").focus();
+    }
+  });
+
 });
 
 function getIdFromYoutube(text) {
