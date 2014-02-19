@@ -23,6 +23,7 @@ class CustomerViewHelper
     $row['email'] = Html::scape($row['email']);
     $row['address_postcode'] = Html::scape($row['address_postcode']);
     $row['address_street'] = Html::scape($row['address_street']);
+    $row['address_area'] = Html::scape($row['address_area']);
     $row['address_number'] = Html::scape($row['address_number']);
     $row['address_complement'] = Html::scape($row['address_complement']);
     $row['address_state'] = Html::scape($row['address_state']);

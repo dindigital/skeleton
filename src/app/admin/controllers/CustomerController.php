@@ -66,6 +66,7 @@ class CustomerController extends BaseControllerAdm
           'email' => Post::text('email'),
           'address_postcode' => Post::text('address_postcode'),
           'address_street' => Post::text('address_street'),
+          'address_area' => Post::text('address_area'),
           'address_number' => Post::text('address_number'),
           'address_complement' => Post::text('address_complement'),
           'address_state' => Post::text('address_state'),

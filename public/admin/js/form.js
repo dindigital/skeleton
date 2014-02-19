@@ -147,6 +147,17 @@ $(document).ready(function() {
     }
   });
 
+  $('.ajax_address_btn').bind('click', function() {
+    ajax_address();
+  });
+
+  $('.postcode_ajax').keydown(function(e) {
+    if (e.keyCode == 13) {
+      ajax_address();
+      return false;
+    }
+  });
+
 });
 
 function getIdFromYoutube(text) {
@@ -159,4 +170,28 @@ function getIdFromVimeo(url)
   var parseUrl = regExp.exec(url);
   if (parseUrl != null)
     return parseUrl[5];
+}
+
+function ajax_address() {
+  $('.ajax_address_btn .search').hide();
+  $('.ajax_address_btn .loading').show();
+  $.ajax({
+    url: 'http://api.din.la/cep/',
+    type: 'get',
+    dataType: 'json',
+    data: {
+      cep: $('.postcode_ajax').val()
+    },
+    success: function(data) {
+      $('.street_ajax').val(data.logradouro);
+      $('.area_ajax').val(data.bairro);
+      $('.city_ajax').val(data.cidade);
+      $('.state_ajax').val(data.uf);
+      $('.number_ajax').focus();
+    },
+    complete: function() {
+      $('.ajax_address_btn .search').show();
+      $('.ajax_address_btn .loading').hide();
+    }
+  });
 }

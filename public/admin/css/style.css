@@ -3250,3 +3250,7 @@ button::-moz-focus-inner {
 .listbox {
   height: 250px!important;
 }
+
+.fa.fa-clock-o.loading {
+  display: none;
+}

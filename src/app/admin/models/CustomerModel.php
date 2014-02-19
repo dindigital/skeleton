@@ -57,6 +57,7 @@ class CustomerModel extends BaseModelAdm
     $validator->setEmail('email', 'E-mail');
     $validator->setRequiredString('address_postcode', 'CEP');
     $validator->setRequiredString('address_street', 'Endereço');
+    $validator->setRequiredString('address_area', 'Bairro');
     $validator->setRequiredString('address_number', 'Número');
     $validator->setRequiredString('address_state', 'Estado');
     $validator->setRequiredString('address_city', 'Cidade');
@@ -80,6 +81,7 @@ class CustomerModel extends BaseModelAdm
     $validator->setEmail('email', 'E-mail');
     $validator->setRequiredString('address_postcode', 'CEP');
     $validator->setRequiredString('address_street', 'Endereço');
+    $validator->setRequiredString('address_area', 'Bairro');
     $validator->setRequiredString('address_number', 'Número');
     $validator->setRequiredString('address_state', 'Estado');
     $validator->setRequiredString('address_city', 'Cidade');
