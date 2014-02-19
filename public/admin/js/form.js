@@ -60,10 +60,13 @@ $(document).ready(function() {
     width: '100%'
   });
 
-  $(".cepMask").mask("99999-999");
+  $(".postcodeMask").mask("99999-999");
+  $(".stateMask").mask("aa");
   $(".cpfMask").mask("999.999.999-99");
   $(".cnpjMask").mask("99.999.999/9999-99");
-  $(".phoneMask").mask("(99) ?999999999");
+  $(".phoneFullMask").mask("(99) ?999999999");
+  $(".phoneMask").mask("?999999999");
+  $(".phoneDDDMask").mask("99");
   $(".dateMask:visible").mask("99/99/9999");
   $(".timeMask:visible").mask("99:99");
   $(".timeFullMask:visible").mask("99:99:99");

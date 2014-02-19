@@ -48,11 +48,11 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">CEP</label>
             <div class="col-sm-2">
-              <input name="address_postcode" type="text" value="<?php echo $data['table']['address_postcode']; ?>" placeholder="CEP" class="form-control">
+              <input name="address_postcode" type="text" value="<?php echo $data['table']['address_postcode']; ?>" placeholder="CEP" class="form-control postcodeMask">
             </div>
             <label class="col-sm-1 control-label">Estado</label>
             <div class="col-sm-2">
-              <input name="address_state" type="text" value="<?php echo $data['table']['address_state']; ?>" placeholder="Estado" class="form-control">
+              <input name="address_state" type="text" value="<?php echo $data['table']['address_state']; ?>" placeholder="Estado" class="form-control stateMask">
             </div>
             <label class="col-sm-1 control-label">Cidade</label>
             <div class="col-sm-4">
@@ -78,11 +78,11 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">DDD</label>
             <div class="col-sm-1">
-              <input name="phone_ddd" type="text" value="<?php echo $data['table']['phone_ddd']; ?>" placeholder="DDD" class="form-control">
+              <input name="phone_ddd" type="text" value="<?php echo $data['table']['phone_ddd']; ?>" placeholder="DDD" class="form-control phoneDDDMask">
             </div>
             <label class="col-sm-1 control-label">Telefone</label>
             <div class="col-sm-4">
-              <input name="phone_number" type="text" value="<?php echo $data['table']['phone_number']; ?>" placeholder="Telefone" class="form-control">
+              <input name="phone_number" type="text" value="<?php echo $data['table']['phone_number']; ?>" placeholder="Telefone" class="form-control phoneMask">
             </div>
           </div>
 
