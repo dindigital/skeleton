@@ -79,14 +79,14 @@ class CustomerModel extends BaseModelAdm
     $validator->setRequiredString('name', 'Nome');
     $validator->setRequiredString('document', 'Documento (CPF / CNPJ)');
     $validator->setEmail('email', 'E-mail');
-    $validator->setRequiredString('address_postcode', 'CEP');
+    $validator->setLenghtString('address_postcode', 'CEP', 9);
     $validator->setRequiredString('address_street', 'Endereço');
     $validator->setRequiredString('address_area', 'Bairro');
     $validator->setRequiredString('address_number', 'Número');
-    $validator->setRequiredString('address_state', 'Estado');
+    $validator->setLenghtString('address_state', 'Estado', 2);
     $validator->setRequiredString('address_city', 'Cidade');
-    $validator->setRequiredString('phone_ddd', 'DDD');
-    $validator->setRequiredString('phone_number', 'Telefone');
+    $validator->setLenghtString('phone_ddd', 'DDD', 2, 2);
+    $validator->setMinMaxString('phone_number', 'Telefone', 8, 9);
     $validator->throwException();
 
     $this->dao_update();

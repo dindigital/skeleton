@@ -111,6 +111,30 @@ class BaseValidator
     $this->_table->{$prop} = $value;
   }
 
+  public function setMinMaxString ( $prop, $label, $min = 1, $max = null )
+  {
+    $value = $this->getValue($prop);
+
+    $message = "O campo {$label} precisa ter no mínimo {$min} caracteres";
+    if ( !is_null($max) )
+      $message .= " e no máximo {$max} caracteres";
+
+    if ( !v::string()->length($min, $max)->validate($value) )
+      return JsonException::addException($message);
+
+    $this->_table->{$prop} = $value;
+  }
+
+  public function setLenghtString ( $prop, $label, $lenght = 1 )
+  {
+    $value = $this->getValue($prop);
+
+    if ( !v::string()->length($lenght, $lenght)->validate($value) )
+      return JsonException::addException("O campo {$label} precisa ter {$lenght} caracteres");
+
+    $this->_table->{$prop} = $value;
+  }
+
   public function setRequiredDate ( $prop, $label )
   {
     $value = $this->getValue($prop);
