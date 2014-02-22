@@ -34,6 +34,7 @@ return array(
             'public/admin/js/daterangepicker/daterangepicker.js',
             'public/admin/js/jquery.maskedinput/jquery.maskedinput.js',
             'public/admin/js/counter/jquery.textareaCounter.plugin.js',
+            'public/admin/js/postCodeAjax.js',
             'public/admin/js/base.js',
             'public/admin/js/prefix.js',
             'public/admin/js/form.js',

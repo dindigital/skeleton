@@ -3251,6 +3251,7 @@ button::-moz-focus-inner {
   height: 250px!important;
 }
 
-.fa.fa-clock-o.loading {
+.postcode_loading {
   display: none;
 }
+

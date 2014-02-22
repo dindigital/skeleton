@@ -11,7 +11,7 @@
       </div>
       <div class="content">
 
-        <form id="main_form" class="form-horizontal group-border-dashed ajaxform" method="post" style="border-radius: 0px;" onsubmit="return false;">
+        <form id="main_form" class="form-horizontal group-border-dashed ajaxform formPostCode" method="post" style="border-radius: 0px;" onsubmit="return false;">
 
           <input type="hidden" name="redirect" value="save" />
 
@@ -51,9 +51,11 @@
               <div class="input-group">
                 <input name="address_postcode" type="text" value="<?php echo $data['table']['address_postcode']; ?>" placeholder="CEP" class="form-control postcodeMask postcode_ajax" tabindex="5">
                 <span class="input-group-btn">
-                  <button type="button" class="btn btn-primary ajax_address_btn">
-                    <i class="fa fa-search search"></i>
-                    <i class="fa fa-clock-o loading"></i>
+                  <button type="button" class="btn btn-primary postcode_btn">
+                    <i class="fa fa-search"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary postcode_loading">
+                    <i class="fa fa-clock-o "></i>
                   </button>
                 </span>
               </div>
