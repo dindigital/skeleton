@@ -37,10 +37,10 @@ class TrashModel extends BaseModelAdm
 
       $select1 = new Select($table_name);
       $select1->addField($id_field, 'id');
-      $select1->addField($title_field);
+      $select1->addField($title_field, 'title');
       $select1->addField('del_date');
       $select1->addSField('section', $section);
-      $select1->addSField('name', $name);
+      $select1->addSField('name', $name); // AJUSTAR NOME DIFERENTE
       $select1->where(array(
           'is_del = 1' => null,
           $title_field . ' LIKE ?' => '%' . $arrFilters['title'] . '%'
