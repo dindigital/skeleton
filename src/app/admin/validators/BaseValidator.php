@@ -111,6 +111,17 @@ class BaseValidator
     $this->_table->{$prop} = $value;
   }
 
+  public function setRequiredMoney ( $prop, $label )
+  {
+    $value = $this->getValue($prop);
+    $value = Money::filter_sql($value);
+
+    if ( !v::numeric()->validate($value) )
+      return JsonException::addException("O campo {$label} é de preenchimento obrigatório");
+
+    $this->_table->{$prop} = $value;
+  }
+
   public function setMinMaxString ( $prop, $label, $min = 1, $max = null )
   {
     $value = $this->getValue($prop);
