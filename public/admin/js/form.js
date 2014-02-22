@@ -70,6 +70,7 @@ $(document).ready(function() {
   $(".dateMask:visible").mask("99/99/9999");
   $(".timeMask:visible").mask("99:99");
   $(".timeFullMask:visible").mask("99:99:99");
+  $(".moneyMask").maskMoney({prefix: 'R$ ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false});
 
   $(".datepicker").datepicker({
     dateFormat: 'dd/mm/yy',
