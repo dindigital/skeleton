@@ -44,7 +44,7 @@
             </thead>
             <tbody class="no-border-y">
               <?php foreach ( $data['list'] as $row ): ?>
-                <tr name="<?php echo $row['name']; ?>" id="<?php echo $row['id']; ?>">
+                <tr name="<?php echo $row['entity_name']; ?>" id="<?php echo $row['id']; ?>">
                   <td><input class="delete" type="checkbox" name="delete[]" /></td>
                   <td><?php echo $row['del_date']; ?></td>
                   <td><?php echo $row['title']; ?></td>
