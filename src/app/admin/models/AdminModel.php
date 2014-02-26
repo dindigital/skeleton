@@ -15,6 +15,8 @@ use src\app\admin\helpers\MoveFiles;
 class AdminModel extends BaseModelAdm
 {
 
+  public static $_master_id = 'b9211c2ba990c3efab12df5e71e4a359';
+
   public function __construct ()
   {
     parent::__construct();
@@ -74,7 +76,7 @@ class AdminModel extends BaseModelAdm
     $arrCriteria = array(
         'name LIKE ?' => '%' . $arrFilters['name'] . '%',
         'email LIKE ?' => '%' . $arrFilters['email'] . '%',
-        'email <> ?' => 'suporte@dindigital.com'
+        'id_admin <> ?' => self::$_master_id
     );
 
     $select = new Select('admin');

@@ -5,6 +5,7 @@ namespace src\app\admin\models\essential;
 use src\app\admin\helpers\Entities;
 use Exception;
 use src\app\admin\helpers\FileMenu;
+use src\app\admin\models\AdminModel;
 
 /**
  *
@@ -42,7 +43,7 @@ class PermissionModel
 
   protected function getByAdmin ( $user )
   {
-    if ( $user['email'] == 'suporte@dindigital.com' ) {
+    if ( $user['id_admin'] == AdminModel::$_master_id ) {
       $user_permissions = array();
       foreach ( Entities::$entities as $tbl => $entity ) {
         $user_permissions[] = $entity['name'];
