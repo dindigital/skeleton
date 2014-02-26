@@ -455,7 +455,7 @@ FileETag None
 
     ExpiresActive on
     ExpiresDefault                                      "access plus 1 month"
-
+    Header set Cache-Control "public"
   # CSS
     ExpiresByType text/css                              "access plus 1 year"
 
