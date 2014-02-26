@@ -34,7 +34,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Título</label>
             <div class="col-sm-10">
-              <input name="title" type="text" value="<?php echo $data['table']['title']; ?>" placeholder="Título" class="form-control">
+              <input name="title" type="text" value="<?php echo $data['table']['title']; ?>" placeholder="Título" class="form-control limit_text" maxlength="130">
             </div>
           </div>
 
@@ -50,7 +50,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Chamada</label>
             <div class="col-sm-10">
-              <textarea name="head" placeholder="Chamada" class="form-control"><?php echo $data['table']['head']; ?></textarea>
+              <textarea name="head" placeholder="Chamada" class="form-control limit_text" maxlength="380"><?php echo $data['table']['head']; ?></textarea>
             </div>
           </div>
 

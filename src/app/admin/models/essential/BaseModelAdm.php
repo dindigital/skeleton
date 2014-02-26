@@ -12,6 +12,7 @@ use src\app\admin\models\essential\LogMySQLModel as log;
 use Din\DataAccessLayer\Table\Table;
 use Din\UrlShortener\Bitly\Bitly;
 use Din\Filters\String\Uri;
+use Din\Filters\String\LimitChars;
 
 class BaseModelAdm
 {
@@ -97,6 +98,7 @@ class BaseModelAdm
   {
     $id = substr($this->getId(), 0, 4);
     $uri = is_null($uri) || $uri == '' ? Uri::format($title) : Uri::format($uri);
+    $uri = LimitChars::filter($uri, 80, '');
     if ( $prefix != '' ) {
       $prefix = '/' . $prefix;
     }

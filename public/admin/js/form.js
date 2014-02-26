@@ -90,27 +90,34 @@ $(document).ready(function() {
     showInput: true
   });
 
-  $('.limit_text').each(function() {
-    var e = $(this);
-    var maxlength = parseInt(e.attr('maxlength'));
-    var e_target = $('<div class="limit_info"></div>');
+  function max_length(selector) {
+    selector.each(function() {
+      var e = $(this);
+      var maxlength = parseInt(e.attr('maxlength'));
+      var e_target = $('<div class="limit_info"></div>');
 
-    //create holder element after this
-    e.after(e_target);
+      //delete holder element if exists
+      e.parent().find('.limit_info').remove();
+      //create holder element after this
+      e.after(e_target);
 
-    var current = $(e).val().length;
-    e_target.html(current + ' de ' + maxlength);
+      var current = $(e).val().length;
+      e_target.html(current + ' de ' + maxlength);
 
-    $(e).textareaCount({
-      'maxCharacterSize': maxlength,
-      'originalStyle': '',
-      'warningStyle': '',
-      'displayFormat': ''
-    }, function(data) {
-      var txt = data.input + ' de ' + data.max;
-      e_target.html(txt);
+      $(e).textareaCount({
+        'maxCharacterSize': maxlength,
+        'originalStyle': '',
+        'warningStyle': '',
+        'displayFormat': ''
+      }, function(data) {
+        var txt = data.input + ' de ' + data.max;
+        e_target.html(txt);
+      });
     });
-  });
+
+  }
+
+  max_length($('.limit_text'));
 
   $('.youtube_link').bind('change keyup keypress', function() {
     $(this).val(getIdFromYoutube($(this).val()));
@@ -126,7 +133,9 @@ $(document).ready(function() {
   //_# SISTEMA DE ADD/DEL
   $('.duplication_container .add').click(function() {
     var last_duplication = $(this).parents('.duplication_container').find('.duplicate_part').last();
-    last_duplication.after(last_duplication.clone());
+    var clone = last_duplication.clone();
+    last_duplication.after(clone);
+    max_length(clone.find('.limit_text'));
 
     $('.duplication_container .del').show();
   });

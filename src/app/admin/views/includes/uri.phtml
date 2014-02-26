@@ -6,7 +6,7 @@
         <?php if ( !is_null($data['table']['uri']['prefix']) ): ?>
           <span class="input-group-addon"><?php echo $data['table']['uri']['prefix']; ?></span>
         <?php endif; ?>
-        <input type="text" name="uri" class="form-control" placeholder="Link Interno" value="<?php echo $data['table']['uri']['uri']; ?>">
+        <input type="text" name="uri" class="form-control limit_text" maxlength="80" placeholder="Link Interno" value="<?php echo $data['table']['uri']['uri']; ?>">
         <span class="input-group-addon">-<?php echo $data['table']['uri']['id']; ?>/</span>
       </div>
     </div>

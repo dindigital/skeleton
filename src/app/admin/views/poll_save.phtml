@@ -27,7 +27,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Pergunta</label>
             <div class="col-sm-10">
-              <input name="question" type="text" value="<?php echo $data['table']['question']; ?>" placeholder="Pergunta" class="form-control">
+              <input name="question" type="text" value="<?php echo $data['table']['question']; ?>" placeholder="Pergunta" class="limit_text form-control" maxlength="130">
             </div>
           </div>
 
@@ -39,7 +39,7 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Alternativa</label>
                   <div class="col-sm-10">
-                    <input name="option[<?php echo $option['id_poll_option']; ?>]" type="text" value="<?php echo $option['option']; ?>" placeholder="Alternativa" class="form-control">
+                    <input name="option[<?php echo $option['id_poll_option']; ?>]" type="text" value="<?php echo $option['option']; ?>" placeholder="Alternativa" class="limit_text form-control" maxlength="130">
                   </div>
                 </div>
               <?php endforeach; ?>
@@ -48,7 +48,7 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Alternativa</label>
                   <div class="col-sm-10">
-                    <input name="option[]" type="text" value="" placeholder="Alternativa" class="form-control">
+                    <input name="option[]" type="text" value="" placeholder="Alternativa" class="limit_text form-control" maxlength="130">
                   </div>
                 </div>
               </div>
