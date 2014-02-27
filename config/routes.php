@@ -44,7 +44,7 @@ return array(
             'controller' => 'admin\controllers\essential\AdminPasswordController',
             'method' => 'recover_password',
         ),
-        'admin/admin_password/update/([0-9]+)/' => array(
+        'admin/admin_password/update/([a-zA-Z0-9_-]+)/' => array(
             'controller' => 'admin\controllers\essential\AdminPasswordController',
             'method' => 'update',
         ),

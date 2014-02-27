@@ -84,8 +84,6 @@ class AdminPasswordModel extends BaseModelAdm
     $email->setSubject('Recuperação de Senha - Painel de Controle');
     $email->setBody($email_html->getResult());
 
-    die($email->getBody());
-
     $sendmail = new SendEmail($email);
     $sendmail->setHost(SMTP_HOST);
     $sendmail->setUser(SMTP_USER);
