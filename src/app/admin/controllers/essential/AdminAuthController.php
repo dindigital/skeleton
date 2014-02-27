@@ -9,6 +9,7 @@ use Din\Http\Post;
 use Exception;
 use Din\ViewHelpers\JsonViewHelper;
 use Din\Session\Session;
+use Din\AssetCompressor\AssetCompressor;
 
 /**
  *
@@ -27,9 +28,11 @@ class AdminAuthController extends BaseController
 
   private function setAuthTemplate ()
   {
-    $this->_data = array(
-        'assets' => $this->getAssets(),
-    );
+    $assets = new AssetCompressor('config/assets.php', PATH_ASSETS, PATH_REPLACE);
+    $assets->compress('js', false);
+    $assets->compress('css', false);
+
+    $this->_data['assets'] = $assets->getAllArray();
 
     $session = new Session('adm_session');
     if ( $session->is_set('saved_msg') ) {

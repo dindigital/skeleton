@@ -8,6 +8,7 @@ use Din\Http\Post;
 use Exception;
 use Din\ViewHelpers\JsonViewHelper;
 use Din\Session\Session;
+use Din\AssetCompressor\AssetCompressor;
 
 /**
  *
@@ -39,9 +40,11 @@ class AdminPasswordController extends BaseController
 
   public function get_update ()
   {
-    $this->_data = array(
-        'assets' => $this->getAssets(),
-    );
+    $assets = new AssetCompressor('config/assets.php', PATH_ASSETS, PATH_REPLACE);
+    $assets->compress('js', false);
+    $assets->compress('css', false);
+
+    $this->_data['assets'] = $assets->getAllArray();
 
     $this->_view->addFile('src/app/admin/views/layouts/login.phtml');
     $this->_view->addFile('src/app/admin/views/essential/recover_password.phtml', '{$CONTENT}');
