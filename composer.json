@@ -10,6 +10,7 @@
     "imagine/imagine": "dev-master",
     "phpmailer/phpmailer": "dev-master",
     "Respect/Validation": "dev-master",
-    "phpoffice/phpexcel": "dev-master"
+    "phpoffice/phpexcel": "dev-master",
+    "dg/twitter-php": "dev-master"
   }
 }
