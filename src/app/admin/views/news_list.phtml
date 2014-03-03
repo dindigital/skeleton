@@ -49,6 +49,14 @@
                   <td><?php echo $row['category']; ?></td>
                   <td><?php echo $row['title']; ?></td>
                   <td class="text-center">
+                    <?php if ( $row['has_tweet'] ): ?>
+                      <a class="label label-default btn_twitter_view" href="#" title="Visualizar Tweet">
+                        <i class="fa fa-twitter-square"></i>
+                      </a>
+                    <?php endif; ?>
+                    <a class="label label-info btn_twitter_send" href="#" title="Twittar">
+                      <i class="fa fa-twitter"></i>
+                    </a>
                     <a class="label label-default btn_edit" href="#" title="Editar conteúdo">
                       <i class="fa fa-pencil"></i>
                     </a>

@@ -60,6 +60,14 @@ return array(
             'controller' => 'admin\controllers\essential\ActiveController',
             'method' => 'change',
         ),
+        'admin/tweet/edit/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/' => array(
+            'controller' => 'admin\controllers\essential\TweetController',
+            'method' => 'edit',
+        ),
+        'admin/tweet/view/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/' => array(
+            'controller' => 'admin\controllers\essential\TweetController',
+            'method' => 'view',
+        ),
         'admin/(.*)' => array(
             'path' => 'admin\controllers\\',
             'type' => RouteTypes::ACTION,

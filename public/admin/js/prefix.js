@@ -45,6 +45,24 @@ $(document).ready(function() {
     return false;
   });
 
+  $('.btn_twitter_send').click(function() {
+    var id = $(this).parents('tr').attr('id');
+    var name = $(this).parents('tr').attr('name');
+
+    location.href = '/admin/tweet/edit/' + name + '/' + id + '/';
+
+    return false;
+  });
+
+  $('.btn_twitter_view').click(function() {
+    var id = $(this).parents('tr').attr('id');
+    var name = $(this).parents('tr').attr('name');
+
+    location.href = '/admin/tweet/view/' + name + '/' + id + '/';
+
+    return false;
+  });
+
   $('.setActive').change(function() {
     var active = ($(this).is(':checked')) ? '1' : '0';
     var action = '/admin/active/change/';

@@ -162,4 +162,10 @@ return array(
         'id' => 'id_customer',
         'title' => 'name',
     ),
+    'tweet' => array(
+        'name' => 'Tweet',
+        'section' => 'Tweet',
+        'id' => 'id_tweet',
+        'title' => 'msg',
+    ),
 );

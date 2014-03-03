@@ -41,6 +41,7 @@ class NewsModel extends BaseModelAdm
     $select->addField('date');
     $select->addField('sequence');
     $select->addField('uri');
+    $select->addField('has_tweet');
     $select->where($arrCriteria);
     $select->order_by('a.sequence=0,a.sequence,date DESC');
 
