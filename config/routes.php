@@ -68,6 +68,14 @@ return array(
             'controller' => 'admin\controllers\essential\TweetController',
             'method' => 'view',
         ),
+        'admin/facepost/edit/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/' => array(
+            'controller' => 'admin\controllers\essential\FacepostController',
+            'method' => 'edit',
+        ),
+        'admin/facepost/view/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/' => array(
+            'controller' => 'admin\controllers\essential\FacepostController',
+            'method' => 'view',
+        ),
         'admin/(.*)' => array(
             'path' => 'admin\controllers\\',
             'type' => RouteTypes::ACTION,

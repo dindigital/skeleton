@@ -34,9 +34,9 @@
                 <th style="width:5%;"><strong>Ativo</strong></th>
                 <th style="width:5%;"><strong>Ordem</strong></th>
                 <th style="width:10%;"><strong>Data</strong></th>
-                <th style="width:25%;"><strong>Categoria</strong></th>
+                <th style="width:15%;"><strong>Categoria</strong></th>
                 <th><strong>Titulo</strong></th>
-                <th style="width:15%;" class="text-center"><strong>Ações</strong></th>
+                <th style="width:25%;" class="text-center"><strong>Ações</strong></th>
               </tr>
             </thead>
             <tbody class="no-border-y">
@@ -49,6 +49,14 @@
                   <td><?php echo $row['category']; ?></td>
                   <td><?php echo $row['title']; ?></td>
                   <td class="text-center">
+                    <?php if ( $row['has_facepost'] ): ?>
+                      <a class="label label-default btn_facebook_view" href="#" title="Visualizar Post">
+                        <i class="fa fa-facebook-square"></i>
+                      </a>
+                    <?php endif; ?>
+                    <a class="label label-info btn_facebook_send" href="#" title="Postar no Facebook">
+                      <i class="fa fa-facebook"></i>
+                    </a>
                     <?php if ( $row['has_tweet'] ): ?>
                       <a class="label label-default btn_twitter_view" href="#" title="Visualizar Tweet">
                         <i class="fa fa-twitter-square"></i>
