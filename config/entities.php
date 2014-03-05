@@ -16,6 +16,12 @@ return array(
         'id' => 'id_settings',
         'title' => 'title',
     ),
+    'socialmedia_credentials' => array(
+        'name' => 'SocialmediaCredentials',
+        'section' => 'Credenciais de Mídias',
+        'id' => 'id_socialmedia_credentials',
+        'title' => '',
+    ),
     'photo' => array(
         'name' => 'Photo',
         'section' => 'Galeria de Fotos',

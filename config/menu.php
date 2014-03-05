@@ -13,6 +13,10 @@ return array(
         'name' => 'Settings',
         'index' => 'save',
     ),
+    'Credenciais de Mídias' => array(
+        'name' => 'SocialmediaCredentials',
+        'index' => 'save',
+    ),
     'Usuários' => array(
         'name' => 'Admin',
         'index' => 'list',
