@@ -40,6 +40,11 @@
                   <td><input class="setActive" type="checkbox" <?php if ( $row['active'] == '1' ): ?> checked="checked"<?php endif; ?> /></td>
                   <td><?php echo $row['title']; ?></td>
                   <td class="text-center">
+                    <?php if ( $row['has_issuu'] ): ?>
+                      <a class="label label-default" href="<?php echo $row['issuu_link']; ?>" title="Visualizar Arquivo no Issuu">
+                        <i class="fa fa-download"></i>
+                      </a>
+                    <?php endif; ?>
                     <a class="label label-default btn_edit" href="#" title="Editar conteúdo">
                       <i class="fa fa-pencil"></i>
                     </a>

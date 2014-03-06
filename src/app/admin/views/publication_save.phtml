@@ -25,6 +25,13 @@
           </div>
 
           <div class="form-group">
+            <label class="col-sm-2 control-label" for="active">Publicar no Issuu</label>
+            <div class="col-sm-10">
+              <label class="checkbox-inline"><input type="checkbox" name="has_issuu" <?php if ( $data['table']['has_issuu'] == '1' ): ?>checked="checked"<?php endif; ?> /></label>
+            </div>
+          </div>
+
+          <div class="form-group">
             <label class="col-sm-2 control-label">Título</label>
             <div class="col-sm-10">
               <input name="title" type="text" value="<?php echo $data['table']['title']; ?>" placeholder="Título" class="limit_text form-control" maxlength="130">

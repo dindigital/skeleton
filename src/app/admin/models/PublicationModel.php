@@ -31,6 +31,7 @@ class PublicationModel extends BaseModelAdm
     $select = new Select('publication');
     $select->addField('id_publication');
     $select->addField('active');
+    $select->addField('has_issuu');
     $select->addField('title');
     $select->where($arrCriteria);
     $select->order_by('title');
@@ -77,8 +78,30 @@ class PublicationModel extends BaseModelAdm
     $validator->throwException();
 
     $mf->move();
-
+    
     $this->dao_update();
+    
+    if (!$file = $this->_table->file){
+        $row = $this->getById();
+        $file = $row['file'];
+    }
+    
+    if($file){
+        $api_key = 'xjfjs9fdjsc5yokt2otmwz7ua49kjovv';
+        $api_secret = 'y3y5lbazcig8w7v90oj3lj9gxpru3d2u';
+        
+        $url = URL . $file;
+        $name = 'name1';
+        $title = 'title1';
+        
+        $issu = new \src\app\admin\helpers\issuu\Issuu($api_key, $api_secret);
+        $r = $issu->document_url_upload($url, $name, $title);
+        
+        var_dump($r);exit;
+    }
+    
+
+
   }
 
 }
