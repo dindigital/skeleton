@@ -8,8 +8,6 @@ use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\viewhelpers\NewsViewHelper as vh;
-use src\app\admin\models\NewsCatModel;
 
 /**
  *
@@ -36,11 +34,9 @@ class NewsController extends BaseControllerAdm
         'pag' => Get::text('pag'),
     );
 
-    $news_cat = new NewsCatModel;
-    $news_cat_dropdown = $news_cat->getListArray();
-
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
-    $this->_data['search'] = vh::formatFilters($arrFilters, $news_cat_dropdown);
+    $this->_model->setFilters($arrFilters);
+    $this->_data['list'] = $this->_model->getList();
+    $this->_data['search'] = $this->_model->formatFilters();
 
     $this->setErrorSessionData();
 
@@ -56,12 +52,7 @@ class NewsController extends BaseControllerAdm
         'uri'
     );
 
-    $row = $id ? $this->_model->getById() : $this->getPrevious($excluded_fields);
-
-    $news_cat = new NewsCatModel;
-    $news_cat_dropdown = $news_cat->getListArray();
-
-    $this->_data['table'] = vh::formatRow($row, $news_cat_dropdown);
+    $this->_data['table'] = $id ? $this->_model->getById() : $this->getPrevious($excluded_fields);
 
     $this->setSaveTemplate('news_save.phtml');
   }

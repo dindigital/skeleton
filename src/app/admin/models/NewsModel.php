@@ -10,6 +10,12 @@ use src\app\admin\models\essential\SequenceModel;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\models\essential\RelationshipModel;
 use src\app\admin\models\essential\Facepostable;
+use Din\Filters\Date\DateFormat;
+use src\app\admin\helpers\Form;
+use Din\Filters\String\Html;
+use src\app\admin\helpers\Link;
+use Din\Image\Picuri;
+use Din\DataAccessLayer\Table\Table;
 
 /**
  *
@@ -24,14 +30,31 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $this->setTable('news');
   }
 
-  public function getList ( $arrFilters = array() )
+  protected function formatTable ( $table )
+  {
+    $news_cat = new NewsCatModel;
+    $news_cat_dropdown = $news_cat->getListArray();
+
+    $table['title'] = Html::scape($table['title']);
+    $table['date'] = isset($table['date']) ? DateFormat::filter_date($table['date']) : date('d/m/Y');
+    $table['head'] = Html::scape($table['head']);
+    $table['body'] = Form::Ck('body', $table['body']);
+    $table['uri'] = Link::formatUri($table['uri']);
+    $table['cover'] = Form::Upload('cover', $table['cover'], 'image');
+    $table['id_news_cat'] = Form::Dropdown('id_news_cat', $news_cat_dropdown, $table['id_news_cat'], 'Selecione uma Categoria');
+
+    return $table;
+  }
+
+  public function getList ()
   {
     $arrCriteria = array(
         'a.is_del = ?' => '0',
-        'a.title LIKE ?' => '%' . $arrFilters['title'] . '%'
+        'a.title LIKE ?' => '%' . $this->_filters['title'] . '%'
     );
-    if ( $arrFilters['id_news_cat'] != '' && $arrFilters['id_news_cat'] != '0' ) {
-      $arrCriteria['a.id_news_cat = ?'] = $arrFilters['id_news_cat'];
+
+    if ( $this->_filters['id_news_cat'] != '' && $this->_filters['id_news_cat'] != '0' ) {
+      $arrCriteria['a.id_news_cat = ?'] = $this->_filters['id_news_cat'];
     }
 
     $select = new Select('news');
@@ -50,13 +73,18 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $select->inner_join('id_news_cat', Select::construct('news_cat')
                     ->addField('title', 'category'));
 
-    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $this->_filters['pag']);
     $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
 
     $seq = new SequenceModel($this);
     $result = $seq->setListArray($result, $arrCriteria);
+
+    foreach ( $result as $i => $row ) {
+      $result[$i]['date'] = DateFormat::filter_date($row['date']);
+      $result[$i]['sequence'] = Form::Dropdown('sequence', $row['sequence_list_array'], $row['sequence'], '', $row['id_news'], 'form-control drop_sequence');
+    }
 
     return $result;
   }
@@ -125,7 +153,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $relationshipModel->setForeignEntity($tbl);
     $relationshipModel->smartInsert($this->getId(), $array);
   }
-  
+
   public function generatePost ()
   {
     $select = new Select('news');
@@ -150,7 +178,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     );
 
     if ( $result[0]['cover'] ) {
-      $post['picture'] = URL . \Din\Image\Picuri::picUri($result[0]['cover'], 400, 400, false, array(), 'path');
+      $post['picture'] = URL . Picuri::picUri($result[0]['cover'], 400, 400, false, array(), 'path');
     }
 
     return $post;
@@ -162,7 +190,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $this->_dao->update($this->_table, array('id_news = ?' => $this->getId()));
 
     //_# INSERE RELACAO
-    $table = new \Din\DataAccessLayer\Table\Table('r_news_facepost');
+    $table = new Table('r_news_facepost');
     $table->id_news = $this->getId();
     $table->id_facepost = $id_facepost;
     $this->_dao->insert($table);
@@ -189,6 +217,17 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $result = $this->_dao->select($select);
 
     return $result;
+  }
+
+  public function formatFilters ()
+  {
+    $news_cat = new NewsCatModel;
+    $news_cat_dropdown = $news_cat->getListArray();
+
+    $this->_filters['title'] = Html::scape($this->_filters['title']);
+    $this->_filters['id_news_cat'] = Form::Dropdown('id_news_cat', $news_cat_dropdown, $this->_filters['id_news_cat'], 'Filtro por Categoria');
+
+    return $this->_filters;
   }
 
 }
