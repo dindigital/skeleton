@@ -8,8 +8,6 @@ use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\viewhelpers\AdminViewHelper as vh;
-use src\app\admin\models\essential\PermissionModel;
 
 /**
  *
@@ -36,8 +34,9 @@ class AdminController extends BaseControllerAdm
         'pag' => Get::text('pag'),
     );
 
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
-    $this->_data['search'] = vh::formatFilters($arrFilters);
+    $this->_model->setFilters($arrFilters);
+    $this->_data['list'] = $this->_model->getList();
+    $this->_data['search'] = $this->_model->formatFilters();
 
     $this->setErrorSessionData();
 
@@ -48,14 +47,9 @@ class AdminController extends BaseControllerAdm
   {
     $this->_model->setId($id);
     $exclude_previous = array(
-        'avatar',
+        'avatar'
     );
-    $row = $id ? $this->_model->getById() : $this->getPrevious($exclude_previous);
-
-    $permission = new PermissionModel;
-    $permission_listbox = $permission->getArrayList();
-
-    $this->_data['table'] = vh::formatRow($row, $permission_listbox);
+    $this->_data['table'] = $id ? $this->_model->getById() : $this->getPrevious($exclude_previous);
 
     $this->setSaveTemplate('admin_save.phtml');
   }

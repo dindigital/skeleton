@@ -21,6 +21,7 @@ class BaseModelAdm
   protected $_paginator = null;
   protected $_itens_per_page = 20;
   protected $_table;
+  protected $_filters;
 
   public function __construct ()
   {
@@ -201,7 +202,7 @@ class BaseModelAdm
     if ( !count($result) )
       throw new Exception('Registro não encontrado.');
 
-    $row = $result[0];
+    $row = $this->formatTable($result[0]);
 
     return $row;
   }
@@ -220,7 +221,14 @@ class BaseModelAdm
       $arr_return[$row['Field']] = $row['Default'];
     }
 
-    return $arr_return;
+    $table = $this->formatTable($arr_return);
+
+    return $table;
+  }
+
+  protected function formatTable ( $table )
+  {
+    return $table;
   }
 
   public function save ( $info )
@@ -292,6 +300,11 @@ class BaseModelAdm
     }
 
     log::save($this->_dao, $admin, $action, $msg, $entityname, $table, $tableHistory);
+  }
+
+  public function setFilters ( $filters = array() )
+  {
+    $this->_filters = $filters;
   }
 
 }

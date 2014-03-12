@@ -7,6 +7,10 @@ use Din\DataAccessLayer\Select;
 use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use src\app\admin\helpers\MoveFiles;
+use src\app\admin\models\essential\PermissionModel;
+use Din\Filters\Date\DateFormat;
+use Din\Filters\String\Html;
+use src\app\admin\helpers\Form;
 
 /**
  *
@@ -21,6 +25,18 @@ class AdminModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setTable('admin');
+  }
+
+  protected function formatTable ( $table )
+  {
+    $table['name'] = Html::scape($table['name']);
+    $table['avatar'] = Form::Upload('avatar', $table['avatar'], 'image');
+
+    $permission = new PermissionModel;
+    $permission_listbox = $permission->getArrayList();
+    $table['permission'] = Form::Listbox('permission', $permission_listbox, json_decode($table['permission']));
+
+    return $table;
   }
 
   public function insert ( $input )
@@ -71,11 +87,11 @@ class AdminModel extends BaseModelAdm
     $this->dao_update();
   }
 
-  public function getList ( $arrFilters = array() )
+  public function getList ()
   {
     $arrCriteria = array(
-        'name LIKE ?' => '%' . $arrFilters['name'] . '%',
-        'email LIKE ?' => '%' . $arrFilters['email'] . '%',
+        'name LIKE ?' => '%' . $this->_filters['name'] . '%',
+        'email LIKE ?' => '%' . $this->_filters['email'] . '%',
         'id_admin <> ?' => self::$_master_id
     );
 
@@ -88,12 +104,24 @@ class AdminModel extends BaseModelAdm
     $select->where($arrCriteria);
     $select->order_by('name');
 
-    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $this->_filters['pag']);
     $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
 
+    foreach ( $result as $i => $row ) {
+      $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
+    }
+
     return $result;
+  }
+
+  public function formatFilters ()
+  {
+    $this->_filters['name'] = Html::scape($this->_filters['name']);
+    $this->_filters['email'] = Html::scape($this->_filters['email']);
+
+    return $this->_filters;
   }
 
 }

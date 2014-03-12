@@ -19,10 +19,8 @@ class SettingsModel extends BaseModelAdm
     $this->setTable('settings');
   }
 
-  public function getById ( $id = null )
+  protected function formatTable ( $table )
   {
-    $table = parent::getById($id);
-
     $table['home_title'] = Html::scape($table['home_title']);
     $table['home_description'] = Html::scape($table['home_description']);
     $table['home_keywords'] = Html::scape($table['home_keywords']);
