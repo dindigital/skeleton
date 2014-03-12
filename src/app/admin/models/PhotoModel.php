@@ -29,28 +29,10 @@ class PhotoModel extends BaseModelAdm
     $this->setTable('photo');
   }
 
-  /* public function getById ( $id = null )
-    {
-    $row = parent::getById($id);
-    $row['gallery'] = $this->_gallery->getList(array('id_photo = ?' => $this->getId()));
-
-    return $row;
-    }
-
-    public function getNew ()
-    {
-    $arr_return = parent::getNew();
-    $arr_return['date'] = date('Y-m-d');
-    $arr_return['gallery'] = array();
-
-    return $arr_return;
-    }
-   */
-
   public function formatTable ( $table )
   {
 
-    if ( isset($table['id_photo']) && $table['id_photo'] ) {
+    if ( !is_null($table['id_photo']) ) {
       $table['gallery'] = $this->_gallery->getList(array('id_photo = ?' => $table['id_photo']));
     } else {
       $table['date'] = date('Y-m-d');
