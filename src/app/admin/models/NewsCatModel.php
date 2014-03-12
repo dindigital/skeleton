@@ -8,6 +8,11 @@ use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\models\essential\SequenceModel;
 use src\app\admin\helpers\MoveFiles;
+use Din\Filters\Date\DateFormat;
+use src\app\admin\helpers\Form;
+use src\app\admin\helpers\Arrays;
+use Din\Filters\String\Html;
+use src\app\admin\helpers\Link;
 
 /**
  *
@@ -22,15 +27,25 @@ class NewsCatModel extends BaseModelAdm
     $this->setTable('news_cat');
   }
 
-  public function getList ( $arrFilters = array() )
+  protected function formatTable ( $table )
+  {
+    $table['title'] = Html::scape($table['title']);
+    $table['cover'] = Form::Upload('cover', $table['cover'], 'image');
+    $table['uri'] = Link::formatUri($table['uri']);
+
+    return $table;
+  }
+
+  public function getList ()
   {
     $arrCriteria = array(
         'is_del = ?' => '0',
-        'title LIKE ?' => '%' . $arrFilters['title'] . '%'
+        'title LIKE ?' => '%' . $this->_filters['title'] . '%'
     );
-    if ( isset($arrFilters['is_home']) && $arrFilters['is_home'] == '1' ) {
+
+    if ( isset($this->_filters['is_home']) && $this->_filters['is_home'] == '1' ) {
       $arrCriteria['is_home = ?'] = '1';
-    } elseif ( isset($arrFilters['is_home']) && $arrFilters['is_home'] == '2' ) {
+    } elseif ( isset($this->_filters['is_home']) && $this->_filters['is_home'] == '2' ) {
       $arrCriteria['is_home = ?'] = '0';
     }
 
@@ -44,13 +59,20 @@ class NewsCatModel extends BaseModelAdm
     $select->where($arrCriteria);
     $select->order_by('sequence');
 
-    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $this->_filters['pag']);
     $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
 
     $seq = new SequenceModel($this);
     $result = $seq->setListArray($result, $arrCriteria);
+
+    foreach ( $result as $i => $row ) {
+      $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
+      if ( isset($row['sequence_list_array']) ) {
+        $result[$i]['sequence'] = Form::Dropdown('sequence', $row['sequence_list_array'], $row['sequence'], '', $row['id_news_cat'], 'drop_sequence');
+      }
+    }
 
     return $result;
   }
@@ -115,6 +137,14 @@ class NewsCatModel extends BaseModelAdm
     }
 
     return $arrOptions;
+  }
+
+  public function formatFilters ()
+  {
+    $this->_filters['title'] = Html::scape($this->_filters['title']);
+    $this->_filters['is_home'] = Form::Dropdown('is_home', Arrays::$simNao, $this->_filters['is_home'], 'Home?');
+
+    return $this->_filters;
   }
 
 }
