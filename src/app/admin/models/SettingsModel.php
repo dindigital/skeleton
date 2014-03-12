@@ -4,6 +4,7 @@ namespace src\app\admin\models;
 
 use src\app\admin\models\essential\BaseModelAdm;
 use src\app\admin\validators\BaseValidator as validator;
+use Din\Filters\String\Html;
 
 /**
  *
@@ -16,6 +17,20 @@ class SettingsModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setTable('settings');
+  }
+
+  public function getById ( $id = null )
+  {
+    $table = parent::getById($id);
+
+    $table['home_title'] = Html::scape($table['home_title']);
+    $table['home_description'] = Html::scape($table['home_description']);
+    $table['home_keywords'] = Html::scape($table['home_keywords']);
+    $table['title'] = Html::scape($table['title']);
+    $table['description'] = Html::scape($table['description']);
+    $table['keywords'] = Html::scape($table['keywords']);
+
+    return $table;
   }
 
   public function update ( $info )

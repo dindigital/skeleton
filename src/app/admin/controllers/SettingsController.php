@@ -7,7 +7,6 @@ use src\app\admin\models\SettingsModel as model;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
-use src\app\admin\viewhelpers\SettingsViewHelper as vh;
 
 /**
  *
@@ -28,7 +27,7 @@ class SettingsController extends BaseControllerAdm
 
   public function get_save ()
   {
-    $this->_data['table'] = vh::formatRow($this->_model->getById('1'));
+    $this->_data['table'] = $this->_model->getById('1');
     $this->setSaveTemplate('settings_save.phtml');
   }
 
