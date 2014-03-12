@@ -8,8 +8,6 @@ use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\models\PageCatModel;
-use src\app\admin\viewhelpers\PageViewHelper as vh;
 
 /**
  *
@@ -38,11 +36,9 @@ class PageController extends BaseControllerAdm
         'pag' => Get::text('pag'),
     );
 
-    $pagina_cat = new PageCatModel;
-    $pagina_cat_dropdown = $pagina_cat->getListArray();
-
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
-    $this->_data['search'] = vh::formatFilters($arrFilters, $pagina_cat_dropdown);
+    $this->_model->setFilters($arrFilters);
+    $this->_data['list'] = $this->_model->getList();
+    $this->_data['search'] = $this->_model->formatFilters();
 
     $this->setErrorSessionData();
 
@@ -57,12 +53,8 @@ class PageController extends BaseControllerAdm
         'cover',
         'uri'
     );
-    $row = $id ? $this->_model->getById() : $this->getPrevious($exclude_previous);
 
-    $pagina_cat = new PageCatModel;
-    $pagina_cat_dropdown = $pagina_cat->getListArray();
-
-    $this->_data['table'] = vh::formatRow($row, $pagina_cat_dropdown);
+    $this->_data['table'] = $id ? $this->_model->getById() : $this->getPrevious($exclude_previous);
 
     $this->setSaveTemplate('page_save.phtml');
   }
@@ -92,14 +84,14 @@ class PageController extends BaseControllerAdm
 
   public function get_ajax_intinify_cat ( $id_pagina_cat )
   {
-    $dorpdown = $this->_model->getListArray($id_pagina_cat, null);
-    die(vh::formatInfiniteDropdown($dorpdown));
+    $dropdown = $this->_model->getListArray($id_pagina_cat, null);
+    die($this->_model->formatInfiniteDropdown($dropdown));
   }
 
   public function get_ajax_infinity ( $id_parent )
   {
-    $dorpdown = $this->_model->getListArray(null, $id_parent);
-    die(vh::formatInfiniteDropdown($dorpdown));
+    $dropdown = $this->_model->getListArray(null, $id_parent);
+    die($this->_model->formatInfiniteDropdown($dropdown));
   }
 
 }

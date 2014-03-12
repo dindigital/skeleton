@@ -302,7 +302,7 @@ class BaseModelAdm
     log::save($this->_dao, $admin, $action, $msg, $entityname, $table, $tableHistory);
   }
 
-  public function setFilters ( $filters = array() )
+  public function setFilters ( Array $filters )
   {
     $this->_filters = $filters;
   }

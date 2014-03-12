@@ -46,6 +46,7 @@ class GalleryModel extends BaseModelAdm
     $this->_table->{$this->_entity['id']} = $input[$this->_entity['id']];
 
     $validator = new validator($this->_table);
+    $validator->setInput($input);
     $validator->setDao($this->_dao);
     $validator->setGallerySequence($this->_table_item['tbl'], $this->_entity['id'], null, $input[$this->_entity['id']]);
 
