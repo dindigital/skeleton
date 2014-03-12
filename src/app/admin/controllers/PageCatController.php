@@ -8,7 +8,6 @@ use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\viewhelpers\PageCatViewHelper as vh;
 
 /**
  *
@@ -36,8 +35,9 @@ class PageCatController extends BaseControllerAdm
         'pag' => Get::text('pag'),
     );
 
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
-    $this->_data['search'] = vh::formatFilters($arrFilters);
+    $this->_model->setFilters($arrFilters);
+    $this->_data['list'] = $this->_model->getList($arrFilters);
+    $this->_data['search'] = $this->_model->formatFilters();
 
     $this->setErrorSessionData();
 
@@ -52,9 +52,7 @@ class PageCatController extends BaseControllerAdm
         'cover',
         'uri'
     );
-    $row = $id ? $this->_model->getById() : $this->getPrevious($excluded_fields);
-
-    $this->_data['table'] = vh::formatRow($row);
+    $this->_data['table'] = $id ? $this->_model->getById() : $this->getPrevious($excluded_fields);
 
     $this->setSaveTemplate('pagecat_save.phtml');
   }
