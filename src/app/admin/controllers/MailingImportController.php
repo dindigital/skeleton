@@ -4,7 +4,6 @@ namespace src\app\admin\controllers;
 
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\MailingImportModel as model;
-use src\app\admin\viewhelpers\MailingImportViewHelper as vh;
 use Din\Http\Post;
 use Din\Session\Session;
 use Din\ViewHelpers\JsonViewHelper;
@@ -27,7 +26,7 @@ class MailingImportController extends BaseControllerAdm
 
   public function get_xls ( $id = null )
   {
-    $this->_data['table'] = vh::createFields();
+    $this->_data['table'] = $this->_model->createFields();
 
     $this->setSaveTemplate('mailing_import.phtml');
   }
