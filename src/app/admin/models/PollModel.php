@@ -7,6 +7,9 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\models\PollOptionModel;
+use Din\Filters\Date\DateFormat;
+use Din\Filters\String\Html;
+use src\app\admin\helpers\Link;
 
 /**
  *
@@ -21,10 +24,25 @@ class PollModel extends BaseModelAdm
     $this->setTable('poll');
   }
 
-  public function getList ( $arrFilters = array() )
+  public function formatTable ( $table )
+  {
+    if ( is_null($table['id_poll']) ) {
+      $table['option'] = array();
+    } else {
+      $opt = new PollOptionModel;
+      $table['option'] = $opt->getByIdPoll($table['id_poll']);
+    }
+
+    $table['question'] = Html::scape($table['question']);
+    $table['uri'] = Link::formatUri($table['uri']);
+
+    return $table;
+  }
+
+  public function getList ()
   {
     $arrCriteria = array(
-        'question LIKE ?' => '%' . $arrFilters['question'] . '%',
+        'question LIKE ?' => '%' . $this->_filters['question'] . '%',
         'is_del = ?' => '0'
     );
 
@@ -36,30 +54,16 @@ class PollModel extends BaseModelAdm
     $select->where($arrCriteria);
     $select->order_by('inc_date DESC');
 
-    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $this->_filters['pag']);
     $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
 
+    foreach ( $result as $i => $row ) {
+      $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
+    }
+
     return $result;
-  }
-
-  public function getById ( $id = null )
-  {
-    $row = parent::getById($id);
-
-    $opt = new PollOptionModel;
-    $row['option'] = $opt->getByIdPoll($row['id_poll']);
-
-    return $row;
-  }
-
-  public function getNew ()
-  {
-    $row = parent::getNew();
-    $row['option'] = array();
-
-    return $row;
   }
 
   public function insert ( $input )
@@ -133,6 +137,13 @@ class PollModel extends BaseModelAdm
     foreach ( $arr_opt as $opt ) {
       $opt->update();
     }
+  }
+
+  public function formatFilters ()
+  {
+    $this->_filters['question'] = Html::scape($this->_filters['question']);
+
+    return $this->_filters;
   }
 
 }
