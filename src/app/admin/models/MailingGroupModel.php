@@ -6,6 +6,7 @@ use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
+use Din\Filters\String\Html;
 
 /**
  *
@@ -20,10 +21,17 @@ class MailingGroupModel extends BaseModelAdm
     $this->setTable('mailing_group');
   }
 
-  public function getList ( $arrFilters = array() )
+  public function formatTable ( $table )
+  {
+    $table['name'] = Html::scape($table['name']);
+
+    return $table;
+  }
+
+  public function getList ()
   {
     $arrCriteria = array(
-        'name LIKE ?' => '%' . $arrFilters['name'] . '%'
+        'name LIKE ?' => '%' . $this->_filters['name'] . '%'
     );
 
     $select = new Select('mailing_group');
@@ -32,10 +40,14 @@ class MailingGroupModel extends BaseModelAdm
     $select->where($arrCriteria);
     $select->order_by('name');
 
-    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $this->_filters['pag']);
     $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
+
+    foreach ( $result as $i => $row ) {
+      $result[$i]['name'] = Html::scape($row['name']);
+    }
 
     return $result;
   }
@@ -91,6 +103,13 @@ class MailingGroupModel extends BaseModelAdm
     }
 
     return $arrOptions;
+  }
+
+  public function formatFilters ()
+  {
+    $this->_filters['name'] = Html::scape($this->_filters['name']);
+
+    return $this->_filters;
   }
 
 }
