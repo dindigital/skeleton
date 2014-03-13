@@ -54,6 +54,7 @@ class MailingImportValidator
     $valid_mimes = array(
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=binary',
         'application/vnd.ms-excel; charset=binary',
+        'application/vnd.ms-office; charset=binary',
     );
 
     if ( !in_array($current_mime, $valid_mimes) )
