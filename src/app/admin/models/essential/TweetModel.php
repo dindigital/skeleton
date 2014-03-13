@@ -8,6 +8,7 @@ use src\app\admin\helpers\Entities;
 use Twitter;
 use Exception;
 use src\app\admin\models\essential\TweetableEntity;
+use Din\Filters\Date\DateFormat;
 
 /**
  *
@@ -77,7 +78,9 @@ class TweetModel extends BaseModelAdm
   public function getTweets ()
   {
     $tweets = $this->_model->getTweets();
-
+    foreach ( $tweets as $i => $row ) {
+      $tweets[$i]['date'] = DateFormat::filter_dateTimeExtensive($row['date']);
+    }
     return $tweets;
   }
 
