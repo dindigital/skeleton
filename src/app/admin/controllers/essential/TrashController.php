@@ -8,7 +8,6 @@ use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\essential\TrashModel as model;
 use Din\Http\Header;
-use src\app\admin\viewhelpers\TrashViewHelper as vh;
 
 /**
  *
@@ -33,10 +32,9 @@ class TrashController extends BaseControllerAdm
         'pag' => Get::text('pag'),
     );
 
-    $dropdown_section = $this->_model->getListArray();
-
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
-    $this->_data['search'] = vh::formatFilters($arrFilters, $dropdown_section);
+    $this->_model->setFilters($arrFilters);
+    $this->_data['list'] = $this->_model->getList();
+    $this->_data['search'] = $this->_model->formatFilters();
 
     $this->setErrorSessionData();
 
