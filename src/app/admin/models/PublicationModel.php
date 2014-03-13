@@ -10,6 +10,8 @@ use src\app\admin\helpers\MoveFiles;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Form;
 use src\app\admin\helpers\Link;
+use Din\File\Folder;
+use src\app\admin\models\essential\IssuuModel;
 
 /**
  *
@@ -27,10 +29,39 @@ class PublicationModel extends BaseModelAdm
   public function formatTable ( $table )
   {
     $table['title'] = Html::scape($table['title']);
-    $table['file'] = Form::Upload('file', $table['file'], 'document');
+    $table['file_uploader'] = Form::Upload('file', $table['file'], 'document');
     $table['uri'] = Link::formatUri($table['uri']);
 
     return $table;
+  }
+
+  public function getById ( $id = null )
+  {
+    if ( $id ) {
+      $this->setId($id);
+    }
+
+    $arrCriteria = array(
+        'a.id_publication = ?' => $this->getId()
+    );
+
+    $select = new Select('publication');
+    $select->addAllFields();
+
+    $select->left_join('id_issuu', Select::construct('issuu')
+                    ->addFField('has_issuu', 'IF (b.id_issuu IS NOT NULL, 1, 0)')
+                    ->addField('link', 'issuu_link'));
+
+    $select->where($arrCriteria);
+
+    $result = $this->_dao->select($select);
+
+    if ( !count($result) )
+      throw new Exception('Registro não encontrado.');
+
+    $row = $this->formatTable($result[0]);
+
+    return $row;
   }
 
   public function getList ()
@@ -43,8 +74,12 @@ class PublicationModel extends BaseModelAdm
     $select = new Select('publication');
     $select->addField('id_publication');
     $select->addField('active');
-    $select->addField('has_issuu');
     $select->addField('title');
+
+    $select->left_join('id_issuu', Select::construct('issuu')
+                    ->addFField('has_issuu', 'IF (b.id_issuu, 1, 0)')
+                    ->addField('link', 'issuu_link'));
+
     $select->where($arrCriteria);
     $select->order_by('title');
 
@@ -78,6 +113,10 @@ class PublicationModel extends BaseModelAdm
     $mf->move();
 
     $this->dao_insert();
+
+    if ( $input['publish_issuu'] == '1' ) {
+      $this->save_issuu();
+    }
   }
 
   public function update ( $input )
@@ -93,30 +132,47 @@ class PublicationModel extends BaseModelAdm
     $validator->setFile('file', $mf);
     $validator->throwException();
 
+    if ( $input['publish_issuu'] == '1' ) {
+      $this->_table->has_issuu = '1';
+    }
+
     $mf->move();
 
     $this->dao_update();
-    /*
-      if ( !$file = $this->_table->file ) {
-      $row = $this->getById();
+
+    if ( $input['publish_issuu'] == '1' ) {
+      $this->save_issuu();
+    } else if ( $input['republish_issuu'] == '1' ) {
+      $this->save_issuu(true);
+    }
+  }
+
+  public function save_issuu ( $delete_previous = false )
+  {
+    $row = $this->getById();
+
+    // arquivo que acabou de subir ou arquivo previamente gravado
+    if ( !$file = $this->_table->file ) {
       $file = $row['file'];
-      }
+    }
 
-      if ( $file ) {
-      $api_key = 'xjfjs9fdjsc5yokt2otmwz7ua49kjovv';
-      $api_secret = 'y3y5lbazcig8w7v90oj3lj9gxpru3d2u';
+    $previous_id = $row['id_issuu'];
 
+    if ( $file ) {
+      // prepara campos
       $url = URL . $file;
-      $name = 'name1';
-      $title = 'title1';
+      $name = basename($file);
+      $title = $this->_table->title;
 
-      $issu = new \src\app\admin\helpers\issuu\Issuu($api_key, $api_secret);
-      $r = $issu->document_url_upload($url, $name, $title);
-
-      var_dump($r);
-      exit;
-      }
-     */
+      $issuu_model = new IssuuModel;
+      $issuu_model->insertComplete(array(
+          'url' => $url,
+          'name' => $name,
+          'title' => $title,
+          'id' => $this->getId(),
+          'previous_id' => $delete_previous ? $previous_id : null
+      ));
+    }
   }
 
   public function formatFilters ()
@@ -124,6 +180,24 @@ class PublicationModel extends BaseModelAdm
     $this->_filters['title'] = Html::scape($this->_filters['title']);
 
     return $this->_filters;
+  }
+
+  public function delete ( $itens )
+  {
+    foreach ( $itens as $item ) {
+      $tableHistory = $this->getById($item['id']);
+
+      // DELETE ISSUU
+      $issuu = new IssuuModel;
+      $issuu->setId($tableHistory['id_issuu']);
+      $issuu->deleteComplete();
+
+      $this->deleteChildren('publication', $item['id']);
+
+      Folder::delete("public/system/uploads/publication/{$item['id']}");
+      $this->_dao->delete('publication', array('id_publication = ?' => $item['id']));
+      $this->log('D', $tableHistory['title'], 'publication', $tableHistory);
+    }
   }
 
 }

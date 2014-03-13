@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\helpers\issuu;
+namespace src\app\admin\helpers\Issuu;
 
 use Exception;
 
@@ -15,7 +15,9 @@ class Issuu
 
   protected $_api_key;
   protected $_api_secret;
-  protected $_url='http://api.issuu.com/1_0';
+  protected $_url = 'http://api.issuu.com/1_0';
+  protected $_fields;
+  protected $_action;
 
   public function __construct ( $api_key, $api_secret )
   {
@@ -25,6 +27,8 @@ class Issuu
 
   public function document_url_upload ( $url, $name, $title )
   {
+    if ( 'pdf' != strtolower(pathinfo($url, PATHINFO_EXTENSION)) )
+      throw new Exception('Upload no Issuu é restringido a arquivos PDF');
 
     $this->_action = 'issuu.document.url_upload';
     $this->_fields['slurpUrl'] = $url;
@@ -33,29 +37,27 @@ class Issuu
 
     $response_json = $this->call();
     $document = $response_json->rsp->_content->document;
-    
+
     $return = array();
     $return['link'] = "http://issuu.com/{$document->username}/docs/{$document->name}";
     $return['document_id'] = $document->documentId;
+    $return['name'] = $document->name;
 
     return $return;
   }
 
-//  public function document_delete ( $name )
-//  {
-//    $this->_action = 'issuu.document.delete';
-//    $this->_fields['names'] = $name;
-//
-//    $r = $this->send(true);
-//    $r = isset($r['rsp']['stat']) && $r['rsp']['stat'] == 'ok';
-//
-//    return $r;
-//  }
-  
-  protected function setSignature()
+  public function document_delete ( $name )
   {
-      ksort($this->_fields);
-      
+    $this->_action = 'issuu.document.delete';
+    $this->_fields['names'] = $name;
+
+    return $this->call();
+  }
+
+  protected function setSignature ()
+  {
+    ksort($this->_fields);
+
     $serialized = '';
 
     foreach ( $this->_fields as $k => $v ) {
@@ -64,7 +66,6 @@ class Issuu
     }
 
     $this->_fields['signature'] = md5($this->_api_secret . $serialized);
-
   }
 
   protected function call ()
@@ -82,14 +83,19 @@ class Issuu
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $response_text = curl_exec($ch);
 
+    $this->_fields = array();
+
     if ( curl_errno($ch) )
       throw new Exception(curl_error($ch), 1);
 
     curl_close($ch);
-    
+
     $response_json = json_decode($response_text);
-    if (json_last_error())
-        throw new Exception('Invalid JSON: '.print_r($response_text), 1);
+    if ( json_last_error() )
+      throw new Exception('Invalid JSON: ' . print_r($response_text), 1);
+
+    if ( $error = @$response_json->rsp->_content->error )
+      throw new Exception($error->message);
 
     return $response_json;
   }

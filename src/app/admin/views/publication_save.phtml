@@ -24,12 +24,24 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label class="col-sm-2 control-label" for="active">Publicar no Issuu</label>
-            <div class="col-sm-10">
-              <label class="checkbox-inline"><input type="checkbox" name="has_issuu" <?php if ( $data['table']['has_issuu'] == '1' ): ?>checked="checked"<?php endif; ?> /></label>
+          <?php if ( $data['table']['has_issuu'] == '1' ): ?>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Publicação Issuu</label>
+              <div class="col-sm-10">
+                <a href="<?php echo $data['table']['issuu_link']; ?>" target="_blank"><?php echo $data['table']['issuu_link']; ?></a>
+                <br />
+                <label class="checkbox-inline"><input type="checkbox" name="republish_issuu" />Atualizar Publicação Issuu</label>
+              </div>
             </div>
-          </div>
+          <?php else: ?>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="active">Publicar no Issuu</label>
+              <div class="col-sm-10">
+                <label class="checkbox-inline"><input type="checkbox" name="publish_issuu" /></label>
+              </div>
+            </div>
+          <?php endif; ?>
+
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Título</label>
@@ -44,7 +56,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Arquivo</label>
             <div class="col-sm-10">
-              <?php echo $data['table']['file']; ?>
+              <?php echo $data['table']['file_uploader']; ?>
             </div>
           </div>
 
