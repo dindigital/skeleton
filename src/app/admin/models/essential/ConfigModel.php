@@ -6,6 +6,7 @@ use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\AdminAuthModel;
 use src\app\admin\models\AdminModel;
 use src\app\admin\helpers\MoveFiles;
+use src\app\admin\helpers\Form;
 
 /**
  *
@@ -13,6 +14,13 @@ use src\app\admin\helpers\MoveFiles;
  */
 class ConfigModel extends AdminModel
 {
+
+  public function formatTable ( $table )
+  {
+    $table['avatar'] = Form::Upload('avatar', $table['avatar'], 'image', false);
+
+    return $table;
+  }
 
   public function update ( $input )
   {

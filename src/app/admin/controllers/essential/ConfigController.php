@@ -6,7 +6,6 @@ use src\app\admin\models\essential\ConfigModel as model;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
-use src\app\admin\viewhelpers\ConfigViewHelper as vh;
 
 /**
  *
@@ -25,7 +24,7 @@ class ConfigController extends BaseControllerAdm
 
   public function get_save ()
   {
-    $this->_data['table'] = vh::formatRow($this->_data['admin']);
+    $this->_data['table'] = $this->_model->formatTable($this->_data['admin']);
 
     $this->setSaveTemplate('essential/config_save.phtml');
   }
