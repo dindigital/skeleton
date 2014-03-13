@@ -7,6 +7,8 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\models\essential\RelationshipModel;
+use Din\Filters\String\Html;
+use src\app\admin\helpers\Form;
 
 /**
  *
@@ -21,15 +23,23 @@ class MailingModel extends BaseModelAdm
     $this->setTable('mailing');
   }
 
-  public function getList ( $arrFilters = array() )
+  public function formatTable ( $table )
+  {
+    $table['name'] = Html::scape($table['name']);
+    $table['email'] = Html::scape($table['email']);
+
+    return $table;
+  }
+
+  public function getList ()
   {
     $arrCriteria = array(
-        'name LIKE ?' => '%' . $arrFilters['name'] . '%',
-        'email LIKE ?' => '%' . $arrFilters['email'] . '%',
+        'name LIKE ?' => '%' . $this->_filters['name'] . '%',
+        'email LIKE ?' => '%' . $this->_filters['email'] . '%',
     );
 
-    if ( $arrFilters['mailing_group'] != '' && $arrFilters['mailing_group'] != '0' ) {
-      $arrCriteria['id_mailing_group = ?'] = $arrFilters['mailing_group'];
+    if ( $this->_filters['mailing_group'] != '' && $this->_filters['mailing_group'] != '0' ) {
+      $arrCriteria['id_mailing_group = ?'] = $this->_filters['mailing_group'];
     }
 
     $select = new Select('mailing');
@@ -42,10 +52,14 @@ class MailingModel extends BaseModelAdm
 
     $select->inner_join('id_mailing', Select::construct('r_mailing_mailing_group'));
 
-    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $this->_filters['pag']);
     $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
+
+    foreach ( $result as $i => $row ) {
+      $result[$i]['name'] = Html::scape($row['name']);
+    }
 
     return $result;
   }
@@ -79,6 +93,18 @@ class MailingModel extends BaseModelAdm
     $this->dao_update();
 
     $this->save_relationship('mailing_group', $input['mailing_group']);
+  }
+
+  public function formatFilters ()
+  {
+    $mailingGroupModel = new MailingGroupModel;
+    $result = $mailingGroupModel->getListArray();
+
+    $this->_filters['name'] = Html::scape($this->_filters['name']);
+    $this->_filters['email'] = Html::scape($this->_filters['email']);
+    $this->_filters['mailing_group'] = Form::Dropdown('mailing_group', $result, $this->_filters['mailing_group'], 'Filtro por Grupo');
+
+    return $this->_filters;
   }
 
   private function save_relationship ( $tbl, $array )

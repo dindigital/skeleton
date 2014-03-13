@@ -8,8 +8,6 @@ use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
-use src\app\admin\viewhelpers\MailingViewHelper as vh;
-use src\app\admin\models\MailingGroupModel;
 
 /**
  *
@@ -37,11 +35,9 @@ class MailingController extends BaseControllerAdm
         'pag' => Get::text('pag')
     );
 
-    $mg = new MailingGroupModel;
-    $mg_list = $mg->getListArray();
-
-    $this->_data['list'] = vh::formatResult($this->_model->getList($arrFilters));
-    $this->_data['search'] = vh::formatFilters($arrFilters, $mg_list);
+    $this->_model->setFilters($arrFilters);
+    $this->_data['list'] = $this->_model->getList();
+    $this->_data['search'] = $this->_model->formatFilters();
 
     $this->setErrorSessionData();
 
@@ -52,8 +48,7 @@ class MailingController extends BaseControllerAdm
   {
     $this->_model->setId($id);
 
-    $row = $id ? $this->_model->getById() : $this->getPrevious();
-    $this->_data['table'] = vh::formatRow($row);
+    $this->_data['table'] = $id ? $this->_model->getById() : $this->getPrevious();
 
     $this->setSaveTemplate('mailing_save.phtml');
   }
