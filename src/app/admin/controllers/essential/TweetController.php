@@ -9,7 +9,6 @@ use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use Din\Http\Header;
 use Din\Session\Session;
-use src\app\admin\viewhelpers\TweetViewHelper as vh;
 
 /**
  *
@@ -56,7 +55,7 @@ class TweetController extends BaseControllerAdm
     $this->setModel($section, $id);
 
     $this->_data['redirect'] = Header::getReferer();
-    $this->_data['tweets'] = vh::formatResult($this->_model->getTweets());
+    $this->_data['tweets'] = $this->_model->getTweets();
 
     $this->setSaveTemplate('tweet_view.phtml');
   }

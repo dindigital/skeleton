@@ -9,7 +9,6 @@ use Exception;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 use Din\Http\Header;
 use Din\Session\Session;
-use src\app\admin\viewhelpers\FacepostViewHelper as vh;
 
 /**
  *
@@ -67,7 +66,7 @@ class FacepostController extends BaseControllerAdm
     $this->setModel($section, $id);
 
     $this->_data['redirect'] = Header::getReferer();
-    $this->_data['posts'] = vh::formatResult($this->_model->getPosts());
+    $this->_data['posts'] = $this->_model->getPosts();
 
     $this->setSaveTemplate('facepost_view.phtml');
   }

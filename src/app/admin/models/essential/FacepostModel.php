@@ -8,6 +8,7 @@ use Exception;
 use Facebook;
 use src\app\admin\models\SocialmediaCredentialsModel;
 use src\app\admin\helpers\Entities;
+use Din\Filters\Date\DateFormat;
 
 /**
  *
@@ -32,7 +33,7 @@ class FacepostModel extends BaseModelAdm
   protected function setModel ( $section, $id )
   {
     $entity = Entities::getEntityByName($section);
-    
+
     $this->_model = new $entity['model'];
     $this->_model->setId($id);
   }
@@ -57,19 +58,18 @@ class FacepostModel extends BaseModelAdm
     } else {
       $this->_facebook->setAccessToken($this->_sm_credentials->row['fb_access_token']);
     }
-    
   }
 
   public function getFacebookLogin ()
   {
     $this->setFacebook();
-    
-    try{
-        // WILL THROW EXCEPTION IF CURRENT ACCESS TOKEN IS NOT VALID
-        // THIS WAY I CAN SEND THE USER TO LOGIN URL TO GET A NEW ACCESS TOKEN
-        $this->_facebook->api('/me');
+
+    try {
+      // WILL THROW EXCEPTION IF CURRENT ACCESS TOKEN IS NOT VALID
+      // THIS WAY I CAN SEND THE USER TO LOGIN URL TO GET A NEW ACCESS TOKEN
+      $this->_facebook->api('/me');
     } catch (Exception $e) {
-        return $this->_facebook->getLoginUrl();
+      return $this->_facebook->getLoginUrl();
     }
   }
 
@@ -123,6 +123,10 @@ class FacepostModel extends BaseModelAdm
   public function getPosts ()
   {
     $tweets = $this->_model->getPosts();
+
+    foreach ( $tweets as $i => $row ) {
+      $tweets[$i]['date'] = DateFormat::filter_dateTimeExtensive($row['date']);
+    }
 
     return $tweets;
   }

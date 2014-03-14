@@ -7,6 +7,9 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\models\SurveyQuestionModel;
+use Din\Filters\Date\DateFormat;
+use Din\Filters\String\Html;
+use src\app\admin\helpers\Link;
 
 /**
  *
@@ -21,10 +24,26 @@ class SurveyModel extends BaseModelAdm
     $this->setTable('survey');
   }
 
-  public function getList ( $arrFilters = array() )
+  public function formatTable ( $table )
+  {
+
+    if ( is_null($table['id_survey']) ) {
+      $table['question'] = array();
+    } else {
+      $sq = new SurveyQuestionModel;
+      $table['question'] = $sq->getByIdSurvey($table['id_survey']);
+    }
+
+    $table['title'] = Html::scape($table['title']);
+    $table['uri'] = Link::formatUri($table['uri']);
+
+    return $table;
+  }
+
+  public function getList ()
   {
     $arrCriteria = array(
-        'title LIKE ?' => '%' . $arrFilters['title'] . '%',
+        'title LIKE ?' => '%' . $this->_filters['title'] . '%',
         'is_del = ?' => '0'
     );
 
@@ -36,30 +55,16 @@ class SurveyModel extends BaseModelAdm
     $select->where($arrCriteria);
     $select->order_by('inc_date DESC');
 
-    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $this->_filters['pag']);
     $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
 
+    foreach ( $result as $i => $row ) {
+      $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
+    }
+
     return $result;
-  }
-
-  public function getById ( $id = null )
-  {
-    $row = parent::getById($id);
-
-    $sq = new SurveyQuestionModel;
-    $row['question'] = $sq->getByIdSurvey($row['id_survey']);
-
-    return $row;
-  }
-
-  public function getNew ()
-  {
-    $row = parent::getNew();
-    $row['question'] = array();
-
-    return $row;
   }
 
   public function insert ( $input )
@@ -152,6 +157,13 @@ class SurveyModel extends BaseModelAdm
     }
 
     return $arrOptions;
+  }
+
+  public function formatFilters ()
+  {
+    $this->_filters['title'] = Html::scape($this->_filters['title']);
+
+    return $this->_filters;
   }
 
 }

@@ -8,6 +8,9 @@ use Exception;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\helpers\Entities;
 use src\app\admin\models\essential\SequenceModel;
+use Din\Filters\Date\DateFormat;
+use src\app\admin\helpers\Form;
+use Din\Filters\String\Html;
 
 /**
  *
@@ -16,13 +19,13 @@ use src\app\admin\models\essential\SequenceModel;
 class TrashModel extends BaseModelAdm
 {
 
-  public function getList ( $arrFilters = array() )
+  public function getList ()
   {
     $itens = Entities::getTrashItens();
 
-    if ( $arrFilters['section'] != '0' ) {
-      if ( isset($itens[$arrFilters['section']]) ) {
-        $itens = array($itens[$arrFilters['section']]);
+    if ( $this->_filters['section'] != '0' ) {
+      if ( isset($itens[$this->_filters['section']]) ) {
+        $itens = array($itens[$this->_filters['section']]);
       }
     }
 
@@ -43,7 +46,7 @@ class TrashModel extends BaseModelAdm
       $select1->addSField('entity_name', $name);
       $select1->where(array(
           'is_del = 1' => null,
-          $title_field . ' LIKE ?' => '%' . $arrFilters['title'] . '%'
+          $title_field . ' LIKE ?' => '%' . $this->_filters['title'] . '%'
       ));
 
       if ( $i == 0 ) {
@@ -57,10 +60,14 @@ class TrashModel extends BaseModelAdm
 
     $select->order_by('del_date DESC');
 
-    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $arrFilters['pag']);
+    $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $this->_filters['pag']);
     $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
+
+    foreach ( $result as $i => $row ) {
+      $result[$i]['del_date'] = DateFormat::filter_date($row['del_date'], 'd/m/Y H:i');
+    }
 
     return $result;
   }
@@ -189,6 +196,15 @@ class TrashModel extends BaseModelAdm
     }
 
     return $arrOptions;
+  }
+
+  public function formatFilters ()
+  {
+    $dropdown_section = $this->getListArray();
+    $this->_filters['title'] = Html::scape($this->_filters['title']);
+    $this->_filters['section'] = Form::Dropdown('section', $dropdown_section, $this->_filters['section'], 'Filtro por Seção');
+
+    return $this->_filters;
   }
 
 }

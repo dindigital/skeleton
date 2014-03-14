@@ -7,6 +7,7 @@ use src\app\admin\validators\MailingImportValidator as validator;
 use Din\Report\Excel\ImportExcel;
 use src\app\admin\models\MailingModel;
 use Exception;
+use src\app\admin\helpers\Form;
 
 /**
  *
@@ -71,6 +72,15 @@ class MailingImportModel extends BaseModelAdm
     }
 
     return $r;
+  }
+
+  public function createFields ()
+  {
+    $row = array(
+        'xls' => Form::Upload('xls', '', 'excel')
+    );
+
+    return $row;
   }
 
 }
