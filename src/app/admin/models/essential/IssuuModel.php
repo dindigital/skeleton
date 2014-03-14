@@ -6,6 +6,7 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Table\Table;
 use Din\DataAccessLayer\Select;
 use Din\API\Issuu\Issuu;
+use Exception;
 
 /**
  *
@@ -47,12 +48,19 @@ class IssuuModel extends BaseModelAdm
 
   public function insertComplete ( $input )
   {
-    // issuu api
+    // deleta o anterior (substituir)
     if ( $input['previous_id'] ) {
-      $row = $this->selectRow($input['previous_id']);
-      $this->_issuu->document_delete($row['name']);
+      $parent_table = new Table($input['parent_table']);
+      $parent_table->id_issuu = null;
+
+      $this->_dao->update($parent_table, array(
+          "{$input['parent_id_field']} = ?" => $input['parent_id_value']
+      ));
+
+      $this->deleteComplete($input['previous_id']);
     }
 
+    // insere na api
     $response = $this->_issuu->document_url_upload($input['url'], $input['name'], $input['title']);
 
     // salva no banco
@@ -60,9 +68,9 @@ class IssuuModel extends BaseModelAdm
         'name' => $response['name'],
         'link' => $response['link'],
         'document_id' => $response['document_id'],
-        'parent_table' => 'publication',
-        'parent_id_field' => 'id_publication',
-        'parent_id_value' => $input['id'],
+        'parent_table' => $input['parent_table'],
+        'parent_id_field' => $input['parent_id_field'],
+        'parent_id_value' => $input['parent_id_value'],
     ));
   }
 
@@ -71,7 +79,7 @@ class IssuuModel extends BaseModelAdm
     $select = new Select('issuu');
     $select->addAllFields();
     $select->where(array(
-        'id_issuu' => $id
+        'id_issuu = ?' => $id
     ));
 
     $result = $this->_dao->select($select);
@@ -82,16 +90,20 @@ class IssuuModel extends BaseModelAdm
     return $result[0];
   }
 
-  public function deleteComplete ()
+  public function deleteComplete ( $id = null )
   {
-    $row = $this->selectRow($this->getId());
+    $id = !is_null($id) ? $id : $this->getId();
+    $row = $this->selectRow($id);
 
     // delete from api
     $this->_issuu->document_delete($row['name']);
 
     // delete from databse
     $this->_dao->delete('issuu', array(
-        'id_issuu' => $this->getId()
+        'id_issuu = ?' => $id
+    ));
+    $this->_dao->delete('issuu_embed', array(
+        'id_issuu = ?' => $id
     ));
   }
 

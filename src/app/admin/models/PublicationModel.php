@@ -32,6 +32,11 @@ class PublicationModel extends BaseModelAdm
     $table['file_uploader'] = Form::Upload('file', $table['file'], 'document');
     $table['uri'] = Link::formatUri($table['uri']);
 
+    if ( $table['has_issuu'] ) {
+      $issuu_embed = new essential\IssuuEmbedModel;
+      $table['issuu_embed'] = $issuu_embed->get('publication_save_' . $table['id_publication'], $table['id_issuu'], $table['issuu_document_id'], '400', '400');
+    }
+
     return $table;
   }
 
@@ -50,7 +55,9 @@ class PublicationModel extends BaseModelAdm
 
     $select->left_join('id_issuu', Select::construct('issuu')
                     ->addFField('has_issuu', 'IF (b.id_issuu IS NOT NULL, 1, 0)')
-                    ->addField('link', 'issuu_link'));
+                    ->addField('link', 'issuu_link')
+                    ->addField('document_id', 'issuu_document_id')
+    );
 
     $select->where($arrCriteria);
 
@@ -175,8 +182,10 @@ class PublicationModel extends BaseModelAdm
           'url' => $url,
           'name' => $name,
           'title' => $title,
-          'id' => $this->getId(),
-          'previous_id' => $delete_previous ? $previous_id : null
+          'previous_id' => $delete_previous ? $previous_id : null,
+          'parent_table' => 'publication',
+          'parent_id_field' => 'id_publication',
+          'parent_id_value' => $this->getId(),
       ));
     }
   }
@@ -197,6 +206,7 @@ class PublicationModel extends BaseModelAdm
       $issuu = new IssuuModel;
       $issuu->setId($tableHistory['id_issuu']);
       $issuu->deleteComplete();
+      //
 
       $this->deleteChildren('publication', $item['id']);
 
