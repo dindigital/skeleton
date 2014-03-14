@@ -5,7 +5,7 @@ namespace src\app\admin\models\essential;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Table\Table;
 use Din\DataAccessLayer\Select;
-use src\app\admin\helpers\Issuu\Issuu;
+use Din\API\Issuu\Issuu;
 
 /**
  *
