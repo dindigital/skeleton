@@ -39,7 +39,7 @@ class IssuuEmbedModel extends BaseModelAdm
     return $result[0];
   }
 
-  public function insert ( $identifier, $id_issuu, $embed_id, $embed_html )
+  protected function insert ( $identifier, $id_issuu, $embed_id, $embed_html )
   {
     $this->_table->identifier = $identifier;
     $this->_table->id_issuu = $id_issuu;
