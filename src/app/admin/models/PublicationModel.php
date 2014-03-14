@@ -161,8 +161,14 @@ class PublicationModel extends BaseModelAdm
     if ( $file ) {
       // prepara campos
       $url = URL . $file;
-      $name = basename($file);
       $title = $this->_table->title;
+
+      $pathinfo = pathinfo($file);
+      if ( 'pdf' != $pathinfo['extension'] )
+        throw new Exception('Upload no Issuu é restringido a arquivos PDF');
+
+      $name = \Din\Filters\String\Uri::format($pathinfo['filename']);
+      $name = substr($name, 0, 45) . '.pdf';
 
       $issuu_model = new IssuuModel;
       $issuu_model->insertComplete(array(
