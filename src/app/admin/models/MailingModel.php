@@ -73,6 +73,7 @@ class MailingModel extends BaseModelAdm
     $validator->setInput($input);
     $validator->setDao($this->_dao);
     $validator->setRequiredString('name', 'Nome');
+    $validator->setEmail('email', 'E-mail');
     $validator->setUniqueValue('email', 'E-mail');
     $validator->throwException();
 
@@ -87,6 +88,7 @@ class MailingModel extends BaseModelAdm
     $validator->setInput($input);
     $validator->setDao($this->_dao);
     $validator->setRequiredString('name', 'Nome');
+    $validator->setEmail('email', 'E-mail');
     $validator->setUniqueValue('email', 'E-mail', $this->getIdName());
     $validator->throwException();
 
