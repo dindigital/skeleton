@@ -43,9 +43,9 @@ class NewsCatModel extends BaseModelAdm
         'title LIKE ?' => '%' . $this->_filters['title'] . '%'
     );
 
-    if (isset($this->_filters['is_home']) && $this->_filters['is_home'] == '1') {
+    if ( isset($this->_filters['is_home']) && $this->_filters['is_home'] == '1' ) {
       $arrCriteria['is_home = ?'] = '1';
-    } elseif (isset($this->_filters['is_home']) && $this->_filters['is_home'] == '2') {
+    } elseif ( isset($this->_filters['is_home']) && $this->_filters['is_home'] == '2' ) {
       $arrCriteria['is_home = ?'] = '0';
     }
 
@@ -69,7 +69,7 @@ class NewsCatModel extends BaseModelAdm
 
     foreach ( $result as $i => $row ) {
       $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
-      if (isset($row['sequence_list_array'])) {
+      if ( isset($row['sequence_list_array']) ) {
         $result[$i]['sequence'] = Form::Dropdown('sequence', $row['sequence_list_array'], $row['sequence'], '', $row['id_news_cat'], 'drop_sequence');
       }
     }
@@ -86,6 +86,7 @@ class NewsCatModel extends BaseModelAdm
     $this->setDefaultUri($input['title'], 'news');
 
     $validator = new validator($this->_table);
+    $validator->setId($this->getId());
     $validator->setInput($input);
     $validator->setRequiredString('title', 'Título');
 
@@ -108,12 +109,20 @@ class NewsCatModel extends BaseModelAdm
     $this->setDefaultUri($input['title'], 'news', $input['uri']);
 
     $validator = new validator($this->_table);
+    $validator->setId($this->getId());
     $validator->setInput($input);
     $validator->setRequiredString('title', 'Título');
 
     $mf = new MoveFiles;
     $validator->setFile('cover', $mf);
     $validator->throwException();
+
+    // deleta o arquivo antigo caso exista e tenha upload novo
+    $row = $this->getById();
+    if ( $this->_table->cover && $row['cover'] ) {
+      $destiny = 'public/' . $row['cover'];
+      @unlink($destiny);
+    }
 
     $mf->move();
 

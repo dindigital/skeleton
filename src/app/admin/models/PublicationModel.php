@@ -143,6 +143,13 @@ class PublicationModel extends BaseModelAdm
       $this->_table->has_issuu = '1';
     }
 
+    // deleta o arquivo antigo caso exista e tenha upload novo
+    $row = $this->getById();
+    if ( $this->_table->file && $row['file'] ) {
+      $destiny = 'public/' . $row['file'];
+      @unlink($destiny);
+    }
+
     $mf->move();
 
     $this->dao_update();

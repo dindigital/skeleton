@@ -99,6 +99,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $this->_table->body = $input['body'];
 
     $validator = new validator($this->_table);
+    $validator->setId($this->getId());
     $validator->setDao($this->_dao);
     $validator->setInput($input);
     $validator->setFk('id_news_cat', 'Categoria', 'news_cat');
@@ -128,6 +129,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $this->_table->body = $input['body'];
 
     $validator = new validator($this->_table);
+    $validator->setId($this->getId());
     $validator->setDao($this->_dao);
     $validator->setInput($input);
     $validator->setFk('id_news_cat', 'Categoria', 'news_cat');
@@ -137,6 +139,13 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $mf = new MoveFiles;
     $validator->setFile('cover', $mf);
     $validator->throwException();
+
+    // deleta o arquivo antigo caso exista e tenha upload novo
+    $row = $this->getById();
+    if ( $this->_table->cover && $row['cover'] ) {
+      $destiny = 'public/' . $row['cover'];
+      @unlink($destiny);
+    }
 
     $mf->move();
 

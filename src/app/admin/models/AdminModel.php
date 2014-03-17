@@ -82,6 +82,14 @@ class AdminModel extends BaseModelAdm
     $validator->setFile('avatar', $mf);
     $validator->throwException();
 
+    // deleta o arquivo antigo caso exista e tenha upload novo
+    $row = $this->getById();
+    if ( $this->_table->avatar && $row['avatar'] ) {
+      $destiny = 'public/' . $row['avatar'];
+      @unlink($destiny);
+    }
+
+
     $mf->move();
 
     $this->dao_update();

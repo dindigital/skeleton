@@ -113,6 +113,14 @@ class PageCatModel extends BaseModelAdm
     $validator->setFile('cover', $mf);
     $validator->throwException();
 
+    // deleta o arquivo antigo caso exista e tenha upload novo
+    $row = $this->getById();
+    if ( $this->_table->cover && $row['cover'] ) {
+      $destiny = 'public/' . $row['cover'];
+      @unlink($destiny);
+    }
+
+
     $mf->move();
 
     $this->dao_update();
