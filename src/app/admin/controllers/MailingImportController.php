@@ -7,6 +7,7 @@ use src\app\admin\models\MailingImportModel as model;
 use Din\Http\Post;
 use Din\Session\Session;
 use Din\ViewHelpers\JsonViewHelper;
+use Exception;
 
 /**
  *

@@ -40,7 +40,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $table['head'] = Html::scape($table['head']);
     $table['body'] = Form::Ck('body', $table['body']);
     $table['uri'] = Link::formatUri($table['uri']);
-    $table['cover'] = Form::Upload('cover', $table['cover'], 'image');
+    $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
     $table['id_news_cat'] = Form::Dropdown('id_news_cat', $news_cat_dropdown, $table['id_news_cat'], 'Selecione uma Categoria');
 
     return $table;

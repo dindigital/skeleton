@@ -30,7 +30,7 @@ class AdminModel extends BaseModelAdm
   protected function formatTable ( $table )
   {
     $table['name'] = Html::scape($table['name']);
-    $table['avatar'] = Form::Upload('avatar', $table['avatar'], 'image');
+    $table['avatar_uploader'] = Form::Upload('avatar', $table['avatar'], 'image');
 
     $permission = new PermissionModel;
     $permission_listbox = $permission->getArrayList();

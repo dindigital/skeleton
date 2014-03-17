@@ -17,7 +17,7 @@ class ConfigModel extends AdminModel
 
   public function formatTable ( $table )
   {
-    $table['avatar'] = Form::Upload('avatar', $table['avatar'], 'image', false);
+    $table['avatar_uploader'] = Form::Upload('avatar', $table['avatar'], 'image', false);
 
     return $table;
   }

@@ -30,7 +30,7 @@ class NewsCatModel extends BaseModelAdm
   protected function formatTable ( $table )
   {
     $table['title'] = Html::scape($table['title']);
-    $table['cover'] = Form::Upload('cover', $table['cover'], 'image');
+    $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
     $table['uri'] = Link::formatUri($table['uri']);
 
     return $table;
@@ -43,9 +43,9 @@ class NewsCatModel extends BaseModelAdm
         'title LIKE ?' => '%' . $this->_filters['title'] . '%'
     );
 
-    if ( isset($this->_filters['is_home']) && $this->_filters['is_home'] == '1' ) {
+    if (isset($this->_filters['is_home']) && $this->_filters['is_home'] == '1') {
       $arrCriteria['is_home = ?'] = '1';
-    } elseif ( isset($this->_filters['is_home']) && $this->_filters['is_home'] == '2' ) {
+    } elseif (isset($this->_filters['is_home']) && $this->_filters['is_home'] == '2') {
       $arrCriteria['is_home = ?'] = '0';
     }
 
@@ -69,7 +69,7 @@ class NewsCatModel extends BaseModelAdm
 
     foreach ( $result as $i => $row ) {
       $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
-      if ( isset($row['sequence_list_array']) ) {
+      if (isset($row['sequence_list_array'])) {
         $result[$i]['sequence'] = Form::Dropdown('sequence', $row['sequence_list_array'], $row['sequence'], '', $row['id_news_cat'], 'drop_sequence');
       }
     }

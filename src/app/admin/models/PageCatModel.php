@@ -30,7 +30,7 @@ class PageCatModel extends BaseModelAdm
   {
     $table['title'] = Html::scape($table['title']);
     $table['content'] = Form::Ck('content', $table['content']);
-    $table['cover'] = Form::Upload('cover', $table['cover'], 'image');
+    $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
     $table['uri'] = Link::formatUri($table['uri']);
 
     return $table;
