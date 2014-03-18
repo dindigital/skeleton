@@ -4,6 +4,8 @@ namespace src\app\admin\helpers;
 
 use Din\DataAccessLayer\Table\Table;
 use Din\Crypt\Crypt;
+use Din\Filters\String\Uri;
+use Din\Filters\String\LimitChars;
 
 class TableFilter
 {
@@ -87,6 +89,21 @@ class TableFilter
     $name = \Din\Filters\String\Uri::format($pathinfo['filename']) . '.' . $pathinfo['extension'];
 
     $this->_table->{$field} = "{$path}/{$name}";
+  }
+
+  public function setDefaultUri ( $field, $id, $prefix = '' )
+  {
+    $title = $this->getValue($field);
+    $uri = $this->getValue('uri');
+    $id = substr($id, 0, 4);
+
+    $uri = $uri == '' ? Uri::format($title) : Uri::format($uri);
+    $uri = LimitChars::filter($uri, 80, '');
+    if ( $prefix != '' ) {
+      $prefix = '/' . $prefix;
+    }
+
+    $this->_table->uri = "{$prefix}/{$uri}-{$id}/";
   }
 
 }
