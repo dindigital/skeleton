@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -12,6 +11,10 @@ use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\UploadValidator;
+use Din\Exception\JsonException;
+use src\app\admin\helpers\TableFilter;
 
 /**
  *
@@ -71,56 +74,60 @@ class PageCatModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $this->setNewId();
-    $this->setIntval('active', $input['active']);
-    $this->setTimestamp('inc_date');
-    $this->setDefaultUri($input['title'], 'page');
-    $this->_table->content = $input['content'];
-    $this->_table->description = $input['description'];
-    $this->_table->keywords = $input['keywords'];
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setId($this->getId());
-    $validator->setRequiredString('title', 'Título');
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', "Título");
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_cover = $upl_validator->validateFile('cover');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_page_cat');
+    $filter->setTimestamp('inc_date');
+    $filter->setIntval('active');
+    $filter->setString('title');
+    $filter->setString('content');
+    $filter->setString('description');
+    $filter->setString('keywords');
+    //
     $mf = new MoveFiles;
-    $validator->setFile('cover', $mf);
-    $validator->throwException();
+    if ( $has_cover ) {
+      $filter->setUploaded('cover', "/system/uploads/page_cat/{$this->getId()}/cover");
+      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
+    }
+    $mf->move();
 
     $seq = new SequenceModel($this);
     $seq->setSequence();
-
-    $mf->move();
 
     $this->dao_insert();
   }
 
   public function update ( $input )
   {
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['title'], 'page', $input['uri']);
-    $this->_table->content = $input['content'];
-    $this->_table->description = $input['description'];
-    $this->_table->keywords = $input['keywords'];
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setId($this->getId());
-    $validator->setRequiredString('title', 'Título');
-
-    $mf = new MoveFiles;
-    $validator->setFile('cover', $mf);
-    $validator->throwException();
-
-    // deleta o arquivo antigo caso exista e tenha upload novo
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', "Título");
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_cover = $upl_validator->validateFile('cover');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setIntval('active');
+    $filter->setString('title');
+    $filter->setString('content');
+    $filter->setString('description');
+    $filter->setString('keywords');
+    //
     $row = $this->getById();
-    if ( $this->_table->cover && $row['cover'] ) {
-      $destiny = 'public/' . $row['cover'];
-      @unlink($destiny);
+    //
+    $mf = new MoveFiles;
+    if ( $has_cover ) {
+      $filter->setUploaded('cover', "/system/uploads/page_cat/{$this->getId()}/cover");
+      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover, $row['cover']);
     }
-
-
     $mf->move();
 
     $this->dao_update();
