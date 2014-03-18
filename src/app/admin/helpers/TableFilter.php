@@ -6,6 +6,7 @@ use Din\DataAccessLayer\Table\Table;
 use Din\Crypt\Crypt;
 use Din\Filters\String\Uri;
 use Din\Filters\String\LimitChars;
+use Din\Filters\Date\DateToSql;
 
 class TableFilter
 {
@@ -61,6 +62,13 @@ class TableFilter
     $value = (string) $this->getValue($field);
 
     $this->_table->{$field} = $value;
+  }
+
+  public function setDate ( $field )
+  {
+    $value = $this->getValue($field);
+
+    $this->_table->{$field} = DateToSql::filter_date($value);
   }
 
   public function setJson ( $field )
