@@ -4,6 +4,7 @@ namespace src\app\admin\validators;
 
 use Din\Exception\JsonException;
 use Respect\Validation\Validator as v;
+use Din\Filters\Date\DateToSql;
 
 class StringValidator extends BaseValidator2
 {
@@ -22,6 +23,14 @@ class StringValidator extends BaseValidator2
 
     if ( !v::email()->validate($value) )
       return JsonException::addException("O campo {$label} não contém um e-mail válido");
+  }
+
+  public function validateRequiredDate ( $prop, $label )
+  {
+    $value = $this->getValue($prop);
+
+    if ( !DateToSql::validate($value) )
+      return JsonException::addException("O campo {$label} não contém uma data válida");
   }
 
 }
