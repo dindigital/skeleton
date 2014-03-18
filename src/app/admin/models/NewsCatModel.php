@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -13,6 +12,10 @@ use src\app\admin\helpers\Form;
 use src\app\admin\helpers\Arrays;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\UploadValidator;
+use src\app\admin\helpers\TableFilter;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -79,51 +82,58 @@ class NewsCatModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $this->setNewId();
-    $this->setIntval('active', $input['active']);
-    $this->setIntval('is_home', $input['is_home']);
-    $this->setTimestamp('inc_date');
-    $this->setDefaultUri($input['title'], 'news');
-
-    $validator = new validator($this->_table);
-    $validator->setId($this->getId());
-    $validator->setInput($input);
-    $validator->setRequiredString('title', 'Título');
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', 'Título');
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_cover = $upl_validator->validateFile('cover');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_news_cat');
+    $filter->setIntval('active');
+    $filter->setIntval('is_home');
+    $filter->setTimestamp('inc_date');
+    $filter->setString('title');
+    $filter->setDefaultUri('title', $this->getId(), 'news');
+    //
     $mf = new MoveFiles;
-    $validator->setFile('cover', $mf);
-    $validator->throwException();
+    if ( $has_cover ) {
+      $filter->setUploaded('cover', "/system/uploads/news_cat/{$this->getId()}/cover");
+      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
+    }
+    $mf->move();
 
     $seq = new SequenceModel($this);
     $seq->setSequence();
-
-    $mf->move();
 
     $this->dao_insert($input);
   }
 
   public function update ( $input )
   {
-    $this->setIntval('active', $input['active']);
-    $this->setIntval('is_home', $input['is_home']);
-    $this->setDefaultUri($input['title'], 'news', $input['uri']);
-
-    $validator = new validator($this->_table);
-    $validator->setId($this->getId());
-    $validator->setInput($input);
-    $validator->setRequiredString('title', 'Título');
-
-    $mf = new MoveFiles;
-    $validator->setFile('cover', $mf);
-    $validator->throwException();
-
-    // deleta o arquivo antigo caso exista e tenha upload novo
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', 'Título');
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_cover = $upl_validator->validateFile('cover');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setIntval('active');
+    $filter->setIntval('is_home');
+    $filter->setString('title');
+    $filter->setDefaultUri('title', $this->getId(), 'news', 'uri');
+    //
     $row = $this->getById();
-    if ( $this->_table->cover && $row['cover'] ) {
-      $destiny = 'public/' . $row['cover'];
-      @unlink($destiny);
+    //
+    $mf = new MoveFiles;
+    if ( $has_cover ) {
+      $filter->setUploaded('cover', "/system/uploads/news_cat/{$this->getId()}/cover");
+      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover, $row['cover']);
     }
-
     $mf->move();
 
     $this->dao_update($input);
