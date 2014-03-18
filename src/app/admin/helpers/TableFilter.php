@@ -3,6 +3,7 @@
 namespace src\app\admin\helpers;
 
 use Din\DataAccessLayer\Table\Table;
+use Din\Crypt\Crypt;
 
 class TableFilter
 {
@@ -58,6 +59,34 @@ class TableFilter
     $value = (string) $this->getValue($field);
 
     $this->_table->{$field} = $value;
+  }
+
+  public function setJson ( $field )
+  {
+    $value = (array) $this->getValue($field);
+
+    $this->_table->{$field} = json_encode($value);
+  }
+
+  public function setCrypted ( $field )
+  {
+    $value = $this->getValue($field);
+
+    if ( $value != '' ) {
+      $crypt = new Crypt();
+      $this->_table->{$field} = $crypt->crypt($value);
+    }
+  }
+
+  public function setUploaded ( $field, $path )
+  {
+    $value = $this->getValue($field);
+    $file = $value[0];
+
+    $pathinfo = pathinfo($file['name']);
+    $name = \Din\Filters\String\Uri::format($pathinfo['filename']) . '.' . $pathinfo['extension'];
+
+    $this->_table->{$field} = "{$path}/{$name}";
   }
 
 }
