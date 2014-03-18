@@ -16,4 +16,12 @@ class StringValidator extends BaseValidator2
       return JsonException::addException("O campo {$label} é de preenchimento obrigatório");
   }
 
+  public function validateRequiredEmail ( $prop, $label )
+  {
+    $value = $this->getValue($prop);
+
+    if ( !v::email()->validate($value) )
+      return JsonException::addException("O campo {$label} não contém um e-mail válido");
+  }
+
 }
