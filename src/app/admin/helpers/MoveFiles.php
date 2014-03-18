@@ -9,17 +9,22 @@ class MoveFiles
 
   private $_files = array();
 
-  public function addFile ( $origin, $destiny )
+  public function addFile ( $origin, $destiny, $delete = null )
   {
     $this->_files[] = array(
-        'origin' => $origin,
-        'destiny' => $destiny,
+        'origin' => 'tmp/' . $origin,
+        'destiny' => 'public' . $destiny,
+        'delete' => 'public' . $delete
     );
   }
 
   public function move ()
   {
     foreach ( $this->_files as $file ) {
+      if ( $file['delete'] ) {
+        @unlink($file['delete']);
+      }
+
       Folder::make_writable(dirname($file['destiny']));
       rename($file['origin'], $file['destiny']);
     }
