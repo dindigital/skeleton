@@ -99,9 +99,9 @@ class TableFilter
     $this->_table->{$field} = "{$path}/{$name}";
   }
 
-  public function setDefaultUri ( $field, $id, $prefix = '' )
+  public function setDefaultUri ( $title_field, $id, $prefix = '' )
   {
-    $title = $this->getValue($field);
+    $title = $this->getValue($title_field);
     $uri = $this->getValue('uri');
     $id = substr($id, 0, 4);
 
@@ -112,6 +112,22 @@ class TableFilter
     }
 
     $this->_table->uri = "{$prefix}/{$uri}-{$id}/";
+  }
+
+  public function setIdParent ()
+  {
+    $id_parent = $this->getValue('id_parent');
+
+    if ( count($id_parent) ) {
+      $last = end($id_parent);
+      if ( $last == '0' ) {
+        if ( isset($id_parent[count($id_parent) - 2]) ) {
+          $this->_table->id_parent = $id_parent[count($id_parent) - 2];
+        }
+      } else {
+        $this->_table->id_parent = end($id_parent);
+      }
+    }
   }
 
 }
