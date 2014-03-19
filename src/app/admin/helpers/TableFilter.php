@@ -7,6 +7,7 @@ use Din\Crypt\Crypt;
 use Din\Filters\String\Uri;
 use Din\Filters\String\LimitChars;
 use Din\Filters\Date\DateToSql;
+use Din\Exception\JsonException;
 
 class TableFilter
 {

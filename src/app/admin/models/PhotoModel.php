@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -12,6 +11,9 @@ use src\app\admin\helpers\Form;
 use src\app\admin\helpers\Gallery;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\helpers\TableFilter;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -25,7 +27,7 @@ class PhotoModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_gallery = new GalleryModel('photo', 'photo_item');
+    $this->_gallery = new essential\PhotoItemModel;
     $this->setTable('photo');
   }
 
@@ -78,17 +80,20 @@ class PhotoModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $this->setNewId();
-    $this->setTimestamp('inc_date');
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['title'], 'photo');
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setRequiredString('title', 'Título');
-    $validator->setRequiredDate('date', 'Data');
-    $validator->throwException();
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', 'Título');
+    $str_validator->validateRequiredDate('date', 'Data');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_photo');
+    $filter->setTimestamp('inc_date');
+    $filter->setIntval('active');
+    $filter->setString('title');
+    $filter->setDate('date');
+    //
+    //
     $this->dao_insert();
 
     $this->_gallery->saveGalery($input['gallery_uploader'], $this->getId());

@@ -4,7 +4,6 @@ namespace src\app\admin\models\essential;
 
 use src\app\admin\validators\GalleryValidator as validator;
 use Din\DataAccessLayer\Select;
-use src\app\admin\helpers\Entities;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\validators\UploadValidator;
 use src\app\admin\helpers\TableFilter;
@@ -14,20 +13,13 @@ use Din\Exception\JsonException;
  *
  * @package app.models
  */
-class GalleryModel extends BaseModelAdm
+class PhotoItemModel extends BaseModelAdm
 {
 
-  protected $_table_item;
-  protected $_entity;
-
-  public function __construct ( $table, $table_item )
+  public function __construct ()
   {
     parent::__construct();
-    $this->setTable($table_item);
-
-    $entities = new Entities();
-    $this->_entity = $entities->getEntity($table);
-    $this->_table_item = $entities->getEntity($table_item);
+    $this->setTable('photo_item');
   }
 
   public function getList ( $arrCriteria = array() )
@@ -46,30 +38,26 @@ class GalleryModel extends BaseModelAdm
   public function insert ( $input )
   {
     $upl_validator = new UploadValidator($input);
-    $upl_validator->validateFile('file');
+    $has_file = $upl_validator->validateFile('file');
+    var_dump($has_file);
+    exit;
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($table, $input);
-    $filter->setNewId('id_photo_item');
-    $filter->setString('sequence');
-    $filter->setString($this->_entity['id']);
+    $file_filter = new \src\app\admin\helpers\FileFilter($this->_table, $input);
+    $file_filter->setLabelCredit('file');
     //
-    $this->setNewId();
-    $this->_table->{$this->_entity['id']} = $input[$this->_entity['id']];
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setDao($this->_dao);
-    $validator->setGallerySequence($this->_table_item['tbl'], $this->_entity['id'], null, $input[$this->_entity['id']]);
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_photo_item');
+    $filter->setString('id_photo');
+    $filter->setString('sequence');
+    //
 
     $mf = new MoveFiles;
-    $path = "{$this->_entity['tbl']}/{$input[$this->_entity['id']]}/file/{$this->getId()}"; // photo/1/file/1/
-    $validator->setGallery('file', $path, $mf);
-    $validator->throwException();
-
-    $this->readTags($mf->getFiles());
-
+    if ( $has_file ) {
+      $filter->setUploaded('file', "/system/uploads/photo_item/{$this->getId()}/file");
+      $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
+    }
     $mf->move();
 
     $this->_dao->insert($this->_table);
@@ -108,42 +96,21 @@ class GalleryModel extends BaseModelAdm
     $this->_dao->delete($this->_table_item['tbl'], $arrCriteria);
   }
 
-  public function saveGalery ( $upload, $id, $gallery_sequence = null, $label = null, $credit = null )
+  public function saveGalery ( $upload, $id )
   {
-    $this->remove($id, $gallery_sequence);
-    //_# RESOLVE A ORDEM
-    if ( $gallery_sequence ) {
-      foreach ( explode(',', $gallery_sequence) as $i => $id_item ) {
-        $this->setId($id_item);
-        $this->update(array(
-            'label' => $label[$i],
-            'credit' => $credit[$i],
-            'sequence' => ($i + 1),
-        ));
-      }
-    }
-
     //_# DESCOBRE A SEQUENCE DA ULTIMA FOTO JA EXISTENTE
-    $select = new Select($this->_table_item['tbl']);
-    $select->addFField('sequence', 'COUNT(*)');
-    $select->where(array("{$this->_entity['id']} = ?" => $id));
+    $select = new Select('photo_item');
+    $select->where(array("id_photo = ?" => $id));
 
-    $result = $this->_dao->select($select);
-    $sequence = ($result[0]['sequence'] + 1);
-
-    $sequence = intval($sequence);
+    $sequence = $this->_dao->select_count($select) + 1;
     //
     //_# SALVA NOVAS FOTOS
     foreach ( $upload as $file ) {
-      if ( count($file) == 2 ) {
-        $label = pathinfo($file['name'], PATHINFO_FILENAME);
-        $this->insert(array(
-            $this->_entity['id'] => $id,
-            'sequence' => $sequence,
-            'label' => $label,
-            'file' => $file
-        ));
-      }
+      $this->insert(array(
+          'id_photo' => $id,
+          'sequence' => $sequence,
+          'file' => $file
+      ));
     }
   }
 

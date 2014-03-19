@@ -3,7 +3,6 @@
 namespace src\app\admin\validators;
 
 use Din\Exception\JsonException;
-use Respect\Validation\Validator as v;
 
 class UploadValidator extends BaseValidator2
 {
