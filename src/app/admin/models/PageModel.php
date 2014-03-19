@@ -16,6 +16,7 @@ use src\app\admin\validators\UploadValidator;
 use src\app\admin\validators\DBValidator;
 use Din\Exception\JsonException;
 use src\app\admin\helpers\TableFilter;
+use Exception;
 
 /**
  *
@@ -42,9 +43,7 @@ class PageModel extends BaseModelAdm
     $table['uri'] = Link::formatUri($table['uri']);
     $table['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $table['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 
-    if ( isset($table['id_parent']) && $table['id_parent'] ) {
-      $table['id_parent'] = $this->loadInfinity();
-    }
+    $table['id_parent'] = $this->loadInfinity();
 
     $infinite_drop = array();
     foreach ( (array) $table['id_parent'] as $i => $drop ) {
@@ -187,7 +186,7 @@ class PageModel extends BaseModelAdm
     return $this->_filters;
   }
 
-  public function getListArray ( $id_page_cat = null, $id_parent = '', $exclude_id = null )
+  public function getListArray ( $id_page_cat = null, $id_parent = '', $exclude_id = '' )
   {
     $select = new Select('page');
     $select->addField('id_page');
@@ -198,7 +197,7 @@ class PageModel extends BaseModelAdm
     if ( $id_page_cat ) {
       $arrCriteria['id_page_cat = ?'] = $id_page_cat;
     }
-    if ( $exclude_id ) {
+    if ( $exclude_id != '' ) {
       $arrCriteria['id_page <> ?'] = $exclude_id;
     }
 
@@ -225,14 +224,20 @@ class PageModel extends BaseModelAdm
   {
     $r = array();
 
-    $first = $this->getInfinityMembers();
-    $id_cat = $first['id_page_cat'];
-    if ( $first['id_parent'] ) {
+    try {
+      $first = $this->getInfinityMembers();
+    } catch (Exception $e) {
+      return null;
+    }
 
-      $last = array(
-          'dropdown' => $this->getListArray($id_cat, $first['id_parent'], $first['id_page']),
-          'selected' => null
-      );
+    $id_cat = $first['id_page_cat'];
+
+    $r[] = array(
+        'dropdown' => $this->getListArray($id_cat, $first['id_parent'], $first['id_page']),
+        'selected' => null
+    );
+
+    if ( $first['id_parent'] ) {
 
       while ($first['id_parent']) {
         $second = $this->getInfinityMembers($first['id_parent']);
@@ -245,8 +250,6 @@ class PageModel extends BaseModelAdm
       }
 
       $r = array_reverse($r);
-
-      $r[] = $last;
     }
 
     return $r;

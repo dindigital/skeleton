@@ -13,6 +13,7 @@
 
         <form id="main_form" class="form-horizontal group-border-dashed ajaxform" method="post" style="border-radius: 0px;" onsubmit="return false;">
 
+          <input type="hidden" id="id" value="<?php echo $data['table']['id_page']; ?>" />
           <input type="hidden" name="redirect" value="save" />
 
           {$SUBMIT}

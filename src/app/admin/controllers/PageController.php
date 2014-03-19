@@ -82,15 +82,21 @@ class PageController extends BaseControllerAdm
     }
   }
 
-  public function get_ajax_intinify_cat ( $id_pagina_cat )
+  public function get_ajax_intinify_cat ()
   {
-    $dropdown = $this->_model->getListArray($id_pagina_cat, null);
+    $id_page_cat = Get::text('id_page_cat');
+    $exclude_id = Get::text('exclude_id');
+
+    $dropdown = $this->_model->getListArray($id_page_cat, null, $exclude_id);
     die($this->_model->formatInfiniteDropdown($dropdown));
   }
 
-  public function get_ajax_infinity ( $id_parent )
+  public function get_ajax_infinity ()
   {
-    $dropdown = $this->_model->getListArray(null, $id_parent);
+    $id_parent = Get::text('id_parent');
+    $exclude_id = Get::text('exclude_id');
+
+    $dropdown = $this->_model->getListArray(null, $id_parent, $exclude_id);
     die($this->_model->formatInfiniteDropdown($dropdown));
   }
 
