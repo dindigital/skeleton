@@ -10,7 +10,7 @@ class FileFilter extends TableFilter
   public function setLabelCredit ( $field )
   {
     $file = $this->getValue($field);
-    $file = 'tmp/' . $file['tmp_name'];
+    $file = 'tmp/' . $file[0]['tmp_name'];
 
     if ( !in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), array('jpg', 'tiff')) )
       return;
