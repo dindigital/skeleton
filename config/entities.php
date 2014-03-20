@@ -30,7 +30,7 @@ return array(
         'trash' => true,
     ),
     'photo_item' => array(
-        'name' => 'Gallery',
+        'name' => 'PhotoItem',
         'id' => 'id_photo_item',
     ),
     'news' => array(

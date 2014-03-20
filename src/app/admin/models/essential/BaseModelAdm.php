@@ -177,7 +177,9 @@ class BaseModelAdm
 
       Folder::delete("public/system/uploads/{$current['tbl']}/{$item['id']}");
       $this->_dao->delete($current['tbl'], array($current['id'] . ' = ?' => $item['id']));
-      $this->log('D', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
+      if ( isset($current['title']) ) {
+        $this->log('D', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
+      }
     }
   }
 
