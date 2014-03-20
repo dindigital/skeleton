@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -12,6 +11,12 @@ use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\UploadValidator;
+use src\app\admin\validators\DBValidator;
+use Din\Exception\JsonException;
+use src\app\admin\helpers\TableFilter;
+use Exception;
 
 /**
  *
@@ -38,9 +43,7 @@ class PageModel extends BaseModelAdm
     $table['uri'] = Link::formatUri($table['uri']);
     $table['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $table['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 
-    if ( isset($table['id_parent']) && $table['id_parent'] ) {
-      $table['id_parent'] = $this->loadInfinity();
-    }
+    $table['id_parent'] = $this->loadInfinity();
 
     $infinite_drop = array();
     foreach ( (array) $table['id_parent'] as $i => $drop ) {
@@ -103,63 +106,70 @@ class PageModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $this->setNewId();
-    $this->setTimestamp('inc_date');
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['title'], 'page');
-    $this->_table->content = $input['content'];
-    $this->_table->description = $input['description'];
-    $this->_table->keywords = $input['keywords'];
-
-    $validator = new validator($this->_table);
-    $validator->setDao($this->_dao);
-    $validator->setInput($input);
-    $validator->setId($this->getId());
-    $validator->setFk('id_page_cat', 'Menu', 'page_cat');
-    $validator->setIdParent($input['id_parent']);
-    $validator->setRequiredString('title', 'Título');
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', "Título");
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_cover = $upl_validator->validateFile('cover');
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'page');
+    $db_validator->validateFk('id_page_cat', 'Menu', 'page_cat');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_page');
+    $filter->setTimestamp('inc_date');
+    $filter->setIntval('active');
+    $filter->setString('id_page_cat');
+    $filter->setIdParent();
+    $filter->setString('title');
+    $filter->setString('content');
+    $filter->setString('description');
+    $filter->setString('keywords');
+    $filter->setDefaultUri('title', $this->getId());
+    //
     $mf = new MoveFiles;
-    $validator->setFile('cover', $mf);
-    $validator->throwException();
-
-
+    if ( $has_cover ) {
+      $filter->setUploaded('cover', "/system/uploads/page/{$this->getId()}/cover");
+      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
+    }
+    $mf->move();
 
     $seq = new SequenceModel($this);
     $seq->setSequence();
-
-    $mf->move();
 
     $this->dao_insert();
   }
 
   public function update ( $input )
   {
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['title'], 'page', $input['uri']);
-    $this->_table->content = $input['content'];
-    $this->_table->description = $input['description'];
-    $this->_table->keywords = $input['keywords'];
-
-    $validator = new validator($this->_table);
-    $validator->setDao($this->_dao);
-    $validator->setInput($input);
-    $validator->setId($this->getId());
-    $validator->setFk('id_page_cat', 'Menu', 'page_cat');
-    $validator->setIdParent($input['id_parent']);
-    $validator->setRequiredString('title', 'Título');
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', "Título");
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_cover = $upl_validator->validateFile('cover');
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'page');
+    $db_validator->validateFk('id_page_cat', 'Menu', 'page_cat');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setIntval('active');
+    $filter->setString('id_page_cat');
+    $filter->setIdParent();
+    $filter->setString('title');
+    $filter->setString('content');
+    $filter->setString('description');
+    $filter->setString('keywords');
+    $filter->setDefaultUri('title', $this->getId());
+    //
     $mf = new MoveFiles;
-    $validator->setFile('cover', $mf);
-    $validator->throwException();
-
-    // deleta o arquivo antigo caso exista e tenha upload novo
-    $row = $this->getById();
-    if ( $this->_table->cover && $row['cover'] ) {
-      $destiny = 'public/' . $row['cover'];
-      @unlink($destiny);
+    if ( $has_cover ) {
+      $filter->setUploaded('cover', "/system/uploads/page/{$this->getId()}/cover");
+      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
     }
-
     $mf->move();
 
     $this->dao_update();
@@ -176,7 +186,7 @@ class PageModel extends BaseModelAdm
     return $this->_filters;
   }
 
-  public function getListArray ( $id_page_cat = null, $id_parent = '', $exclude_id = null )
+  public function getListArray ( $id_page_cat = null, $id_parent = '', $exclude_id = '' )
   {
     $select = new Select('page');
     $select->addField('id_page');
@@ -187,7 +197,7 @@ class PageModel extends BaseModelAdm
     if ( $id_page_cat ) {
       $arrCriteria['id_page_cat = ?'] = $id_page_cat;
     }
-    if ( $exclude_id ) {
+    if ( $exclude_id != '' ) {
       $arrCriteria['id_page <> ?'] = $exclude_id;
     }
 
@@ -214,14 +224,20 @@ class PageModel extends BaseModelAdm
   {
     $r = array();
 
-    $first = $this->getInfinityMembers();
-    $id_cat = $first['id_page_cat'];
-    if ( $first['id_parent'] ) {
+    try {
+      $first = $this->getInfinityMembers();
+    } catch (Exception $e) {
+      return null;
+    }
 
-      $last = array(
-          'dropdown' => $this->getListArray($id_cat, $first['id_parent'], $first['id_page']),
-          'selected' => null
-      );
+    $id_cat = $first['id_page_cat'];
+
+    $r[] = array(
+        'dropdown' => $this->getListArray($id_cat, $first['id_parent'], $first['id_page']),
+        'selected' => null
+    );
+
+    if ( $first['id_parent'] ) {
 
       while ($first['id_parent']) {
         $second = $this->getInfinityMembers($first['id_parent']);
@@ -234,8 +250,6 @@ class PageModel extends BaseModelAdm
       }
 
       $r = array_reverse($r);
-
-      $r[] = $last;
     }
 
     return $r;

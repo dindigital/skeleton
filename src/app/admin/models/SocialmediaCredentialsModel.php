@@ -4,6 +4,7 @@ namespace src\app\admin\models;
 
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
+use src\app\admin\helpers\TableFilter;
 
 /**
  *
@@ -19,18 +20,19 @@ class SocialmediaCredentialsModel extends BaseModelAdm
     parent::__construct();
     $this->setTable('socialmedia_credentials');
   }
-  
-  public function update ( $info )
+
+  public function update ( $input )
   {
-    $this->_table->fb_app_id = $info['fb_app_id'];
-    $this->_table->fb_app_secret = $info['fb_app_secret'];
-    $this->_table->fb_page = $info['fb_page'];
-    $this->_table->fb_access_token = $info['fb_access_token'];
-    $this->_table->tw_consumer_key = $info['tw_consumer_key'];
-    $this->_table->tw_consumer_secret = $info['tw_consumer_secret'];
-    $this->_table->tw_access_token = $info['tw_access_token'];
-    $this->_table->tw_access_secret = $info['tw_access_secret'];
-    
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setString('fb_app_id');
+    $filter->setString('fb_app_secret');
+    $filter->setString('fb_page');
+    $filter->setString('fb_access_token');
+    $filter->setString('tw_consumer_key');
+    $filter->setString('tw_consumer_secret');
+    $filter->setString('tw_access_token');
+    $filter->setString('tw_access_secret');
+
     $this->dao_update(false);
   }
 

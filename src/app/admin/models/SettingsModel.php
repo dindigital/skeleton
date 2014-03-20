@@ -3,8 +3,10 @@
 namespace src\app\admin\models;
 
 use src\app\admin\models\essential\BaseModelAdm;
-use src\app\admin\validators\BaseValidator as validator;
 use Din\Filters\String\Html;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\helpers\TableFilter;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -31,17 +33,25 @@ class SettingsModel extends BaseModelAdm
     return $table;
   }
 
-  public function update ( $info )
+  public function update ( $input )
   {
-    $validator = new validator($this->_table);
-    $validator->setInput($info);
-    $validator->setRequiredString('home_title', 'Título Home');
-    $validator->setRequiredString('home_description', 'Description Home');
-    $validator->setRequiredString('home_keywords', 'Keywords Home');
-    $validator->setRequiredString('title', 'Título Internas');
-    $validator->setRequiredString('description', 'Description Internas');
-    $validator->setRequiredString('keywords', 'Keywords Internas');
-    $validator->throwException();
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('home_title', 'Título Home');
+    $str_validator->validateRequiredString('home_description', 'Description Home');
+    $str_validator->validateRequiredString('home_keywords', 'Keywords Home');
+    $str_validator->validateRequiredString('title', 'Título Internas');
+    $str_validator->validateRequiredString('description', 'Description Internas');
+    $str_validator->validateRequiredString('keywords', 'Keywords Internas');
+
+    JsonException::throwException();
+
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setString('home_title');
+    $filter->setString('home_description');
+    $filter->setString('home_keywords');
+    $filter->setString('title');
+    $filter->setString('description');
+    $filter->setString('keywords');
 
     $this->dao_update();
   }

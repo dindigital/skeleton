@@ -4,13 +4,17 @@ namespace src\app\admin\models;
 
 use src\app\admin\helpers\PaginatorAdmin;
 use Din\DataAccessLayer\Select;
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\models\essential\PermissionModel;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Form;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\DBValidator;
+use src\app\admin\validators\UploadValidator;
+use src\app\admin\helpers\TableFilter;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -41,57 +45,70 @@ class AdminModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $this->setNewId();
-    $this->setIntval('active', $input['active']);
-    $this->setTimestamp('inc_date');
-    $this->_table->permission = json_encode($input['permission']);
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setDao($this->_dao);
-    $validator->setId($this->getId());
-    $validator->setRequiredString('name', 'Nome');
-    $validator->setEmail('email', 'E-mail');
-    $validator->setUniqueValue('email', 'E-mail');
-    $validator->setPassword('password', 'Senha', true);
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('name', 'Nome');
+    $str_validator->validateRequiredEmail('email', 'E-mail');
+    $str_validator->validateRequiredString('password', 'Senha');
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'admin');
+    $db_validator->validateUniqueValue('email', 'E-mail');
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_avatar = $upl_validator->validateFile('avatar');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_admin');
+    $filter->setIntval('active');
+    $filter->setTimestamp('inc_date');
+    $filter->setString('name');
+    $filter->setString('email');
+    $filter->setCrypted('password');
+    $filter->setJson('permission');
+    //
     $mf = new MoveFiles;
-    $validator->setFile('avatar', $mf);
-    $validator->throwException();
-
+    if ( $has_avatar ) {
+      $filter->setUploaded('avatar', "/system/uploads/admin/{$this->getId()}/avatar");
+      $mf->addFile($input['avatar'][0]['tmp_name'], $this->_table->avatar);
+    }
     $mf->move();
-
+    //
     $this->dao_insert();
   }
 
   public function update ( $input )
   {
-    $this->setIntval('active', $input['active']);
-    $this->_table->permission = json_encode($input['permission']);
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setDao($this->_dao);
-    $validator->setId($this->getId());
-    $validator->setRequiredString('name', 'Nome');
-    $validator->setUniqueValue('email', 'E-mail', $this->getIdName());
-    $validator->setEmail('email', 'E-mail');
-    $validator->setPassword('password', 'Senha', false);
-
-    $mf = new MoveFiles;
-    $validator->setFile('avatar', $mf);
-    $validator->throwException();
-
-    // deleta o arquivo antigo caso exista e tenha upload novo
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('name', 'Nome');
+    $str_validator->validateRequiredEmail('email', 'E-mail');
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'admin');
+    $db_validator->setId('id_admin', $this->getId());
+    $db_validator->validateUniqueValue('email', 'E-mail');
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_avatar = $upl_validator->validateFile('avatar');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setIntval('active');
+    $filter->setString('name');
+    $filter->setString('email');
+    $filter->setCrypted('password');
+    $filter->setJson('permission');
+    //
     $row = $this->getById();
-    if ( $this->_table->avatar && $row['avatar'] ) {
-      $destiny = 'public/' . $row['avatar'];
-      @unlink($destiny);
+    //
+    $mf = new MoveFiles;
+
+    if ( $has_avatar ) {
+      $filter->setUploaded('avatar', "/system/uploads/admin/{$this->getId()}/avatar");
+      $mf->addFile($input['avatar'][0]['tmp_name'], $this->_table->avatar, $row['avatar']);
     }
-
-
     $mf->move();
-
+    //
     $this->dao_update();
   }
 

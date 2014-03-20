@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -16,6 +15,11 @@ use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
 use Din\Image\Picuri;
 use Din\DataAccessLayer\Table\Table;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\UploadValidator;
+use src\app\admin\validators\DBValidator;
+use src\app\admin\helpers\TableFilter;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -91,29 +95,39 @@ class NewsModel extends BaseModelAdm implements Facepostable
 
   public function insert ( $input )
   {
-    $this->setNewId();
-    $this->setIntval('active', $input['active']);
-    $this->setTimestamp('inc_date');
-    $this->setDefaultUri($input['title']);
-    $this->_table->head = $input['head'];
-    $this->_table->body = $input['body'];
-
-    $validator = new validator($this->_table);
-    $validator->setId($this->getId());
-    $validator->setDao($this->_dao);
-    $validator->setInput($input);
-    $validator->setFk('id_news_cat', 'Categoria', 'news_cat');
-    $validator->setRequiredString('title', 'Título');
-    $validator->setRequiredDate('date', 'Data');
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', 'Título');
+    $str_validator->validateRequiredDate('date', 'Data');
+    $str_validator->validateRequiredString('body', 'Corpo');
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'news');
+    $db_validator->validateFk('id_news_cat', 'Categoria', 'news_cat');
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_cover = $upl_validator->validateFile('cover');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_news');
+    $filter->setTimestamp('inc_date');
+    $filter->setIntval('active');
+    $filter->setString('id_news_cat');
+    $filter->setString('title');
+    $filter->setDate('date');
+    $filter->setString('head');
+    $filter->setString('body');
+    $filter->setDefaultUri('title', $this->getId());
+    //
     $mf = new MoveFiles;
-    $validator->setFile('cover', $mf);
-    $validator->throwException();
+    if ( $has_cover ) {
+      $filter->setUploaded('cover', "/system/uploads/news/{$this->getId()}/cover");
+      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
+    }
+    $mf->move();
 
     $seq = new SequenceModel($this);
     $seq->setSequence();
-
-    $mf->move();
 
     $this->dao_insert($input);
 
@@ -123,30 +137,33 @@ class NewsModel extends BaseModelAdm implements Facepostable
 
   public function update ( $input )
   {
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['title'], '', $input['uri']);
-    $this->_table->head = $input['head'];
-    $this->_table->body = $input['body'];
-
-    $validator = new validator($this->_table);
-    $validator->setId($this->getId());
-    $validator->setDao($this->_dao);
-    $validator->setInput($input);
-    $validator->setFk('id_news_cat', 'Categoria', 'news_cat');
-    $validator->setRequiredString('title', 'Título');
-    $validator->setRequiredDate('date', 'Data');
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', 'Título');
+    $str_validator->validateRequiredDate('date', 'Data');
+    $str_validator->validateRequiredString('body', 'Corpo');
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'news');
+    $db_validator->validateFk('id_news_cat', 'Categoria', 'news_cat');
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_cover = $upl_validator->validateFile('cover');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setIntval('active');
+    $filter->setString('id_news_cat');
+    $filter->setString('title');
+    $filter->setDate('date');
+    $filter->setString('head');
+    $filter->setString('body');
+    $filter->setDefaultUri('title', $this->getId());
+    //
     $mf = new MoveFiles;
-    $validator->setFile('cover', $mf);
-    $validator->throwException();
-
-    // deleta o arquivo antigo caso exista e tenha upload novo
-    $row = $this->getById();
-    if ( $this->_table->cover && $row['cover'] ) {
-      $destiny = 'public/' . $row['cover'];
-      @unlink($destiny);
+    if ( $has_cover ) {
+      $filter->setUploaded('cover', "/system/uploads/news/{$this->getId()}/cover");
+      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
     }
-
     $mf->move();
 
     $this->dao_update($input);

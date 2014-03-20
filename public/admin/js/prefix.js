@@ -171,9 +171,13 @@ $(document).ready(function() {
     $('.drop_infinity_line').hide();
 
     if (id != '0') {
-      var url = $('#link_prefix').val() + 'ajax_intinify_cat/' + id + '/';
+      var exclude_id = $('#id').val();
+      var url = $('#link_prefix').val() + 'ajax_intinify_cat/';
 
-      $.get(url, function(data) {
+      $.get(url, {
+        id_page_cat: id,
+        exclude_id: exclude_id
+      }, function(data) {
         $('.drop_infinity_container').html(data);
         $('.drop_infinity_line').show();
         intinity_event();
@@ -199,9 +203,13 @@ function intinity_event()
 
     duplication_container.nextAll('.drop_infinity_line').remove();
     if (id != '0') {
-      var url = $('#link_prefix').val() + 'ajax_infinity/' + id + '/';
+      var exclude_id = $('#id').val();
+      var url = $('#link_prefix').val() + 'ajax_infinity/';
 
-      $.get(url, function(data) {
+      $.get(url, {
+        id_parent: id,
+        exclude_id: exclude_id
+      }, function(data) {
         var clone = duplication_container.clone();
         clone.find('.drop_infinity_container').html(data);
         clone.addClass('other');

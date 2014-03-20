@@ -2,11 +2,14 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use Din\Filters\String\Html;
+use src\app\admin\helpers\TableFilter as filter;
+use src\app\admin\validators\DBValidator;
+use src\app\admin\validators\StringValidator;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -56,29 +59,37 @@ class TagModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $this->setNewId();
-    $this->setTimestamp('inc_date');
-    $this->setIntval('active', $input['active']);
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', 'Título');
 
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setDao($this->_dao);
-    $validator->setUniqueValue('title', 'Título');
-    $validator->throwException();
+    $db_validator = new DBValidator($input, $this->_dao, 'tag');
+    $db_validator->validateUniqueValue('title', 'Título');
+
+    JsonException::throwException();
+
+    $filter = new filter($this->_table, $input);
+    $filter->setNewId('id_tag');
+    $filter->setTimestamp('inc_date');
+    $filter->setIntval('active');
+    $filter->setString('title');
 
     $this->dao_insert();
   }
 
   public function update ( $input )
   {
-    $this->setIntval('active', $input['active']);
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', 'Título');
 
-    $validator = new validator($this->_table);
-    $validator->setId($this->getId());
-    $validator->setInput($input);
-    $validator->setDao($this->_dao);
-    $validator->setUniqueValue('title', 'Título', $this->getIdName());
-    $validator->throwException();
+    $db_validator = new DBValidator($input, $this->_dao, 'tag');
+    $db_validator->setId('id_tag', $this->getId());
+    $db_validator->validateUniqueValue('title', 'Título');
+
+    JsonException::throwException();
+
+    $filter = new filter($this->_table, $input);
+    $filter->setIntval('active');
+    $filter->setString('title');
 
     $this->dao_update();
   }
