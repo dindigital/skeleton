@@ -2,11 +2,14 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use Din\Filters\String\Html;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\DBValidator;
+use Din\Exception\JsonException;
+use src\app\admin\helpers\TableFilter;
 
 /**
  *
@@ -54,38 +57,56 @@ class MailingGroupModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $this->setNewId();
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setDao($this->_dao);
-    $validator->setUniqueValue('name', 'Nome');
-    $validator->throwException();
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('name', 'Nome');
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'mailing_group');
+    $db_validator->validateUniqueValue('name', 'Nome');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_mailing_group');
+    $filter->setString('name');
+    //
     $this->dao_insert();
   }
 
   public function update ( $input )
   {
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setDao($this->_dao);
-    $validator->setUniqueValue('name', 'Nome', $this->getIdName());
-    $validator->throwException();
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('name', 'Nome');
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'mailing_group');
+    $db_validator->setId('id_mailing_group', $this->getId());
+    $db_validator->validateUniqueValue('name', 'Nome');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setString('name');
+    //
     $this->dao_update();
   }
 
   public function short_insert ( $name )
   {
-    $this->setNewId();
+    $input = array(
+        'name' => $name
+    );
 
-    $validator = new validator($this->_table);
-    $validator->setInput(array('name' => $name));
-    $validator->setDao($this->_dao);
-    $validator->setUniqueValue('name', 'Nome');
-    $validator->throwException();
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('name', 'Nome');
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'mailing_group');
+    $db_validator->validateUniqueValue('name', 'Nome');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_mailing_group');
+    $filter->setString('name');
+    //
     $this->dao_insert();
   }
 
