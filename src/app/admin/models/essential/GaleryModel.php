@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\models;
+namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
@@ -15,19 +15,29 @@ use Din\File\Folder;
  *
  * @package app.models
  */
-class PhotoItemModel extends BaseModelAdm
+class GaleryModel extends BaseModelAdm
 {
 
-  public function __construct ()
+  protected $_photo;
+  protected $_photo_item;
+  protected $_id_photo;
+  protected $_id_photo_item;
+
+  public function __construct ( $options )
   {
     parent::__construct();
-    $this->setTable('photo_item');
+    $this->setTable($options['photo_item']);
+
+    $this->_photo = $options['photo'];
+    $this->_photo_item = $options['photo_item'];
+    $this->_id_photo = $options['id_photo'];
+    $this->_id_photo_item = $options['id_photo_item'];
   }
 
   public function getList ( $arrCriteria = array() )
   {
 
-    $select = new Select('photo_item');
+    $select = new Select($this->_photo_item);
     $select->addAllFields();
     $select->where($arrCriteria);
     $select->order_by('sequence');
@@ -39,7 +49,7 @@ class PhotoItemModel extends BaseModelAdm
 
   public function getIdName ()
   {
-    return 'id_photo_item';
+    return $this->_id_photo_item;
   }
 
   public function insert ( $input )
@@ -55,14 +65,14 @@ class PhotoItemModel extends BaseModelAdm
     $file_filter->setLabelCredit('file');
     //
     $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_photo_item');
-    $filter->setString('id_photo');
+    $filter->setNewId($this->_id_photo_item);
+    $filter->setString($this->_id_photo);
     $filter->setString('sequence');
     //
 
     $mf = new MoveFiles;
     if ( $has_file ) {
-      $filter->setUploaded('file', "/system/uploads/photo/{$input['id_photo']}/photo_item/{$this->getId()}/file");
+      $filter->setUploaded('file', "/system/uploads/{$this->_photo}/{$input[$this->_id_photo]}/{$this->_photo_item}/{$this->getId()}/file");
       $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
     }
     $mf->move();
@@ -79,38 +89,38 @@ class PhotoItemModel extends BaseModelAdm
     $filter->setString('credit');
     //
     $this->_dao->update($this->_table, array(
-        'id_photo_item = ?' => $this->getId()
+        $this->_id_photo_item . ' = ?' => $this->getId()
     ));
   }
 
   public function batch_delete ( $id_photo, $gallery_sequence )
   {
     $arr_criteria = array(
-        "id_photo = ?" => $id_photo,
-        "id_photo_item NOT IN (?)" => $gallery_sequence,
+        "{$this->_id_photo} = ?" => $id_photo,
+        "{$this->_id_photo_item} NOT IN (?)" => $gallery_sequence,
     );
 
-    $select = new Select('photo_item');
-    $select->addField('id_photo_item');
+    $select = new Select($this->_photo_item);
+    $select->addField($this->_id_photo_item);
     $select->where($arr_criteria);
     $result = $this->_dao->select($select);
 
     foreach ( $result as $row ) {
-      Folder::delete("public/system/uploads/photo/{$id_photo}/photo_item/{$row['id_photo_item']}");
+      Folder::delete("public/system/uploads/{$this->_photo}/{$id_photo}/{$this->_photo_item}/{$row[$this->_id_photo_item]}");
     }
 
-    $this->_dao->delete('photo_item', $arr_criteria);
+    $this->_dao->delete($this->_photo_item, $arr_criteria);
   }
 
   public function batch_delete_all ( $id_photo )
   {
     $arr_criteria = array(
-        "id_photo = ?" => $id_photo,
+        "{$this->_id_photo} = ?" => $id_photo,
     );
 
-    Folder::delete("public/system/uploads/photo/{$id_photo}/photo_item/");
+    Folder::delete("public/system/uploads/{$this->_photo}/{$id_photo}/{$this->_photo_item}/");
 
-    $this->_dao->delete('photo_item', $arr_criteria);
+    $this->_dao->delete($this->_photo_item, $arr_criteria);
   }
 
   public function saveGalery ( $upload, $id_photo, $gallery_sequence = null, $label = null, $credit = null )
@@ -137,7 +147,7 @@ class PhotoItemModel extends BaseModelAdm
     //_# SALVA NOVAS FOTOS
     foreach ( $upload as $file ) {
       $this->insert(array(
-          'id_photo' => $id_photo,
+          $this->_id_photo => $id_photo,
           'sequence' => $sequence,
           'file' => $file
       ));

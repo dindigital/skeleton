@@ -13,7 +13,7 @@ use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\helpers\TableFilter;
 use Din\Exception\JsonException;
-use src\app\admin\models\PhotoItemModel;
+use src\app\admin\models\essential\GaleryModel;
 
 /**
  *
@@ -27,7 +27,12 @@ class PhotoModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->_gallery = new PhotoItemModel;
+    $this->_gallery = new GaleryModel(array(
+        'photo' => 'photo',
+        'id_photo' => 'id_photo',
+        'photo_item' => 'photo_item',
+        'id_photo_item' => 'id_photo_item',
+    ));
     $this->setTable('photo');
   }
 
