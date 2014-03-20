@@ -6,7 +6,7 @@ $(document).ready(function() {
     });
     $('.form_search select').each(function() {
       $(this).val('0');
-      $(this).parent().find('span').html($(this).children('option').eq(0).text());
+      $(this).parent().find('.select2-chosen').html($(this).children('option').eq(0).text());
     });
   });
 

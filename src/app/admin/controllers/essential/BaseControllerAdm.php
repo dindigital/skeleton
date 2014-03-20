@@ -13,7 +13,7 @@ use src\app\admin\helpers\Entities;
 use src\app\admin\models\essential\PermissionModel;
 use Din\ViewHelpers\JsonViewHelper;
 use src\app\admin\models\essential\TrashModel;
-use Din\AssetCompressor\AssetCompressor;
+use Din\AssetRead\AssetRead;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -39,11 +39,11 @@ abstract class BaseControllerAdm extends BaseController
    */
   protected function setAssetsData ()
   {
-    $assets = new AssetCompressor('config/assets.php', PATH_ASSETS, PATH_REPLACE);
-    $assets->compress('js', false);
-    $assets->compress('css', false);
-
-    $this->_data['assets'] = $assets->getAllArray();
+    $assetRead = new AssetRead('config/assets_read.php');
+    $assetRead->setMode('dev');
+    $assetRead->setGroup('css', array('adm', 'google'));
+    $assetRead->setGroup('js', array('jquery', 'adm'));
+    $this->_data['assets'] = $assetRead->getAssets();
   }
 
   /**
