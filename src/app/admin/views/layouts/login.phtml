@@ -8,9 +8,8 @@
     <link rel="shortcut icon" href="/admin/images/favicon.png">
 
     <title>DIN DIGITAL</title>
-    <link href='/admin/css/google_open_sans.css' rel='stylesheet' type='text/css'>
-    <link href='/admin/css/google_raleway.css' rel='stylesheet' type='text/css'>
 
+    <?php echo $data['assets']['css']['google']; ?>
     <?php echo $data['assets']['css']['adm_login']; ?>
 
   </head>
@@ -19,7 +18,7 @@
 
     {$CONTENT}
 
-    <script src="/admin/js/jquery-1.9.1.js"></script>
+    <?php echo $data['assets']['js']['jquery']; ?>
     <?php echo $data['assets']['js']['adm_login']; ?>
 
   </body>
