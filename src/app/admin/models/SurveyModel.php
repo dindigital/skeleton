@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -10,6 +9,10 @@ use src\app\admin\models\SurveyQuestionModel;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\ArrayValidator;
+use src\app\admin\helpers\TableFilter;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -69,75 +72,50 @@ class SurveyModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    //_# Valida o questionario container
-    $this->setNewId();
-    $this->setTimestamp('inc_date');
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['title'], 'opine');
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setRequiredString('title', 'Título');
-    $validator->validateArrayNotEmpty('question', 'Questão');
-
-
-    //_# Valida e armazena as questões em array
-    $arr_sq = array();
-
-    foreach ( $input['question'] as $question ) {
-      $sq = new SurveyQuestionModel;
-      $sq->validate_insert(array(
-          'id_survey' => $this->getId(),
-          'question' => $question
-      ));
-
-      $arr_sq[] = $sq;
-    }
-
-    //_# Arremeça exceptions
-    $validator->throwException();
-
-    //_# Salva o questionário container
+    $str_validtor = new StringValidator($input);
+    $str_validtor->validateRequiredString('title', 'Título');
+    //
+    $arr_validator = new ArrayValidator($input);
+    $arr_validator->validateArrayNotEmpty('question', 'Questão');
+    //
+    $sq = new SurveyQuestionModel;
+    $sq->batch_validate($input['question']);
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_survey');
+    $filter->setTimestamp('inc_date');
+    $filter->setIntval('active');
+    $filter->setString('title');
+    $filter->setDefaultUri('title', $this->getId(), 'opine');
+    //
     $this->dao_insert();
 
-    //_# Salva as questões
-    foreach ( $arr_sq as $sq ) {
-      $sq->insert();
-    }
+    $sq->batch_insert($this->getId(), $input['question']);
   }
 
   public function update ( $input )
   {
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['title'], 'opine', $input['uri']);
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setRequiredString('title', 'Título');
-
-    //_# Valida e armazena as questões em array
-    $arr_sq = array();
-
-    foreach ( $input['question'] as $question_id => $question ) {
-      $sq = new SurveyQuestionModel;
-      $sq->setId($question_id);
-      $sq->validate_update(array(
-          'question' => $question,
-      ));
-
-      $arr_sq[] = $sq;
-    }
-
-    //_# Arremeça exceptions
-    $validator->throwException();
-
-    //_# Salva o questionário container
+    $str_validtor = new StringValidator($input);
+    $str_validtor->validateRequiredString('title', 'Título');
+    //
+    $arr_validator = new ArrayValidator($input);
+    $arr_validator->validateArrayNotEmpty('question', 'Questão');
+    //
+    $sq = new SurveyQuestionModel;
+    $sq->batch_validate($input['question']);
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setIntval('active');
+    $filter->setString('title');
+    $filter->setDefaultUri('title', $this->getId(), 'opine');
+    //
     $this->dao_update();
 
-    //_# Salva as questões
-    foreach ( $arr_sq as $sq ) {
-      $sq->update();
-    }
+    $sq->batch_update($input['question']);
   }
 
   public function getListArray ()

@@ -2,9 +2,10 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\helpers\TableFilter;
 
 /**
  *
@@ -19,33 +20,51 @@ class SurveyQuestionModel extends BaseModelAdm
     $this->setTable('survey_question');
   }
 
-  public function validate_insert ( $input )
+  public function batch_validate ( $array_questions )
   {
-    $this->setNewId();
-    $this->_table->id_survey = $input['id_survey'];
+    foreach ( $array_questions as $question ) {
+      $input = array(
+          'question' => $question
+      );
 
-    $validator = new validator($this->_table);
-    $validator->setDao($this->_dao);
-    $validator->setInput($input);
-    $validator->setRequiredString('question', 'Questão');
+      $str_validator = new StringValidator($input);
+      $str_validator->validateRequiredString('question', 'Questão');
+    }
   }
 
-  public function validate_update ( $input )
+  public function batch_insert ( $id_survey, $array_questions )
   {
-    $validator = new validator($this->_table);
-    $validator->setDao($this->_dao);
-    $validator->setInput($input);
-    $validator->setRequiredString('question', 'Questão');
+    foreach ( $array_questions as $sequence => $question ) {
+      $input = array(
+          'id_survey' => $id_survey,
+          'question' => $question,
+          'sequence' => $sequence + 1
+      );
+
+      $filter = new TableFilter($this->_table, $input);
+      $filter->setNewId('id_survey_question');
+      $filter->setString('id_survey');
+      $filter->setString('question');
+      $filter->setString('sequence');
+
+      $this->_dao->insert($this->_table);
+    }
   }
 
-  public function insert ()
+  public function batch_update ( $array_questions )
   {
-    $this->dao_insert(false);
-  }
+    foreach ( $array_questions as $id_survey_question => $question ) {
+      $input = array(
+          'question' => $question
+      );
 
-  public function update ()
-  {
-    $this->dao_update(false);
+      $filter = new TableFilter($this->_table, $input);
+      $filter->setString('question');
+
+      $this->_dao->update($this->_table, array(
+          'id_survey_question = ?' => $id_survey_question
+      ));
+    }
   }
 
   public function getByIdSurvey ( $id_survey )
@@ -57,6 +76,8 @@ class SurveyQuestionModel extends BaseModelAdm
     $select->where(array(
         'id_survey = ?' => $id_survey
     ));
+
+    $select->order_by('sequence');
 
     $result = $this->_dao->select($select);
 
