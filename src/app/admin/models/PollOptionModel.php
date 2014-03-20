@@ -2,9 +2,10 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\helpers\TableFilter;
 
 /**
  *
@@ -19,31 +20,51 @@ class PollOptionModel extends BaseModelAdm
     $this->setTable('poll_option');
   }
 
-  public function validate_insert ( $input )
+  public function batch_validate ( $array_options )
   {
-    $this->setNewId();
-    $this->_table->id_poll = $input['id_poll'];
+    foreach ( $array_options as $option ) {
+      $input = array(
+          'option' => $option
+      );
 
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setRequiredString('option', 'Alternativa');
+      $str_validator = new StringValidator($input);
+      $str_validator->validateRequiredString('option', 'Alternativa');
+    }
   }
 
-  public function validate_update ( $input )
+  public function batch_insert ( $id_poll, $array_options )
   {
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setRequiredString('option', 'Alternativa');
+    foreach ( $array_options as $sequence => $option ) {
+      $input = array(
+          'id_poll' => $id_poll,
+          'option' => $option,
+          'sequence' => $sequence + 1
+      );
+
+      $filter = new TableFilter($this->_table, $input);
+      $filter->setNewId('id_poll_option');
+      $filter->setString('id_poll');
+      $filter->setString('option');
+      $filter->setString('sequence');
+
+      $this->_dao->insert($this->_table);
+    }
   }
 
-  public function insert ()
+  public function batch_update ( $array_options )
   {
-    $this->dao_insert(false);
-  }
+    foreach ( $array_options as $id_poll_option => $option ) {
+      $input = array(
+          'option' => $option
+      );
 
-  public function update ()
-  {
-    $this->dao_update(false);
+      $filter = new TableFilter($this->_table, $input);
+      $filter->setString('option');
+
+      $this->_dao->update($this->_table, array(
+          'id_poll_option = ?' => $id_poll_option
+      ));
+    }
   }
 
   public function getByIdPoll ( $id_poll )
@@ -55,6 +76,8 @@ class PollOptionModel extends BaseModelAdm
     $select->where(array(
         'id_poll = ?' => $id_poll
     ));
+
+    $select->order_by('sequence');
 
     $result = $this->_dao->select($select);
 

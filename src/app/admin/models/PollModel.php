@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -10,6 +9,10 @@ use src\app\admin\models\PollOptionModel;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\ArrayValidator;
+use Din\Exception\JsonException;
+use src\app\admin\helpers\TableFilter;
 
 /**
  *
@@ -68,75 +71,50 @@ class PollModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    //_# Valida a Pergunta
-    $this->setNewId();
-    $this->setTimestamp('inc_date');
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['question'], 'enquete');
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setRequiredString('question', 'Pergunta');
-    $validator->validateArrayNotEmpty('option', 'Alternativa');
-
-    //_# Valida e armazena as opções em array
-    $arr_opt = array();
-
-    foreach ( $input['option'] as $option ) {
-      $opt = new PollOptionModel;
-      $opt->validate_insert(array(
-          'id_poll' => $this->getId(),
-          'option' => $option
-      ));
-
-      $arr_opt[] = $opt;
-    }
-
-    //_# Arremeça exceptions
-    $validator->throwException();
-
-    //_# Salva o questionário container
+    $str_validtor = new StringValidator($input);
+    $str_validtor->validateRequiredString('question', 'Pergunta');
+    //
+    $arr_validator = new ArrayValidator($input);
+    $arr_validator->validateArrayNotEmpty('question', 'Pergunta');
+    //
+    $opt = new PollOptionModel;
+    $opt->batch_validate($input['option']);
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_poll');
+    $filter->setTimestamp('inc_date');
+    $filter->setIntval('active');
+    $filter->setString('question');
+    $filter->setDefaultUri('question', $this->getId(), 'enquete');
+    //
     $this->dao_insert();
 
-    //_# Salva as questões
-    foreach ( $arr_opt as $opt ) {
-      $opt->insert();
-    }
+    $opt->batch_insert($this->getId(), $input['option']);
   }
 
   public function update ( $input )
   {
-    //_# Valida a Pergunta
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['question'], 'enquete', $input['uri']);
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setRequiredString('question', 'Pergunta');
-
-    //_# Valida e armazena as opções em array
-    $arr_opt = array();
-
-    foreach ( $input['option'] as $option_id => $option ) {
-      $opt = new PollOptionModel;
-      $opt->setId($option_id);
-      $opt->validate_update(array(
-          'option' => $option
-      ));
-
-      $arr_opt[] = $opt;
-    }
-
-    //_# Arremeça exceptions
-    $validator->throwException();
-
-    //_# Salva o questionário container
+    $str_validtor = new StringValidator($input);
+    $str_validtor->validateRequiredString('question', 'Pergunta');
+    //
+    $arr_validator = new ArrayValidator($input);
+    $arr_validator->validateArrayNotEmpty('question', 'Pergunta');
+    //
+    $opt = new PollOptionModel;
+    $opt->batch_validate($input['option']);
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setIntval('active');
+    $filter->setString('question');
+    $filter->setDefaultUri('question', $this->getId(), 'enquete');
+    //
     $this->dao_update();
 
-    //_# Salva as questões
-    foreach ( $arr_opt as $opt ) {
-      $opt->update();
-    }
+    $opt->batch_update($input['option']);
   }
 
   public function formatFilters ()
