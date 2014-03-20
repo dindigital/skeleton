@@ -2,11 +2,14 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use Din\Filters\String\Html;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\DBValidator;
+use Din\Exception\JsonException;
+use src\app\admin\helpers\TableFilter;
 
 /**
  *
@@ -64,50 +67,75 @@ class CustomerModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $this->setNewId();
-    $this->setTimestamp('inc_date');
-    $this->_table->business_name = $input['business_name'];
-    $this->_table->address_complement = $input['address_complement'];
-
-    $validator = new validator($this->_table);
-    $validator->setDao($this->_dao);
-    $validator->setInput($input);
-    $validator->setRequiredString('name', 'Nome');
-    $validator->setRequiredString('document', 'Documento (CPF / CNPJ)');
-    $validator->setEmail('email', 'E-mail');
-    $validator->setRequiredString('address_postcode', 'CEP');
-    $validator->setRequiredString('address_street', 'Endereço');
-    $validator->setRequiredString('address_area', 'Bairro');
-    $validator->setRequiredString('address_number', 'Número');
-    $validator->setRequiredString('address_state', 'Estado');
-    $validator->setRequiredString('address_city', 'Cidade');
-    $validator->setRequiredString('phone_ddd', 'DDD');
-    $validator->setRequiredString('phone_number', 'Telefone');
-    $validator->throwException();
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('name', "Título");
+    $str_validator->validateRequiredString('document', "Documento");
+    $str_validator->validateRequiredEmail('email', "email");
+    $str_validator->validateRequiredString('address_postcode', "CEP");
+    $str_validator->validateRequiredString('address_street', "Rua");
+    $str_validator->validateRequiredString('address_number', "Número");
+    $str_validator->validateRequiredString('address_state', "Estado");
+    $str_validator->validateRequiredString('address_city', "Cidade");
+    $str_validator->validateRequiredString('phone_ddd', "DDD");
+    $str_validator->validateRequiredString('phone_number', "Telefone");
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'customer');
+    $db_validator->validateUniqueValue('email', 'E-mail');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_customer');
+    $filter->setTimestamp('inc_date');
+    $filter->setString('name');
+    $filter->setString('document');
+    $filter->setString('email');
+    $filter->setString('address_postcode');
+    $filter->setString('address_street');
+    $filter->setString('address_number');
+    $filter->setString('address_state');
+    $filter->setString('address_city');
+    $filter->setString('phone_ddd');
+    $filter->setString('phone_number');
+    $filter->setString('address_complement');
+    $filter->setString('business_name');
 
     $this->dao_insert();
   }
 
   public function update ( $input )
   {
-    $this->_table->business_name = $input['business_name'];
-    $this->_table->address_complement = $input['address_complement'];
-
-    $validator = new validator($this->_table);
-    $validator->setDao($this->_dao);
-    $validator->setInput($input);
-    $validator->setRequiredString('name', 'Nome');
-    $validator->setRequiredString('document', 'Documento (CPF / CNPJ)');
-    $validator->setEmail('email', 'E-mail');
-    $validator->setLenghtString('address_postcode', 'CEP', 9);
-    $validator->setRequiredString('address_street', 'Endereço');
-    $validator->setRequiredString('address_area', 'Bairro');
-    $validator->setRequiredString('address_number', 'Número');
-    $validator->setLenghtString('address_state', 'Estado', 2);
-    $validator->setRequiredString('address_city', 'Cidade');
-    $validator->setLenghtString('phone_ddd', 'DDD', 2, 2);
-    $validator->setMinMaxString('phone_number', 'Telefone', 8, 9);
-    $validator->throwException();
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('name', "Título");
+    $str_validator->validateRequiredString('document', "Documento");
+    $str_validator->validateRequiredEmail('email', "email");
+    $str_validator->validateRequiredString('address_postcode', "CEP");
+    $str_validator->validateRequiredString('address_street', "Rua");
+    $str_validator->validateRequiredString('address_number', "Número");
+    $str_validator->validateRequiredString('address_state', "Estado");
+    $str_validator->validateRequiredString('address_city', "Cidade");
+    $str_validator->validateRequiredString('phone_ddd', "DDD");
+    $str_validator->validateRequiredString('phone_number', "Telefone");
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'customer');
+    $db_validator->setId('id_customer', $this->getId());
+    $db_validator->validateUniqueValue('email', 'E-mail');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setString('name');
+    $filter->setString('document');
+    $filter->setString('email');
+    $filter->setString('address_postcode');
+    $filter->setString('address_street');
+    $filter->setString('address_number');
+    $filter->setString('address_state');
+    $filter->setString('address_city');
+    $filter->setString('phone_ddd');
+    $filter->setString('phone_number');
+    $filter->setString('address_complement');
+    $filter->setString('business_name');
 
     $this->dao_update();
   }
