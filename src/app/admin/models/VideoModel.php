@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -10,6 +9,10 @@ use src\app\admin\models\essential\RelationshipModel;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\helpers\TableFilter;
+use Din\Exception\JsonException;
+
 
 /**
  *
@@ -69,21 +72,24 @@ class VideoModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $this->setNewId();
-    $this->setTimestamp('inc_date');
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['title'], 'video');
-    $this->setShortenerLink();
-    $this->_table->link_youtube = $input['link_youtube'];
-    $this->_table->link_vimeo = $input['link_vimeo'];
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setRequiredString('title', 'Título');
-    $validator->setRequiredDate('date', 'Data');
-    $validator->setRequiredString('description', 'Descrição');
-    $validator->throwException();
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', "Título");
+    $str_validator->validateRequiredString('description', "Descrição");
+    $str_validator->validateRequiredDate('date', "Data");
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_video');
+    $filter->setTimestamp('inc_date');
+    $filter->setIntval('active');
+    $filter->setString('title');
+    $filter->setString('description');
+    $filter->setString('link_youtube');
+    $filter->setString('link_vimeo');
+    $filter->setDate('date');
+    $filter->setDefaultUri('title', $this->getId());
+    
     $this->dao_insert();
 
     $this->relationship('tag', $input['tag']);
@@ -91,21 +97,24 @@ class VideoModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['title'], 'video', $input['uri']);
-    $this->setShortenerLink();
-    $this->_table->link_youtube = $input['link_youtube'];
-    $this->_table->link_vimeo = $input['link_vimeo'];
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setRequiredString('title', 'Título');
-    $validator->setRequiredDate('date', 'Data');
-    $validator->setRequiredString('description', 'Título');
-    $validator->throwException();
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', "Título");
+    $str_validator->validateRequiredString('description', "Descrição");
+    $str_validator->validateRequiredDate('date', "Data");
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setIntval('active');
+    $filter->setString('title');
+    $filter->setString('description');
+    $filter->setString('link_youtube');
+    $filter->setString('link_vimeo');
+    $filter->setDate('date');
+    $filter->setDefaultUri('title', $this->getId());
 
     $this->dao_update();
-
+    
     $this->relationship('tag', $input['tag']);
   }
 

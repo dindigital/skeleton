@@ -96,14 +96,25 @@ class TagModel extends BaseModelAdm
 
   public function short_insert ( $title )
   {
-    $this->setNewId();
-    $this->setTimestamp('inc_date');
+      
+    $input = array(
+      'active' => 1,  
+      'title' => $title  
+    );
+      
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', 'Título');
+      
+    $db_validator = new DBValidator($input, $this->_dao, 'tag');
+    $db_validator->validateUniqueValue('title', 'Título');
 
-    $validator = new validator($this->_table);
-    $validator->setInput(array('title' => $title));
-    $validator->setDao($this->_dao);
-    $validator->setUniqueValue('title', 'Título');
-    $validator->throwException();
+    JsonException::throwException();
+    
+    $filter = new filter($this->_table, $input);
+    $filter->setNewId('id_tag');
+    $filter->setTimestamp('inc_date');
+    $filter->setIntval('active');
+    $filter->setString('title');
 
     $this->dao_insert();
   }
