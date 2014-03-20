@@ -40,6 +40,7 @@ abstract class BaseControllerAdm extends BaseController
   protected function setAssetsData ()
   {
     $assetRead = new AssetRead('config/assets_read.php');
+    $assetRead->setMode('dev');
     $assetRead->setGroup('css', array('adm', 'google'));
     $assetRead->setGroup('js', array('jquery', 'adm'));
     $this->_data['assets'] = $assetRead->getAssets();

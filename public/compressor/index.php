@@ -1,6 +1,6 @@
 <?php
 
-chdir('/var/www/framework/');
+chdir($_SERVER['DOCUMENT_ROOT']);
 require_once 'vendor/autoload.php';
 
 use Din\AssetMin\AssetMin;

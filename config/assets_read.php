@@ -3,7 +3,7 @@
 return array(
     'css' => array(
         'adm_login' => array(
-            'uri' => '/assets/adm_login5329eed185c0b.css',
+            'uri' => '/assets/adm_login532abc8991e20.css',
             'src' => array(
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
                 'public/admin/fonts/font-awesome-4/css/font-awesome.min.css',
@@ -11,7 +11,7 @@ return array(
             )
         ),
         'adm' => array(
-            'uri' => '/assets/adm5329eed46958c.css',
+            'uri' => '/assets/adm532abc8b89efc.css',
             'src' => array(
                 'public/admin/css/jquery-ui.css',
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
@@ -23,7 +23,7 @@ return array(
             )
         ),
         'google' => array(
-            'uri' => '/assets/google5329eed9c0e86.css',
+            'uri' => '/assets/google532abc8f36d66.css',
             'src' => array(
                 'public/admin/css/google_open_sans.css',
                 'public/admin/css/google_raleway.css',
@@ -32,14 +32,14 @@ return array(
     ),
     'js' => array(
         'jquery' => array(
-            'uri' => '/assets/jquery5329eeda7b9bc.js',
+            'uri' => '/assets/jquery532abc8fb0077.js',
             'src' => array(
                 'public/admin/js/jquery-1.9.1.js',
                 'public/admin/js/jquery-ui.js',
             )
         ),
         'adm_login' => array(
-            'uri' => '/assets/adm_login5329eededac35.js',
+            'uri' => '/assets/adm_login532abc92c3728.js',
             'src' => array(
                 'public/admin/js/ajaxform/jquery.form.js',
                 'public/admin/js/base.js',
@@ -48,7 +48,7 @@ return array(
             )
         ),
         'adm' => array(
-            'uri' => '/assets/adm5329eee22e73f.js',
+            'uri' => '/assets/adm532abc94f257e.js',
             'src' => array(
                 'public/admin/js/plupload/js/plupload.full.js',
                 'public/admin/js/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',
