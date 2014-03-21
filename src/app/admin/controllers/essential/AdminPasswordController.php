@@ -8,7 +8,7 @@ use Din\Http\Post;
 use Exception;
 use Din\ViewHelpers\JsonViewHelper;
 use Din\Session\Session;
-use Din\AssetCompressor\AssetCompressor;
+use Din\AssetRead\AssetRead;
 
 /**
  *
@@ -27,10 +27,12 @@ class AdminPasswordController extends BaseController
 
   public function post_recover_password ()
   {
-    $email = Post::text('email');
+    $input = array(
+        'email' => Post::text('email')
+    );
 
     try {
-      $this->_model->recover_password($email);
+      $this->_model->recover_password($input);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
@@ -40,11 +42,12 @@ class AdminPasswordController extends BaseController
 
   public function get_update ()
   {
-    $assets = new AssetCompressor('config/assets.php', PATH_ASSETS, PATH_REPLACE);
-    $assets->compress('js', false);
-    $assets->compress('css', false);
-
-    $this->_data['assets'] = $assets->getAllArray();
+    $assetRead = new AssetRead('config/assets.php');
+    $assetRead->setMode(ASSETS);
+    $assetRead->setReplace(PATH_REPLACE);
+    $assetRead->setGroup('css', array('adm_login', 'google'));
+    $assetRead->setGroup('js', array('jquery', 'adm_login'));
+    $this->_data['assets'] = $assetRead->getAssets();
 
     $this->_view->addFile('src/app/admin/views/layouts/login.phtml');
     $this->_view->addFile('src/app/admin/views/essential/recover_password.phtml', '{$CONTENT}');
@@ -53,14 +56,14 @@ class AdminPasswordController extends BaseController
 
   public function post_update ( $token )
   {
-    $data = array(
+    $input = array(
         'token' => $token,
         'password' => Post::text('password'),
         'password2' => Post::text('password2')
     );
 
     try {
-      $this->_model->update_password($data);
+      $this->_model->update_password($input);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

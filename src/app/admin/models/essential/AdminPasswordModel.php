@@ -3,10 +3,13 @@
 namespace src\app\admin\models\essential;
 
 use Din\DataAccessLayer\Select;
-use src\app\admin\validators\AdminPasswordValidator as validator;
 use Din\Mvc\View\View;
 use Din\Email\Email;
 use Din\Email\SendEmail\SendEmail;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\DBValidator;
+use Din\Exception\JsonException;
+use src\app\admin\helpers\TableFilter;
 
 /**
  *
@@ -21,22 +24,24 @@ class AdminPasswordModel extends BaseModelAdm
     $this->setTable('admin');
   }
 
-  public function recover_password ( $email )
+  public function recover_password ( $input )
   {
-    $this->_table->password_change_date = date('Y-m-d');
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredEmail('email', "E-mail");
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'admin');
+    $db_validator->validateRequiredRecord('email', "E-mail");
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setTimestamp('password_change_date');
+    //
+    $this->_dao->update($this->_table, array(
+        'email = ?' => $input['email']
+    ));
 
-    $validator = new validator($this->_table);
-    $validator->setInput(array('email' => $email));
-    $validator->setDao($this->_dao);
-    $validator->setEmail('email', 'E-mail');
-    $validator->requireRecord('email', 'E-mail');
-    $validator->throwException();
-
-    // Atualiza o campo senha_data para a data atual, com isso conseguiremos posteriormente
-    // verificar se a recuperação de senha ainda é válida
-    $this->_dao->update($this->_table, array('email = ?' => $email));
-
-    $this->send_email();
+    $this->send_email($input['email']);
   }
 
   protected function getTokenByEmail ( $email )
@@ -50,24 +55,29 @@ class AdminPasswordModel extends BaseModelAdm
     return $result[0]['id_admin'];
   }
 
-  public function update_password ( $data )
+  public function update_password ( $input )
   {
-    $this->_table->password_change_date = null;
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('password', 'Senha');
+    $str_validator->validateRequiredString('password2', 'Confirmação de Senha');
+    $str_validator->validateEqualValues('password', 'password2', 'Senha');
+    //
+    $this->validateToken($input['token']);
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setCrypted('password');
+    $filter->setNull('password_change_date');
+    //
 
-    $validator = new validator($this->_table);
-    $validator->setInput($data);
-    $validator->setDao($this->_dao);
-    $validator->validateToken($data['token']);
-    $validator->setEqualValues('password', 'password2', 'Senha');
-    $validator->setPassword('password', 'Senha');
-    $validator->throwException();
-
-    $this->_dao->update($this->_table, array('id_admin = ?' => $data['token']));
+    $this->_dao->update($this->_table, array(
+        'id_admin = ?' => $input['token']
+    ));
   }
 
-  private function send_email ()
+  protected function send_email ( $user_email )
   {
-    $user_email = $this->_table->email;
     $token = $this->getTokenByEmail($user_email);
 
     $data = array(
@@ -89,6 +99,26 @@ class AdminPasswordModel extends BaseModelAdm
     $sendmail->setUser(SMTP_USER);
     $sendmail->setPass(SMTP_PASS);
     $sendmail->send();
+  }
+
+  protected function validateToken ( $id )
+  {
+    $select = new Select('admin');
+    $select->addField('password_change_date');
+    $select->where(array('id_admin = ?' => $id));
+    $result = $this->_dao->select($select);
+
+    if ( !count($result) )
+      return JsonException::addException('Token inválido, por favor gere um novo link de recuperação');
+
+    $time_inicial = strtotime(date('Y-m-d'));
+    $time_final = strtotime($result[0]['password_change_date']);
+
+    $diferenca = $time_final - $time_inicial;
+    $dias = (int) floor($diferenca / (60 * 60 * 24));
+
+    if ( $dias !== 0 )
+      return JsonException::addException('Token expirado, por favor gere um novo link de recuperação');
   }
 
 }
