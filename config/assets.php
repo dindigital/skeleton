@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * Exemplo de Uso:
+ * Gerando tudo $ php compressor.php
+ * Gerando específico $ php5-cgi compressor.php css=adm_login,adm js=adm_login
+ */
 return array(
     'css' => array(
         'adm_login' => array(
-            'uri' => '/assets/adm_login532c73ca306fe.css',
+            'uri' => '/assets/adm_login532c94e83f373.css',
             'src' => array(
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
                 'public/admin/fonts/font-awesome-4/css/font-awesome.min.css',
@@ -11,7 +16,7 @@ return array(
             )
         ),
         'adm' => array(
-            'uri' => '/assets/adm532c73cbe63be.css',
+            'uri' => '/assets/adm532c94eabb6f9.css',
             'src' => array(
                 'public/admin/css/jquery-ui.css',
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
@@ -23,7 +28,7 @@ return array(
             )
         ),
         'google' => array(
-            'uri' => '/assets/google532c73cedccf0.css',
+            'uri' => '/assets/google532c94eeed2b0.css',
             'src' => array(
                 'public/admin/css/google_open_sans.css',
                 'public/admin/css/google_raleway.css',
@@ -32,14 +37,14 @@ return array(
     ),
     'js' => array(
         'jquery' => array(
-            'uri' => '/assets/jquery532c73cf53217.js',
+            'uri' => '/assets/jquery532c94ef9ab89.js',
             'src' => array(
                 'public/admin/js/jquery-1.9.1.js',
                 'public/admin/js/jquery-ui.js',
             )
         ),
         'adm_login' => array(
-            'uri' => '/assets/adm_login532c73d200dce.js',
+            'uri' => '/assets/adm_login532c94f41707a.js',
             'src' => array(
                 'public/admin/js/ajaxform/jquery.form.js',
                 'public/admin/js/base.js',
@@ -48,7 +53,7 @@ return array(
             )
         ),
         'adm' => array(
-            'uri' => '/assets/adm532c73d37d1b1.js',
+            'uri' => '/assets/adm532c94f77621f.js',
             'src' => array(
                 'public/admin/js/plupload/js/plupload.full.js',
                 'public/admin/js/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',

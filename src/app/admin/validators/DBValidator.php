@@ -6,7 +6,7 @@ use Din\Exception\JsonException;
 use Din\DataAccessLayer\DAO;
 use src\app\admin\helpers\Record;
 
-class DBValidator extends BaseValidator2
+class DBValidator extends BaseValidator
 {
 
   protected $_dao;
