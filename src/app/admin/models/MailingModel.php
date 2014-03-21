@@ -2,13 +2,17 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\models\essential\RelationshipModel;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Form;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\DBValidator;
+use src\app\admin\validators\ArrayValidator;
+use Din\Exception\JsonException;
+use src\app\admin\helpers\TableFilter;
 
 /**
  *
@@ -66,31 +70,49 @@ class MailingModel extends BaseModelAdm
 
   public function insert ( $input, $log = true )
   {
-    $this->setNewId();
-    $this->setTimestamp('inc_date');
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('name', 'Nome');
+    $str_validator->validateRequiredEmail('email', 'E-mail');
+    //
+    $arr_validator = new ArrayValidator($input);
+    $arr_validator->validateArrayNotEmpty('mailing_group', 'Grupo');
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'mailing');
+    $db_validator->validateUniqueValue('email', 'E-mail');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_mailing');
+    $filter->setTimestamp('inc_date');
+    $filter->setIntval('active');
+    $filter->setString('name');
+    $filter->setString('email');
 
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setDao($this->_dao);
-    $validator->setRequiredString('name', 'Nome');
-    $validator->setEmail('email', 'E-mail');
-    $validator->setUniqueValue('email', 'E-mail');
-    $validator->throwException();
-
-    $this->dao_insert(false);
+    $this->dao_insert();
 
     $this->save_relationship('mailing_group', $input['mailing_group']);
   }
 
   public function update ( $input )
   {
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setDao($this->_dao);
-    $validator->setRequiredString('name', 'Nome');
-    $validator->setEmail('email', 'E-mail');
-    $validator->setUniqueValue('email', 'E-mail', $this->getIdName());
-    $validator->throwException();
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('name', 'Nome');
+    $str_validator->validateRequiredEmail('email', 'E-mail');
+    //
+    $arr_validator = new ArrayValidator($input);
+    $arr_validator->validateArrayNotEmpty('mailing_group', 'Grupo');
+    //
+    $db_validator = new DBValidator($input, $this->_dao, 'mailing');
+    $db_validator->setId('id_mailing', $this->getId());
+    $db_validator->validateUniqueValue('email', 'E-mail');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setIntval('active');
+    $filter->setString('name');
+    $filter->setString('email');
 
     $this->dao_update();
 
