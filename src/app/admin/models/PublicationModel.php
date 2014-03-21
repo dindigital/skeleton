@@ -103,7 +103,7 @@ class PublicationModel extends BaseModelAdm
     foreach ( $result as $i => $row ) {
       $result[$i]['title'] = Html::scape($row['title']);
     }
-    
+
     return $result;
   }
 
@@ -215,19 +215,18 @@ class PublicationModel extends BaseModelAdm
   public function delete ( $itens )
   {
     foreach ( $itens as $item ) {
-      $tableHistory = $this->getById($item['id']);
+      $tableHistory = $this->getById($item['id'], false);
 
-      // DELETE ISSUU
-      $issuu = new IssuuModel;
-      $issuu->setId($tableHistory['id_issuu']);
-      $issuu->deleteComplete();
-      //
-      
       $this->deleteChildren('publication', $item['id']);
 
       Folder::delete("public/system/uploads/publication/{$item['id']}");
       $this->_dao->delete('publication', array('id_publication = ?' => $item['id']));
       $this->log('D', $tableHistory['title'], 'publication', $tableHistory);
+      // DELETE ISSUU
+      $issuu = new IssuuModel;
+      $issuu->setId($tableHistory['id_issuu']);
+      $issuu->deleteComplete();
+      //
     }
   }
 

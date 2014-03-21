@@ -25,14 +25,14 @@ class IssuuModel extends BaseModelAdm
     $this->setTable('issuu');
     $this->_sm_credentials = new SocialmediaCredentialsModel();
     $this->_sm_credentials->fetchAll();
-    
+
     $issuu_key = $this->_sm_credentials->row['issuu_key'];
     $issu_secret = $this->_sm_credentials->row['issuu_secret'];
-    
-    if (is_null($issuu_key) && is_null($issu_secret)) {
-        throw new Exception("É necessário o preenchimento");
+
+    if ( is_null($issuu_key) && is_null($issu_secret) ) {
+      throw new Exception("É necessário o preenchimento do issuu_key e issuu_secret");
     }
-    
+
     $this->_issuu = new Issuu($issuu_key, $issu_secret);
   }
 
@@ -112,9 +112,6 @@ class IssuuModel extends BaseModelAdm
 
     // delete from databse
     $this->_dao->delete('issuu', array(
-        'id_issuu = ?' => $id
-    ));
-    $this->_dao->delete('issuu_embed', array(
         'id_issuu = ?' => $id
     ));
   }
