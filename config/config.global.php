@@ -16,9 +16,5 @@ return array(
     'smtp_host' => 'xxx',
     'smtp_user' => 'xxx@xxx.com',
     'smtp_pass' => 'xxx',
-    'bitly' => 'xxx',
-    'tw_consumer_key' => 'xxx',
-    'tw_consumer_secret' => 'xxx',
-    'tw_access_token' => 'xxx',
-    'tw_access_secret' => 'xxx',
+    'bitly' => 'xxx'
 );
