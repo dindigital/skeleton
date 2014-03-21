@@ -10,7 +10,6 @@ use Din\Filters\String\Html;
 use src\app\admin\helpers\Form;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\DBValidator;
-use src\app\admin\validators\ArrayValidator;
 use Din\Exception\JsonException;
 use src\app\admin\helpers\TableFilter;
 
@@ -56,6 +55,7 @@ class MailingModel extends BaseModelAdm
 
     $select->inner_join('id_mailing', Select::construct('r_mailing_mailing_group'));
 
+    $this->_itens_per_page = 50;
     $this->_paginator = new PaginatorAdmin($this->_itens_per_page, $this->_filters['pag']);
     $this->setPaginationSelect($select);
 
@@ -70,12 +70,12 @@ class MailingModel extends BaseModelAdm
 
   public function insert ( $input, $log = true )
   {
+    $input['active'] = '1';
+
     $str_validator = new StringValidator($input);
     $str_validator->validateRequiredString('name', 'Nome');
     $str_validator->validateRequiredEmail('email', 'E-mail');
-    //
-    $arr_validator = new ArrayValidator($input);
-    $arr_validator->validateArrayNotEmpty('mailing_group', 'Grupo');
+    $str_validator->validateRequiredString('mailing_group', 'Grupo');
     //
     $db_validator = new DBValidator($input, $this->_dao, 'mailing');
     $db_validator->validateUniqueValue('email', 'E-mail');
@@ -99,9 +99,7 @@ class MailingModel extends BaseModelAdm
     $str_validator = new StringValidator($input);
     $str_validator->validateRequiredString('name', 'Nome');
     $str_validator->validateRequiredEmail('email', 'E-mail');
-    //
-    $arr_validator = new ArrayValidator($input);
-    $arr_validator->validateArrayNotEmpty('mailing_group', 'Grupo');
+    $str_validator->validateRequiredString('mailing_group', 'Grupo');
     //
     $db_validator = new DBValidator($input, $this->_dao, 'mailing');
     $db_validator->setId('id_mailing', $this->getId());
@@ -110,7 +108,6 @@ class MailingModel extends BaseModelAdm
     JsonException::throwException();
     //
     $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
     $filter->setString('name');
     $filter->setString('email');
 
