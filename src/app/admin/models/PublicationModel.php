@@ -15,6 +15,7 @@ use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
 use src\app\admin\helpers\TableFilter;
 use Din\Exception\JsonException;
+use Din\Filters\String\Uri;
 use Exception;
 
 /**
@@ -102,7 +103,7 @@ class PublicationModel extends BaseModelAdm
     foreach ( $result as $i => $row ) {
       $result[$i]['title'] = Html::scape($row['title']);
     }
-
+    
     return $result;
   }
 
@@ -188,8 +189,8 @@ class PublicationModel extends BaseModelAdm
       if ( 'pdf' != $pathinfo['extension'] )
         throw new Exception('Upload no Issuu é restringido a arquivos PDF');
 
-      $name = \Din\Filters\String\Uri::format($pathinfo['filename']);
-      $name = substr($name, 0, 45) . '.pdf';
+      $name = Uri::format($pathinfo['filename']);
+      $name = substr($name, 0, 30) . uniqid() . '.pdf';
 
       $issuu_model = new IssuuModel;
       $issuu_model->insertComplete(array(
@@ -221,7 +222,7 @@ class PublicationModel extends BaseModelAdm
       $issuu->setId($tableHistory['id_issuu']);
       $issuu->deleteComplete();
       //
-
+      
       $this->deleteChildren('publication', $item['id']);
 
       Folder::delete("public/system/uploads/publication/{$item['id']}");
