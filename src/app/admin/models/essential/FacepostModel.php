@@ -110,8 +110,10 @@ class FacepostModel extends BaseModelAdm
     }
     //
     $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_facebook');
+    $filter->setNewId('id_facepost');
     $filter->setTimestamp('date');
+    $filter->setString('name');
+    $filter->setString('link');
     $filter->setString('picture');
     $filter->setString('description');
     $filter->setString('message');

@@ -36,7 +36,7 @@ class FacepostController extends BaseControllerAdm
     $this->_data['redirect'] = Header::getReferer();
     $this->_data['post'] = $this->_model->generatePost();
 
-    $this->setSaveTemplate('facepost_edit.phtml');
+    $this->setSaveTemplate('essential/facepost_edit.phtml');
   }
 
   public function post_edit ( $section, $id )
@@ -68,7 +68,7 @@ class FacepostController extends BaseControllerAdm
     $this->_data['redirect'] = Header::getReferer();
     $this->_data['posts'] = $this->_model->getPosts();
 
-    $this->setSaveTemplate('facepost_view.phtml');
+    $this->setSaveTemplate('essential/facepost_view.phtml');
   }
 
 }

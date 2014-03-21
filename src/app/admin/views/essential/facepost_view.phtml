@@ -23,14 +23,14 @@
             <div class="form-group">
               <label class="col-sm-2 control-label" for="active">Nome</label>
               <div class="col-sm-10">
-                <?php echo $post['name'] ?>
+                  <label class="checkbox-inline"><?php echo $post['name'] ?></label>
               </div>
             </div>
 
             <div class="form-group">
               <label class="col-sm-2 control-label" for="active">Link</label>
               <div class="col-sm-10">
-                <?php echo $post['link'] ?>
+                <label class="checkbox-inline"><?php echo $post['link'] ?></label>
               </div>
             </div>
 
@@ -38,9 +38,11 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="active">Imagem</label>
                 <div class="col-sm-10">
-                  <?php echo $post['picture'] ?>
-                  <br />
-                  <img src="<?php echo $post['picture'] ?>" />
+                  <label class="checkbox-inline">
+                    <?php echo $post['picture'] ?>
+                    <br />
+                    <img src="<?php echo $post['picture'] ?>" />
+                  </label>
                 </div>
               </div>
             <?php endif; ?>
@@ -48,14 +50,14 @@
             <div class="form-group">
               <label class="col-sm-2 control-label" for="active">Descrição</label>
               <div class="col-sm-10">
-                <?php echo $post['description'] ?>
+                <label class="checkbox-inline"><?php echo $post['description'] ?></label>
               </div>
             </div>
 
             <div class="form-group">
               <label class="col-sm-2 control-label" for="active">Mensagem</label>
               <div class="col-sm-10">
-                <?php echo $post['message'] ?>
+                <label class="checkbox-inline"><?php echo $post['message'] ?></label>
               </div>
             </div>
 
