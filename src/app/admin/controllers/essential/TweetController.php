@@ -31,7 +31,7 @@ class TweetController extends BaseControllerAdm
     $this->_data['redirect'] = Header::getReferer();
     $this->_data['tweet'] = $this->_model->generateTweet();
 
-    $this->setSaveTemplate('tweet_edit.phtml');
+    $this->setSaveTemplate('essential/tweet_edit.phtml');
   }
 
   public function post_edit ( $section, $id )
@@ -57,7 +57,7 @@ class TweetController extends BaseControllerAdm
     $this->_data['redirect'] = Header::getReferer();
     $this->_data['tweets'] = $this->_model->getTweets();
 
-    $this->setSaveTemplate('tweet_view.phtml');
+    $this->setSaveTemplate('essential/tweet_view.phtml');
   }
 
 }
