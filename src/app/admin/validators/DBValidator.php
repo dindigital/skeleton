@@ -48,7 +48,7 @@ class DBValidator extends BaseValidator2
 
     $record->setCriteria($arrCriteria);
     if ( $record->exists() )
-      return JsonException::addException("Já existe um registro com este {$label}");
+      return JsonException::addException("Já existe um registro com este {$label}: {$value}");
   }
 
   public function validateFk ( $prop, $label, $foreign_tablename )
@@ -66,20 +66,19 @@ class DBValidator extends BaseValidator2
       return JsonException::addException("{$label} não encontrado");
   }
 
-  /*
-    public function requireRecord ( $prop, $label )
-    {
+  public function validateRequiredRecord ( $prop, $label )
+  {
     $value = $this->getValue($prop);
 
     $record = new Record($this->_dao);
-    $record->setTable($this->_table->getName());
+    $record->setTable($this->_tablename);
     $arrCriteria = array(
-    "{$prop} = ?" => $value
+        "{$prop} = ?" => $value
     );
 
     $record->setCriteria($arrCriteria);
     if ( !$record->exists() )
-    return JsonException::addException("{$label} não encontrado");
-    }
-   */
+      return JsonException::addException("{$label} não encontrado");
+  }
+
 }

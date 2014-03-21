@@ -89,6 +89,11 @@ class TableFilter
     }
   }
 
+  public function setNull ( $field )
+  {
+    $this->_table->{$field} = null;
+  }
+
   public function setUploaded ( $field, $path )
   {
     $value = $this->getValue($field);
