@@ -5,7 +5,7 @@ namespace src\app\admin\validators;
 use Din\Exception\JsonException;
 use finfo;
 
-class UploadValidator extends BaseValidator2
+class UploadValidator extends BaseValidator
 {
 
   public function validateFile ( $fieldname, array $extensions = array(), array $mimes = array() )

@@ -4,7 +4,7 @@ namespace src\app\admin\validators;
 
 use Din\Exception\JsonException;
 
-class ArrayValidator extends BaseValidator2
+class ArrayValidator extends BaseValidator
 {
 
   public function validateArrayNotEmpty ( $prop, $label )

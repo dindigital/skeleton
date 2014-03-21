@@ -6,7 +6,7 @@ use Din\Exception\JsonException;
 use Respect\Validation\Validator as v;
 use Din\Filters\Date\DateToSql;
 
-class StringValidator extends BaseValidator2
+class StringValidator extends BaseValidator
 {
 
   public function validateRequiredString ( $prop, $label )

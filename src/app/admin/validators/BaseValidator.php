@@ -4,7 +4,7 @@ namespace src\app\admin\validators;
 
 use Din\Exception\JsonException;
 
-class BaseValidator2
+class BaseValidator
 {
 
   protected $_input = array();
