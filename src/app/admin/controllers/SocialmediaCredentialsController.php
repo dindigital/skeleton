@@ -44,6 +44,8 @@ class SocialmediaCredentialsController extends BaseControllerAdm
           'tw_consumer_secret' => Post::text('tw_consumer_secret'),
           'tw_access_token' => Post::text('tw_access_token'),
           'tw_access_secret' => Post::text('tw_access_secret'),
+          'issuu_key' => Post::text('issuu_key'),
+          'issuu_secret' => Post::text('issuu_secret'),
       );
       
       $this->_model->setId('1');

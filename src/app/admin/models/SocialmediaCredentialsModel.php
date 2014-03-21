@@ -32,6 +32,8 @@ class SocialmediaCredentialsModel extends BaseModelAdm
     $filter->setString('tw_consumer_secret');
     $filter->setString('tw_access_token');
     $filter->setString('tw_access_secret');
+    $filter->setString('issuu_key');
+    $filter->setString('issuu_secret');
 
     $this->dao_update(false);
   }
