@@ -28,8 +28,9 @@ class AdminAuthController extends BaseController
 
   private function setAuthTemplate ()
   {
-    $assetRead = new AssetRead('config/assets_read.php');
-    $assetRead->setMode('dev');
+    $assetRead = new AssetRead('config/assets.php');
+    $assetRead->setMode(ASSETS);
+    $assetRead->setReplace(PATH_REPLACE);
     $assetRead->setGroup('css', array('adm_login', 'google'));
     $assetRead->setGroup('js', array('jquery', 'adm_login'));
     $this->_data['assets'] = $assetRead->getAssets();
