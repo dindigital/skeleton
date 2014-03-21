@@ -48,7 +48,7 @@ class DBValidator extends BaseValidator2
 
     $record->setCriteria($arrCriteria);
     if ( $record->exists() )
-      return JsonException::addException("Já existe um registro com este {$label}");
+      return JsonException::addException("Já existe um registro com este {$label}: {$value}");
   }
 
   public function validateFk ( $prop, $label, $foreign_tablename )

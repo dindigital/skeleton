@@ -3,11 +3,14 @@
 namespace src\app\admin\models;
 
 use src\app\admin\models\essential\BaseModelAdm;
-use src\app\admin\validators\MailingImportValidator as validator;
 use Din\Report\Excel\ImportExcel;
 use src\app\admin\models\MailingModel;
 use Exception;
 use src\app\admin\helpers\Form;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\UploadValidator;
+use Din\Exception\JsonException;
+use Din\File\Files;
 
 /**
  *
@@ -22,14 +25,25 @@ class MailingImportModel extends BaseModelAdm
     $this->setTable('mailing');
   }
 
-  public function import_xls ( $info )
+  public function import_xls ( $input )
   {
-    $validator = new validator;
-    $validator->setMailingGroup($info['mailing_group']);
-    $validator->setXls($info['xls']);
-    $validator->throwException();
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('mailing_group', 'Grupo');
+    //
+    $upl_validator = new UploadValidator($input);
+    $upl_validator->validateFile('xls', array(
+        'xls', 'xlsx'
+            ), array(
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=binary',
+        'application/vnd.ms-excel; charset=binary',
+        'application/vnd.ms-office; charset=binary',
+        'application/zip; charset=binary',
+    ));
+    //
+    JsonException::throwException();
+    //
 
-    $xls_result = $this->getXlsContents($info['xls']);
+    $xls_result = $this->getXlsContents($input['xls']);
 
     $mailing = new MailingModel;
 
@@ -39,17 +53,21 @@ class MailingImportModel extends BaseModelAdm
     foreach ( $xls_result as $xls_row ) {
       try {
         $mailing->insert(array(
+            'active' => '1',
             'name' => $xls_row['name'],
             'email' => $xls_row['email'],
-            'mailing_group' => $info['mailing_group'],
+            'mailing_group' => $input['mailing_group'],
                 ), false);
 
         $total_inserts++;
       } catch (Exception $e) {
+        JsonException::clearExceptions();
         $total_fails++;
         //ignore exceptions
       }
     }
+
+    Files::delete("tmp/{$input['xls'][0]['tmp_name']}");
 
     $report = "Importou {$total_inserts} emails, {$total_fails} falhas";
 
