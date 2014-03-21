@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
@@ -12,6 +11,11 @@ use src\app\admin\helpers\Form;
 use src\app\admin\helpers\Link;
 use Din\File\Folder;
 use src\app\admin\models\essential\IssuuModel;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\UploadValidator;
+use src\app\admin\helpers\TableFilter;
+use Din\Exception\JsonException;
+use Exception;
 
 /**
  *
@@ -104,19 +108,26 @@ class PublicationModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $this->setNewId();
-    $this->setTimestamp('inc_date');
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['title'], 'publicacoes');
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setId($this->getId());
-    $validator->setRequiredString('title', 'Título');
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', 'Título');
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_file = $upl_validator->validateFile('file');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_publication');
+    $filter->setTimestamp('inc_date');
+    $filter->setIntval('active');
+    $filter->setString('title');
+    $filter->setDefaultUri('title', $this->getId());
+    //
     $mf = new MoveFiles;
-    $validator->setFile('file', $mf);
-    $validator->throwException();
-
+    if ( $has_file ) {
+      $filter->setUploaded('file', "/system/uploads/publication/{$this->getId()}/file");
+      $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
+    }
     $mf->move();
 
     $this->dao_insert();
@@ -128,28 +139,24 @@ class PublicationModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $this->setIntval('active', $input['active']);
-    $this->setDefaultUri($input['title'], 'publicacoes', $input['uri']);
-
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setId($this->getId());
-    $validator->setRequiredString('title', 'Título');
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('title', 'Título');
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_file = $upl_validator->validateFile('file');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setIntval('active');
+    $filter->setString('title');
+    $filter->setDefaultUri('title', $this->getId());
+    //
     $mf = new MoveFiles;
-    $validator->setFile('file', $mf);
-    $validator->throwException();
-
-    if ( $input['publish_issuu'] == '1' ) {
-      $this->_table->has_issuu = '1';
+    if ( $has_file ) {
+      $filter->setUploaded('file', "/system/uploads/publication/{$this->getId()}/file");
+      $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
     }
-
-    // deleta o arquivo antigo caso exista e tenha upload novo
-    $row = $this->getById();
-    if ( $this->_table->file && $row['file'] ) {
-      $destiny = 'public/' . $row['file'];
-      @unlink($destiny);
-    }
-
     $mf->move();
 
     $this->dao_update();

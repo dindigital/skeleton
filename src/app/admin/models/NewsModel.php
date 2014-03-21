@@ -129,7 +129,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $seq = new SequenceModel($this);
     $seq->setSequence();
 
-    $this->dao_insert($input);
+    $this->dao_insert();
 
     $this->relationship('photo', $input['photo']);
     $this->relationship('video', $input['video']);
@@ -166,7 +166,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     }
     $mf->move();
 
-    $this->dao_update($input);
+    $this->dao_update();
 
     $this->relationship('photo', $input['photo']);
     $this->relationship('video', $input['video']);

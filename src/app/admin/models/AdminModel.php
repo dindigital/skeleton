@@ -99,13 +99,10 @@ class AdminModel extends BaseModelAdm
     $filter->setCrypted('password');
     $filter->setJson('permission');
     //
-    $row = $this->getById();
-    //
     $mf = new MoveFiles;
-
     if ( $has_avatar ) {
       $filter->setUploaded('avatar', "/system/uploads/admin/{$this->getId()}/avatar");
-      $mf->addFile($input['avatar'][0]['tmp_name'], $this->_table->avatar, $row['avatar']);
+      $mf->addFile($input['avatar'][0]['tmp_name'], $this->_table->avatar);
     }
     $mf->move();
     //
