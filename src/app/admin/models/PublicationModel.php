@@ -17,6 +17,7 @@ use src\app\admin\helpers\TableFilter;
 use Din\Exception\JsonException;
 use Din\Filters\String\Uri;
 use Exception;
+use Din\Filters\String\LimitChars;
 
 /**
  *
@@ -186,11 +187,11 @@ class PublicationModel extends BaseModelAdm
       $title = $this->_table->title;
 
       $pathinfo = pathinfo($file);
-      if ( 'pdf' != $pathinfo['extension'] )
-        throw new Exception('Upload no Issuu é restringido a arquivos PDF');
+      if ( !in_array(strtolower($pathinfo['extension']), array('pdf', 'doc', 'docx')) )
+        throw new Exception('Upload no Issuu é restringido a arquivos PDF ou DOC');
 
-      $name = Uri::format($pathinfo['filename']);
-      $name = substr($name, 0, 30) . uniqid() . '.pdf';
+      $name = Uri::format(LimitChars::filter($this->_table->title, 20, ''));
+      $name = substr($name, 0, 30) . uniqid() . '.' . strtolower($pathinfo['extension']);
 
       $issuu_model = new IssuuModel;
       $issuu_model->insertComplete(array(
