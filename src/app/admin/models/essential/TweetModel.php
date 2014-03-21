@@ -2,13 +2,16 @@
 
 namespace src\app\admin\models\essential;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use src\app\admin\helpers\Entities;
 use Twitter;
 use Exception;
 use src\app\admin\models\essential\TweetableEntity;
 use Din\Filters\Date\DateFormat;
+use src\app\admin\validators\StringValidator;
+use Din\Exception\JsonException;
+use src\app\admin\helpers\TableFilter;
+use src\app\admin\models\SocialmediaCredentialsModel;
 
 /**
  *
@@ -18,12 +21,15 @@ class TweetModel extends BaseModelAdm
 {
 
   protected $_model;
+  protected $_sm_credentials;
 
   public function __construct ( $section, $id )
   {
     parent::__construct();
     $this->setTable('tweet');
     $this->setModel($section, $id);
+    $this->_sm_credentials = new SocialmediaCredentialsModel();
+    $this->_sm_credentials->fetchAll();
   }
 
   protected function setModel ( $section, $id )
@@ -42,15 +48,19 @@ class TweetModel extends BaseModelAdm
 
   public function sendTweet ( $msg )
   {
-    $validator = new validator($this->_table);
-    $validator->setInput(array('msg' => $msg));
-    $validator->setMinMaxString('msg', 'Mensagem', 1, 140);
-    $validator->throwException();
+    $input = array(
+        'msg' => $msg
+    );
+    
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('msg', "Mensagem");
+    //
+    JsonException::throwException();
 
-    $consumer_key = TW_CONSUMER_KEY;
-    $consumer_secret = TW_CONSUMER_SECRET;
-    $access_token = TW_ACCESS_TOKEN;
-    $access_secret = TW_ACCESS_SECRET;
+    $consumer_key = $this->_sm_credentials->row['tw_consumer_key'];
+    $consumer_secret = $this->_sm_credentials->row['tw_consumer_secret'];
+    $access_token = $this->_sm_credentials->row['tw_access_token'];
+    $access_secret = $this->_sm_credentials->row['tw_access_secret'];
 
     //_# ENVIA O TWEET
     try {
@@ -63,12 +73,12 @@ class TweetModel extends BaseModelAdm
         throw new Exception('Não foi possível enviar, favor tentar novamente mais tarde.');
       }
     }
-
-    //_# INSERE REGISTRO NA TABELA DE TWEETS
-    $date = date('Y-m-d H:i:s');
-    $this->_table->id_tweet = md5(uniqid());
-    $this->_table->date = $date;
-    $this->_table->msg = $msg;
+    
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_tweet');
+    $filter->setTimestamp('date');
+    $filter->setString('msg');
+    //
     $this->_dao->insert($this->_table);
 
     //_# AVISA O MODEL

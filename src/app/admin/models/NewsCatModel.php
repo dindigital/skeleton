@@ -108,7 +108,7 @@ class NewsCatModel extends BaseModelAdm
     $seq = new SequenceModel($this);
     $seq->setSequence();
 
-    $this->dao_insert($input);
+    $this->dao_insert();
   }
 
   public function update ( $input )
@@ -127,16 +127,14 @@ class NewsCatModel extends BaseModelAdm
     $filter->setString('title');
     $filter->setDefaultUri('title', $this->getId(), 'news', 'uri');
     //
-    $row = $this->getById();
-    //
     $mf = new MoveFiles;
     if ( $has_cover ) {
       $filter->setUploaded('cover', "/system/uploads/news_cat/{$this->getId()}/cover");
-      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover, $row['cover']);
+      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
     }
     $mf->move();
 
-    $this->dao_update($input);
+    $this->dao_update();
   }
 
   public function getListArray ()

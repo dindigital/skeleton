@@ -121,12 +121,10 @@ class PageCatModel extends BaseModelAdm
     $filter->setString('description');
     $filter->setString('keywords');
     //
-    $row = $this->getById();
-    //
     $mf = new MoveFiles;
     if ( $has_cover ) {
       $filter->setUploaded('cover', "/system/uploads/page_cat/{$this->getId()}/cover");
-      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover, $row['cover']);
+      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
     }
     $mf->move();
 

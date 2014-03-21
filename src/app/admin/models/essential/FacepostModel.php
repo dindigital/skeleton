@@ -2,13 +2,15 @@
 
 namespace src\app\admin\models\essential;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\BaseModelAdm;
 use Exception;
 use Facebook;
 use src\app\admin\models\SocialmediaCredentialsModel;
 use src\app\admin\helpers\Entities;
 use Din\Filters\Date\DateFormat;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\helpers\TableFilter;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -82,14 +84,14 @@ class FacepostModel extends BaseModelAdm
 
   public function post ( $input )
   {
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setRequiredString('name', 'Nome');
-    $validator->setRequiredString('link', 'Link');
-    $validator->throwException();
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('name', "Nome");
+    $str_validator->validateRequiredString('link', "Link");
+    //
+    JsonException::throwException();
+    //
     $this->setFacebook();
-
+    //
     // POST TO FACEBOOK PAGE
     $params = array(
         "access_token" => $this->_sm_credentials->row['fb_access_token'],
@@ -97,7 +99,7 @@ class FacepostModel extends BaseModelAdm
         "link" => $input['link'],
         "picture" => $input['picture'],
         "name" => $input['name'],
-//        "caption" => "Esse é o campo caption",
+        //"caption" => "Esse é o campo caption",
         "description" => $input['description'],
     );
 
@@ -106,18 +108,18 @@ class FacepostModel extends BaseModelAdm
     } catch (Exception $e) {
       Throw new Exception('Ocorreu um erro ao postar no Facebook, favor tentar novamente mais tarde.');
     }
-
-    //_# INSERE REGISTRO NA TABELA DE TWEETS
-    $date = date('Y-m-d H:i:s');
-    $this->_table->id_facepost = md5(uniqid());
-    $this->_table->date = $date;
-    $this->_table->picture = $input['picture'];
-    $this->_table->description = $input['description'];
-    $this->_table->message = $input['message'];
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setNewId('id_facebook');
+    $filter->setTimestamp('date');
+    $filter->setString('picture');
+    $filter->setString('description');
+    $filter->setString('message');
+    //
     $this->_dao->insert($this->_table);
-
     //_# AVISA O MODEL
     $this->_model->sentPost($this->_table->id_facepost);
+
   }
 
   public function getPosts ()

@@ -2,11 +2,14 @@
 
 namespace src\app\admin\models\essential;
 
-use src\app\admin\validators\BaseValidator as validator;
 use src\app\admin\models\essential\AdminAuthModel;
 use src\app\admin\models\AdminModel;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\helpers\Form;
+use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\UploadValidator;
+use src\app\admin\helpers\TableFilter;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -24,28 +27,27 @@ class ConfigModel extends AdminModel
 
   public function update ( $input )
   {
-    $validator = new validator($this->_table);
-    $validator->setInput($input);
-    $validator->setDao($this->_dao);
-    $validator->setId($this->getId());
-    $validator->setRequiredString('name', 'Nome');
-    $validator->setEmail('email', 'E-mail');
-    $validator->setPassword('password', 'Senha', false);
-
+    $str_validator = new StringValidator($input);
+    $str_validator->validateRequiredString('name', "Nome");
+    $str_validator->validateRequiredEmail('email', "E-mail");
+    //
+    $upl_validator = new UploadValidator($input);
+    $has_avatar = $upl_validator->validateFile('avatar');
+    //
+    JsonException::throwException();
+    //
+    $filter = new TableFilter($this->_table, $input);
+    $filter->setString('name');
+    $filter->setString('email');
+    $filter->setCrypted('password');
+    //
     $mf = new MoveFiles;
-    $validator->setFile('avatar', $mf);
-    $validator->throwException();
-
-    // deleta o arquivo antigo caso exista e tenha upload novo
-    $row = $this->getById();
-    if ( $this->_table->avatar && $row['avatar'] ) {
-      $destiny = 'public/' . $row['avatar'];
-      @unlink($destiny);
+    if ( $has_avatar ) {
+      $filter->setUploaded('avatar', "/system/uploads/admin/{$this->getId()}/avatar");
+      $mf->addFile($input['avatar'][0]['tmp_name'], $this->_table->avatar);
     }
-
-
     $mf->move();
-
+    //
     $this->dao_update();
     $this->relogin();
   }

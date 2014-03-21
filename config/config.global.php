@@ -11,14 +11,10 @@ return array(
     'agencia_nome' => 'DIN DIGITAL',
     'imagem_padrao' => '/admin/images/avatar1_50.jpg',
     'path_image' => 'public/system/images/',
-    'path_assets' => 'public/system/assets/',
+    'assets' => 'production',
     'path_replace' => 'public',
     'smtp_host' => 'xxx',
     'smtp_user' => 'xxx@xxx.com',
     'smtp_pass' => 'xxx',
-    'bitly' => 'xxx',
-    'tw_consumer_key' => 'xxx',
-    'tw_consumer_secret' => 'xxx',
-    'tw_access_token' => 'xxx',
-    'tw_access_secret' => 'xxx',
+    'bitly' => 'xxx'
 );

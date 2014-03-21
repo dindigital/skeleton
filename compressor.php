@@ -1,11 +1,11 @@
 <?php
 
-chdir($_SERVER['DOCUMENT_ROOT']);
+chdir(getcwd() . '/');
 require_once 'vendor/autoload.php';
 
 use Din\AssetMin\AssetMin;
 
-$asset = new AssetMin('config/assets_read.php');
+$asset = new AssetMin('config/assets.php');
 
 if ( !count($_GET) ) {
   $asset->compressorAll();
