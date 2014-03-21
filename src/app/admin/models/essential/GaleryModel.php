@@ -57,7 +57,7 @@ class GaleryModel extends BaseModelAdm
     $input['file'] = array($input['file']);
     //
     $upl_validator = new UploadValidator($input);
-    $has_file = $upl_validator->validateFile('file', false);
+    $has_file = $upl_validator->validateFile('file');
     //
     JsonException::throwException();
     //
