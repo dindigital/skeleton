@@ -33,4 +33,13 @@ class StringValidator extends BaseValidator2
       return JsonException::addException("O campo {$label} não contém uma data válida");
   }
 
+  public function validateEqualValues ( $prop1, $prop2, $label )
+  {
+    $value1 = $this->getValue($prop1);
+    $value2 = $this->getValue($prop2);
+
+    if ( $value1 != $value2 )
+      return JsonException::addException("Os campos de {$label} devem conter o mesmo valor");
+  }
+
 }
