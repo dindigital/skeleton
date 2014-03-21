@@ -6,8 +6,8 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\validators\UploadValidator;
-use src\app\admin\helpers\TableFilter;
-use src\app\admin\helpers\FileFilter;
+use src\app\admin\filters\TableFilter;
+use src\app\admin\filters\FileFilter;
 use Din\Exception\JsonException;
 use Din\File\Folder;
 

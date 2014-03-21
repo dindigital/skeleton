@@ -10,7 +10,7 @@ use src\app\admin\models\essential\TweetableEntity;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\validators\StringValidator;
 use Din\Exception\JsonException;
-use src\app\admin\helpers\TableFilter;
+use src\app\admin\filters\TableFilter;
 use src\app\admin\models\SocialmediaCredentialsModel;
 
 /**

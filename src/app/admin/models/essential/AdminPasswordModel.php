@@ -9,7 +9,7 @@ use Din\Email\SendEmail\SendEmail;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\DBValidator;
 use Din\Exception\JsonException;
-use src\app\admin\helpers\TableFilter;
+use src\app\admin\filters\TableFilter;
 
 /**
  *

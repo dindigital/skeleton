@@ -1,8 +1,8 @@
 <?php
 
-namespace src\app\admin\helpers;
+namespace src\app\admin\filters;
 
-class FileFilter extends TableFilter
+class FileFilter extends BaseFilter
 {
 
   // FILTERS ___________________________________________________________________

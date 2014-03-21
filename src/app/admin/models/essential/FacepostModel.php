@@ -9,7 +9,7 @@ use src\app\admin\models\SocialmediaCredentialsModel;
 use src\app\admin\helpers\Entities;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\validators\StringValidator;
-use src\app\admin\helpers\TableFilter;
+use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
 
 /**

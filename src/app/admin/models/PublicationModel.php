@@ -13,7 +13,7 @@ use Din\File\Folder;
 use src\app\admin\models\essential\IssuuModel;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
-use src\app\admin\helpers\TableFilter;
+use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
 use Din\Filters\String\Uri;
 use Exception;
