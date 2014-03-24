@@ -12,7 +12,7 @@ use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\ArrayValidator;
 use Din\Exception\JsonException;
-use src\app\admin\helpers\TableFilter;
+use src\app\admin\filters\TableFilter;
 
 /**
  *

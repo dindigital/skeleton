@@ -10,7 +10,7 @@ use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
-use src\app\admin\helpers\TableFilter;
+use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
 
 

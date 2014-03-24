@@ -5,7 +5,7 @@ namespace src\app\admin\models;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\Filters\String\Html;
 use src\app\admin\validators\StringValidator;
-use src\app\admin\helpers\TableFilter;
+use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
 
 /**

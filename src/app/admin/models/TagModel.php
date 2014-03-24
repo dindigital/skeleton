@@ -6,7 +6,7 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use Din\Filters\String\Html;
-use src\app\admin\helpers\TableFilter as filter;
+use src\app\admin\filters\TableFilter as filter;
 use src\app\admin\validators\DBValidator;
 use src\app\admin\validators\StringValidator;
 use Din\Exception\JsonException;

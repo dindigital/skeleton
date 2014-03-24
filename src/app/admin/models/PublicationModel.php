@@ -13,10 +13,11 @@ use Din\File\Folder;
 use src\app\admin\models\essential\IssuuModel;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
-use src\app\admin\helpers\TableFilter;
+use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
 use Din\Filters\String\Uri;
 use Exception;
+use Din\Filters\String\LimitChars;
 
 /**
  *
@@ -103,7 +104,7 @@ class PublicationModel extends BaseModelAdm
     foreach ( $result as $i => $row ) {
       $result[$i]['title'] = Html::scape($row['title']);
     }
-    
+
     return $result;
   }
 
@@ -186,11 +187,11 @@ class PublicationModel extends BaseModelAdm
       $title = $this->_table->title;
 
       $pathinfo = pathinfo($file);
-      if ( 'pdf' != $pathinfo['extension'] )
-        throw new Exception('Upload no Issuu é restringido a arquivos PDF');
+      if ( !in_array(strtolower($pathinfo['extension']), array('pdf', 'doc', 'docx')) )
+        throw new Exception('Upload no Issuu é restringido a arquivos PDF ou DOC');
 
-      $name = Uri::format($pathinfo['filename']);
-      $name = substr($name, 0, 30) . uniqid() . '.pdf';
+      $name = Uri::format(LimitChars::filter($this->_table->title, 20, ''));
+      $name = substr($name, 0, 30) . uniqid() . '.' . strtolower($pathinfo['extension']);
 
       $issuu_model = new IssuuModel;
       $issuu_model->insertComplete(array(
@@ -215,19 +216,18 @@ class PublicationModel extends BaseModelAdm
   public function delete ( $itens )
   {
     foreach ( $itens as $item ) {
-      $tableHistory = $this->getById($item['id']);
+      $tableHistory = $this->getById($item['id'], false);
 
-      // DELETE ISSUU
-      $issuu = new IssuuModel;
-      $issuu->setId($tableHistory['id_issuu']);
-      $issuu->deleteComplete();
-      //
-      
       $this->deleteChildren('publication', $item['id']);
 
       Folder::delete("public/system/uploads/publication/{$item['id']}");
       $this->_dao->delete('publication', array('id_publication = ?' => $item['id']));
       $this->log('D', $tableHistory['title'], 'publication', $tableHistory);
+      // DELETE ISSUU
+      $issuu = new IssuuModel;
+      $issuu->setId($tableHistory['id_issuu']);
+      $issuu->deleteComplete();
+      //
     }
   }
 
