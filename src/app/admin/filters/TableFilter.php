@@ -13,7 +13,7 @@ class TableFilter extends BaseFilter
 
   public function setNewId ( $field )
   {
-    $this->_table->{$field} = md5(uniqid());
+    return $this->_table->{$field} = md5(uniqid());
   }
 
   public function setTimestamp ( $field )

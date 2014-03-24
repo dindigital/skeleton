@@ -2,39 +2,39 @@
 
 return array(
     'trash' => array(
-        'name' => 'Trash',
+        'model' => 'essential\TrashModel',
         'section' => 'Lixeira',
     ),
     'log' => array(
-        'name' => 'Log',
+        'model' => 'essential\LogModel',
         'section' => 'Log',
         'id' => 'id_log',
     ),
     'settings' => array(
-        'name' => 'Settings',
+        'model' => 'SettingsModel',
         'section' => 'Configuração',
         'id' => 'id_settings',
         'title' => 'title',
     ),
     'socialmedia_credentials' => array(
-        'name' => 'SocialmediaCredentials',
+        'model' => 'SocialmediaCredentials',
         'section' => 'Credenciais de Mídias',
         'id' => 'id_socialmedia_credentials',
         'title' => '',
     ),
     'photo' => array(
-        'name' => 'Photo',
+        'model' => 'PhotoModel',
         'section' => 'Galeria de Fotos',
         'id' => 'id_photo',
         'title' => 'title',
         'trash' => true,
     ),
     'photo_item' => array(
-        'name' => 'PhotoItem',
+        'model' => 'PhotoItemModel',
         'id' => 'id_photo_item',
     ),
     'news' => array(
-        'name' => 'News',
+        'model' => 'NewsModel',
         'section' => 'Notícias',
         'id' => 'id_news',
         'title' => 'title',
@@ -45,7 +45,7 @@ return array(
         ),
     ),
     'news_cat' => array(
-        'name' => 'NewsCat',
+        'model' => 'NewsCatModel',
         'section' => 'Categoria de Notícias',
         'id' => 'id_news_cat',
         'title' => 'title',
@@ -58,21 +58,21 @@ return array(
         ),
     ),
     'admin' => array(
-        'name' => 'Admin',
+        'model' => 'AdminModel',
         'section' => 'Usuários',
         'id' => 'id_admin',
         'title' => 'name',
         'names' => array('\src\app\admin\models\essential\ConfigModel')
     ),
     'video' => array(
-        'name' => 'Video',
+        'model' => 'VideoModel',
         'section' => 'Vídeos',
         'id' => 'id_video',
         'title' => 'title',
         'trash' => true,
     ),
     'page_cat' => array(
-        'name' => 'PageCat',
+        'model' => 'PageCatModel',
         'section' => 'Menu',
         'id' => 'id_page_cat',
         'title' => 'title',
@@ -85,7 +85,7 @@ return array(
         ),
     ),
     'page' => array(
-        'name' => 'Page',
+        'model' => 'PageModel',
         'section' => 'Página',
         'id' => 'id_page',
         'title' => 'title',
@@ -97,7 +97,7 @@ return array(
         'parent' => 'page_cat',
     ),
     'survey' => array(
-        'name' => 'Survey',
+        'model' => 'SurveyModel',
         'section' => 'Pesquisa de Satisfação',
         'id' => 'id_survey',
         'title' => 'title',
@@ -107,13 +107,13 @@ return array(
         ),
     ),
     'survey_question' => array(
-        'name' => 'SurveyQuestion',
+        'model' => 'SurveyQuestionModel',
         'id' => 'id_survey_question',
         'title' => 'question',
         'parent' => 'survey',
     ),
     'poll' => array(
-        'name' => 'Poll',
+        'model' => 'PollModel',
         'section' => 'Enquete',
         'id' => 'id_poll',
         'title' => 'question',
@@ -123,53 +123,53 @@ return array(
         ),
     ),
     'poll_option' => array(
-        'name' => 'PollOption',
+        'model' => 'PollOptionModel',
         'id' => 'id_poll_option',
         'title' => 'option',
         'parent' => 'poll'
     ),
     'tag' => array(
-        'name' => 'Tag',
+        'model' => 'TagModel',
         'section' => 'Tags',
         'id' => 'id_tag',
         'title' => 'title',
         'trash' => true,
     ),
     'publication' => array(
-        'name' => 'Publication',
+        'model' => 'PublicationModel',
         'section' => 'Publicações',
         'id' => 'id_publication',
         'title' => 'title',
         'trash' => true,
     ),
     'mailing_group' => array(
-        'name' => 'MailingGroup',
+        'model' => 'MailingGroupModel',
         'section' => 'Grupo de E-mail',
         'id' => 'id_mailing_group',
         'title' => 'name',
     ),
     'mailing' => array(
-        'name' => 'Mailing',
+        'model' => 'MailingModel',
         'section' => 'E-mails',
         'id' => 'id_mailing',
         'title' => 'name',
     ),
     'mailing_import' => array(
-        'name' => 'MailingImport',
+        'model' => 'MailingImportModel',
         'section' => 'Importação de E-mail',
     ),
     'mailing_export' => array(
-        'name' => 'MailingExport',
+        'model' => 'MailingExportModel',
         'section' => 'Exportação de E-mail',
     ),
     'customer' => array(
-        'name' => 'Customer',
+        'model' => 'CustomerModel',
         'section' => 'Clientes',
         'id' => 'id_customer',
         'title' => 'name',
     ),
     'tweet' => array(
-        'name' => 'Tweet',
+        'model' => 'essential\TweetModel',
         'section' => 'Tweet',
         'id' => 'id_tweet',
         'title' => 'msg',

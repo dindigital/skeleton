@@ -37,7 +37,7 @@
             </thead>
             <tbody class="no-border-y">
               <?php foreach ( $data['list'] as $row ): ?>
-                <tr name="<?php echo $this->_data['entity']['name']; ?>" id="<?php echo $row[$this->_data['entity']['id']]; ?>">
+                <tr name="<?php echo $this->_data['entity']['tbl']; ?>" id="<?php echo $row[$this->_data['entity']['id']]; ?>">
                   <td><input class="delete" type="checkbox" name="delete[]" /></td>
                   <td><input class="setActive" type="checkbox" <?php if ( $row['active'] == '1' ): ?> checked="checked"<?php endif; ?> /></td>
                   <td><?php echo $row['sequence']; ?></td>

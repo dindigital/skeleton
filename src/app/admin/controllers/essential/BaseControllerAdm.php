@@ -9,7 +9,6 @@ use Din\Session\Session;
 use Din\Image\Picuri;
 use Din\Http\Post;
 use Din\Http\Header;
-use src\app\admin\helpers\Entities;
 use src\app\admin\models\essential\PermissionModel;
 use Din\ViewHelpers\JsonViewHelper;
 use src\app\admin\models\essential\TrashModel;
@@ -20,6 +19,8 @@ use Din\AssetRead\AssetRead;
  */
 abstract class BaseControllerAdm extends BaseController
 {
+
+  protected $_entity;
 
   public function __construct ()
   {
@@ -141,7 +142,13 @@ abstract class BaseControllerAdm extends BaseController
 
   protected function setEntityData ()
   {
-    $this->_data['entity'] = Entities::getThis($this->_model);
+    $this->_entity = $this->_model->_entity;
+
+    $this->_data['entity'] = array(
+        'tbl' => $this->_entity->getTbl(),
+        'id' => $this->_entity->getId(),
+        'section' => $this->_entity->getSection()
+    );
   }
 
   protected function require_permission ()
@@ -156,17 +163,17 @@ abstract class BaseControllerAdm extends BaseController
 
     $this->setSavedMsgSession();
 
-    $entity = Entities::getThis($this->_model);
+    $entity = $this->_model->_entity;
 
-    $redirect = '/admin/' . $entity['tbl'] . '/save/' . $id . '/';
+    $redirect = '/admin/' . $entity->getTbl() . '/save/' . $id . '/';
     if ( Post::text('redirect') == 'list' ) {
-      $redirect = '/admin/' . $entity['tbl'] . '/list/';
+      $redirect = '/admin/' . $entity->getTbl() . '/list/';
     }
 
     if ( Post::text('redirect') == 'previous' ) {
       $session = new Session('adm_session');
       $session->set('previous_id', $id);
-      $redirect = '/admin/' . $entity['tbl'] . '/save/';
+      $redirect = '/admin/' . $entity->getTbl() . '/save/';
     }
 
     JsonViewHelper::redirect($redirect);
@@ -198,8 +205,8 @@ abstract class BaseControllerAdm extends BaseController
     try {
       $itens = Post::aray('itens');
 
-      $entity = Entities::getThis($this->_model);
-      if ( isset($entity['trash']) && $entity['trash'] ) {
+      $entity = $this->_model->_entity;
+      if ( $entity->hasTrash() ) {
         $trash = new TrashModel();
         $trash->delete($itens);
       } else {

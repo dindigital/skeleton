@@ -2,33 +2,33 @@
 
 return array(
     'Lixeira' => array(
-        'name' => 'Trash',
+        'tbl' => 'trash',
         'index' => 'list',
     ),
     'Log' => array(
-        'name' => 'Log',
+        'tbl' => 'log',
         'index' => 'list',
     ),
     'Configurações' => array(
-        'name' => 'Settings',
+        'tbl' => 'settings',
         'index' => 'save',
     ),
     'Credenciais de Mídias' => array(
-        'name' => 'SocialmediaCredentials',
+        'tbl' => 'socialmedia_credentials',
         'index' => 'save',
     ),
     'Usuários' => array(
-        'name' => 'Admin',
+        'tbl' => 'admin',
         'index' => 'list',
     ),
     'Notícias' => array(
         'submenu' => array(
             'Categorias' => array(
-                'name' => 'NewsCat',
+                'tbl' => 'news_cat',
                 'index' => 'list',
             ),
             'Notícias' => array(
-                'name' => 'News',
+                'tbl' => 'news',
                 'index' => 'list',
             ),
         )
@@ -36,53 +36,53 @@ return array(
     'Páginas Institucionais' => array(
         'submenu' => array(
             'Menu' => array(
-                'name' => 'PageCat',
+                'tbl' => 'page_cat',
                 'index' => 'list',
             ),
             'Página' => array(
-                'name' => 'Page',
+                'tbl' => 'page',
                 'index' => 'list',
             ),
         )
     ),
     'Galeria de Fotos' => array(
-        'name' => 'Photo',
+        'tbl' => 'photo',
         'index' => 'list',
     ),
     'Galeria de Vídeos' => array(
-        'name' => 'Video',
+        'tbl' => 'video',
         'index' => 'list',
     ),
     'Publicações' => array(
-        'name' => 'Publication',
+        'tbl' => 'publication',
         'index' => 'list',
     ),
     'Tags' => array(
-        'name' => 'Tag',
+        'tbl' => 'tag',
         'index' => 'list',
     ),
     'Pesquisa de Satisfação' => array(
-        'name' => 'Survey',
+        'tbl' => 'survey',
         'index' => 'list',
     ),
     'Enquetes' => array(
-        'name' => 'Poll',
+        'tbl' => 'poll',
         'index' => 'list',
     ),
     'E-mails' => array(
         'submenu' => array(
             'Grupos' => array(
-                'name' => 'MailingGroup',
+                'tbl' => 'mailing_group',
                 'index' => 'list',
             ),
             'E-mails' => array(
-                'name' => 'Mailing',
+                'tbl' => 'mailing',
                 'index' => 'list'
             ),
         )
     ),
     'Clientes' => array(
-        'name' => 'Customer',
+        'tbl' => 'customer',
         'index' => 'list',
     ),
 );

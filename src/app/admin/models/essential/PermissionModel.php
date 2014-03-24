@@ -2,7 +2,6 @@
 
 namespace src\app\admin\models\essential;
 
-use src\app\admin\helpers\Entities;
 use Exception;
 use src\app\admin\helpers\FileMenu;
 use src\app\admin\models\AdminModel;
@@ -11,20 +10,15 @@ use src\app\admin\models\AdminModel;
  *
  * @package app.models
  */
-class PermissionModel
+class PermissionModel extends BaseModelAdm
 {
-
-  public function __construct ()
-  {
-    Entities::readFile('config/entities.php');
-  }
 
   public function getArrayList ()
   {
     $arrOptions = array();
-    foreach ( Entities::$entities as $tbl => $entity ) {
-      if ( isset($entity['section']) ) {
-        $arrOptions[$entity['name']] = $entity['section'];
+    foreach ( $this->_entities->getAllEntities() as $tbl => $entity ) {
+      if ( $entity->getSection() ) {
+        $arrOptions[$entity->getTbl()] = $entity->getSection();
       }
     }
 
@@ -34,9 +28,9 @@ class PermissionModel
   public function block ( $model, $user )
   {
     $permissoes = $this->getByAdmin($user);
-    $entity = Entities::getThis($model);
+    $tbl = $model->_entity->getTbl();
 
-    if ( !array_key_exists($entity['name'], $permissoes) ) {
+    if ( !array_key_exists($tbl, $permissoes) ) {
       throw new Exception('Permissão negada.');
     }
   }
@@ -45,8 +39,8 @@ class PermissionModel
   {
     if ( $user['id_admin'] == AdminModel::$_master_id ) {
       $user_permissions = array();
-      foreach ( Entities::$entities as $tbl => $entity ) {
-        $user_permissions[] = $entity['name'];
+      foreach ( $this->_entities->getAllEntities() as $tbl => $entity ) {
+        $user_permissions[] = $tbl;
       }
     } else {
       $user_permissions = json_decode($user['permission']);
@@ -68,19 +62,19 @@ class PermissionModel
     foreach ( $full_menu as $section => $specs ) {
       if ( array_key_exists('submenu', $specs) ) {
         foreach ( $specs['submenu'] as $subsection => $subspecs ) {
-          if ( array_key_exists($subspecs['name'], $user_permissions) ) {
+          if ( array_key_exists($subspecs['tbl'], $user_permissions) ) {
             $user_menu[$section]['submenu'][$subsection] = $subspecs;
 
-            $entity = Entities::getEntityByName($subspecs['name']);
-            $user_menu[$section]['submenu'][$subsection]['index'] = "/admin/{$entity['tbl']}/{$subspecs['index']}/";
+            $entity = $this->_entities->getEntity($subspecs['tbl']);
+            $user_menu[$section]['submenu'][$subsection]['index'] = "/admin/{$entity->getTbl()}/{$subspecs['index']}/";
           }
         }
       } else {
-        if ( array_key_exists($specs['name'], $user_permissions) ) {
+        if ( array_key_exists($specs['tbl'], $user_permissions) ) {
           $user_menu[$section] = $specs;
 
-          $entity = Entities::getEntityByName($specs['name']);
-          $user_menu[$section]['index'] = "/admin/{$entity['tbl']}/{$specs['index']}/";
+          $entity = $this->_entities->getEntity($specs['tbl']);
+          $user_menu[$section]['index'] = "/admin/{$entity->getTbl()}/{$specs['index']}/";
         }
       }
     }

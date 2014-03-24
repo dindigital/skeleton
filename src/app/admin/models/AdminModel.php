@@ -28,7 +28,7 @@ class AdminModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('admin');
+    $this->setEntity('admin');
   }
 
   protected function formatTable ( $table )

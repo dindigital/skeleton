@@ -21,7 +21,7 @@ class TagModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('tag');
+    $this->setEntity('tag');
   }
 
   public function formatTable ( $table )
@@ -96,20 +96,20 @@ class TagModel extends BaseModelAdm
 
   public function short_insert ( $title )
   {
-      
+
     $input = array(
-      'active' => 1,  
-      'title' => $title  
+        'active' => 1,
+        'title' => $title
     );
-      
+
     $str_validator = new StringValidator($input);
     $str_validator->validateRequiredString('title', 'Título');
-      
+
     $db_validator = new DBValidator($input, $this->_dao, 'tag');
     $db_validator->validateUniqueValue('title', 'Título');
 
     JsonException::throwException();
-    
+
     $filter = new filter($this->_table, $input);
     $filter->setNewId('id_tag');
     $filter->setTimestamp('inc_date');

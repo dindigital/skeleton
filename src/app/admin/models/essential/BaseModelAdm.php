@@ -20,11 +20,13 @@ class BaseModelAdm
   protected $_table;
   protected $_filters;
   protected $_id;
+  protected $_entities;
+  public $_entity;
 
   public function __construct ()
   {
     $this->_dao = new DAO(PDOBuilder::build(DB_TYPE, DB_HOST, DB_SCHEMA, DB_USER, DB_PASS));
-    Entities::readFile('config/entities.php');
+    $this->_entities = new Entities('config/entities.php');
   }
 
   /*
@@ -32,6 +34,12 @@ class BaseModelAdm
    * TABLE
    * ===========================================================================
    */
+
+  public function setEntity ( $tablename )
+  {
+    $this->_entity = $this->_entities->getEntity($tablename);
+    $this->setTable($tablename);
+  }
 
   public function setTable ( $tablename )
   {
@@ -45,8 +53,7 @@ class BaseModelAdm
 
   public function getIdName ()
   {
-    $entity = Entities::getThis($this);
-    $property = $entity['id'];
+    $property = $this->_entity->getId();
 
     return $property;
   }
@@ -58,12 +65,12 @@ class BaseModelAdm
 
   public function setId ( $id )
   {
-    $this->_id = $id;
+    $this->_table->{$this->getIdName()} = $id;
   }
 
   public function getId ()
   {
-    return $this->_id;
+    return $this->_table->{$this->getIdName()};
   }
 
   /*
@@ -92,12 +99,13 @@ class BaseModelAdm
 
   public function deleteChildren ( $tbl, $id )
   {
-    $current = Entities::getEntity($tbl);
-    $children = Entities::getChildren($tbl);
+    $children = $this->_entity->getChildren();
 
     foreach ( $children as $child ) {
-      $select = new Select($child['tbl']);
-      $select->addField($child['id'], 'id_children');
+      $child = $this->_entities->getEntity($child);
+
+      $select = new Select($child->getTbl());
+      $select->addField($child->getId(), 'id_children');
       $select->where(array(
           $current['id'] . ' = ? ' => $id
       ));
@@ -110,7 +118,8 @@ class BaseModelAdm
         );
       }
 
-      $child_model = new $child['model'];
+      $model = $child->getModel();
+      $child_model = new $model;
       $child_model->delete($arr_delete);
     }
   }
@@ -118,15 +127,18 @@ class BaseModelAdm
   public function delete ( $itens )
   {
     foreach ( $itens as $item ) {
-      $current = Entities::getThis($this);
+      //$current = Entities::getThis($this);
+      $id = $this->_entity->getId();
+      $tbl = $this->_entity->getTbl();
+      $title = $this->_entity->getTitle();
 
       $tableHistory = $this->getById($item['id']);
-      $this->deleteChildren($current['tbl'], $item['id']);
+      $this->deleteChildren($tbl, $item['id']);
 
-      Folder::delete("public/system/uploads/{$current['tbl']}/{$item['id']}");
-      $this->_dao->delete($current['tbl'], array($current['id'] . ' = ?' => $item['id']));
-      if ( isset($current['title']) ) {
-        $this->log('D', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
+      Folder::delete("public/system/uploads/{$tbl}/{$item['id']}");
+      $this->_dao->delete($tbl, array($id . ' = ?' => $item['id']));
+      if ( isset($title) ) {
+        $this->log('D', $tableHistory[$title], $tbl, $tableHistory);
       }
     }
   }
@@ -210,15 +222,12 @@ class BaseModelAdm
     $this->_dao->insert($this->_table);
 
     if ( $log ) {
-      $current = Entities::getThis($this);
-      $this->log('C', $this->_table->{$current['title']}, $this->_table);
+      $this->log('C', $this->_table->{$this->_entity->getTitle()}, $this->_table);
     }
   }
 
   public function dao_update ( $log = true )
   {
-    $current = Entities::getThis($this);
-
     if ( $log ) {
       $tableHistory = $this->getById();
     }
@@ -226,7 +235,7 @@ class BaseModelAdm
     $this->_dao->update($this->_table, array("{$this->getIdName()} = ?" => $this->getId()));
 
     if ( $log ) {
-      $this->log('U', $this->_table->{$current['title']}, $this->_table, $tableHistory);
+      $this->log('U', $this->_table->{$this->_entity->getTitle()}, $this->_table, $tableHistory);
     }
   }
 
@@ -242,8 +251,7 @@ class BaseModelAdm
     $admin = $adminAuth->getUser();
 
     if ( is_null($entityname) ) {
-      $entities = Entities::getThis($this);
-      $entityname = $entities['name'];
+      $entityname = $this->_entity->getTbl();
     }
 
     log::save($this->_dao, $admin, $action, $msg, $entityname, $table, $tableHistory);
