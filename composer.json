@@ -13,6 +13,7 @@
     "phpoffice/phpexcel": "dev-master",
     "dg/twitter-php": "dev-master",
     "kriswallsmith/assetic" : "dev-master",
-    "facebook/php-sdk": "@stable"
+    "facebook/php-sdk": "@stable",
+    "ise/php-soundcloud": "3.*"
   }
 }

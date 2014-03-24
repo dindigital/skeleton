@@ -32,7 +32,7 @@ class Preview
         $r = '<a href="' . $uri . '" target="_blank">' . $img . '</a>';
         break;
       case 'mp3':
-        $r = '<br />' . $this->getJwPlayerAudio($uri);
+        $r = '<br /><a href="' . $uri . '" target="_blank">' . $uri . '</a>';
         break;
       default :
         $r = '<br /><a href="' . $uri . '" target="_blank">' . $uri . '</a>';

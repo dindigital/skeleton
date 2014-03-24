@@ -53,6 +53,10 @@ return array(
         'name' => 'Video',
         'index' => 'list',
     ),
+    'Galeria de Audio' => array(
+        'name' => 'Audio',
+        'index' => 'list',
+    ),
     'Publicações' => array(
         'name' => 'Publication',
         'index' => 'list',

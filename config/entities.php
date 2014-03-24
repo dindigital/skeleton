@@ -142,6 +142,13 @@ return array(
         'title' => 'title',
         'trash' => true,
     ),
+    'audio' => array(
+        'name' => 'Audio',
+        'section' => 'Audio',
+        'id' => 'id_audio',
+        'title' => 'title',
+        'trash' => true,
+    ),
     'mailing_group' => array(
         'name' => 'MailingGroup',
         'section' => 'Grupo de E-mail',
