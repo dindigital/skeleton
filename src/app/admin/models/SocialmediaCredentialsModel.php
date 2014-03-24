@@ -34,6 +34,9 @@ class SocialmediaCredentialsModel extends BaseModelAdm
     $filter->setString('tw_access_secret');
     $filter->setString('issuu_key');
     $filter->setString('issuu_secret');
+    $filter->setString('sc_client_id');
+    $filter->setString('sc_client_secret');
+    $filter->setString('sc_token');
 
     $this->dao_update(false);
   }
@@ -51,6 +54,12 @@ class SocialmediaCredentialsModel extends BaseModelAdm
   public function updateFbAccessToken ( $fb_access_token )
   {
     $this->_table->fb_access_token = $fb_access_token;
+    $this->_dao->update($this->_table, array());
+  }
+
+  public function updateSoundCoudAccessToken ( $sc_token )
+  {
+    $this->_table->sc_token = $sc_token;
     $this->_dao->update($this->_table, array());
   }
 

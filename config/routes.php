@@ -68,6 +68,10 @@ return array(
             'controller' => 'admin\controllers\essential\TweetController',
             'method' => 'view',
         ),
+        'admin/soundcloud/auth/' => array(
+            'controller' => 'admin\controllers\essential\SoundCloudController',
+            'method' => 'auth',
+        ),
         'admin/facepost/edit/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/' => array(
             'controller' => 'admin\controllers\essential\FacepostController',
             'method' => 'edit',
