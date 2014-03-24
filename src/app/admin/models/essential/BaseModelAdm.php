@@ -10,9 +10,6 @@ use Din\File\Folder;
 use Exception;
 use src\app\admin\models\essential\LogMySQLModel as log;
 use Din\DataAccessLayer\Table\Table;
-use Din\UrlShortener\Bitly\Bitly;
-use Din\Filters\String\Uri;
-use Din\Filters\String\LimitChars;
 
 class BaseModelAdm
 {
@@ -22,6 +19,7 @@ class BaseModelAdm
   protected $_itens_per_page = 20;
   protected $_table;
   protected $_filters;
+  protected $_id;
 
   public function __construct ()
   {
@@ -31,7 +29,7 @@ class BaseModelAdm
 
   /*
    * ===========================================================================
-   * SETTERS FOR TABLE
+   * TABLE
    * ===========================================================================
    */
 
@@ -45,11 +43,6 @@ class BaseModelAdm
     return $this->_table;
   }
 
-  public function setNewId ()
-  {
-    $this->setId(md5(uniqid()));
-  }
-
   public function getIdName ()
   {
     $entity = Entities::getThis($this);
@@ -58,64 +51,19 @@ class BaseModelAdm
     return $property;
   }
 
+  public function getTableName ()
+  {
+    return $this->_table->getName();
+  }
+
   public function setId ( $id )
   {
-    $property = $this->getIdName();
-    $this->_table->{$property} = $id;
+    $this->_id = $id;
   }
 
   public function getId ()
   {
-    $property = $this->getIdName();
-
-    return $this->_table->{$property};
-  }
-
-  public function setIntval ( $field, $value )
-  {
-    $value = intval($value);
-
-    $this->_table->{$field} = $value;
-  }
-
-  public function setTimestamp ( $field )
-  {
-    $this->_table->{$field} = date('Y-m-d H:i:s');
-  }
-
-  /**
-   * Adiciona o valor do campo LINK na tabela, seguindo o padrão de desenvolvimento.
-   * Caso haja necessidade de criação de um link diferente, criar um método setLink
-   * no validator da própria tabela.
-   * @param String $title - Titulo do conteúdo (obrigatório)
-   * @param String $prefix - Prefixo para formar o padrão da URI, caso não adicione nada
-   *                      o link ficará como "/titulo-id/". Adicionando a string:
-   *                      "flores/rosas", teremos "/flores/rosas/titulo-id/"
-   * @param String $link - Usado no editar, possibilita que o administrador altere
-   *                       a formação do link (area do título), mantendo o
-   *                       padrão (prefixo e id).
-   */
-  public function setDefaultUri ( $title, $prefix = '', $uri = null )
-  {
-    $id = substr($this->getId(), 0, 4);
-    $uri = is_null($uri) || $uri == '' ? Uri::format($title) : Uri::format($uri);
-    $uri = LimitChars::filter($uri, 80, '');
-    if ( $prefix != '' ) {
-      $prefix = '/' . $prefix;
-    }
-    $this->_table->uri = "{$prefix}/{$uri}-{$id}/";
-  }
-
-  public function setShortenerLink ()
-  {
-    if ( URL && BITLY && $this->_table->uri ) {
-      $url = URL . $this->_table->uri;
-      $bitly = new Bitly(BITLY);
-      $bitly->shorten($url);
-      if ( $bitly->check() ) {
-        $this->_table->short_link = $bitly;
-      }
-    }
+    return $this->_id;
   }
 
   /*
@@ -189,13 +137,11 @@ class BaseModelAdm
       $this->setId($id);
     }
 
-    $current = Entities::getThis($this);
-
     $arrCriteria = array(
-        $current['id'] . ' = ?' => $this->getId()
+        $this->getIdName() . ' = ?' => $this->getId()
     );
 
-    $select = new Select($current['tbl']);
+    $select = new Select($this->getTableName());
     $select->addAllFields();
     $select->where($arrCriteria);
 
@@ -211,9 +157,7 @@ class BaseModelAdm
 
   public function getNew ()
   {
-    $current = Entities::getThis($this);
-
-    $SQL = "DESCRIBE {$current['tbl']}";
+    $SQL = "DESCRIBE {$this->getTableName()}";
 
     $result = $this->_dao->execute($SQL, array(), true);
 
@@ -244,12 +188,13 @@ class BaseModelAdm
     return $this->getId();
   }
 
-  public function getCount ( $id )
-  {
+  /**
+    public function getCount ( $id )
+    {
     $current = Entities::getThis($this);
 
     $arrCriteria = array(
-        $current['id'] . ' = ?' => $id
+    $current['id'] . ' = ?' => $id
     );
 
     $select = new Select($current['tbl']);
@@ -258,8 +203,8 @@ class BaseModelAdm
     $result = $this->_dao->select_count($select);
 
     return $result;
-  }
-
+    }
+   */
   protected function dao_insert ( $log = true )
   {
     $this->_dao->insert($this->_table);
@@ -278,7 +223,7 @@ class BaseModelAdm
       $tableHistory = $this->getById();
     }
 
-    $this->_dao->update($this->_table, array("{$current['id']} = ?" => $this->getId()));
+    $this->_dao->update($this->_table, array("{$this->getIdName()} = ?" => $this->getId()));
 
     if ( $log ) {
       $this->log('U', $this->_table->{$current['title']}, $this->_table, $tableHistory);
