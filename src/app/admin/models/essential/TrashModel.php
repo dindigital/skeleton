@@ -11,6 +11,7 @@ use src\app\admin\models\essential\SequenceModel;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use Din\Filters\String\Html;
+use src\app\admin\filters\TableFilter;
 
 /**
  *
@@ -111,8 +112,13 @@ class TrashModel extends BaseModelAdm
       $seq = new SequenceModel($model);
       $seq->setSequence();
 
-      $model->setIntval('is_del', 0);
-      $this->_dao->update($model->getTable(), array($current['id'] . ' = ?' => $item['id']));
+      $table = new \Din\DataAccessLayer\Table\Table($current['tbl']);
+      $filter = new TableFilter($table, array(
+          'is_del' => '0'
+      ));
+      $filter->setIntval('is_del');
+      $filter->setNull('del_date');
+      $this->_dao->update($table, array($current['id'] . ' = ?' => $item['id']));
       $this->log('R', $tableHistory[$current['title']], $current['tbl'], null, $current['name']);
     }
   }
@@ -159,9 +165,13 @@ class TrashModel extends BaseModelAdm
         $this->deleteChildren($current, $item['id']);
         $tableHistory = $model->getById($item['id']);
 
-        $model->setTimestamp('del_date');
-        $model->setIntval('is_del', 1);
-        $this->_dao->update($model->getTable(), array($current['id'] . ' = ?' => $item['id']));
+        $table = new \Din\DataAccessLayer\Table\Table($current['tbl']);
+        $filter = new TableFilter($table, array(
+            'is_del' => '1'
+        ));
+        $filter->setTimestamp('del_date');
+        $filter->setIntval('is_del');
+        $this->_dao->update($table, array($current['id'] . ' = ?' => $item['id']));
         $this->log('T', $tableHistory[$current['title']], $current['tbl'], $tableHistory, $current['name']);
       }
     }
