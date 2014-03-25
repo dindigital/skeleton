@@ -5,7 +5,6 @@ namespace src\app\admin\models;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
-use src\app\admin\models\essential\SequenceModel;
 use src\app\admin\helpers\MoveFiles;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
@@ -16,6 +15,7 @@ use src\app\admin\validators\UploadValidator;
 use Din\Exception\JsonException;
 use src\app\admin\filters\TableFilter;
 use src\app\admin\filters\SequenceFilter;
+use src\app\admin\filters\SequenceListFilter;
 
 /**
  *
@@ -62,12 +62,12 @@ class PageCatModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
-    //$seq = new SequenceModel($this);
-    //$result = $seq->setListArray($result, $arrCriteria);
+    $seq = new SequenceListFilter($this->_entity, $this->_dao);
+    $result = $seq->filterResult($result, $arrCriteria);
 
     foreach ( $result as $i => $row ) {
       $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
-      //$result[$i]['sequence'] = Form::Dropdown('sequence', $row['sequence_list_array'], $row['sequence'], '', $row['id_page_cat'], 'form-control drop_sequence');
+      $result[$i]['sequence'] = Form::Dropdown('sequence', $row['sequence_list_array'], $row['sequence'], '', $row['id_page_cat'], 'form-control drop_sequence');
     }
 
     return $result;
