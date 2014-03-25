@@ -54,7 +54,7 @@ return array(
         'index' => 'list',
     ),
     'Galeria de Audio' => array(
-        'name' => 'Audio',
+        'tbl' => 'audio',
         'index' => 'list',
     ),
     'Publicações' => array(
