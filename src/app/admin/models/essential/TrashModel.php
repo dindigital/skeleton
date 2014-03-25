@@ -6,7 +6,6 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Exception;
 use src\app\admin\helpers\PaginatorAdmin;
-use src\app\admin\helpers\Entities;
 use src\app\admin\models\essential\SequenceModel;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
@@ -171,6 +170,7 @@ class TrashModel extends BaseModelAdm
       $entity_id = $entity->getId();
       $entity_title = $entity->getTitle();
       $entity_tbl = $entity->getTbl();
+      $entity_sequence = $entity->getSequence();
 
       $model = $entity->getModel();
 
@@ -179,12 +179,14 @@ class TrashModel extends BaseModelAdm
         $model->delete(array(array('id' => $entity_id)));
       } else {
 
-        $seq = new SequenceModel();
-        $seq->changeSequence(array(
-            'tbl' => $entity_tbl,
-            'id' => $item['id'],
-            'sequence' => 0
-        ));
+        if ( count($entity_sequence) ) {
+          $seq = new SequenceModel();
+          $seq->changeSequence(array(
+              'tbl' => $entity_tbl,
+              'id' => $item['id'],
+              'sequence' => 0
+          ));
+        }
 
         $this->deleteChildren($entity, $item['id']);
         $tableHistory = $model->getById($item['id']);
