@@ -131,18 +131,17 @@ class BaseModelAdm
   public function delete ( $itens )
   {
     foreach ( $itens as $item ) {
-      //$current = Entities::getThis($this);
       $id = $this->_entity->getId();
       $tbl = $this->_entity->getTbl();
       $title = $this->_entity->getTitle();
 
       $tableHistory = $this->getById($item['id']);
-      $this->deleteChildren($tbl, $item['id']);
+      $this->deleteChildren($this->_entity, $item['id']);
 
       Folder::delete("public/system/uploads/{$tbl}/{$item['id']}");
       $this->_dao->delete($tbl, array($id . ' = ?' => $item['id']));
       if ( isset($title) ) {
-        $this->log('D', $tableHistory[$title], $tbl, $tableHistory);
+        $this->log('D', $tableHistory[$title], $this->_table, $tableHistory);
       }
     }
   }

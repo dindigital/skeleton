@@ -28,7 +28,7 @@ class SequenceFilter extends BaseFilter
 
     $arrCriteria = array();
 
-    if ( $entity_sequence['optional'] ) {
+    if ( isset($entity_sequence['optional']) && $entity_sequence['optional'] ) {
       $sequence = 0;
     } else {
       if ( isset($entity_sequence['dependence']) ) {

@@ -14,6 +14,7 @@ use Din\Filters\String\Html;
 use src\app\admin\filters\TableFilter;
 use src\app\admin\helpers\Entity;
 use Din\DataAccessLayer\Table\Table;
+use src\app\admin\filters\SequenceFilter;
 
 /**
  *
@@ -74,7 +75,7 @@ class TrashModel extends BaseModelAdm
     return $result;
   }
 
-  private function hasParentOnTrash ( Entity $entity, $table )
+  private function hasParentOnTrash ( Entity $entity, $row )
   {
     $parent = $entity->getParent();
     if ( $parent ) {
@@ -82,7 +83,7 @@ class TrashModel extends BaseModelAdm
       $parent_tbl = $parent_entity->getTbl();
       $parent_id_field = $parent_entity->getId();
 
-      $parend_id_value = $table[$parent_id_field];
+      $parend_id_value = $row[$parent_id_field];
 
       $select = new Select($parent_tbl);
       $select->addField($parent['title'], 'title');
@@ -105,6 +106,7 @@ class TrashModel extends BaseModelAdm
       $entity_id = $entity->getId();
       $entity_title = $entity->getTitle();
       $entity_tbl = $entity->getTbl();
+      $entity_sequence = $entity->getSequence();
 
       $model = $entity->getModel();
       $tableHistory = $model->getById($item['id']);
@@ -115,16 +117,19 @@ class TrashModel extends BaseModelAdm
       }
       //
 
-      $seq = new SequenceModel($model);
-      $seq->setSequence();
-
       $table = new Table($entity_tbl);
+
+      if ( count($entity_sequence) ) {
+        $seq_filter = new SequenceFilter($table, $this->_dao, $entity);
+        $seq_filter->setSequence();
+      }
+
       $filter = new TableFilter($table, array(
           'is_del' => '0'
       ));
       $filter->setIntval('is_del');
       $filter->setNull('del_date');
-      $this->_dao->update($table, array($$entity_id . ' = ?' => $item['id']));
+      $this->_dao->update($table, array($entity_id . ' = ?' => $item['id']));
 
       $this->log('R', $tableHistory[$entity_title], $table);
     }
@@ -174,8 +179,12 @@ class TrashModel extends BaseModelAdm
         $model->delete(array(array('id' => $entity_id)));
       } else {
 
-        $seq = new SequenceModel($model);
-        $seq->changeSequence($item['id'], 0);
+        $seq = new SequenceModel();
+        $seq->changeSequence(array(
+            'tbl' => $entity_tbl,
+            'id' => $item['id'],
+            'sequence' => 0
+        ));
 
         $this->deleteChildren($entity, $item['id']);
         $tableHistory = $model->getById($item['id']);
@@ -187,7 +196,7 @@ class TrashModel extends BaseModelAdm
         $filter->setTimestamp('del_date');
         $filter->setIntval('is_del');
         $this->_dao->update($table, array($entity_id . ' = ?' => $item['id']));
-        $this->log('T', $tableHistory[$entity_title], $entity_tbl, $tableHistory);
+        $this->log('T', $tableHistory[$entity_title], $table, $tableHistory);
       }
     }
   }
@@ -195,13 +204,13 @@ class TrashModel extends BaseModelAdm
   public function delete_permanent ( $itens )
   {
     foreach ( $itens as $item ) {
-      $current = Entities::getEntityByName($item['name']);
+      $entity = $this->_entities->getEntity($item['name']);
 
-      $model = new $current['model'];
-      $info = $model->getById($item['id']);
+      $model = $entity->getModel();
+      $row = $model->getById($item['id']);
 
       //
-      if ( $parent_title = $this->hasParentOnTrash($current, $info) ) {
+      if ( $parent_title = $this->hasParentOnTrash($entity, $row) ) {
         throw new Exception('Favor excluir o ítem ' . $parent_title . ' primeiro');
       }
       //

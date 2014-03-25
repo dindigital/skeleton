@@ -26,6 +26,14 @@ class SequenceModel extends BaseModelAdm
     $this->_model = $model;
   }
 
+  /**
+   *
+   * @param type $input array (
+   * 'tbl'=>'',
+   * 'id'=>'',
+   * 'sequence'=>''
+   * )
+   */
   public function changeSequence ( $input )
   {
     $this->_entity = $this->_entities->getEntity($input['tbl']);
