@@ -28,9 +28,9 @@ class Entity
 
   public function getModel ()
   {
-    $namespace = '\src\app\admin\models\\';
+    $namespace = '\src\app\admin\models\\' . $this->returnField('model');
 
-    return $namespace . $this->returnField('model');
+    return new $namespace;
   }
 
   public function getSection ()
@@ -56,6 +56,16 @@ class Entity
   public function getChildren ()
   {
     return (array) $this->returnField('children');
+  }
+
+  public function getParent ()
+  {
+    return $this->returnField('parent');
+  }
+
+  public function getSequence ()
+  {
+    return (array) $this->returnField('sequence');
   }
 
   public function getTbl ()

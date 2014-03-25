@@ -55,4 +55,16 @@ class Entities
     return $r;
   }
 
+  public function getSectionItens ()
+  {
+    $r = array();
+    foreach ( $this->_entities as $tbl => $item ) {
+      if ( isset($item['section']) ) {
+        $r[$tbl] = new Entity($tbl, $item);
+      }
+    }
+
+    return $r;
+  }
+
 }
