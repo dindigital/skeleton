@@ -21,7 +21,7 @@ class MailingGroupModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('mailing_group');
+    $this->setEntity('mailing_group');
   }
 
   public function formatTable ( $table )

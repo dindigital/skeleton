@@ -18,7 +18,7 @@ class SocialmediaCredentialsModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('socialmedia_credentials');
+    $this->setEntity('socialmedia_credentials');
   }
 
   public function update ( $input )

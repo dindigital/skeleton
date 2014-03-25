@@ -13,7 +13,6 @@ use src\app\admin\validators\StringValidator;
 use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
 
-
 /**
  *
  * @package app.models
@@ -24,7 +23,7 @@ class VideoModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('video');
+    $this->setEntity('video');
   }
 
   public function formatTable ( $table )
@@ -89,7 +88,7 @@ class VideoModel extends BaseModelAdm
     $filter->setString('link_vimeo');
     $filter->setDate('date');
     $filter->setDefaultUri('title', $this->getId());
-    
+
     $this->dao_insert();
 
     $this->relationship('tag', $input['tag']);
@@ -114,7 +113,7 @@ class VideoModel extends BaseModelAdm
     $filter->setDefaultUri('title', $this->getId());
 
     $this->dao_update();
-    
+
     $this->relationship('tag', $input['tag']);
   }
 

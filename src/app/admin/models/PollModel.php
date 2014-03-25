@@ -24,7 +24,7 @@ class PollModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('poll');
+    $this->setEntity('poll');
   }
 
   public function formatTable ( $table )

@@ -26,7 +26,7 @@ class AudioModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('audio');
+    $this->setEntity('audio');
   }
 
   public function formatTable ( $table )
@@ -35,7 +35,7 @@ class AudioModel extends BaseModelAdm
     if ( is_null($table['date']) ) {
       $table['date'] = date('Y-m-d');
     }
-    
+
     $table['file_uploader'] = Form::Upload('file', $table['file'], 'audio');
 
     $table['title'] = Html::scape($table['title']);
@@ -47,7 +47,7 @@ class AudioModel extends BaseModelAdm
 
   public function getList ()
   {
-      
+
     $arrCriteria = array(
         'is_del = ?' => '0',
         'title LIKE ?' => '%' . $this->_filters['title'] . '%'
@@ -59,11 +59,11 @@ class AudioModel extends BaseModelAdm
     $select->addField('title');
     $select->addField('date');
     $select->addField('uri');
-    
+
     $select->left_join('id_soundcloud', Select::construct('soundcloud')
                     ->addFField('has_sc', 'IF (b.id_soundcloud, 1, 0)')
                     ->addField('link', 'soundcloud_link'));
-    
+
     $select->where($arrCriteria);
     $select->order_by('date DESC');
 
@@ -79,13 +79,13 @@ class AudioModel extends BaseModelAdm
 
     return $result;
   }
-  
-    public function getById ( $id = null )
-    {
-                
+
+  public function getById ( $id = null )
+  {
+
     $sc = new SoundCloudModel;
     $sc->getSoundCloudLogin();
-        
+
     if ( $id ) {
       $this->setId($id);
     }
@@ -134,16 +134,16 @@ class AudioModel extends BaseModelAdm
     $filter->setString('description');
     $filter->setDate('date');
     $filter->setDefaultUri('title', $this->getId());
-    
+
     $mf = new MoveFiles;
     if ( $has_file ) {
       $filter->setUploaded('file', "/system/uploads/audio/{$this->getId()}/file");
       $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
     }
     $mf->move();
-    
+
     $this->dao_insert();
-    
+
     if ( $input['publish_sc'] == '1' ) {
       $this->save_soundcloud();
     }
@@ -167,7 +167,7 @@ class AudioModel extends BaseModelAdm
     $filter->setString('description');
     $filter->setDate('date');
     $filter->setDefaultUri('title', $this->getId());
-    
+
     //
     $mf = new MoveFiles;
     if ( $has_file ) {
@@ -176,11 +176,10 @@ class AudioModel extends BaseModelAdm
     }
     $mf->move();
     $this->dao_update();
-    
+
     if ( $input['publish_sc'] == '1' ) {
       $this->save_soundcloud();
     }
-    
   }
 
   public function formatFilters ()
@@ -188,32 +187,33 @@ class AudioModel extends BaseModelAdm
     $this->_filters['title'] = Html::scape($this->_filters['title']);
     return $this->_filters;
   }
-  
-  protected function save_soundcloud($delete_previous = false) {
-        
-      $row = $this->getById();
 
-        // arquivo que acabou de subir ou arquivo previamente gravado
-        if ( !$file = $this->_table->file ) {
-          $file = $row['file'];
-        }
+  protected function save_soundcloud ( $delete_previous = false )
+  {
 
-        $previous_id = $row['id_soundcloud'];
+    $row = $this->getById();
 
-        if ( $file ) {
-          $title = $this->_table->title;
+    // arquivo que acabou de subir ou arquivo previamente gravado
+    if ( !$file = $this->_table->file ) {
+      $file = $row['file'];
+    }
 
-          $pathinfo = pathinfo($file);
-          if ( 'mp3' != $pathinfo['extension'] ) {
-            throw new Exception('Upload no SoundCloud é restringido a arquivos MP3');
-          }
+    $previous_id = $row['id_soundcloud'];
 
-          $soundcloud_model = new SoundCloudModel;
-          $soundcloud_model->insertComplete(array(
-              'file' => $_SERVER['DOCUMENT_ROOT'] . $file,
-              'title' => $title,
-          ));
-        }
+    if ( $file ) {
+      $title = $this->_table->title;
+
+      $pathinfo = pathinfo($file);
+      if ( 'mp3' != $pathinfo['extension'] ) {
+        throw new Exception('Upload no SoundCloud é restringido a arquivos MP3');
+      }
+
+      $soundcloud_model = new SoundCloudModel;
+      $soundcloud_model->insertComplete(array(
+          'file' => $_SERVER['DOCUMENT_ROOT'] . $file,
+          'title' => $title,
+      ));
+    }
   }
 
 }

@@ -27,7 +27,7 @@ class NewsCatModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('news_cat');
+    $this->setEntity('news_cat');
   }
 
   protected function formatTable ( $table )

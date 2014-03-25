@@ -31,7 +31,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('news');
+    $this->setEntity('news');
   }
 
   protected function formatTable ( $table )

@@ -29,7 +29,7 @@ class PublicationModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('publication');
+    $this->setEntity('publication');
   }
 
   public function formatTable ( $table )
