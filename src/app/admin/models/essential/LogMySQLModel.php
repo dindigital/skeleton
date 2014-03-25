@@ -3,10 +3,9 @@
 namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\LogAbstract;
-use src\app\admin\models\essential\LogInterface;
 use Din\DataAccessLayer\Table\Table;
 
-class LogMySQLModel extends LogAbstract implements LogInterface
+class LogMySQLModel extends LogAbstract
 {
 
   protected $_table;
@@ -16,13 +15,12 @@ class LogMySQLModel extends LogAbstract implements LogInterface
     $this->_table = new Table('log');
   }
 
-  public static function save ( $dao, $admin, $action, $msg, $name, $table, $tableHistory )
+  public static function save ( $dao, $admin, $action, $msg, Table $table, $tableHistory )
   {
     $log = new self;
     $log->_dao = $dao;
     $log->admin = $admin;
     $log->msg = $msg;
-    $log->name = $name;
     $log->table = $table;
     $log->tableHistory = $tableHistory;
 
@@ -32,7 +30,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
   public function insert ()
   {
     $this->_table->admin = $this->admin['name'];
-    $this->_table->name = $this->name;
+    $this->_table->tbl = $this->table->getName();
     $this->_table->action = 'C';
     $this->_table->description = $this->msg;
     $this->_table->content = json_encode($this->table->setted_values);
@@ -62,7 +60,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
     }
 
     $this->_table->admin = $this->admin['name'];
-    $this->_table->name = $this->name;
+    $this->_table->tbl = $this->table->getName();
     $this->_table->action = 'U';
     $this->_table->description = $this->msg;
     $this->_table->content = $content;
@@ -74,7 +72,7 @@ class LogMySQLModel extends LogAbstract implements LogInterface
   public function deleteRestore ( $action )
   {
     $this->_table->admin = $this->admin['name'];
-    $this->_table->name = $this->name;
+    $this->_table->tbl = $this->table->getName();
     $this->_table->action = $action;
     $this->_table->description = $this->msg;
     $this->_table->content = json_encode($this->tableHistory);

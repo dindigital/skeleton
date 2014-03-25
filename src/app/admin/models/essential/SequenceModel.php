@@ -3,30 +3,33 @@
 namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\BaseModelAdm;
-use src\app\admin\helpers\Entities;
 use Din\DataAccessLayer\Select;
+use src\app\admin\filters\TableFilter;
+use Din\DataAccessLayer\Table\Table;
 
 class SequenceModel extends BaseModelAdm
 {
-  /*
-   * ===========================================================================
-   * PROTECTED
-   * ===========================================================================
-   */
 
   protected $_model;
 
+  public function __construct ( $model )
+  {
+    parent::__construct();
+    $this->_model = $model;
+  }
+
   protected function getMaxSequence ( $arrCriteria = array() )
   {
-    $current = Entities::getThis($this->_model);
+    $entity_tbl = $this->_model->_entity->getTbl();
+    $entity_sequence = $this->_model->_entity->getSequence();
 
-    $select = new Select($current['tbl']);
+    $select = new Select($entity_tbl);
 
-    if ( $current['sequence']['optional'] ) {
+    if ( $entity_sequence['optional'] ) {
       $arrCriteria['sequence > ?'] = '0';
     }
 
-    if ( isset($current['trash']) ) {
+    if ( $this->_entity->hasTrash() ) {
       $arrCriteria['is_del = 0'] = null;
     }
 
@@ -37,9 +40,9 @@ class SequenceModel extends BaseModelAdm
 
   protected function operateSequence ( $operator, $arrCriteria )
   {
-    $current = Entities::getThis($this->_model);
+    $entity_tbl = $this->_model->_entity->getTbl();
 
-    $SQL = "UPDATE {$current['tbl']} SET sequence = sequence {$operator} 1";
+    $SQL = "UPDATE {$entity_tbl} SET sequence = sequence {$operator} 1";
     $result = $this->_dao->execute($SQL, $arrCriteria);
 
     return $result;
@@ -47,39 +50,32 @@ class SequenceModel extends BaseModelAdm
 
   protected function updateSequence ( $sequence, $id )
   {
-    $current = Entities::getThis($this->_model);
+    $entity_id = $this->_model->_entity->getId();
+    $entity_tbl = $this->_model->_entity->getTbl();
 
-    $this->_model->setIntval('sequence', $sequence);
-    $this->_model->setId($id);
+    $table = new Table($entity_tbl);
+    $filter = new TableFilter($table, array(
+        'sequence' => $sequence
+    ));
+    $filter->setIntval('sequence');
 
-    $this->_dao->update($this->_model->getTable(), array($current['id'] . ' = ? ' => $id));
-  }
-
-  /*
-   * ===========================================================================
-   * PUBLIC
-   * ===========================================================================
-   */
-
-  public function __construct ( $model )
-  {
-    parent::__construct();
-    $this->_model = $model;
+    $this->_dao->update($table, array($entity_id . ' = ? ' => $id));
   }
 
   public function setSequence ( $result = null )
   {
-    $current = Entities::getThis($this->_model);
-    if ( !isset($current['sequence']) )
+    $entity_sequence = $this->_model->_entity->getSequence();
+
+    if ( !count($entity_sequence) )
       return $result;
 
     $arrCriteria = array();
 
-    if ( $current['sequence']['optional'] ) {
+    if ( $entity_sequence['optional'] ) {
       $this->_model->setIntval('sequence', 0);
     } else {
-      if ( isset($current['sequence']['dependence']) ) {
-        $dependence_field = $current['sequence']['dependence'];
+      if ( isset($entity_sequence['dependence']) ) {
+        $dependence_field = $entity_sequence['dependence'];
         $dependence_value = $result ? $result[$dependence_field] : $this->_model->getTable()->{$dependence_field};
 
         if ( is_null($dependence_value) ) {
@@ -97,13 +93,15 @@ class SequenceModel extends BaseModelAdm
 
   public function setListArray ( $result, $arrCriteria )
   {
-    $current = Entities::getThis($this->_model);
-    if ( !isset($current['sequence']) )
+    $entity = $this->_model->_entity;
+    $entity_sequence = $entity->getSequence();
+
+    if ( !count($entity_sequence) )
       return $result;
 
     $dependenceCriteria = array();
-    if ( isset($current['sequence']['dependence']) ) {
-      $dependence_field = $current['sequence']['dependence'];
+    if ( isset($entity_sequence['dependence']) ) {
+      $dependence_field = $entity_sequence['dependence'];
 
       foreach ( $arrCriteria as $field => $value ) {
         if ( strpos($field, $dependence_field) !== false ) {
@@ -117,7 +115,7 @@ class SequenceModel extends BaseModelAdm
     }
 
     $total = $this->getMaxSequence($dependenceCriteria);
-    $optional = $current['sequence']['optional'];
+    $optional = $entity_sequence['optional'];
 
     $options = array();
 
@@ -146,9 +144,10 @@ class SequenceModel extends BaseModelAdm
 
   public function changeSequence ( $id, $sequence )
   {
-    $current = Entities::getThis($this->_model);
+    $entity = $this->_model->_entity;
+    $entity_sequence = $entity->getSequence();
 
-    if ( !isset($current['sequence']) )
+    if ( !count($entity_sequence) )
       return;
 
     $result = $this->_model->getById($id);
@@ -157,12 +156,12 @@ class SequenceModel extends BaseModelAdm
 
     $arrCriteria = array();
 
-    if ( isset($current['trash']) && $current['trash'] ) {
-      $arrCriteria['is_del = 0'] = null;
+    if ( $entity->hasTrash() ) {
+      $arrCriteria['is_del = ?'] = '0';
     }
 
-    if ( isset($current['sequence']['dependence']) ) {
-      $dependence_field = $current['sequence']['dependence'];
+    if ( isset($entity_sequence['dependence']) ) {
+      $dependence_field = $entity_sequence['dependence'];
       $dependence_value = $result[$dependence_field];
 
       if ( is_null($dependence_value) ) {

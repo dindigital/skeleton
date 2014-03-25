@@ -10,6 +10,7 @@ use Din\File\Folder;
 use Exception;
 use src\app\admin\models\essential\LogMySQLModel as log;
 use Din\DataAccessLayer\Table\Table;
+use src\app\admin\helpers\Entity;
 
 class BaseModelAdm
 {
@@ -97,29 +98,32 @@ class BaseModelAdm
    * ===========================================================================
    */
 
-  public function deleteChildren ( $tbl, $id )
+  public function deleteChildren ( Entity $entity, $id )
   {
-    $children = $this->_entity->getChildren();
+    $entity_id = $entity->getId();
+    $children = $entity->getChildren();
 
     foreach ( $children as $child ) {
-      $child = $this->_entities->getEntity($child);
+      $child_entity = $this->_entities->getEntity($child);
+      $child_tbl = $child_entity->getTbl();
+      $child_id = $child_entity->getId();
+      $child_model = $child_entity->getModel();
 
-      $select = new Select($child->getTbl());
-      $select->addField($child->getId(), 'id_children');
+      $select = new Select($child_tbl);
+      $select->addField($child_id, 'id_children');
       $select->where(array(
-          $current['id'] . ' = ? ' => $id
+          $entity_id . ' = ? ' => $id
       ));
       $result = $this->_dao->select($select);
 
       $arr_delete = array();
       foreach ( $result as $row ) {
         $arr_delete[] = array(
-            'id' => $row['id_children']
+            'name' => $child_tbl,
+            'id' => $row['id_children'],
         );
       }
 
-      $model = $child->getModel();
-      $child_model = new $model;
       $child_model->delete($arr_delete);
     }
   }
@@ -200,29 +204,15 @@ class BaseModelAdm
     return $this->getId();
   }
 
-  /**
-    public function getCount ( $id )
-    {
-    $current = Entities::getThis($this);
-
-    $arrCriteria = array(
-    $current['id'] . ' = ?' => $id
-    );
-
-    $select = new Select($current['tbl']);
-    $select->where($arrCriteria);
-
-    $result = $this->_dao->select_count($select);
-
-    return $result;
-    }
-   */
   protected function dao_insert ( $log = true )
   {
     $this->_dao->insert($this->_table);
 
     if ( $log ) {
-      $this->log('C', $this->_table->{$this->_entity->getTitle()}, $this->_table);
+      $title = $this->_entity->getTitle();
+      $msg = $this->_table->{$title};
+
+      $this->log('C', $msg, $this->_table);
     }
   }
 
@@ -235,7 +225,10 @@ class BaseModelAdm
     $this->_dao->update($this->_table, array("{$this->getIdName()} = ?" => $this->getId()));
 
     if ( $log ) {
-      $this->log('U', $this->_table->{$this->_entity->getTitle()}, $this->_table, $tableHistory);
+      $title = $this->_entity->getTitle();
+      $msg = $this->_table->{$title};
+
+      $this->log('U', $msg, $this->_table, $tableHistory);
     }
   }
 
@@ -245,16 +238,12 @@ class BaseModelAdm
    * ===========================================================================
    */
 
-  public function log ( $action, $msg, $table, $tableHistory = null, $entityname = null )
+  protected function log ( $action, $msg, Table $table, $tableHistory = null )
   {
     $adminAuth = new AdminAuthModel();
     $admin = $adminAuth->getUser();
 
-    if ( is_null($entityname) ) {
-      $entityname = $this->_entity->getTbl();
-    }
-
-    log::save($this->_dao, $admin, $action, $msg, $entityname, $table, $tableHistory);
+    log::save($this->_dao, $admin, $action, $msg, $table, $tableHistory);
   }
 
   public function setFilters ( Array $filters )
