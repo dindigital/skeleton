@@ -1,12 +1,12 @@
 <?php
 
-namespace src\app\admin\filters;
+namespace src\app\admin\helpers;
 
 use src\app\admin\helpers\Entity;
 use Din\DataAccessLayer\DAO;
 use Din\DataAccessLayer\Select;
 
-class SequenceListFilter extends BaseFilter
+class SequenceResult
 {
 
   protected $_entity;
