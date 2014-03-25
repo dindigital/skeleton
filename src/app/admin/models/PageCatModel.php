@@ -15,6 +15,7 @@ use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
 use Din\Exception\JsonException;
 use src\app\admin\filters\TableFilter;
+use src\app\admin\filters\SequenceFilter;
 
 /**
  *
@@ -91,6 +92,10 @@ class PageCatModel extends BaseModelAdm
     $filter->setString('description');
     $filter->setString('keywords');
     //
+    $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
+    $seq_filter->setSequence();
+
+    //
     $mf = new MoveFiles;
     if ( $has_cover ) {
       $filter->setUploaded('cover', "/system/uploads/page_cat/{$this->getId()}/cover");
@@ -98,8 +103,8 @@ class PageCatModel extends BaseModelAdm
     }
     $mf->move();
 
-    $seq = new SequenceModel($this);
-    $seq->setSequence();
+//    $seq = new SequenceModel($this);
+//    $seq->setSequence();
 
     $this->dao_insert();
   }

@@ -26,7 +26,7 @@ class LogController extends BaseControllerAdm
     $arrFilters = array(
         'admin' => Get::text('admin'),
         'action' => Get::text('action'),
-        'name' => Get::text('name'),
+        'tbl' => Get::text('tbl'),
         'description' => Get::text('description'),
         'pag' => Get::text('pag'),
     );
