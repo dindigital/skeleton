@@ -21,7 +21,7 @@ class ActiveController
 
   public function post_change ()
   {
-    $this->_model->setModelByName(Post::text('name'));
+    $this->_model->setModelByTbl(Post::text('name'));
     $this->_model->toggleActive(Post::text('id'), Post::checkbox('active'));
   }
 

@@ -2,122 +2,69 @@
 
 namespace src\app\admin\helpers;
 
+use src\app\admin\helpers\Entity;
 use Din\File\Files;
 use Exception;
 
 class Entities
 {
 
-  public static $entities;
+  protected $_entities;
 
-  public static function readFile ( $file )
+  public function __construct ( $file )
+  {
+    $this->setEntities($file);
+  }
+
+  protected function setEntities ( $file )
   {
     if ( !Files::exists($file) )
       throw new Exception('Arquivo de entidades não encontrado: ' . $file);
 
-    self::$entities = Files::get_return($file);
-    self::understandEntities();
+    $this->_entities = Files::get_return($file);
   }
 
-  private static function understandEntities ()
+  public function getEntity ( $tbl )
   {
-    foreach ( self::$entities as $i => $entity ) {
-      $add_path = in_array($entity['name'], array('Gallery', 'Log')) ? '\essential' : '';
-
-      self::$entities[$i]['model'] = '\src\app\admin\models' . $add_path . '\\' . $entity['name'] . 'Model';
-      self::$entities[$i]['tbl'] = $i;
-      //self::$entities[$i]['validator'] = '\src\app\admin\validators\\' . $entity['name'] . 'Validator';
-    }
-  }
-
-  public static function getTrashItens ()
-  {
-    $r = self::$entities;
-    foreach ( self::$entities as $tbl => $item ) {
-      if ( !(isset($item['trash']) && $item['trash']) ) {
-        unset($r[$tbl]);
-      }
-    }
-
-    return $r;
-  }
-
-  public static function getEntity ( $tbl )
-  {
-    if ( array_key_exists($tbl, self::$entities) ) {
-      return self::$entities[$tbl];
+    if ( array_key_exists($tbl, $this->_entities) ) {
+      return new Entity($tbl, $this->_entities[$tbl]);
     } else {
-      throw new Exception('Entidade não cadastrada: ' . $tbl);
+      throw new Exception('Entidade desconhecida: ' . $tbl);
     }
   }
 
-  public static function getEntityByName ( $name )
-  {
-    $r = '';
-    foreach ( self::$entities as $tbl ) {
-      if ( $tbl['name'] == $name ) {
-        $r = $tbl;
-        break;
-      }
-    }
-
-    if ( $r == '' )
-      throw new Exception('Entidade não cadastrada: ' . $name);
-
-    return $r;
-  }
-
-  public static function getThis ( $model )
-  {
-    $namespace = '\\' . get_class($model);
-
-    $r = '';
-    foreach ( self::$entities as $tbl ) {
-      if ( $tbl['model'] == $namespace ) {
-        $r = $tbl;
-        break;
-      }
-    }
-
-    if ( $r == '' ) {
-      foreach ( self::$entities as $tbl ) {
-        if ( isset($tbl['names']) ) {
-          foreach ( $tbl['names'] as $names ) {
-            if ( $names == $namespace ) {
-              $r = $tbl;
-              break;
-            }
-          }
-        }
-      }
-    }
-
-    if ( $r == '' )
-      throw new Exception('Model não cadastrado na entidade: ' . $namespace);
-
-    return $r;
-  }
-
-  public static function getChildren ( $tbl )
+  public function getAllEntities ()
   {
     $r = array();
+    foreach ( $this->_entities as $tbl => $item ) {
+      $r[$tbl] = new Entity($tbl, $item);
+    }
 
-    $current = self::getEntity($tbl);
-    if ( array_key_exists('children', $current) ) {
-      foreach ( $current['children'] as $children ) {
-        $r[$children] = self::$entities[$children];
+    return $r;
+  }
+
+  public function getTrashItens ()
+  {
+    $r = array();
+    foreach ( $this->_entities as $tbl => $item ) {
+      if ( isset($item['trash']) && $item['trash'] ) {
+        $r[$tbl] = new Entity($tbl, $item);
       }
     }
 
     return $r;
   }
 
-  public static function getParent ( $tbl )
+  public function getSectionItens ()
   {
-    $current = self::getEntity($tbl);
-    if ( array_key_exists('parent', $current) ) {
-      return self::$entities[$current['parent']];
+    $r = array();
+    foreach ( $this->_entities as $tbl => $item ) {
+      if ( isset($item['section']) ) {
+        $r[$tbl] = new Entity($tbl, $item);
+      }
     }
+
+    return $r;
   }
 
 }

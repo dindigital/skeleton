@@ -50,7 +50,7 @@ class VideoController extends BaseControllerAdm
         'uri'
     );
 
-    $this->_data['table'] = $id ? $this->_model->getById() : $this->getPrevious($excluded_fields);
+    $this->_data['table'] = $id ? $this->_model->getRow() : $this->getPrevious($excluded_fields);
 
     $this->setSaveTemplate('video_save.phtml');
   }

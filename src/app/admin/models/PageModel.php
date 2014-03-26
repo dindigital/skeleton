@@ -17,6 +17,8 @@ use src\app\admin\validators\DBValidator;
 use Din\Exception\JsonException;
 use src\app\admin\filters\TableFilter;
 use Exception;
+use src\app\admin\filters\SequenceFilter;
+use src\app\admin\helpers\SequenceResult;
 
 /**
  *
@@ -28,7 +30,7 @@ class PageModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('page');
+    $this->setEntity('page');
   }
 
   public function formatTable ( $table )
@@ -91,8 +93,10 @@ class PageModel extends BaseModelAdm
     $this->setPaginationSelect($select);
 
     $result = $this->_dao->select($select);
-    $seq = new SequenceModel($this);
-    $result = $seq->setListArray($result, $arrCriteria);
+
+    $seq = new SequenceResult($this->_entity, $this->_dao);
+    $result = $seq->filterResult($result, $arrCriteria);
+    //
 
     foreach ( $result as $i => $row ) {
       $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
@@ -129,15 +133,15 @@ class PageModel extends BaseModelAdm
     $filter->setString('keywords');
     $filter->setDefaultUri('title', $this->getId());
     //
+    $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
+    $seq_filter->setSequence();
+    //
     $mf = new MoveFiles;
     if ( $has_cover ) {
       $filter->setUploaded('cover', "/system/uploads/page/{$this->getId()}/cover");
       $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
     }
     $mf->move();
-
-    $seq = new SequenceModel($this);
-    $seq->setSequence();
 
     $this->dao_insert();
   }

@@ -5,6 +5,7 @@ namespace src\app\admin\models;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\filters\TableFilter;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -18,7 +19,7 @@ class SocialmediaCredentialsModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('socialmedia_credentials');
+    $this->setEntity('socialmedia_credentials');
   }
 
   public function update ( $input )
@@ -40,6 +41,8 @@ class SocialmediaCredentialsModel extends BaseModelAdm
     $filter->setString('youtube_id');
     $filter->setString('youtube_secret');
     $filter->setString('youtube_token');
+
+    JsonException::throwException();
 
     $this->dao_update(false);
   }

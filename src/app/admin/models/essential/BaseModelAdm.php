@@ -10,9 +10,7 @@ use Din\File\Folder;
 use Exception;
 use src\app\admin\models\essential\LogMySQLModel as log;
 use Din\DataAccessLayer\Table\Table;
-use Din\UrlShortener\Bitly\Bitly;
-use Din\Filters\String\Uri;
-use Din\Filters\String\LimitChars;
+use src\app\admin\helpers\Entity;
 
 class BaseModelAdm
 {
@@ -22,18 +20,27 @@ class BaseModelAdm
   protected $_itens_per_page = 20;
   protected $_table;
   protected $_filters;
+  protected $_id;
+  protected $_entities;
+  public $_entity;
 
   public function __construct ()
   {
     $this->_dao = new DAO(PDOBuilder::build(DB_TYPE, DB_HOST, DB_SCHEMA, DB_USER, DB_PASS));
-    Entities::readFile('config/entities.php');
+    $this->_entities = new Entities('config/entities.php');
   }
 
   /*
    * ===========================================================================
-   * SETTERS FOR TABLE
+   * TABLE
    * ===========================================================================
    */
+
+  public function setEntity ( $tablename )
+  {
+    $this->_entity = $this->_entities->getEntity($tablename);
+    $this->setTable($tablename);
+  }
 
   public function setTable ( $tablename )
   {
@@ -45,77 +52,26 @@ class BaseModelAdm
     return $this->_table;
   }
 
-  public function setNewId ()
-  {
-    $this->setId(md5(uniqid()));
-  }
-
   public function getIdName ()
   {
-    $entity = Entities::getThis($this);
-    $property = $entity['id'];
+    $property = $this->_entity->getId();
 
     return $property;
   }
 
+  public function getTableName ()
+  {
+    return $this->_table->getName();
+  }
+
   public function setId ( $id )
   {
-    $property = $this->getIdName();
-    $this->_table->{$property} = $id;
+    $this->_table->{$this->getIdName()} = $id;
   }
 
   public function getId ()
   {
-    $property = $this->getIdName();
-
-    return $this->_table->{$property};
-  }
-
-  public function setIntval ( $field, $value )
-  {
-    $value = intval($value);
-
-    $this->_table->{$field} = $value;
-  }
-
-  public function setTimestamp ( $field )
-  {
-    $this->_table->{$field} = date('Y-m-d H:i:s');
-  }
-
-  /**
-   * Adiciona o valor do campo LINK na tabela, seguindo o padrão de desenvolvimento.
-   * Caso haja necessidade de criação de um link diferente, criar um método setLink
-   * no validator da própria tabela.
-   * @param String $title - Titulo do conteúdo (obrigatório)
-   * @param String $prefix - Prefixo para formar o padrão da URI, caso não adicione nada
-   *                      o link ficará como "/titulo-id/". Adicionando a string:
-   *                      "flores/rosas", teremos "/flores/rosas/titulo-id/"
-   * @param String $link - Usado no editar, possibilita que o administrador altere
-   *                       a formação do link (area do título), mantendo o
-   *                       padrão (prefixo e id).
-   */
-  public function setDefaultUri ( $title, $prefix = '', $uri = null )
-  {
-    $id = substr($this->getId(), 0, 4);
-    $uri = is_null($uri) || $uri == '' ? Uri::format($title) : Uri::format($uri);
-    $uri = LimitChars::filter($uri, 80, '');
-    if ( $prefix != '' ) {
-      $prefix = '/' . $prefix;
-    }
-    $this->_table->uri = "{$prefix}/{$uri}-{$id}/";
-  }
-
-  public function setShortenerLink ()
-  {
-    if ( URL && BITLY && $this->_table->uri ) {
-      $url = URL . $this->_table->uri;
-      $bitly = new Bitly(BITLY);
-      $bitly->shorten($url);
-      if ( $bitly->check() ) {
-        $this->_table->short_link = $bitly;
-      }
-    }
+    return $this->_table->{$this->getIdName()};
   }
 
   /*
@@ -142,27 +98,32 @@ class BaseModelAdm
    * ===========================================================================
    */
 
-  public function deleteChildren ( $tbl, $id )
+  public function deleteChildren ( Entity $entity, $id )
   {
-    $current = Entities::getEntity($tbl);
-    $children = Entities::getChildren($tbl);
+    $entity_id = $entity->getId();
+    $children = $entity->getChildren();
 
     foreach ( $children as $child ) {
-      $select = new Select($child['tbl']);
-      $select->addField($child['id'], 'id_children');
+      $child_entity = $this->_entities->getEntity($child);
+      $child_tbl = $child_entity->getTbl();
+      $child_id = $child_entity->getId();
+      $child_model = $child_entity->getModel();
+
+      $select = new Select($child_tbl);
+      $select->addField($child_id, 'id_children');
       $select->where(array(
-          $current['id'] . ' = ? ' => $id
+          $entity_id . ' = ? ' => $id
       ));
       $result = $this->_dao->select($select);
 
       $arr_delete = array();
       foreach ( $result as $row ) {
         $arr_delete[] = array(
-            'id' => $row['id_children']
+            'name' => $child_tbl,
+            'id' => $row['id_children'],
         );
       }
 
-      $child_model = new $child['model'];
       $child_model->delete($arr_delete);
     }
   }
@@ -170,15 +131,17 @@ class BaseModelAdm
   public function delete ( $itens )
   {
     foreach ( $itens as $item ) {
-      $current = Entities::getThis($this);
+      $id = $this->_entity->getId();
+      $tbl = $this->_entity->getTbl();
+      $title = $this->_entity->getTitle();
 
       $tableHistory = $this->getById($item['id']);
-      $this->deleteChildren($current['tbl'], $item['id']);
+      $this->deleteChildren($this->_entity, $item['id']);
 
-      Folder::delete("public/system/uploads/{$current['tbl']}/{$item['id']}");
-      $this->_dao->delete($current['tbl'], array($current['id'] . ' = ?' => $item['id']));
-      if ( isset($current['title']) ) {
-        $this->log('D', $tableHistory[$current['title']], $current['tbl'], $tableHistory);
+      Folder::delete("public/system/uploads/{$tbl}/{$item['id']}");
+      $this->_dao->delete($tbl, array($id . ' = ?' => $item['id']));
+      if ( isset($title) ) {
+        $this->log('D', $tableHistory[$title], $this->_table, $tableHistory);
       }
     }
   }
@@ -189,13 +152,11 @@ class BaseModelAdm
       $this->setId($id);
     }
 
-    $current = Entities::getThis($this);
-
     $arrCriteria = array(
-        $current['id'] . ' = ?' => $this->getId()
+        $this->getIdName() . ' = ?' => $this->getId()
     );
 
-    $select = new Select($current['tbl']);
+    $select = new Select($this->getTableName());
     $select->addAllFields();
     $select->where($arrCriteria);
 
@@ -204,16 +165,19 @@ class BaseModelAdm
     if ( !count($result) )
       throw new Exception('Registro não encontrado.');
 
-    $row = $this->formatTable($result[0]);
+    return $result[0];
+  }
+
+  public function getRow ( $id = null )
+  {
+    $row = $this->formatTable($this->getById($id));
 
     return $row;
   }
 
   public function getNew ()
   {
-    $current = Entities::getThis($this);
-
-    $SQL = "DESCRIBE {$current['tbl']}";
+    $SQL = "DESCRIBE {$this->getTableName()}";
 
     $result = $this->_dao->execute($SQL, array(), true);
 
@@ -244,44 +208,31 @@ class BaseModelAdm
     return $this->getId();
   }
 
-  public function getCount ( $id )
-  {
-    $current = Entities::getThis($this);
-
-    $arrCriteria = array(
-        $current['id'] . ' = ?' => $id
-    );
-
-    $select = new Select($current['tbl']);
-    $select->where($arrCriteria);
-
-    $result = $this->_dao->select_count($select);
-
-    return $result;
-  }
-
   protected function dao_insert ( $log = true )
   {
     $this->_dao->insert($this->_table);
 
     if ( $log ) {
-      $current = Entities::getThis($this);
-      $this->log('C', $this->_table->{$current['title']}, $this->_table);
+      $title = $this->_entity->getTitle();
+      $msg = $this->_table->{$title};
+
+      $this->log('C', $msg, $this->_table);
     }
   }
 
   public function dao_update ( $log = true )
   {
-    $current = Entities::getThis($this);
-
     if ( $log ) {
       $tableHistory = $this->getById();
     }
 
-    $this->_dao->update($this->_table, array("{$current['id']} = ?" => $this->getId()));
+    $this->_dao->update($this->_table, array("{$this->getIdName()} = ?" => $this->getId()));
 
     if ( $log ) {
-      $this->log('U', $this->_table->{$current['title']}, $this->_table, $tableHistory);
+      $title = $this->_entity->getTitle();
+      $msg = $this->_table->{$title};
+
+      $this->log('U', $msg, $this->_table, $tableHistory);
     }
   }
 
@@ -291,17 +242,12 @@ class BaseModelAdm
    * ===========================================================================
    */
 
-  public function log ( $action, $msg, $table, $tableHistory = null, $entityname = null )
+  protected function log ( $action, $msg, Table $table, $tableHistory = null )
   {
     $adminAuth = new AdminAuthModel();
     $admin = $adminAuth->getUser();
 
-    if ( is_null($entityname) ) {
-      $entities = Entities::getThis($this);
-      $entityname = $entities['name'];
-    }
-
-    log::save($this->_dao, $admin, $action, $msg, $entityname, $table, $tableHistory);
+    log::save($this->_dao, $admin, $action, $msg, $table, $tableHistory);
   }
 
   public function setFilters ( Array $filters )

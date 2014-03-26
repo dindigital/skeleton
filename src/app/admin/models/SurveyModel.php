@@ -24,7 +24,7 @@ class SurveyModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('survey');
+    $this->setEntity('survey');
   }
 
   public function formatTable ( $table )

@@ -3,7 +3,6 @@
 namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\BaseModelAdm;
-use src\app\admin\helpers\Entities;
 use Din\DataAccessLayer\Select;
 use Din\DataAccessLayer\Table\Table;
 
@@ -19,7 +18,7 @@ class RelationshipModel extends BaseModelAdm
    */
   public function setCurrentEntity ( $tbl )
   {
-    $this->_current_entity = Entities::getEntity($tbl);
+    $this->_current_entity = $this->_entities->getEntity($tbl);
   }
 
   /**
@@ -28,7 +27,7 @@ class RelationshipModel extends BaseModelAdm
    */
   public function setForeignEntity ( $tbl )
   {
-    $this->_foreign_entity = Entities::getEntity($tbl);
+    $this->_foreign_entity = $this->_entities->getEntity($tbl);
   }
 
   /**
@@ -39,17 +38,21 @@ class RelationshipModel extends BaseModelAdm
    */
   public function getAjax ( $q )
   {
-    $arrCriteria["{$this->_foreign_entity['title']} LIKE ?"] = '%' . $q . '%';
+    $fe_tbl = $this->_foreign_entity->getTbl();
+    $fe_title = $this->_foreign_entity->getTitle();
+    $fe_id = $this->_foreign_entity->getId();
 
-    if ( isset($this->_foreign_entity['trash']) && $this->_foreign_entity['trash'] == true ) {
+    $arrCriteria["{$fe_title} LIKE ?"] = '%' . $q . '%';
+
+    if ( $this->_foreign_entity->hasTrash() ) {
       $arrCriteria['is_del = ?'] = '0';
     }
 
-    $select = new Select($this->_foreign_entity['tbl']);
-    $select->addField($this->_foreign_entity['id'], 'id');
-    $select->addField($this->_foreign_entity['title'], 'text');
+    $select = new Select($fe_tbl);
+    $select->addField($fe_id, 'id');
+    $select->addField($fe_title, 'text');
     $select->where($arrCriteria);
-    $select->order_by($this->_foreign_entity['title']);
+    $select->order_by($fe_title);
 
     $result = $this->_dao->select($select);
 
@@ -63,19 +66,25 @@ class RelationshipModel extends BaseModelAdm
    */
   public function getAjaxCurrent ( $id )
   {
+    $ce_tbl = $this->_current_entity->getTbl();
+    $ce_id = $this->_current_entity->getId();
 
-    $tableRelationship = "r_{$this->_current_entity['tbl']}_{$this->_foreign_entity['tbl']}";
+    $fe_tbl = $this->_foreign_entity->getTbl();
+    $fe_id = $this->_foreign_entity->getId();
+    $fe_title = $this->_foreign_entity->getTitle();
 
-    $arrCriteria["{$this->_current_entity['id']} = ?"] = $id;
+    $tableRelationship = "r_{$ce_tbl}_{$fe_tbl}";
 
-    if ( isset($this->_foreign_entity['trash']) && $this->_current_entity['trash'] == true ) {
+    $arrCriteria["{$ce_id} = ?"] = $id;
+
+    if ( $this->_foreign_entity->hasTrash() ) {
       $arrCriteria['is_del = ?'] = '0';
     }
 
-    $select = new Select($this->_foreign_entity['tbl']);
-    $select->addField($this->_foreign_entity['id'], 'id');
-    $select->addField($this->_foreign_entity['title'], 'text');
-    $select->inner_join($this->_foreign_entity['id'], Select::construct($tableRelationship));
+    $select = new Select($fe_tbl);
+    $select->addField($fe_id, 'id');
+    $select->addField($fe_title, 'text');
+    $select->inner_join($fe_id, Select::construct($tableRelationship));
     $select->where($arrCriteria);
     $select->order_by('b.sequence');
 
@@ -89,7 +98,7 @@ class RelationshipModel extends BaseModelAdm
     $arrayItem = (trim($item) != '') ? explode(',', $item) : array();
     $arrayId = array();
 
-    $model = new $this->_foreign_entity['model'];
+    $model = $this->_foreign_entity->getModel();
 
     foreach ( $arrayItem as $row ) {
       if ( $this->count($row) ) {
@@ -121,10 +130,13 @@ class RelationshipModel extends BaseModelAdm
 
   private function count ( $row )
   {
-    $arrCriteria["{$this->_foreign_entity['id']} = ?"] = $row;
+    $fe_tbl = $this->_foreign_entity->getTbl();
+    $fe_id = $this->_foreign_entity->getId();
 
-    $select = new Select($this->_foreign_entity['tbl']);
-    $select->addField($this->_foreign_entity['id']);
+    $arrCriteria["{$fe_id} = ?"] = $row;
+
+    $select = new Select($fe_tbl);
+    $select->addField($fe_id);
     $select->where($arrCriteria);
 
     $result = $this->_dao->select($select);
@@ -134,10 +146,14 @@ class RelationshipModel extends BaseModelAdm
 
   private function getIdByTitle ( $row )
   {
-    $arrCriteria["{$this->_foreign_entity['title']} = ?"] = $row;
+    $fe_tbl = $this->_foreign_entity->getTbl();
+    $fe_id = $this->_foreign_entity->getId();
+    $fe_title = $this->_foreign_entity->getTitle();
 
-    $select = new Select($this->_foreign_entity['tbl']);
-    $select->addField($this->_foreign_entity['id'], 'id');
+    $arrCriteria["{$fe_title} = ?"] = $row;
+
+    $select = new Select($fe_tbl);
+    $select->addField($fe_id, 'id');
     $select->where($arrCriteria);
 
     $result = $this->_dao->select($select);
@@ -147,11 +163,17 @@ class RelationshipModel extends BaseModelAdm
 
   private function insertRelationship ( $arrayId, $id )
   {
-    $tablename_relationship = "r_{$this->_current_entity['tbl']}_{$this->_foreign_entity['tbl']}";
+    $ce_tbl = $this->_current_entity->getTbl();
+    $ce_id = $this->_current_entity->getId();
+
+    $fe_tbl = $this->_foreign_entity->getTbl();
+    $fe_id = $this->_foreign_entity->getId();
+
+    $tablename_relationship = "r_{$ce_tbl}_{$fe_tbl}";
     $table_relashionship = new Table($tablename_relationship);
 
-    $fieldCurrent = $this->_current_entity['id'];
-    $fieldRelationship = $this->_foreign_entity['id'];
+    $fieldCurrent = $ce_id;
+    $fieldRelationship = $fe_id;
 
     $this->_dao->delete($tablename_relationship, array("{$fieldCurrent} = ?" => $id));
 

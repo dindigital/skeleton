@@ -3,6 +3,7 @@
 namespace src\app\admin\filters;
 
 use Din\DataAccessLayer\Table\Table;
+use Din\Exception\JsonException;
 
 class BaseFilter
 {

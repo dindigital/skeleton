@@ -21,7 +21,7 @@ class CustomerModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('customer');
+    $this->setEntity('customer');
   }
 
   public function formatTable ( $table )

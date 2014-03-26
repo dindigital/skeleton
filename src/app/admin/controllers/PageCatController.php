@@ -24,7 +24,7 @@ class PageCatController extends BaseControllerAdm
 
     $this->_model = new model;
     $this->setEntityData();
-    $this->require_permission();
+    //$this->require_permission();
   }
 
   public function get_list ()
@@ -52,7 +52,7 @@ class PageCatController extends BaseControllerAdm
         'cover',
         'uri'
     );
-    $this->_data['table'] = $id ? $this->_model->getById() : $this->getPrevious($excluded_fields);
+    $this->_data['table'] = $id ? $this->_model->getRow() : $this->getPrevious($excluded_fields);
 
     $this->setSaveTemplate('pagecat_save.phtml');
   }

@@ -49,11 +49,14 @@ class SocialmediaCredentialsController extends BaseControllerAdm
           'sc_client_id' => Post::text('sc_client_id'),
           'sc_client_secret' => Post::text('sc_client_secret'),
           'sc_token' => Post::text('sc_token'),
+<<<<<<< HEAD
           'youtube_id' => Post::text('youtube_id'),
           'youtube_secret' => Post::text('youtube_secret'),
           'youtube_token' => Post::text('youtube_token'),
+=======
+>>>>>>> entities
       );
-      
+
       $this->_model->setId('1');
 
       $this->saveAndRedirect($info);

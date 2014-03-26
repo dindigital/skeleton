@@ -17,7 +17,7 @@ class SurveyQuestionModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('survey_question');
+    $this->setEntity('survey_question');
   }
 
   public function batch_validate ( $array_questions )

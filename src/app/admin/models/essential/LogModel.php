@@ -6,7 +6,6 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Exception;
 use src\app\admin\helpers\PaginatorAdmin;
-use src\app\admin\helpers\Entities;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use src\app\admin\helpers\Arrays;
@@ -22,15 +21,18 @@ class LogModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('log');
+    $this->setEntity('log');
   }
 
   public function formatTable ( $table )
   {
     $table['description'] = Html::scape($table['description']);
-    $table['inc_date'] = DateFormat::filter_date($table['inc_date'], 'd/m/Y H:i:s');
+    $table['inc_date'] = DateFormat::filter_date($table['inc_date'], 'd/m/Y \à\s H:i:s');
     $table['action'] = Arrays::$logAcao[$table['action']];
     $table['cont'] = json_decode($table['content']);
+
+    $entity = $this->_entities->getEntity($table['tbl']);
+    $table['tbl'] = $entity->getSection();
 
     return $table;
   }
@@ -46,8 +48,8 @@ class LogModel extends BaseModelAdm
       $arrCriteria['a.action = ?'] = $this->_filters['action'];
     }
 
-    if ( $this->_filters['name'] != '0' && $this->_filters['name'] != '' ) {
-      $arrCriteria['a.name = ?'] = $this->_filters['name'];
+    if ( $this->_filters['tbl'] != '0' && $this->_filters['tbl'] != '' ) {
+      $arrCriteria['a.tbl = ?'] = $this->_filters['tbl'];
     }
 
     //$arrCriteria['a.name IN (?)'] = array_keys($this->getDropdownName());
@@ -55,7 +57,7 @@ class LogModel extends BaseModelAdm
     $select = new Select('log');
     $select->addField('id_log');
     $select->addField('admin');
-    $select->addField('name');
+    $select->addField('tbl');
     $select->addField('inc_date');
     $select->addField('action');
     $select->addField('description');
@@ -70,8 +72,8 @@ class LogModel extends BaseModelAdm
     foreach ( $result as $i => $row ) {
       $result[$i]['action'] = Arrays::$logAcao[$row['action']];
       $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date'], 'd/m/Y H:i:s');
-      $atual = Entities::getEntityByName($row['name']);
-      $result[$i]['name'] = $atual['section'];
+      $entity = $this->_entities->getEntity($row['tbl']);
+      $result[$i]['tbl'] = $entity->getSection();
     }
 
     return $result;
@@ -106,7 +108,7 @@ class LogModel extends BaseModelAdm
     $this->_filters['admin'] = Html::scape($this->_filters['admin']);
     $this->_filters['description'] = Html::scape($this->_filters['description']);
     $this->_filters['action'] = Form::Dropdown('action', Arrays::$logAcao, $this->_filters['action'], 'Filtro por Ação');
-    $this->_filters['name'] = Form::Dropdown('name', $this->getDropdownName(), $this->_filters['name'], 'Filtro por Seção');
+    $this->_filters['tbl'] = Form::Dropdown('tbl', $this->getDropdownName(), $this->_filters['tbl'], 'Filtro por Seção');
 
     return $this->_filters;
   }
@@ -114,9 +116,11 @@ class LogModel extends BaseModelAdm
   public function getDropdownName ()
   {
     $arrOptions = array();
-    foreach ( Entities::$entities as $row ) {
-      if ( isset($row['section']) && /* isset($row['tbl']) && */ isset($row['name']) )
-        $arrOptions[$row['name']] = $row['section'];
+    foreach ( $this->_entities->getSectionItens() as $entity ) {
+      $entity_tbl = $entity->getTbl();
+      $entity_section = $entity->getSection();
+
+      $arrOptions[$entity_tbl] = $entity_section;
     }
 
     return $arrOptions;

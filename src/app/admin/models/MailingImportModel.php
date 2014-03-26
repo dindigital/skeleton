@@ -22,7 +22,7 @@ class MailingImportModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('mailing');
+    $this->setEntity('mailing');
   }
 
   public function import_xls ( $input )

@@ -6,11 +6,14 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Exception;
 use src\app\admin\helpers\PaginatorAdmin;
-use src\app\admin\helpers\Entities;
 use src\app\admin\models\essential\SequenceModel;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use Din\Filters\String\Html;
+use src\app\admin\filters\TableFilter;
+use src\app\admin\helpers\Entity;
+use Din\DataAccessLayer\Table\Table;
+use src\app\admin\filters\SequenceFilter;
 
 /**
  *
@@ -21,29 +24,28 @@ class TrashModel extends BaseModelAdm
 
   public function getList ()
   {
-    $itens = Entities::getTrashItens();
+    $itens = $this->_entities->getTrashItens();
 
-    if ( $this->_filters['section'] != '0' ) {
-      if ( isset($itens[$this->_filters['section']]) ) {
-        $itens = array($itens[$this->_filters['section']]);
-      }
+    if ( $this->_filters['section'] != '' && $this->_filters['section'] != '0' ) {
+      //if ( isset($itens[$this->_filters['section']]) ) {
+      $itens = array($itens[$this->_filters['section']]);
+      //}
     }
 
     $i = 0;
     foreach ( $itens as $item ) {
 
-      $name = $item['name'];
-      $table_name = $item['tbl'];
-      $id_field = $item['id'];
-      $title_field = $item['title'];
-      $section = $item['section'];
+      $table_name = $item->getTbl();
+      $id_field = $item->getId();
+      $title_field = $item->getTitle();
+      $section = $item->getSection();
 
       $select1 = new Select($table_name);
       $select1->addField($id_field, 'id');
       $select1->addField($title_field, 'title');
       $select1->addField('del_date');
       $select1->addSField('section', $section);
-      $select1->addSField('entity_name', $name);
+      $select1->addSField('entity_name', $table_name);
       $select1->where(array(
           'is_del = 1' => null,
           $title_field . ' LIKE ?' => '%' . $this->_filters['title'] . '%'
@@ -72,14 +74,15 @@ class TrashModel extends BaseModelAdm
     return $result;
   }
 
-  private function hasParentOnTrash ( $current, $table )
+  private function hasParentOnTrash ( Entity $entity, $row )
   {
-    $parent = Entities::getParent($current['tbl']);
+    $parent = $entity->getParent();
     if ( $parent ) {
-      $parent_tbl = $parent['tbl'];
-      $parent_id_field = $parent['id'];
+      $parent_entity = $this->_entities->getEntity($parent);
+      $parent_tbl = $parent_entity->getTbl();
+      $parent_id_field = $parent_entity->getId();
 
-      $parend_id_value = $table[$parent_id_field];
+      $parend_id_value = $row[$parent_id_field];
 
       $select = new Select($parent_tbl);
       $select->addField($parent['title'], 'title');
@@ -98,41 +101,60 @@ class TrashModel extends BaseModelAdm
   public function restore ( $itens )
   {
     foreach ( $itens as $item ) {
-      $current = Entities::getEntityByName($item['name']);
-      $model = new $current['model'];
+      $entity = $this->_entities->getEntity($item['name']);
+      $entity_id = $entity->getId();
+      $entity_title = $entity->getTitle();
+      $entity_tbl = $entity->getTbl();
+      $entity_sequence = $entity->getSequence();
+
+      $model = $entity->getModel();
       $tableHistory = $model->getById($item['id']);
 
       //
-      if ( $parent_title = $this->hasParentOnTrash($current, $tableHistory) ) {
+      if ( $parent_title = $this->hasParentOnTrash($entity, $tableHistory) ) {
         throw new Exception('Favor restaurar o ítem ' . $parent_title . ' primeiro');
       }
       //
 
-      $seq = new SequenceModel($model);
-      $seq->setSequence();
+      $table = new Table($entity_tbl);
 
-      $model->setIntval('is_del', 0);
-      $this->_dao->update($model->getTable(), array($current['id'] . ' = ?' => $item['id']));
-      $this->log('R', $tableHistory[$current['title']], $current['tbl'], null, $current['name']);
+      if ( count($entity_sequence) ) {
+        $seq_filter = new SequenceFilter($table, $this->_dao, $entity);
+        $seq_filter->setSequence();
+      }
+
+      $filter = new TableFilter($table, array(
+          'is_del' => '0'
+      ));
+      $filter->setIntval('is_del');
+      $filter->setNull('del_date');
+      $this->_dao->update($table, array($entity_id . ' = ?' => $item['id']));
+
+      $this->log('R', $tableHistory[$entity_title], $table);
     }
   }
 
-  public function deleteChildren ( $current, $id )
+  public function deleteChildren ( Entity $entity, $id )
   {
-    $children = Entities::getChildren($current['tbl']);
+    $entity_id = $entity->getId();
+    $children = $entity->getChildren();
 
     foreach ( $children as $child ) {
-      $select = new Select($child['tbl']);
-      $select->addField($child['id'], 'id_children');
+      $child_entity = $this->_entities->getEntity($child);
+      $child_tbl = $child_entity->getTbl();
+      $child_id = $child_entity->getId();
+
+      $select = new Select($child_tbl);
+      $select->addField($child_id, 'id_children');
       $select->where(array(
-          $current['id'] . ' = ? ' => $id
+          $entity_id . ' = ? ' => $id
       ));
       $result = $this->_dao->select($select);
 
       $arr_delete = array();
       foreach ( $result as $row ) {
         $arr_delete[] = array(
-            'name' => $child['name'],
+            'name' => $child_tbl,
             'id' => $row['id_children'],
         );
       }
@@ -144,25 +166,39 @@ class TrashModel extends BaseModelAdm
   public function delete ( $itens )
   {
     foreach ( $itens as $item ) {
-      $current = Entities::getEntityByName($item['name']);
+      $entity = $this->_entities->getEntity($item['name']);
+      $entity_id = $entity->getId();
+      $entity_title = $entity->getTitle();
+      $entity_tbl = $entity->getTbl();
+      $entity_sequence = $entity->getSequence();
 
-      $model = new $current['model'];
+      $model = $entity->getModel();
 
       //_# Se ele não possui lixeira, chama o deletar proprio do model
-      if ( !(isset($current['trash']) && $current['trash']) ) {
-        $model->delete(array(array('id' => $item['id'])));
+      if ( !$entity->hasTrash() ) {
+        $model->delete(array(array('id' => $entity_id)));
       } else {
 
-        $seq = new SequenceModel($model);
-        $seq->changeSequence($item['id'], 0);
+        if ( count($entity_sequence) ) {
+          $seq = new SequenceModel();
+          $seq->changeSequence(array(
+              'tbl' => $entity_tbl,
+              'id' => $item['id'],
+              'sequence' => 0
+          ));
+        }
 
-        $this->deleteChildren($current, $item['id']);
+        $this->deleteChildren($entity, $item['id']);
         $tableHistory = $model->getById($item['id']);
 
-        $model->setTimestamp('del_date');
-        $model->setIntval('is_del', 1);
-        $this->_dao->update($model->getTable(), array($current['id'] . ' = ?' => $item['id']));
-        $this->log('T', $tableHistory[$current['title']], $current['tbl'], $tableHistory, $current['name']);
+        $table = new Table($entity_tbl);
+        $filter = new TableFilter($table, array(
+            'is_del' => '1'
+        ));
+        $filter->setTimestamp('del_date');
+        $filter->setIntval('is_del');
+        $this->_dao->update($table, array($entity_id . ' = ?' => $item['id']));
+        $this->log('T', $tableHistory[$entity_title], $table, $tableHistory);
       }
     }
   }
@@ -170,13 +206,13 @@ class TrashModel extends BaseModelAdm
   public function delete_permanent ( $itens )
   {
     foreach ( $itens as $item ) {
-      $current = Entities::getEntityByName($item['name']);
+      $entity = $this->_entities->getEntity($item['name']);
 
-      $model = new $current['model'];
-      $info = $model->getById($item['id']);
+      $model = $entity->getModel();
+      $row = $model->getById($item['id']);
 
       //
-      if ( $parent_title = $this->hasParentOnTrash($current, $info) ) {
+      if ( $parent_title = $this->hasParentOnTrash($entity, $row) ) {
         throw new Exception('Favor excluir o ítem ' . $parent_title . ' primeiro');
       }
       //
@@ -191,8 +227,8 @@ class TrashModel extends BaseModelAdm
   {
     $arrOptions = array();
 
-    foreach ( Entities::getTrashItens() as $model ) {
-      $arrOptions[$model['tbl']] = $model['section'];
+    foreach ( $this->_entities->getTrashItens() as $entity ) {
+      $arrOptions[$entity->getTbl()] = $entity->getSection();
     }
 
     return $arrOptions;

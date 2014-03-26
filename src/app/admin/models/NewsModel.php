@@ -20,6 +20,8 @@ use src\app\admin\validators\UploadValidator;
 use src\app\admin\validators\DBValidator;
 use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
+use src\app\admin\filters\SequenceFilter;
+use src\app\admin\helpers\SequenceResult;
 
 /**
  *
@@ -31,7 +33,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('news');
+    $this->setEntity('news');
   }
 
   protected function formatTable ( $table )
@@ -82,8 +84,8 @@ class NewsModel extends BaseModelAdm implements Facepostable
 
     $result = $this->_dao->select($select);
 
-    $seq = new SequenceModel($this);
-    $result = $seq->setListArray($result, $arrCriteria);
+    $seq_result = new SequenceResult($this->_entity, $this->_dao);
+    $result = $seq_result->filterResult($result, $arrCriteria);
 
     foreach ( $result as $i => $row ) {
       $result[$i]['date'] = DateFormat::filter_date($row['date']);
@@ -119,15 +121,15 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $filter->setString('body');
     $filter->setDefaultUri('title', $this->getId());
     //
+    $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
+    $seq_filter->setSequence();
+    //
     $mf = new MoveFiles;
     if ( $has_cover ) {
       $filter->setUploaded('cover', "/system/uploads/news/{$this->getId()}/cover");
       $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
     }
     $mf->move();
-
-    $seq = new SequenceModel($this);
-    $seq->setSequence();
 
     $this->dao_insert();
 

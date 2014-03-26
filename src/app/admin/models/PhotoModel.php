@@ -33,7 +33,7 @@ class PhotoModel extends BaseModelAdm
         'photo_item' => 'photo_item',
         'id_photo_item' => 'id_photo_item',
     ));
-    $this->setTable('photo');
+    $this->setEntity('photo');
   }
 
   public function formatTable ( $table )

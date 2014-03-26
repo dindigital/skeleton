@@ -18,7 +18,7 @@ class SettingsModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('settings');
+    $this->setEntity('settings');
   }
 
   protected function formatTable ( $table )

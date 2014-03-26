@@ -16,6 +16,8 @@ use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
 use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
+use src\app\admin\filters\SequenceFilter;
+use src\app\admin\helpers\SequenceResult;
 
 /**
  *
@@ -27,7 +29,7 @@ class NewsCatModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('news_cat');
+    $this->setEntity('news_cat');
   }
 
   protected function formatTable ( $table )
@@ -67,8 +69,8 @@ class NewsCatModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
-    $seq = new SequenceModel($this);
-    $result = $seq->setListArray($result, $arrCriteria);
+    $seq_result = new SequenceResult($this->_entity, $this->_dao);
+    $result = $seq_result->filterResult($result, $arrCriteria);
 
     foreach ( $result as $i => $row ) {
       $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
@@ -105,8 +107,8 @@ class NewsCatModel extends BaseModelAdm
     }
     $mf->move();
 
-    $seq = new SequenceModel($this);
-    $seq->setSequence();
+    $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
+    $seq_filter->setSequence();
 
     $this->dao_insert();
   }

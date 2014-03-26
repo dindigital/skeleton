@@ -29,7 +29,7 @@ class PublicationModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('publication');
+    $this->setEntity('publication');
   }
 
   public function formatTable ( $table )
@@ -46,7 +46,7 @@ class PublicationModel extends BaseModelAdm
     return $table;
   }
 
-  public function getById ( $id = null )
+  public function getRow ( $id = null )
   {
     if ( $id ) {
       $this->setId($id);

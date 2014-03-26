@@ -47,7 +47,7 @@ class CustomerController extends BaseControllerAdm
   {
     $this->_model->setId($id);
 
-    $this->_data['table'] = $id ? $this->_model->getById() : $this->getPrevious();
+    $this->_data['table'] = $id ? $this->_model->getRow() : $this->getPrevious();
 
     $this->setSaveTemplate('customer_save.phtml');
   }

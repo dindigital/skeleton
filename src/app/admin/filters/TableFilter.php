@@ -13,7 +13,7 @@ class TableFilter extends BaseFilter
 
   public function setNewId ( $field )
   {
-    $this->_table->{$field} = md5(uniqid());
+    return $this->_table->{$field} = md5(uniqid());
   }
 
   public function setTimestamp ( $field )
@@ -106,4 +106,17 @@ class TableFilter extends BaseFilter
     }
   }
 
+  /*
+    public function setShortenerLink ()
+    {
+    if ( URL && BITLY && $this->_table->uri ) {
+    $url = URL . $this->_table->uri;
+    $bitly = new Bitly(BITLY);
+    $bitly->shorten($url);
+    if ( $bitly->check() ) {
+    $this->_table->short_link = $bitly;
+    }
+    }
+    }
+   */
 }

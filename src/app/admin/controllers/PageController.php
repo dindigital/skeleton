@@ -54,7 +54,7 @@ class PageController extends BaseControllerAdm
         'uri'
     );
 
-    $this->_data['table'] = $id ? $this->_model->getById() : $this->getPrevious($exclude_previous);
+    $this->_data['table'] = $id ? $this->_model->getRow() : $this->getPrevious($exclude_previous);
 
     $this->setSaveTemplate('page_save.phtml');
   }

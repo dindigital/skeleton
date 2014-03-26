@@ -5,7 +5,6 @@ namespace src\app\admin\models;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
-use src\app\admin\models\essential\SequenceModel;
 use src\app\admin\helpers\MoveFiles;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
@@ -15,6 +14,8 @@ use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
 use Din\Exception\JsonException;
 use src\app\admin\filters\TableFilter;
+use src\app\admin\filters\SequenceFilter;
+use src\app\admin\helpers\SequenceResult;
 
 /**
  *
@@ -26,7 +27,7 @@ class PageCatModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('page_cat');
+    $this->setEntity('page_cat');
   }
 
   public function formatTable ( $table )
@@ -61,8 +62,8 @@ class PageCatModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
-    $seq = new SequenceModel($this);
-    $result = $seq->setListArray($result, $arrCriteria);
+    $seq = new SequenceResult($this->_entity, $this->_dao);
+    $result = $seq->filterResult($result, $arrCriteria);
 
     foreach ( $result as $i => $row ) {
       $result[$i]['inc_date'] = DateFormat::filter_date($row['inc_date']);
@@ -91,6 +92,10 @@ class PageCatModel extends BaseModelAdm
     $filter->setString('description');
     $filter->setString('keywords');
     //
+    $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
+    $seq_filter->setSequence();
+
+    //
     $mf = new MoveFiles;
     if ( $has_cover ) {
       $filter->setUploaded('cover', "/system/uploads/page_cat/{$this->getId()}/cover");
@@ -98,8 +103,8 @@ class PageCatModel extends BaseModelAdm
     }
     $mf->move();
 
-    $seq = new SequenceModel($this);
-    $seq->setSequence();
+//    $seq = new SequenceModel($this);
+//    $seq->setSequence();
 
     $this->dao_insert();
   }

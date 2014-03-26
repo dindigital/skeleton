@@ -3,192 +3,92 @@
 namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\BaseModelAdm;
-use src\app\admin\helpers\Entities;
-use Din\DataAccessLayer\Select;
+use src\app\admin\filters\TableFilter;
+use Din\DataAccessLayer\Table\Table;
 
 class SequenceModel extends BaseModelAdm
 {
-  /*
-   * ===========================================================================
-   * PROTECTED
-   * ===========================================================================
-   */
 
   protected $_model;
 
-  protected function getMaxSequence ( $arrCriteria = array() )
-  {
-    $current = Entities::getThis($this->_model);
-
-    $select = new Select($current['tbl']);
-
-    if ( $current['sequence']['optional'] ) {
-      $arrCriteria['sequence > ?'] = '0';
-    }
-
-    if ( isset($current['trash']) ) {
-      $arrCriteria['is_del = 0'] = null;
-    }
-
-    $select->where($arrCriteria);
-
-    return $this->_dao->select_count($select);
-  }
-
   protected function operateSequence ( $operator, $arrCriteria )
   {
-    $current = Entities::getThis($this->_model);
+    $entity_tbl = $this->_entity->getTbl();
 
-    $SQL = "UPDATE {$current['tbl']} SET sequence = sequence {$operator} 1";
+    $SQL = "UPDATE {$entity_tbl} SET sequence = sequence {$operator} 1";
     $result = $this->_dao->execute($SQL, $arrCriteria);
 
     return $result;
   }
 
-  protected function updateSequence ( $sequence, $id )
+  protected function setModel ( $model )
   {
-    $current = Entities::getThis($this->_model);
-
-    $this->_model->setIntval('sequence', $sequence);
-    $this->_model->setId($id);
-
-    $this->_dao->update($this->_model->getTable(), array($current['id'] . ' = ? ' => $id));
-  }
-
-  /*
-   * ===========================================================================
-   * PUBLIC
-   * ===========================================================================
-   */
-
-  public function __construct ( $model )
-  {
-    parent::__construct();
     $this->_model = $model;
   }
 
-  public function setSequence ( $result = null )
+  /**
+   *
+   * @param type $input array (
+   * 'tbl'=>'',
+   * 'id'=>'',
+   * 'sequence'=>''
+   * )
+   */
+  public function changeSequence ( $input )
   {
-    $current = Entities::getThis($this->_model);
-    if ( !isset($current['sequence']) )
-      return $result;
+    $this->_entity = $this->_entities->getEntity($input['tbl']);
+    $entity_sequence = $this->_entity->getSequence();
+
+    $this->setModel($this->_entity->getModel());
+
+    $row = $this->_model->getById($input['id']);
+    $sequence_old = intval($row['sequence']);
+    $sequence_new = intval($input['sequence']);
 
     $arrCriteria = array();
 
-    if ( $current['sequence']['optional'] ) {
-      $this->_model->setIntval('sequence', 0);
-    } else {
-      if ( isset($current['sequence']['dependence']) ) {
-        $dependence_field = $current['sequence']['dependence'];
-        $dependence_value = $result ? $result[$dependence_field] : $this->_model->getTable()->{$dependence_field};
-
-        if ( is_null($dependence_value) ) {
-          $arrCriteria[$dependence_field . ' IS NULL'] = null;
-        } else {
-          $arrCriteria[$dependence_field . ' = ?'] = $dependence_value;
-        }
-      }
-
-      $sequence = $this->getMaxSequence($arrCriteria) + 1;
-
-      $this->_model->setIntval('sequence', $sequence);
-    }
-  }
-
-  public function setListArray ( $result, $arrCriteria )
-  {
-    $current = Entities::getThis($this->_model);
-    if ( !isset($current['sequence']) )
-      return $result;
-
-    $dependenceCriteria = array();
-    if ( isset($current['sequence']['dependence']) ) {
-      $dependence_field = $current['sequence']['dependence'];
-
-      foreach ( $arrCriteria as $field => $value ) {
-        if ( strpos($field, $dependence_field) !== false ) {
-          $dependenceCriteria[$field] = $value;
-          break;
-        }
-      }
-
-      if ( !count($dependenceCriteria) )
-        return $result;
+    if ( $this->_entity->hasTrash() ) {
+      $arrCriteria['is_del = ?'] = '0';
     }
 
-    $total = $this->getMaxSequence($dependenceCriteria);
-    $optional = $current['sequence']['optional'];
+    if ( isset($entity_sequence['dependence']) ) {
+      $dependence_field = $entity_sequence['dependence'];
+      $dependence_value = $row[$dependence_field];
 
-    $options = array();
-
-    if ( $optional ) {
-      $options[0] = '';
+      $arrCriteria[$dependence_field . ' = ?'] = $dependence_value;
     }
 
-    for ( $i = 1; $i <= $total; $i++ ) {
-      $options[$i] = $i;
-    }
-
-
-    foreach ( $result as $i => $row ) {
-      if ( $optional && $row['sequence'] == 0 ) {
-        $options2 = $options;
-        $options2[(string) $total + 1] = (string) $total + 1;
-
-        $result[$i]['sequence_list_array'] = $options2;
-      } else {
-        $result[$i]['sequence_list_array'] = $options;
-      }
-    }
-
-    return $result;
-  }
-
-  public function changeSequence ( $id, $sequence )
-  {
-    $current = Entities::getThis($this->_model);
-
-    if ( !isset($current['sequence']) )
-      return;
-
-    $result = $this->_model->getById($id);
-    $sequence_old = intval($result['sequence']);
-    $sequence = intval($sequence);
-
-    $arrCriteria = array();
-
-    if ( isset($current['trash']) && $current['trash'] ) {
-      $arrCriteria['is_del = 0'] = null;
-    }
-
-    if ( isset($current['sequence']['dependence']) ) {
-      $dependence_field = $current['sequence']['dependence'];
-      $dependence_value = $result[$dependence_field];
-
-      if ( is_null($dependence_value) ) {
-        $arrCriteria[$dependence_field . ' IS NULL'] = null;
-      } else {
-        $arrCriteria[$dependence_field . ' = ?'] = $dependence_value;
-      }
-    }
-
-    if ( $sequence == 0 ) {
+    if ( $sequence_new == 0 ) {
       $arrCriteria['sequence >= ?'] = $sequence_old;
       $result = $this->operateSequence('-', $arrCriteria);
     } else if ( $sequence_old == 0 ) {
-      $arrCriteria['sequence >= ?'] = $sequence;
+      $arrCriteria['sequence >= ?'] = $sequence_new;
       $result = $this->operateSequence('+', $arrCriteria);
-    } else if ( $sequence < $sequence_old ) {
-      $arrCriteria['sequence >= ?'] = $sequence;
+    } else if ( $sequence_new < $sequence_old ) {
+      $arrCriteria['sequence >= ?'] = $sequence_new;
       $arrCriteria['sequence <= ?'] = $sequence_old;
       $result = $this->operateSequence('+', $arrCriteria);
     } else {
-      $arrCriteria['sequence <= ?'] = $sequence;
+      $arrCriteria['sequence <= ?'] = $sequence_new;
       $arrCriteria['sequence >= ?'] = $sequence_old;
       $result = $this->operateSequence('-', $arrCriteria);
     }
 
-    $this->updateSequence($sequence, $id);
+    $this->updateSequence($sequence_new, $input['id']);
+  }
+
+  protected function updateSequence ( $sequence, $id )
+  {
+    $entity_id = $this->_entity->getId();
+    $entity_tbl = $this->_entity->getTbl();
+
+    $table = new Table($entity_tbl);
+    $filter = new TableFilter($table, array(
+        'sequence' => $sequence
+    ));
+    $filter->setIntval('sequence');
+
+    $this->_dao->update($table, array($entity_id . ' = ? ' => $id));
   }
 
 }

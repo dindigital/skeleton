@@ -17,7 +17,7 @@ class PollOptionModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('poll_option');
+    $this->setEntity('poll_option');
   }
 
   public function batch_validate ( $array_options )
