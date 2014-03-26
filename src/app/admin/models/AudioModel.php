@@ -80,7 +80,7 @@ class AudioModel extends BaseModelAdm
     return $result;
   }
 
-  public function getById ( $id = null )
+  public function getRow ( $id = null )
   {
 
     $sc = new SoundCloudModel;

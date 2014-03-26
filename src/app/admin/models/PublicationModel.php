@@ -46,7 +46,7 @@ class PublicationModel extends BaseModelAdm
     return $table;
   }
 
-  public function getById ( $id = null )
+  public function getRow ( $id = null )
   {
     if ( $id ) {
       $this->setId($id);
