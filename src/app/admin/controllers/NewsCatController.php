@@ -52,7 +52,7 @@ class NewsCatController extends BaseControllerAdm
         'cover',
         'uri'
     );
-    $this->_data['table'] = $id ? $this->_model->getById() :
+    $this->_data['table'] = $id ? $this->_model->getRow() :
             $this->getPrevious($excluded_fields);
 
     $this->setSaveTemplate('newscat_save.phtml');

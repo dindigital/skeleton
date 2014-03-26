@@ -27,7 +27,7 @@ class SettingsController extends BaseControllerAdm
 
   public function get_save ()
   {
-    $this->_data['table'] = $this->_model->getById('1');
+    $this->_data['table'] = $this->_model->getRow('1');
     $this->setSaveTemplate('settings_save.phtml');
   }
 

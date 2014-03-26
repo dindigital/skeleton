@@ -165,7 +165,12 @@ class BaseModelAdm
     if ( !count($result) )
       throw new Exception('Registro não encontrado.');
 
-    $row = $this->formatTable($result[0]);
+    return $result[0];
+  }
+
+  public function getRow ( $id = null )
+  {
+    $row = $this->formatTable($this->getById($id));
 
     return $row;
   }
