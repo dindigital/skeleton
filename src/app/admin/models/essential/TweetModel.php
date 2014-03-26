@@ -3,7 +3,6 @@
 namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\BaseModelAdm;
-use src\app\admin\helpers\Entities;
 use Twitter;
 use Exception;
 use src\app\admin\models\essential\TweetableEntity;
@@ -34,7 +33,6 @@ class TweetModel extends BaseModelAdm
 
   protected function setModel ( $section, $id )
   {
-    $entity = Entities::getEntityByName($section);
     $this->_model = new TweetableEntity($section, $id);
     $this->_model->setId($id);
   }
@@ -51,7 +49,7 @@ class TweetModel extends BaseModelAdm
     $input = array(
         'msg' => $msg
     );
-    
+
     $str_validator = new StringValidator($input);
     $str_validator->validateRequiredString('msg', "Mensagem");
     //
@@ -70,10 +68,10 @@ class TweetModel extends BaseModelAdm
       if ( $e->getMessage() == 'Status is a duplicate.' ) {
         throw new Exception('Essa mensagem já foi publicada anteriormente.');
       } else {
-        throw new Exception('Não foi possível enviar, favor tentar novamente mais tarde.');
+        throw new Exception('Erro ao enviar tweet: ' . $e->getMessage());
       }
     }
-    
+
     $filter = new TableFilter($this->_table, $input);
     $filter->setNewId('id_tweet');
     $filter->setTimestamp('date');

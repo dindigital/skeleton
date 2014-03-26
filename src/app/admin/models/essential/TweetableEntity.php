@@ -4,7 +4,6 @@ namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
-use src\app\admin\helpers\Entities;
 use Exception;
 use Din\DataAccessLayer\Table\Table;
 use src\app\admin\models\essential\Tweetable;
@@ -16,28 +15,32 @@ use src\app\admin\models\essential\Tweetable;
 class TweetableEntity extends BaseModelAdm implements Tweetable
 {
 
-  protected $_entity;
-
   public function __construct ( $section, $id )
   {
     parent::__construct();
 
-    $this->_entity = Entities::getEntityByName($section);
-    $this->setTable($this->_entity['tbl']);
+    $this->_entity = $this->_entities->getEntity($section);
+    $entity_tbl = $this->_entity->getTbl();
+
+    $this->setTable($entity_tbl);
   }
 
   public function getIdName ()
   {
-    return $this->_entity['id'];
+    return $this->_entity->getId();
   }
 
   public function generateTweet ()
   {
-    $select = new Select($this->_entity['tbl']);
-    $select->addField($this->_entity['title'], 'title');
+    $entity_tbl = $this->_entity->getTbl();
+    $entity_title = $this->_entity->getTitle();
+    $entity_id = $this->_entity->getId();
+
+    $select = new Select($entity_tbl);
+    $select->addField($entity_title, 'title');
     $select->addField('uri');
     $select->where(array(
-        $this->_entity['id'] . ' = ?' => $this->getId()
+        "{$entity_id} = ?" => $this->getId()
     ));
 
     $result = $this->_dao->select($select);
@@ -55,26 +58,32 @@ class TweetableEntity extends BaseModelAdm implements Tweetable
 
   public function sentTweet ( $id_tweet )
   {
+    $entity_id = $this->_entity->getId();
+    $entity_tbl = $this->_entity->getTbl();
+
     $this->_table->has_tweet = '1';
-    $this->_dao->update($this->_table, array($this->_entity['id'] . ' = ?' => $this->getId()));
+    $this->_dao->update($this->_table, array("{$entity_id} = ?" => $this->getId()));
 
     //_# INSERE RELACAO
-    $table = new Table('r_' . $this->_entity['tbl'] . '_tweet');
-    $table->{$this->_entity['id']} = $this->getId();
+    $table = new Table("r_{$entity_tbl}_tweet");
+    $table->{$entity_id} = $this->getId();
     $table->id_tweet = $id_tweet;
     $this->_dao->insert($table);
   }
 
   public function getTweets ()
   {
+    $entity_id = $this->_entity->getId();
+    $entity_tbl = $this->_entity->getTbl();
+
     $select = new Select('tweet');
     $select->addField('date');
     $select->addField('msg');
 
-    $select->inner_join('id_tweet', Select::construct('r_' . $this->_entity['tbl'] . '_tweet'));
+    $select->inner_join('id_tweet', Select::construct("r_{$entity_tbl}_tweet"));
 
     $select->where(array(
-        'b.' . $this->_entity['id'] . ' = ?' => $this->getId()
+        "b.{$entity_id} = ?" => $this->getId()
     ));
 
     $select->order_by('date DESC');

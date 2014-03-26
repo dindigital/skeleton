@@ -27,9 +27,7 @@ class TrashModel extends BaseModelAdm
     $itens = $this->_entities->getTrashItens();
 
     if ( $this->_filters['section'] != '' && $this->_filters['section'] != '0' ) {
-      //if ( isset($itens[$this->_filters['section']]) ) {
       $itens = array($itens[$this->_filters['section']]);
-      //}
     }
 
     $i = 0;
