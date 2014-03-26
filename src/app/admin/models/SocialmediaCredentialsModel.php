@@ -5,6 +5,7 @@ namespace src\app\admin\models;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\filters\TableFilter;
+use Din\Exception\JsonException;
 
 /**
  *
@@ -37,6 +38,8 @@ class SocialmediaCredentialsModel extends BaseModelAdm
     $filter->setString('sc_client_id');
     $filter->setString('sc_client_secret');
     $filter->setString('sc_token');
+
+    JsonException::throwException();
 
     $this->dao_update(false);
   }
