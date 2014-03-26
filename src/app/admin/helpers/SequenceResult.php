@@ -68,11 +68,16 @@ class SequenceResult
   protected function getMaxSequence ( $arrCriteria )
   {
     $entity_tbl = $this->_entity->getTbl();
+    $entity_sequence = $this->_entity->getSequence();
 
     $select = new Select($entity_tbl);
 
     if ( $this->_entity->hasTrash() ) {
       $arrCriteria['is_del = 0'] = null;
+    }
+
+    if ( isset($entity_sequence['optional']) && $entity_sequence['optional'] ) {
+      $arrCriteria['sequence > ?'] = '0';
     }
 
     $select->where($arrCriteria);
