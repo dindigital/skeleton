@@ -218,15 +218,19 @@ class PublicationModel extends BaseModelAdm
     foreach ( $itens as $item ) {
       $tableHistory = $this->getById($item['id'], false);
 
-      $this->deleteChildren('publication', $item['id']);
+      $this->deleteChildren($this->_entity, $item['id']);
 
       Folder::delete("public/system/uploads/publication/{$item['id']}");
       $this->_dao->delete('publication', array('id_publication = ?' => $item['id']));
-      $this->log('D', $tableHistory['title'], 'publication', $tableHistory);
+      $this->log('D', $tableHistory['title'], $this->_table, $tableHistory);
       // DELETE ISSUU
-      $issuu = new IssuuModel;
-      $issuu->setId($tableHistory['id_issuu']);
-      $issuu->deleteComplete();
+      try {
+        $issuu = new IssuuModel;
+        $issuu->setId($tableHistory['id_issuu']);
+        $issuu->deleteComplete();
+      } catch (Exception $e) {
+        //
+      }
       //
     }
   }
