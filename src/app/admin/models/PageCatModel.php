@@ -15,7 +15,7 @@ use src\app\admin\validators\UploadValidator;
 use Din\Exception\JsonException;
 use src\app\admin\filters\TableFilter;
 use src\app\admin\filters\SequenceFilter;
-use src\app\admin\filters\SequenceListFilter;
+use src\app\admin\helpers\SequenceResult;
 
 /**
  *
@@ -62,7 +62,7 @@ class PageCatModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
-    $seq = new SequenceListFilter($this->_entity, $this->_dao);
+    $seq = new SequenceResult($this->_entity, $this->_dao);
     $result = $seq->filterResult($result, $arrCriteria);
 
     foreach ( $result as $i => $row ) {
