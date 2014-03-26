@@ -79,11 +79,12 @@ class TrashModel extends BaseModelAdm
       $parent_entity = $this->_entities->getEntity($parent);
       $parent_tbl = $parent_entity->getTbl();
       $parent_id_field = $parent_entity->getId();
+      $parent_title = $parent_entity->getTitle();
 
       $parend_id_value = $row[$parent_id_field];
 
       $select = new Select($parent_tbl);
-      $select->addField($parent['title'], 'title');
+      $select->addField($parent_title, 'title');
       $select->where(array(
           $parent_id_field . ' = ?' => $parend_id_value,
           'is_del = ?' => 1,
