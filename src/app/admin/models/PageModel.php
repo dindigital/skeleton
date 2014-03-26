@@ -18,7 +18,7 @@ use Din\Exception\JsonException;
 use src\app\admin\filters\TableFilter;
 use Exception;
 use src\app\admin\filters\SequenceFilter;
-use src\app\admin\filters\SequenceListFilter;
+use src\app\admin\helpers\SequenceResult;
 
 /**
  *
@@ -94,7 +94,7 @@ class PageModel extends BaseModelAdm
 
     $result = $this->_dao->select($select);
 
-    $seq = new SequenceListFilter($this->_entity, $this->_dao);
+    $seq = new SequenceResult($this->_entity, $this->_dao);
     $result = $seq->filterResult($result, $arrCriteria);
     //
 
