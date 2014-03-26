@@ -72,6 +72,10 @@ return array(
             'controller' => 'admin\controllers\essential\SoundCloudController',
             'method' => 'auth',
         ),
+        'admin/youtube/auth/' => array(
+            'controller' => 'admin\controllers\essential\YouTubeController',
+            'method' => 'auth',
+        ),
         'admin/facepost/edit/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/' => array(
             'controller' => 'admin\controllers\essential\FacepostController',
             'method' => 'edit',

@@ -10,8 +10,13 @@ use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
+use src\app\admin\validators\UploadValidator;
 use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
+use src\app\admin\models\essential\YouTubeModel;
+use src\app\admin\helpers\Form;
+use src\app\admin\helpers\MoveFiles;
+use Din\File\Folder;
 
 /**
  *
@@ -28,6 +33,9 @@ class VideoModel extends BaseModelAdm
 
   public function formatTable ( $table )
   {
+      
+    $youTubeModel = new YouTubeModel();
+    $youTubeModel->getYouTubeLogin();
 
     if ( is_null($table['date']) ) {
       $table['date'] = date('Y-m-d');
@@ -36,6 +44,7 @@ class VideoModel extends BaseModelAdm
     $table['title'] = Html::scape($table['title']);
     $table['date'] = DateFormat::filter_date($table['date']);
     $table['uri'] = Link::formatUri($table['uri']);
+    $table['file_uploader'] = Form::Upload('file', $table['file'], 'video');
 
     return $table;
   }
@@ -76,22 +85,37 @@ class VideoModel extends BaseModelAdm
     $str_validator->validateRequiredString('description', "Descrição");
     $str_validator->validateRequiredDate('date', "Data");
     //
+    $upl_validator = new UploadValidator($input);
+    $has_file = $upl_validator->validateFile('file');
+    //
     JsonException::throwException();
     //
     $filter = new TableFilter($this->_table, $input);
     $filter->setNewId('id_video');
     $filter->setTimestamp('inc_date');
     $filter->setIntval('active');
+    $filter->setIntval('has_youtube');
     $filter->setString('title');
     $filter->setString('description');
     $filter->setString('link_youtube');
     $filter->setString('link_vimeo');
     $filter->setDate('date');
     $filter->setDefaultUri('title', $this->getId());
+    
+    $mf = new MoveFiles;
+    if ( $has_file ) {
+      $filter->setUploaded('file', "/system/uploads/video/{$this->getId()}/file");
+      $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
+    }
+    $mf->move();
 
     $this->dao_insert();
 
     $this->relationship('tag', $input['tag']);
+    
+    if ( $input['has_youtube'] == '1' ) {
+        $this->save_youtube();
+    }
   }
 
   public function update ( $input )
@@ -101,20 +125,36 @@ class VideoModel extends BaseModelAdm
     $str_validator->validateRequiredString('description', "Descrição");
     $str_validator->validateRequiredDate('date', "Data");
     //
+    $upl_validator = new UploadValidator($input);
+    $has_file = $upl_validator->validateFile('file');
+    //
     JsonException::throwException();
     //
     $filter = new TableFilter($this->_table, $input);
     $filter->setIntval('active');
+    $filter->setIntval('has_youtube');
     $filter->setString('title');
     $filter->setString('description');
     $filter->setString('link_youtube');
     $filter->setString('link_vimeo');
     $filter->setDate('date');
     $filter->setDefaultUri('title', $this->getId());
+    
+    $mf = new MoveFiles;
+    if ( $has_file ) {
+      $filter->setUploaded('file', "/system/uploads/video/{$this->getId()}/file");
+      $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
+    }
+    $mf->move();
 
     $this->dao_update();
 
     $this->relationship('tag', $input['tag']);
+    
+    if ( $input['republish_youtube'] == '1' ) {
+        $this->save_youtube(true);
+    }
+    
   }
 
   private function relationship ( $tbl, $array )
@@ -124,11 +164,56 @@ class VideoModel extends BaseModelAdm
     $relationshipModel->setForeignEntity($tbl);
     $relationshipModel->insert($this->getId(), $array);
   }
+  
+  private function save_youtube($delete = false) {
+      
+    $youTubeModel = new YouTubeModel;
+      
+    $row = $this->getById();
+
+    if ( !$file = $this->_table->file ) {
+      $file = $row['file'];
+    }
+    
+    if ($delete && !is_null($row['id_youtube'])) {
+        $youTubeModel->delete($row['id_youtube']);
+    }
+    
+    $id_youtube = $youTubeModel->insert($row);
+    
+    if ($id_youtube) {
+        
+        $input = array(
+          'id_youtube' => $id_youtube
+        );
+        
+        $filter = new TableFilter($this->_table, $input);
+        $filter->setString('id_youtube');
+        $this->dao_update();
+    }
+      
+  }
 
   public function formatFilters ()
   {
     $this->_filters['title'] = Html::scape($this->_filters['title']);
     return $this->_filters;
+  }
+  
+  public function delete ( $itens )
+  {
+    foreach ( $itens as $item ) {
+      $tableHistory = $this->getById($item['id'], false);
+      $this->deleteChildren($this->_entity, $item['id']);
+
+      Folder::delete("public/system/uploads/video/{$item['id']}");
+      $this->_dao->delete('video', array('id_video = ?' => $item['id']));
+      $this->log('D', $tableHistory['title'], $this->_table, $tableHistory);
+      // DELETE YOUTUBE //mostra ai o erro
+      $youTubeModel = new YouTubeModel;
+      $youTubeModel->delete($tableHistory['id_youtube']);
+      //
+    }
   }
 
 }

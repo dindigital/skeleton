@@ -47,7 +47,7 @@ class VideoController extends BaseControllerAdm
     $this->_model->setId($id);
 
     $excluded_fields = array(
-        'uri'
+        'uri','file'
     );
 
     $this->_data['table'] = $id ? $this->_model->getRow() : $this->getPrevious($excluded_fields);
@@ -69,6 +69,9 @@ class VideoController extends BaseControllerAdm
           'link_vimeo' => Post::text('link_vimeo'),
           'uri' => Post::text('uri'),
           'tag' => Post::text('tag'),
+          'file' => Post::upload('file'),
+          'has_youtube' => Post::checkbox('has_youtube'),
+          'republish_youtube' => Post::checkbox('republish_youtube'),
       );
 
       $this->saveAndRedirect($info);

@@ -62,6 +62,30 @@
               <input name="link_vimeo" type="text" value="<?php echo $data['table']['link_vimeo']; ?>" placeholder="Link do Vimeo" class="vimeo_link form-control" >
             </div>
           </div>
+         
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="active">Publicar no YouTube</label>
+          <div class="col-sm-10">
+            <label class="checkbox-inline"><input type="checkbox" name="has_youtube" <?php if ( $data['table']['has_youtube'] == '1' ): ?>checked="checked"<?php endif; ?> /></label>
+          </div>
+        </div>
+          <?php if ( $data['table']['has_youtube'] == '1' ): ?>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">YouTube</label>
+              <div class="col-sm-10">
+                <a href="https://www.youtube.com/watch?v=<?php echo $data['table']['id_youtube']; ?>" target="_blank">Assita no YouTube</a>
+                <br />
+                <label class="checkbox-inline"><input type="checkbox" name="republish_youtube" />Atualizar Publicação YouTube</label>
+              </div>
+            </div>
+          <?php endif; ?>
+          
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Arquivo</label>
+            <div class="col-sm-10">
+              <?php echo $data['table']['file_uploader']; ?>
+            </div>
+          </div>
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Relação Tags</label>
