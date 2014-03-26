@@ -7,6 +7,8 @@ use Din\DataAccessLayer\Select;
 use Exception;
 use Din\DataAccessLayer\Table\Table;
 use src\app\admin\models\essential\Tweetable;
+use Din\UrlShortener\Bitly\Bitly;
+use Din\Filters\String\LimitChars;
 
 /**
  *
@@ -49,9 +51,20 @@ class TweetableEntity extends BaseModelAdm implements Tweetable
       throw new Exception('Registro não encontrado');
 
     $title = $result[0]['title'];
+    $title = LimitChars::filter($title, 100, '...');
     $url = URL . $result[0]['uri'];
 
-    $tweet = "{$title} - Saiba mais {$url}";
+    //shorten url
+    try {
+      $bitly = new Bitly(BITLY);
+      $bitly->shorten($url);
+      $short_url = $bitly->getShortUrl();
+    } catch (Exception $e) {
+      //mute exception, just continue with big url
+      $short_url = $url;
+    }
+
+    $tweet = "{$title} - Saiba mais {$short_url}";
 
     return $tweet;
   }
