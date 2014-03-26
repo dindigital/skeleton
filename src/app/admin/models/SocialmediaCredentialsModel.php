@@ -37,6 +37,9 @@ class SocialmediaCredentialsModel extends BaseModelAdm
     $filter->setString('sc_client_id');
     $filter->setString('sc_client_secret');
     $filter->setString('sc_token');
+    $filter->setString('youtube_id');
+    $filter->setString('youtube_secret');
+    $filter->setString('youtube_token');
 
     $this->dao_update(false);
   }
@@ -60,6 +63,12 @@ class SocialmediaCredentialsModel extends BaseModelAdm
   public function updateSoundCoudAccessToken ( $sc_token )
   {
     $this->_table->sc_token = $sc_token;
+    $this->_dao->update($this->_table, array());
+  }
+
+  public function updateYouTubeAccessToken ( $youtube_token )
+  {
+    $this->_table->youtube_token = $youtube_token;
     $this->_dao->update($this->_table, array());
   }
 
