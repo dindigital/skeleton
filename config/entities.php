@@ -62,7 +62,6 @@ return array(
         'section' => 'Usuários',
         'id' => 'id_admin',
         'title' => 'name',
-        'names' => array('\src\app\admin\models\essential\ConfigModel')
     ),
     'video' => array(
         'model' => 'VideoModel',
