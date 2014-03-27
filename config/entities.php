@@ -142,7 +142,7 @@ return array(
         'trash' => true,
     ),
     'audio' => array(
-        'name' => 'Audio',
+        'model' => 'AudioModel',
         'section' => 'Audio',
         'id' => 'id_audio',
         'title' => 'title',

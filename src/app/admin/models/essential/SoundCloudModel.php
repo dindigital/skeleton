@@ -6,6 +6,8 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Exception;
 use Soundcloud\Service;
 use src\app\admin\models\SocialmediaCredentialsModel;
+use Din\Http\Header;
+use src\app\admin\filters\TableFilter;
 
 /**
  *
@@ -14,85 +16,77 @@ use src\app\admin\models\SocialmediaCredentialsModel;
 class SoundCloudModel extends BaseModelAdm
 {
 
-  protected $_soundcloud;
+  protected $_api;
   protected $_sm_credentials;
 
   public function __construct ()
   {
     parent::__construct();
+    $this->setTable('soundcloud');
+
     $this->_sm_credentials = new SocialmediaCredentialsModel();
     $this->_sm_credentials->fetchAll();
 
-    $this->_soundcloud = new Service(
-            $this->_sm_credentials->row['sc_client_id'], $this->_sm_credentials->row['sc_client_secret'], URL . '/admin/soundcloud/auth/'
-    );
+    $client_id = $this->_sm_credentials->row['sc_client_id'];
+    $client_secret = $this->_sm_credentials->row['sc_client_secret'];
+    $redirect_uri = URL . '/admin/soundcloud/auth/';
+
+    $this->_api = new Service($client_id, $client_secret, $redirect_uri);
   }
 
-  protected function setSoundCloud ()
+  public function makeLogin ()
   {
-
-    if ( !is_null($this->_sm_credentials->row['sc_token']) ) {
-      $this->_soundcloud->setAccessToken($this->_sm_credentials->row['sc_token']);
+    $access_token = $this->_sm_credentials->row['sc_token'];
+    if ( $access_token ) {
+      $this->_api->setAccessToken($access_token);
     }
-  }
-
-  public function getSoundCloudLogin ()
-  {
-    $this->setSoundCloud();
 
     try {
-      $this->_soundcloud->get('me');
+      $this->_api->get('me');
     } catch (Exception $e) {
-      $this->getLoginUrl();
+      $authorize_url = $this->_api->getAuthorizeUrl(array(
+          'scope' => 'non-expiring'
+      ));
+
+      Header::redirect($authorize_url);
     }
   }
 
-  public function auth ( $code )
+  public function saveToken ( $input )
   {
-
-    $options = array(
-        CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_SSL_VERIFYHOST => false
-    );
-
-    $token = $this->_soundcloud->accessToken($code, array(), $options);
+    $token = $this->_api->accessToken($input['code']);
     $access_token = $token['access_token'];
-    $this->_soundcloud->setAccessToken($access_token);
+    $this->_api->setAccessToken($access_token);
 
     $this->_sm_credentials->updateSoundCoudAccessToken($access_token);
   }
 
-  protected function getLoginUrl ()
-  {
-    $param = array(
-        'scope' => 'non-expiring'
-    );
-
-    header("Location: " . $this->_soundcloud->getAuthorizeUrl($param));
-  }
-
   public function insertComplete ( $input )
   {
-
-    $this->setSoundCloud();
-
-    $cfile = curl_file_create($input['file'], 'audio/mpeg', 'test_name');
+    $file = '@' . $input['file'];
 
     $track = array(
         'track[title]' => $input['title'],
-        'track[asset_data]' => $cfile
+        'track[asset_data]' => $file
     );
 
-    $options = array(
-        CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_SSL_VERIFYHOST => false
-    );
+    $response_text = $this->_api->post('tracks', $track);
+    $response_json = json_decode($response_text);
 
-    $response = $this->_soundcloud->post('tracks', $track, $options);
+    if ( json_last_error() )
+      throw new Exception('Não foi possível converter pra JSON: ' . $response_text);
 
-    // print track link
-    var_dump($response);
-    exit;
+    $filter = new TableFilter($this->_table, array(
+        'track_id' => $response_json->id,
+        'track_permalink' => $response_json->permalink_url
+    ));
+    $filter->setNewId('id_soundcloud');
+    $filter->setString('track_id');
+    $filter->setString('track_permalink');
+
+    $this->_dao->insert($this->_table);
+
+    return $this->_table->id_soundcloud;
   }
 
 }

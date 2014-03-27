@@ -9,12 +9,12 @@ use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
-use src\app\admin\helpers\TableFilter;
 use Din\Exception\JsonException;
 use src\app\admin\helpers\Form;
 use src\app\admin\validators\UploadValidator;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\models\essential\SoundCloudModel;
+use src\app\admin\filters\TableFilter;
 
 /**
  *
@@ -62,7 +62,7 @@ class AudioModel extends BaseModelAdm
 
     $select->left_join('id_soundcloud', Select::construct('soundcloud')
                     ->addFField('has_sc', 'IF (b.id_soundcloud, 1, 0)')
-                    ->addField('link', 'soundcloud_link'));
+                    ->addField('track_permalink', 'soundcloud_link'));
 
     $select->where($arrCriteria);
     $select->order_by('date DESC');
@@ -82,9 +82,8 @@ class AudioModel extends BaseModelAdm
 
   public function getRow ( $id = null )
   {
-
     $sc = new SoundCloudModel;
-    $sc->getSoundCloudLogin();
+    $sc->makeLogin();
 
     if ( $id ) {
       $this->setId($id);
@@ -99,7 +98,7 @@ class AudioModel extends BaseModelAdm
 
     $select->left_join('id_soundcloud', Select::construct('soundcloud')
                     ->addFField('has_sc', 'IF (b.id_soundcloud IS NOT NULL, 1, 0)')
-                    ->addField('link', 'soundcloud_link')
+                    ->addField('track_permalink', 'soundcloud_link')
     );
 
     $select->where($arrCriteria);
@@ -203,15 +202,21 @@ class AudioModel extends BaseModelAdm
     if ( $file ) {
       $title = $this->_table->title;
 
-      $pathinfo = pathinfo($file);
-      if ( 'mp3' != $pathinfo['extension'] ) {
-        throw new Exception('Upload no SoundCloud é restringido a arquivos MP3');
-      }
-
       $soundcloud_model = new SoundCloudModel;
-      $soundcloud_model->insertComplete(array(
-          'file' => $_SERVER['DOCUMENT_ROOT'] . $file,
+      $soundcloud_model->makeLogin();
+      $id_soundcloud = $soundcloud_model->insertComplete(array(
+          'file' => 'public/' . $file,
           'title' => $title,
+      ));
+
+      //
+      $id_audio = $this->_table->id_audio;
+
+      $this->setTable('audio');
+      $this->_table->id_soundcloud = $id_soundcloud;
+      $this->_table->has_sc = '1';
+      $this->_dao->update($this->_table, array(
+          'id_audio = ?' => $id_audio
       ));
     }
   }
