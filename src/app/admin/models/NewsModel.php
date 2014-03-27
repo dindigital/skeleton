@@ -5,7 +5,6 @@ namespace src\app\admin\models;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
-use src\app\admin\models\essential\SequenceModel;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\models\essential\RelationshipModel;
 use src\app\admin\models\essential\Facepostable;
