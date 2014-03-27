@@ -53,20 +53,14 @@ class SoundCloudController extends BaseControllerAdm
         $access_token = $token['access_token'];
         $this->_soundcloud->setAccessToken($access_token);
         
-        $file = $_SERVER['DOCUMENT_ROOT'] . '/system/uploads/audio/15375ef37144082b87ff6bb4071cb69d/file/charli2.mp3';
+        $file =  $_SERVER['DOCUMENT_ROOT'] . '/system/uploads/audio/15375ef37144082b87ff6bb4071cb69d/file/charli2.mp3';
     
-        $cfile = curl_file_create($file,'audio/mpeg','arquivo');
+        $cfile = curl_file_create($file,'audio/mpeg','asset_data');
           
         $track = array(
             'track[title]' => 'arquivo',
             'track[asset_data]' => $cfile
         );
-    
-        $options = array(
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false
-        );
-    
     
         try {
             $response = $this->_soundcloud->post('tracks', $track, $options);

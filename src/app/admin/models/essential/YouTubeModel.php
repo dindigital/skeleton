@@ -11,6 +11,8 @@ use Google_Service_YouTube_Video;
 use Google_Service_YouTube_VideoStatus;
 use Google_Service_YouTube;
 use Google_Service_Exception;
+use Din\Session\Session;
+use Din\Http\Header;
 
 /**
  *
@@ -41,7 +43,9 @@ class YouTubeModel extends BaseModelAdm
   }
   
   public function setToken() {        
+    if (!is_null($this->_sm_credentials->row['youtube_token']) && $this->_sm_credentials->row['youtube_token']) {
        $this->_youtube_client->setAccessToken($this->_sm_credentials->row['youtube_token']);
+    }
   }
 
   public function getYouTubeLogin ()
@@ -60,7 +64,7 @@ class YouTubeModel extends BaseModelAdm
   }
 
   protected function getLoginUrl() {
-    header("Location: " . $this->_youtube_client->createAuthUrl());
+    Header::redirect($this->_youtube_client->createAuthUrl());
   }
   
   public function insert($input, $privacy = "public") {
