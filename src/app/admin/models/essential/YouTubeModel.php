@@ -52,6 +52,8 @@ class YouTubeModel extends BaseModelAdm
        $json = json_decode($this->_sm_credentials->row['youtube_token']);
        if (isset($json->refresh_token)) {
         $this->_youtube_client->refreshToken($json->refresh_token);
+        $token = $this->_youtube_client->getAccessToken();
+        $this->_sm_credentials->updateYouTubeAccessToken($token);
        }
     }
   }
