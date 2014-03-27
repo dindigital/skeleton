@@ -3,7 +3,6 @@
 namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\BaseModelAdm;
-use Din\DataAccessLayer\Table\Table;
 use Din\DataAccessLayer\Select;
 use Din\API\Issuu\Issuu;
 use src\app\admin\models\SocialmediaCredentialsModel;
@@ -24,14 +23,14 @@ class IssuuEmbedModel extends BaseModelAdm
     $this->setTable('issuu_embed');
     $this->_sm_credentials = new SocialmediaCredentialsModel();
     $this->_sm_credentials->fetchAll();
-    
+
     $issuu_key = $this->_sm_credentials->row['issuu_key'];
     $issu_secret = $this->_sm_credentials->row['issuu_secret'];
-    
-    if (is_null($issuu_key) && is_null($issu_secret)) {
-        throw new Exception("É necessário o preenchimento");
+
+    if ( is_null($issuu_key) && is_null($issu_secret) ) {
+      throw new Exception("É necessário o preenchimento");
     }
-    
+
     $this->_issuu = new Issuu($issuu_key, $issu_secret);
   }
 

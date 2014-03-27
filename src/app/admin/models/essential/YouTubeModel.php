@@ -29,7 +29,7 @@ class YouTubeModel extends BaseModelAdm
     parent::__construct();
     $this->_sm_credentials = new SocialmediaCredentialsModel();
     $this->_sm_credentials->fetchAll();
-    
+
     $this->_youtube_client = new Google_Client();
     $this->_youtube_client->setClientId($this->_sm_credentials->row['youtube_id']);
     $this->_youtube_client->setClientSecret($this->_sm_credentials->row['youtube_secret']);
@@ -38,12 +38,12 @@ class YouTubeModel extends BaseModelAdm
     $this->_youtube_client->setAccessType('offline');
     $this->_youtube_client->setApprovalPrompt('force');
     $this->_youtube = new Google_Service_YouTube($this->_youtube_client);
-            
   }
   
-  protected function setToken() {        
-    if (!is_null($this->_sm_credentials->row['youtube_token']) && $this->_sm_credentials->row['youtube_token']) {
-       $this->_youtube_client->setAccessToken($this->_sm_credentials->row['youtube_token']);
+  public function setToken ()
+  {
+    if ( !is_null($this->_sm_credentials->row['youtube_token']) && $this->_sm_credentials->row['youtube_token'] ) {
+      $this->_youtube_client->setAccessToken($this->_sm_credentials->row['youtube_token']);
     }
   }
   
@@ -64,31 +64,34 @@ class YouTubeModel extends BaseModelAdm
     if ($this->_youtube_client->isAccessTokenExpired()) {
         $this->refreshToken();
     }
-    if ($this->_youtube_client->isAccessTokenExpired()) {
-        $this->getLoginUrl();
+    if ( $this->_youtube_client->isAccessTokenExpired() ) {
+      $this->getLoginUrl();
     }
   }
-  
-  public function auth($code) {
+
+  public function auth ( $code )
+  {
     $this->_youtube_client->authenticate($code);
     $token = $this->_youtube_client->getAccessToken();
-        
+
     $this->_sm_credentials->updateYouTubeAccessToken($token);
   }
 
-  protected function getLoginUrl() {
+  protected function getLoginUrl ()
+  {
     Header::redirect($this->_youtube_client->createAuthUrl());
   }
-  
-  public function insert($input, $privacy = "public") {
-      
+
+  public function insert ( $input, $privacy = "public" )
+  {
+
     $this->setToken();
-        
+
     $snippet = new Google_Service_YouTube_VideoSnippet();
     $snippet->setTitle($input['title']);
     $snippet->setDescription($input['description']);
-    if (isset($input['tags']) && is_array($input['tags'])) {
-        $snippet->setTags($input['tags']);
+    if ( isset($input['tags']) && is_array($input['tags']) ) {
+      $snippet->setTags($input['tags']);
     }
 
     $status = new Google_Service_YouTube_VideoStatus();
@@ -99,31 +102,27 @@ class YouTubeModel extends BaseModelAdm
     $video->setStatus($status);
 
     $file = $_SERVER['DOCUMENT_ROOT'] . '/public' . $input['file'];
-        
-    if (!is_file($file)) {
-        throw new Exception('Problema com o caminho do arquivo');
+
+    if ( !is_file($file) ) {
+      throw new Exception('Problema com o caminho do arquivo');
     }
-    
+
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $mime_type = finfo_file($finfo, $file);
 
     try {
-        $obj = $this->_youtube->videos->insert(
-                "status,snippet", 
-                $video,
-                array(
-                    "data"=>file_get_contents($file), 
-                    "mimeType" => $mime_type,
-                    'uploadType' => 'multipart'
-                )
-            );
+      $obj = $this->_youtube->videos->insert(
+              "status,snippet", $video, array(
+          "data" => file_get_contents($file),
+          "mimeType" => $mime_type,
+          'uploadType' => 'multipart'
+              )
+      );
 
-        return $obj->id;
-
-    } catch(Google_Service_Exception $e) {
-        return false;
+      return $obj->id;
+    } catch (Google_Service_Exception $e) {
+      return false;
     }
-    
   }
   
   public function delete($id) {
