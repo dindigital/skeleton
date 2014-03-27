@@ -31,7 +31,9 @@ try {
   ));
   $config->define();
 
-  $router = new Router('config/routes.php');
+  $router = new Router();
+  $router->setRoutesFile('config/essential_routes.php');
+  $router->setRoutesFile('config/routes.php');
   $router->route();
 
   $fc = new FrontController($router);
