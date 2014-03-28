@@ -4,11 +4,15 @@ use Din\Router\RouteTypes;
 
 return array(
     '' => array(
-        'noticias/([a-zA-Z0-9_-]+)/' => array(
+        'noticias/?$' => array(
+            'controller' => 'site\controllers\NewsController',
+            'method' => 'list',
+        ),
+        'noticias/([a-zA-Z0-9_-]+)/?$' => array(
             'controller' => 'site\controllers\NewsController',
             'method' => 'view',
         ),
-        '' => array(
+        '/?$' => array(
             'controller' => 'site\controllers\IndexController',
             'method' => 'index',
         ),

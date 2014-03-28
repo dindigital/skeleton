@@ -35,12 +35,13 @@ abstract class BaseControllerSite extends BaseController
   }
 
   /**
-   * Seta os arquivos que compõem o layout do adm
+   * Seta os arquivos que compõem o layout do site
    */
   protected function setBasicTemplate ()
   {
     $this->setAssetsData();
     $this->setSettings();
+    $this->setNav();
     $this->_view->addFile('src/app/site/views/layouts/layout.phtml');
     $this->_view->addFile('src/app/site/views/includes/header.phtml', '{$HEADER}');
     $this->_view->addFile('src/app/site/views/includes/footer.phtml', '{$FOOTER}');
@@ -52,6 +53,14 @@ abstract class BaseControllerSite extends BaseController
   protected function setSettings() {
       $settingsModels = new models\SettingsModel;
       $this->_data['settings'] = $settingsModels->getSettings();
+  }
+  
+  /**
+   * Pega o menu
+   */
+  protected function setNav() {
+      $pageCatModel = new models\PageCatModel;
+      $this->_data['nav'] = $pageCatModel->getNav();
   }
 
 }

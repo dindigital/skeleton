@@ -22,7 +22,7 @@ class IndexController extends BaseControllerSite
          * Últimas notícias
          */
         $newsModel = new models\NewsModel();
-        $this->_data['news'] = $newsModel->getList();
+        $this->_data['news'] = $newsModel->getListHome();
         
         /**
          * Define template e exibição

@@ -37,4 +37,29 @@ class NewsController extends BaseControllerSite
     $this->_view->display_html_result($html);
   }
 
+  public function get_list ()
+  {
+    $cache_name = Header::getUri();
+    $html = $this->_viewcache->get($cache_name);
+        
+    if (is_null($html)) {
+        
+        /**
+         * Lista de Notícias
+         */
+        $newsModel = new models\NewsModel();
+        $this->_data['news'] = $newsModel->getList();
+        
+        /**
+         * Define template e exibição
+         */
+        $this->setBasicTemplate();
+        $this->_view->addFile('src/app/site/views/news_list.phtml', '{$CONTENT}');
+        $html = $this->return_html();
+        $this->_viewcache->save($cache_name, $html);
+    }
+    
+    $this->_view->display_html_result($html);
+  }
+
 }
