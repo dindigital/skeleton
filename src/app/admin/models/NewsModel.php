@@ -21,6 +21,7 @@ use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
 use src\app\admin\filters\SequenceFilter;
 use src\app\admin\helpers\SequenceResult;
+use Din\Cache\ViewCache;
 
 /**
  *
@@ -118,7 +119,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $filter->setDate('date');
     $filter->setString('head');
     $filter->setString('body');
-    $filter->setDefaultUri('title', $this->getId());
+    $filter->setDefaultUri('title', $this->getId(), 'noticias');
     //
     $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
     $seq_filter->setSequence();
@@ -158,7 +159,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $filter->setDate('date');
     $filter->setString('head');
     $filter->setString('body');
-    $filter->setDefaultUri('title', $this->getId());
+    $filter->setDefaultUri('title', $this->getId(), 'noticias');
     //
     $mf = new MoveFiles;
     if ( $has_cover ) {
@@ -171,6 +172,8 @@ class NewsModel extends BaseModelAdm implements Facepostable
 
     $this->relationship('photo', $input['photo']);
     $this->relationship('video', $input['video']);
+    
+    $this->deleteCahe($this->_table->uri);
   }
 
   private function relationship ( $tbl, $array )
@@ -199,7 +202,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
 
     $post = array(
         'name' => $result[0]['title'],
-        'message' => 'Mais uma notícia quente',
+        'message' => $result[0]['head'],
         'link' => URL . $result[0]['uri'],
         'description' => $result[0]['head'],
     );
