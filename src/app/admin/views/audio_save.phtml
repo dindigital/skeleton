@@ -23,7 +23,7 @@
               <label class="checkbox-inline"><input type="checkbox" name="active" id="active" <?php if ( $data['table']['active'] == '1' ): ?>checked="checked"<?php endif; ?> /></label>
             </div>
           </div>
-          
+
           <?php if ( $data['table']['has_sc'] == '1' ): ?>
             <div class="form-group">
               <label class="col-sm-2 control-label">Publicação SoundCloud</label>
@@ -32,7 +32,7 @@
                 <br />
                 <label class="checkbox-inline"><input type="checkbox" name="republish_sc" />Atualizar Publicação SoundCloud</label>
                 <br />
-                AQUI VAI EMBED
+                <?php echo $data['table']['soundcloud_html']; ?>
               </div>
             </div>
           <?php else: ?>

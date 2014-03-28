@@ -34,6 +34,11 @@ class SoundCloudModel extends BaseModelAdm
     $this->_api = new Service($client_id, $client_secret, $redirect_uri);
   }
 
+  public function getIdName ()
+  {
+    return 'id_soundcloud';
+  }
+
   public function makeLogin ()
   {
     $access_token = $this->_sm_credentials->row['sc_token'];
@@ -59,6 +64,24 @@ class SoundCloudModel extends BaseModelAdm
     $this->_api->setAccessToken($access_token);
 
     $this->_sm_credentials->updateSoundCoudAccessToken($access_token);
+  }
+
+  public function deletePrevious ( $id_soundcloud )
+  {
+    try {
+      $row = $this->getById($id_soundcloud);
+      try {
+        $this->_api->delete("tracks/{$row['track_id']}");
+      } catch (Exception $e) {
+        //
+      }
+
+      $this->_dao->delete('soundcloud', array(
+          'id_soundcloud = ?' => $id_soundcloud
+      ));
+    } catch (Exception $e) {
+      //
+    }
   }
 
   public function insertComplete ( $input )
@@ -87,6 +110,20 @@ class SoundCloudModel extends BaseModelAdm
     $this->_dao->insert($this->_table);
 
     return $this->_table->id_soundcloud;
+  }
+
+  public function getEmbed ( $track_url )
+  {
+    $response_text = $this->_api->get('oembed', array(
+        'url' => $track_url
+    ));
+
+    $response_json = json_decode($response_text);
+
+    if ( json_last_error() )
+      throw new Exception('Não foi possível converter pra JSON: ' . $response_text);
+
+    return $response_json->html;
   }
 
 }
