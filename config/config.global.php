@@ -16,5 +16,7 @@ return array(
     'smtp_host' => 'xxx',
     'smtp_user' => 'xxx@xxx.com',
     'smtp_pass' => 'xxx',
-    'bitly' => 'xxx'
+    'bitly' => 'xxx',
+    'cache_html' => true,
+    'cache_path' => 'public/system/cache',
 );

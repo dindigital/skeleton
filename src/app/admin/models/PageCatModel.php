@@ -35,7 +35,7 @@ class PageCatModel extends BaseModelAdm
     $table['title'] = Html::scape($table['title']);
     $table['content'] = Form::Ck('content', $table['content']);
     $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
-    $table['uri'] = Link::formatUri($table['uri']);
+    $table['uri'] = Link::formatNavUri($table['uri']);
 
     return $table;
   }
@@ -91,6 +91,7 @@ class PageCatModel extends BaseModelAdm
     $filter->setString('content');
     $filter->setString('description');
     $filter->setString('keywords');
+    $filter->setNavUri('title');
     //
     $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
     $seq_filter->setSequence();
@@ -125,6 +126,7 @@ class PageCatModel extends BaseModelAdm
     $filter->setString('content');
     $filter->setString('description');
     $filter->setString('keywords');
+    $filter->setNavUri('title');
     //
     $mf = new MoveFiles;
     if ( $has_cover ) {

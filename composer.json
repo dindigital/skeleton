@@ -15,6 +15,7 @@
     "kriswallsmith/assetic" : "dev-master",
     "facebook/php-sdk": "@stable",
     "ise/php-soundcloud": "3.*",
-    "google/apiclient": "dev-master"
+    "google/apiclient": "dev-master",
+    "doctrine/cache": "dev-master"
   }
 }

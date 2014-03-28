@@ -90,6 +90,21 @@ class TableFilter extends BaseFilter
     $this->_table->uri = "{$prefix}/{$uri}-{$id}/";
   }
 
+  public function setNavUri ( $title_field )
+  {
+    $title = $this->getValue($title_field);
+    $uri = $this->getValue('uri');
+
+    $uri = $uri == '' ? Uri::format($title) : Uri::format($uri);
+    $uri = LimitChars::filter($uri, 80, '');
+    
+    if ($uri != '') {
+        $uri .= '/';
+    }
+
+    $this->_table->uri = "/$uri";
+  }
+
   public function setIdParent ()
   {
     $id_parent = $this->getValue('id_parent');
