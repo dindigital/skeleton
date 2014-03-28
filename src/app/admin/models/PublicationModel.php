@@ -134,9 +134,7 @@ class PublicationModel extends BaseModelAdm
 
     $this->dao_insert();
 
-    if ( $input['publish_issuu'] == '1' ) {
-      $this->save_issuu();
-    }
+    $this->afterSave($input);
   }
 
   public function update ( $input )
@@ -163,46 +161,46 @@ class PublicationModel extends BaseModelAdm
 
     $this->dao_update();
 
-    if ( $input['publish_issuu'] == '1' ) {
-      $this->save_issuu();
-    } else if ( $input['republish_issuu'] == '1' ) {
-      $this->save_issuu(true);
-    }
+    $this->afterSave($input);
   }
 
-  public function save_issuu ( $delete_previous = false )
+  public function afterSave ( $input )
   {
-    $row = $this->getById();
+    // publicar no issuu
+    if ( $input['republish_issuu'] == '1' || $input['publish_issuu'] == '1' ) {
 
-    // arquivo que acabou de subir ou arquivo previamente gravado
-    if ( !$file = $this->_table->file ) {
-      $file = $row['file'];
-    }
+      $row = $this->getById();
 
-    $previous_id = $row['id_issuu'];
-
-    if ( $file ) {
-      // prepara campos
-      $url = URL . $file;
+      $delete_previous = $input['republish_issuu'] == '1';
+      $id_publication = $this->getId();
+      $file = $this->_table->file;
       $title = $this->_table->title;
+      $id_issuu = $row['id_issuu'];
 
-      $pathinfo = pathinfo($file);
-      if ( !in_array(strtolower($pathinfo['extension']), array('pdf', 'doc', 'docx')) )
-        throw new Exception('Upload no Issuu é restringido a arquivos PDF ou DOC');
+      // arquivo que acabou de subir ou arquivo previamente gravado
+      if ( !$file ) {
+        $file = $row['file'];
+        unset($row);
+      }
 
-      $name = Uri::format(LimitChars::filter($this->_table->title, 20, ''));
-      $name = substr($name, 0, 30) . uniqid() . '.' . strtolower($pathinfo['extension']);
+      if ( $file ) {
+        $url = URL . $file;
 
-      $issuu_model = new IssuuModel;
-      $issuu_model->insertComplete(array(
-          'url' => $url,
-          'name' => $name,
-          'title' => $title,
-          'previous_id' => $delete_previous ? $previous_id : null,
-          'parent_table' => 'publication',
-          'parent_id_field' => 'id_publication',
-          'parent_id_value' => $this->getId(),
-      ));
+        $filename = Uri::format(LimitChars::filter($title, 20, ''));
+        $filename .= substr(uniqid(), 0, 5) . '.' . strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+        $issuu_model = new IssuuModel;
+        $issuu_model->insertComplete(array(
+            'url' => $url,
+            'name' => $filename,
+            'title' => $title,
+            'parent_table' => 'publication',
+            'parent_id_field' => 'id_publication',
+            'parent_id_value' => $id_publication,
+            'id_issuu' => $id_issuu,
+            'delete_previous' => $delete_previous
+        ));
+      }
     }
   }
 
@@ -213,26 +211,15 @@ class PublicationModel extends BaseModelAdm
     return $this->_filters;
   }
 
-  public function delete ( $itens )
+  public function beforeDelete ( $tableHistory )
   {
-    foreach ( $itens as $item ) {
-      $tableHistory = $this->getById($item['id'], false);
-
-      $this->deleteChildren($this->_entity, $item['id']);
-
-      Folder::delete("public/system/uploads/publication/{$item['id']}");
-      $this->_dao->delete('publication', array('id_publication = ?' => $item['id']));
-      $this->log('D', $tableHistory['title'], $this->_table, $tableHistory);
-      // DELETE ISSUU
-      try {
-        $issuu = new IssuuModel;
-        $issuu->setId($tableHistory['id_issuu']);
-        $issuu->deleteComplete();
-      } catch (Exception $e) {
-        //
-      }
-      //
-    }
+    $issuu = new IssuuModel;
+    $issuu->deleteComplete(array(
+        'id_issuu' => $tableHistory['id_issuu'],
+        'parent_table' => 'publication',
+        'parent_id_field' => 'id_publication',
+        'parent_id_value' => $tableHistory['id_publication']
+    ));
   }
 
 }

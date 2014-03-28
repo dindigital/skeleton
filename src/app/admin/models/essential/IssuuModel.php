@@ -4,10 +4,10 @@ namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Table\Table;
-use Din\DataAccessLayer\Select;
 use Din\API\Issuu\Issuu;
 use src\app\admin\models\SocialmediaCredentialsModel;
 use Exception;
+use src\app\admin\filters\TableFilter;
 
 /**
  *
@@ -16,24 +16,29 @@ use Exception;
 class IssuuModel extends BaseModelAdm
 {
 
-  protected $_issuu;
-  protected $_sm_credentials;
+  protected $_api;
 
   public function __construct ()
   {
     parent::__construct();
     $this->setTable('issuu');
-    $this->_sm_credentials = new SocialmediaCredentialsModel();
-    $this->_sm_credentials->fetchAll();
 
-    $issuu_key = $this->_sm_credentials->row['issuu_key'];
-    $issu_secret = $this->_sm_credentials->row['issuu_secret'];
+    $this->setApi();
+  }
+
+  protected function setApi ()
+  {
+    $sm_credentials = new SocialmediaCredentialsModel();
+    $sm_credentials->fetchAll();
+
+    $issuu_key = $sm_credentials->row['issuu_key'];
+    $issu_secret = $sm_credentials->row['issuu_secret'];
 
     if ( is_null($issuu_key) && is_null($issu_secret) ) {
       throw new Exception("É necessário o preenchimento do issuu_key e issuu_secret");
     }
 
-    $this->_issuu = new Issuu($issuu_key, $issu_secret);
+    $this->_api = new Issuu($issuu_key, $issu_secret);
   }
 
   public function getIdName ()
@@ -41,15 +46,43 @@ class IssuuModel extends BaseModelAdm
     return 'id_issuu';
   }
 
-  public function insert ( $input )
+  /**
+   *
+   * @param type $input array(
+   * 'url' => '',
+   * ' name' => '',
+   * 'title' => '',
+   * 'parent_table' => '',
+   * 'parent_id_field' => '',
+   * 'parent_id_value' => '',
+   * 'id_issuu' => '',
+   * 'delete_previous' => ''
+   * )
+   */
+  public function insertComplete ( $input )
   {
-    $this->setNewId();
-    $this->_table->name = $input['name'];
-    $this->_table->link = $input['link'];
-    $this->_table->document_id = $input['document_id'];
+    if ( $input['delete_previous'] ) {
+      $this->deleteComplete($input);
+    }
+
+    // insere na api
+    $response = $this->_api->document_url_upload($input['url'], $input['name'], $input['title']);
+
+    // insere na tabela issuu
+    $filter = new TableFilter($this->_table, array(
+        'document_id' => $response['document_id'],
+        'name' => $response['name'],
+        'link' => $response['link'],
+    ));
+
+    $filter->setNewId('id_issuu');
+    $filter->setString('name');
+    $filter->setString('link');
+    $filter->setString('document_id');
 
     $this->_dao->insert($this->_table);
 
+    // atualiza tabela parent com o id da tabela issuu
     $parent_table = new Table($input['parent_table']);
     $parent_table->id_issuu = $this->getId();
 
@@ -58,61 +91,35 @@ class IssuuModel extends BaseModelAdm
     ));
   }
 
-  public function insertComplete ( $input )
+  /**
+   *
+   * @param type $input = array(
+   * 'id_issuu'=>'',
+   * 'parent_table'=>'',
+   * 'parent_id_field'=>'',
+   * 'parent_id_value'=>'',
+   * )
+   */
+  public function deleteComplete ( $input )
   {
-    // deleta o anterior (substituir)
-    if ( $input['previous_id'] ) {
-      $parent_table = new Table($input['parent_table']);
-      $parent_table->id_issuu = null;
+    // seta nulo na tabela holder
+    $parent_table = new Table($input['parent_table']);
+    $parent_table->id_issuu = null;
 
-      $this->_dao->update($parent_table, array(
-          "{$input['parent_id_field']} = ?" => $input['parent_id_value']
-      ));
-
-      $this->deleteComplete($input['previous_id']);
-    }
-
-    // insere na api
-    $response = $this->_issuu->document_url_upload($input['url'], $input['name'], $input['title']);
-
-    // salva no banco
-    $this->insert(array(
-        'name' => $response['name'],
-        'link' => $response['link'],
-        'document_id' => $response['document_id'],
-        'parent_table' => $input['parent_table'],
-        'parent_id_field' => $input['parent_id_field'],
-        'parent_id_value' => $input['parent_id_value'],
-    ));
-  }
-
-  public function selectRow ( $id )
-  {
-    $select = new Select('issuu');
-    $select->addAllFields();
-    $select->where(array(
-        'id_issuu = ?' => $id
+    $this->_dao->update($parent_table, array(
+        "{$input['parent_id_field']} = ?" => $input['parent_id_value']
     ));
 
-    $result = $this->_dao->select($select);
+    // pega o document_name para fazer a deleção da api
+    $row = $this->getById($input['id_issuu']);
+    $document_name = $row['name'];
 
-    if ( !count($result) )
-      throw new Exception('Registro não encontrado');
+    // deleta da api
+    $this->_api->document_delete($document_name);
 
-    return $result[0];
-  }
-
-  public function deleteComplete ( $id = null )
-  {
-    $id = !is_null($id) ? $id : $this->getId();
-    $row = $this->selectRow($id);
-
-    // delete from api
-    $this->_issuu->document_delete($row['name']);
-
-    // delete from databse
+    // deleta na tabela issuu
     $this->_dao->delete('issuu', array(
-        'id_issuu = ?' => $id
+        'id_issuu = ?' => $input['id_issuu']
     ));
   }
 
