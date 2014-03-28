@@ -20,9 +20,23 @@ class Link
     $uri = implode('-', $arrayLink);
 
     $r = array(
-        'prefix' => "{$prefix}/",
+        'prefix' => $prefix,
         'uri' => $uri,
         'id' => $id
+    );
+
+    return $r;
+  }
+
+  public static function formatNavUri ( $uri )
+  {
+    if ( is_null($uri) )
+      return null;
+
+    $r = array(
+        'prefix' => null,
+        'uri' => $uri,
+        'id' => null
     );
 
     return $r;
