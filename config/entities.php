@@ -1,6 +1,10 @@
 <?php
 
 return array(
+    'cache' => array(
+        'model' => 'essential\CacheModel',
+        'section' => 'Cache',
+    ),
     'trash' => array(
         'model' => 'essential\TrashModel',
         'section' => 'Lixeira',

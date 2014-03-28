@@ -1,6 +1,10 @@
 <?php
 
 return array(
+    'Cache' => array(
+        'tbl' => 'cache',
+        'index' => 'save',
+    ),
     'Lixeira' => array(
         'tbl' => 'trash',
         'index' => 'list',

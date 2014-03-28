@@ -21,7 +21,6 @@ use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
 use src\app\admin\filters\SequenceFilter;
 use src\app\admin\helpers\SequenceResult;
-use Din\Cache\ViewCache;
 
 /**
  *
@@ -173,7 +172,8 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $this->relationship('photo', $input['photo']);
     $this->relationship('video', $input['video']);
     
-    $this->deleteCahe($this->_table->uri);
+    $cache = new essential\CacheModel();
+    $cache->delete($this->_table->uri);
   }
 
   private function relationship ( $tbl, $array )

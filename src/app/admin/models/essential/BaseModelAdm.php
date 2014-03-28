@@ -254,16 +254,5 @@ class BaseModelAdm
   {
     $this->_filters = $filters;
   }
-  
-  /*
-   * ===========================================================================
-   * CACHE
-   * ===========================================================================
-   */
-  
-  public function deleteCahe($key) {
-    $cache = new ViewCache(CACHE_HTML, CACHE_PATH);
-    $cache->delete($key);
-  }
 
 }

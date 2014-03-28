@@ -2,7 +2,6 @@
 
 namespace src\app\site\controllers;
 
-use Din\Http\Header;
 use src\app\site\models as models;
 
 /**
@@ -14,7 +13,7 @@ class IndexController extends BaseControllerSite
 
   public function get_index ()
   {
-    $cache_name = Header::getUri();
+    $cache_name = 'index';
     $html = $this->_viewcache->get($cache_name);
         
     if (is_null($html)) {

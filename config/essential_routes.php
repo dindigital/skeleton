@@ -84,6 +84,10 @@ return array(
             'controller' => 'admin\controllers\essential\FacepostController',
             'method' => 'view',
         ),
+        'admin/cache/save/' => array(
+            'controller' => 'admin\controllers\essential\CacheController',
+            'method' => 'save',
+        ),
         'admin/(.*)' => array(
             'path' => 'admin\controllers\\',
             'type' => RouteTypes::ACTION,
