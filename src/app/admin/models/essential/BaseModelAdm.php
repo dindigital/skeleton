@@ -136,6 +136,9 @@ class BaseModelAdm
       $title = $this->_entity->getTitle();
 
       $tableHistory = $this->getById($item['id']);
+
+      $this->beforeDelete($tableHistory);
+
       $this->deleteChildren($this->_entity, $item['id']);
 
       Folder::delete("public/system/uploads/{$tbl}/{$item['id']}");
@@ -144,6 +147,11 @@ class BaseModelAdm
         $this->log('D', $tableHistory[$title], $this->_table, $tableHistory);
       }
     }
+  }
+
+  public function beforeDelete ( $tableHistory )
+  {
+    //
   }
 
   public function getById ( $id = null )

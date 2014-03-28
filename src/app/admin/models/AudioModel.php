@@ -15,7 +15,6 @@ use src\app\admin\validators\UploadValidator;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\models\essential\SoundCloudModel;
 use src\app\admin\filters\TableFilter;
-use Din\File\Folder;
 
 /**
  *
@@ -23,6 +22,16 @@ use Din\File\Folder;
  */
 class AudioModel extends BaseModelAdm
 {
+
+  protected $_sc;
+
+  protected function setSoundCloud ()
+  {
+    if ( is_null($this->_sc) ) {
+      $this->_sc = new SoundCloudModel;
+      $this->_sc->makeLogin();
+    }
+  }
 
   public function __construct ()
   {
@@ -87,8 +96,7 @@ class AudioModel extends BaseModelAdm
 
   public function getRow ( $id = null )
   {
-    $sc = new SoundCloudModel;
-    $sc->makeLogin();
+    $this->setSoundCloud();
 
     if ( $id ) {
       $this->setId($id);
@@ -208,8 +216,7 @@ class AudioModel extends BaseModelAdm
     }
 
     if ( $file ) {
-      $soundcloud_model = new SoundCloudModel;
-      $soundcloud_model->makeLogin();
+      $this->setSoundCloud();
 
       //delete previous
       if ( $delete_previous ) {
@@ -219,11 +226,11 @@ class AudioModel extends BaseModelAdm
             'id_audio = ?' => $id_audio
         ));
 
-        $soundcloud_model->deletePrevious($row['id_soundcloud']);
+        $this->_sc->deletePrevious($row['id_soundcloud']);
       }
 
       //insert new
-      $id_soundcloud = $soundcloud_model->insertComplete(array(
+      $id_soundcloud = $this->_sc->insertComplete(array(
           'file' => 'public' . $file,
           'title' => $title,
       ));
@@ -240,36 +247,19 @@ class AudioModel extends BaseModelAdm
     $this->_table->id_audio = $id_audio; //pra nao bugar no redirecionamento
   }
 
-  public function delete ( $itens )
+  public function beforeDelete ( $tableHistory )
   {
-    foreach ( $itens as $item ) {
-      $id = $this->_entity->getId();
-      $tbl = $this->_entity->getTbl();
-      $title = $this->_entity->getTitle();
+    //delete soundcloud
+    $this->setSoundCloud();
 
-      $tableHistory = $this->getById($item['id']);
+    $this->setTable('audio');
+    $this->_table->id_soundcloud = null;
+    $this->_dao->update($this->_table, array(
+        'id_audio = ?' => $tableHistory['id_audio']
+    ));
 
-      //delete soundcloud
-      $soundcloud_model = new SoundCloudModel;
-      $soundcloud_model->makeLogin();
-
-      $this->setTable('audio');
-      $this->_table->id_soundcloud = null;
-      $this->_dao->update($this->_table, array(
-          'id_audio = ?' => $item['id']
-      ));
-
-      $soundcloud_model->deletePrevious($tableHistory['id_soundcloud']);
-      //
-
-      $this->deleteChildren($this->_entity, $item['id']);
-
-      Folder::delete("public/system/uploads/{$tbl}/{$item['id']}");
-      $this->_dao->delete($tbl, array($id . ' = ?' => $item['id']));
-      if ( isset($title) ) {
-        $this->log('D', $tableHistory[$title], $this->_table, $tableHistory);
-      }
-    }
+    $this->_sc->deletePrevious($tableHistory['id_soundcloud']);
+    //
   }
 
 }
