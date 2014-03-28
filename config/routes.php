@@ -8,7 +8,7 @@ return array(
             'controller' => 'site\controllers\IndexController',
             'method' => 'index',
         ),
-        '404' => array(
+        'erro404' => array(
             'controller' => 'admin\controllers\essential\Error404Controller',
             'method' => 'display',
             'type' => RouteTypes::ERR_404,

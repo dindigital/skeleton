@@ -17,7 +17,7 @@ set_error_handler('errHandle');
 
 require_once 'vendor/autoload.php';
 
-use Din\Router\Router;
+use Din\Router\GroupRouter;
 use Din\Mvc\Controller\FrontController;
 use Din\Config\Config;
 
@@ -31,9 +31,10 @@ try {
   ));
   $config->define();
 
-  $router = new Router();
-  $router->setRoutesFile('config/essential_routes.php');
-  $router->setRoutesFile('config/routes.php');
+  $router = new GroupRouter(array(
+      'config/essential_routes.php',
+      'config/routes.php'
+  ));
   $router->route();
 
   $fc = new FrontController($router);
