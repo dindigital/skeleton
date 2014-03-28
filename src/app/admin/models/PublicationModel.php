@@ -180,7 +180,6 @@ class PublicationModel extends BaseModelAdm
       // arquivo que acabou de subir ou arquivo previamente gravado
       if ( !$file ) {
         $file = $row['file'];
-        unset($row);
       }
 
       if ( $file ) {
