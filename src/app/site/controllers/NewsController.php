@@ -9,10 +9,10 @@ use src\app\site\models as models;
  *
  * @package app.controllers
  */
-class IndexController extends BaseControllerSite
+class NewsController extends BaseControllerSite
 {
 
-  public function get_index ()
+  public function get_view ( $uri )
   {
     $cache_name = Header::getUri();
     $html = $this->_viewcache->get($cache_name);
@@ -23,13 +23,13 @@ class IndexController extends BaseControllerSite
          * Últimas notícias
          */
         $newsModel = new models\NewsModel();
-        $this->_data['news'] = $newsModel->getList();
+        $this->_data['news'] = $newsModel->getView($uri);
         
         /**
          * Define template e exibição
          */
         $this->setBasicTemplate();
-        $this->_view->addFile('src/app/site/views/index.phtml', '{$CONTENT}');
+        $this->_view->addFile('src/app/site/views/news.phtml', '{$CONTENT}');
         $html = $this->return_html();
         $this->_viewcache->save($cache_name, $html);
     }
