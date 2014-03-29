@@ -4,6 +4,7 @@ namespace src\app\site\models;
 
 use Din\DataAccessLayer\Select;
 use Din\Filters\Date\DateFormat;
+use Din\Image\Picuri;
 
 class NewsModel extends BaseModelSite
 {
@@ -47,7 +48,7 @@ class NewsModel extends BaseModelSite
         $select->addField('title');
         $select->addField('date');
         $select->addField('uri');
-        $select->addField('head');
+        $select->addField('cover');
         $select->where($arrCriteria);
         $select->order_by('date DESC');
 
@@ -58,6 +59,9 @@ class NewsModel extends BaseModelSite
 
         foreach ( $result as $i => $row ) {
           $result[$i]['date'] = DateFormat::filter_date($row['date']);
+          if (!is_null($row['cover'])) {
+              $result[$i]['cover'] = Picuri::picUri($row['cover'], 100, 100, true);
+          }
         }
 
         return $result;

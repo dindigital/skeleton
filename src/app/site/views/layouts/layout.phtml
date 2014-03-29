@@ -3,21 +3,21 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="<?php echo $data['settings']['description'] ?>">
+    <meta name="author" content="DIN DIGITAL">
     <link rel="shortcut icon" href="images/favicon.png">
 
-    <title>DIN DIGITAL - SKELETON</title>
+    <title><?php echo $data['settings']['title'] ?></title>
 
-    <?php echo $data['assets']['css']['base']; ?>
+    <?php echo $data['assets']['css']['site']; ?>
 
   </head>
 
   <body>
-      
-      <div class="container">
           
-          {$HEADER}
+      {$HEADER}
+          
+      <div class="container">
           
           {$CONTENT}
           
@@ -26,7 +26,7 @@
       </div>
       
     <?php echo $data['assets']['js']['jquery']; ?>
-    <?php echo $data['assets']['js']['base']; ?>
+    <?php echo $data['assets']['js']['site']; ?>
   
   </body>
   

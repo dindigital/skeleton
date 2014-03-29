@@ -41,7 +41,7 @@ class PageModel extends BaseModelAdm
     $table['title'] = Html::scape($table['title']);
     $table['content'] = Form::Ck('content', $table['content']);
     $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
-    $table['uri'] = Link::formatUri($table['uri']);
+    $table['uri'] = Link::formatNavUri($table['uri'], true);
     $table['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $table['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 
     $table['id_parent'] = $this->loadInfinity();
@@ -130,7 +130,8 @@ class PageModel extends BaseModelAdm
     $filter->setString('content');
     $filter->setString('description');
     $filter->setString('keywords');
-    $filter->setDefaultUri('title', $this->getId());
+    $page_cat = new PageCatModel;
+    $filter->setNavUri('title', $page_cat->getTitle($this->_table->id_page_cat));
     //
     $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
     $seq_filter->setSequence();
@@ -166,7 +167,8 @@ class PageModel extends BaseModelAdm
     $filter->setString('content');
     $filter->setString('description');
     $filter->setString('keywords');
-    $filter->setDefaultUri('title', $this->getId());
+    $page_cat = new PageCatModel;
+    $filter->setNavUri('title', $page_cat->getTitle($this->_table->id_page_cat));
     //
     $mf = new MoveFiles;
     if ( $has_cover ) {

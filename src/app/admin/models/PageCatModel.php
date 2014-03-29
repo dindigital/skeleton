@@ -163,5 +163,22 @@ class PageCatModel extends BaseModelAdm
 
     return $arrOptions;
   }
+  
+  public function getTitle($id_page_cat) {
+
+    $arrCriteria = array(
+        'a.id_page_cat = ?' => $id_page_cat
+    );
+    
+    $select = new Select('page_cat');
+    $select->addField('title');
+    $select->where($arrCriteria);
+
+    $result = $this->_dao->select($select);
+    
+    if (count($result)) {
+        return $result[0]['title'];
+    }
+  }
 
 }

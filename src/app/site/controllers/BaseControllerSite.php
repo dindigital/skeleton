@@ -26,11 +26,11 @@ abstract class BaseControllerSite extends BaseController
    */
   protected function setAssetsData ()
   {
-    $assetRead = new AssetRead('config/assets_site.php');
+    $assetRead = new AssetRead('config/assets.php');
     $assetRead->setMode(ASSETS);
     $assetRead->setReplace(PATH_REPLACE);
-    $assetRead->setGroup('css', array('base'));
-    $assetRead->setGroup('js', array('jquery', 'base'));
+    $assetRead->setGroup('css', array('site'));
+    $assetRead->setGroup('js', array('jquery', 'site'));
     $this->_data['assets'] = $assetRead->getAssets();
   }
 

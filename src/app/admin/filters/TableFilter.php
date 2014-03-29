@@ -84,14 +84,14 @@ class TableFilter extends BaseFilter
     $uri = $uri == '' ? Uri::format($title) : Uri::format($uri);
     $uri = LimitChars::filter($uri, 80, '');
     if ( $prefix != '' ) {
-      $prefix = '/' . $prefix;
+      $prefix = '/' . Uri::format($prefix);
     }
 
     $this->_table->uri = "{$prefix}/{$uri}-{$id}/";
   }
 
-  public function setNavUri ( $title_field )
-  {
+  public function setNavUri ( $title_field, $prefix = '' )
+  {      
     $title = $this->getValue($title_field);
     $uri = $this->getValue('uri');
 
@@ -101,8 +101,12 @@ class TableFilter extends BaseFilter
     if ($uri != '') {
         $uri .= '/';
     }
-
-    $this->_table->uri = "/$uri";
+    
+    if ( $prefix != '' ) {
+      $prefix = '/' . Uri::format($prefix);
+    }
+    
+    $this->_table->uri = "$prefix/$uri";
   }
 
   public function setIdParent ()
