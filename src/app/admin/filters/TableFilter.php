@@ -6,6 +6,8 @@ use Din\Crypt\Crypt;
 use Din\Filters\String\Uri;
 use Din\Filters\String\LimitChars;
 use Din\Filters\Date\DateToSql;
+use Din\File\Folder;
+use src\app\admin\helpers\MoveFiles;
 
 class TableFilter extends BaseFilter
 {
@@ -63,15 +65,24 @@ class TableFilter extends BaseFilter
     $this->_table->{$field} = null;
   }
 
-  public function setUploaded ( $field, $path )
+  public function setUploaded ( $field, $path, $has_upload, MoveFiles $mf )
   {
-    $value = $this->getValue($field);
-    $file = $value[0];
-
-    $pathinfo = pathinfo($file['name']);
-    $name = \Din\Filters\String\Uri::format($pathinfo['filename']) . '.' . $pathinfo['extension'];
-
-    $this->_table->{$field} = "{$path}/{$name}";
+    if ($has_upload) {
+        $value = $this->getValue($field);
+        $file = $value[0];
+        $pathinfo = pathinfo($file['name']);
+        $name = Uri::format($pathinfo['filename']) . '.' . $pathinfo['extension'];
+        $this->_table->{$field} = "{$path}/{$name}";
+        $mf->addFile($file['tmp_name'], $this->_table->{$field});
+    }
+    $this->deleteUploadFolder($field, $path);
+  }
+  
+  protected function deleteUploadFolder ($field, $path) {
+    if ($this->getValue("{$field}_delete")) {
+        Folder::delete($path);
+        $this->_table->{$field} = null;
+    }
   }
 
   public function setDefaultUri ( $title_field, $id, $prefix = '' )

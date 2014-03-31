@@ -17,6 +17,11 @@ class MoveFiles
     );
   }
 
+  /**
+   * Move os arquivos do diretório temporário para o diretório correto.
+   * Importante que na chamada ela precisa final depois de todos os addFile
+   * e fora de qualquer if.
+   */
   public function move ()
   {
     foreach ( $this->_files as $file ) {

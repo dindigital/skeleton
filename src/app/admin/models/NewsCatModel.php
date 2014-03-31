@@ -129,12 +129,10 @@ class NewsCatModel extends BaseModelAdm
     $filter->setDefaultUri('title', $this->getId(), 'news', 'uri');
     //
     $mf = new MoveFiles;
-    if ( $has_cover ) {
-      $filter->setUploaded('cover', "/system/uploads/news_cat/{$this->getId()}/cover");
-      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
-    }
+    $filter->setUploaded('cover', "/system/uploads/news_cat/{$this->getId()}/cover", $has_cover, $mf);
+    //
     $mf->move();
-
+    //
     $this->dao_update();
   }
 

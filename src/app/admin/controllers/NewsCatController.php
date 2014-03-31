@@ -68,7 +68,8 @@ class NewsCatController extends BaseControllerAdm
           'title' => Post::text('title'),
           'is_home' => Post::checkbox('is_home'),
           'uri' => Post::text('uri'),
-          'cover' => Post::upload('cover')
+          'cover' => Post::upload('cover'),
+          'cover_delete' => Post::checkbox('cover_delete')
       );
 
       $this->saveAndRedirect($info);

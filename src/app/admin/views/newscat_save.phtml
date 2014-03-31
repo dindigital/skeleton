@@ -42,8 +42,10 @@
 
           <div class="form-group">
             <label class="col-sm-2 control-label">Capa</label>
-            <div class="col-sm-10">
-              <?php echo $data['table']['cover_uploader']; ?>
+            <div class="col-sm-10">              
+                <label><input type="checkbox" name="cover_delete" /> Remover arquivo</label>
+                <br />
+                <?php echo $data['table']['cover_uploader']; ?>
             </div>
           </div>
 
