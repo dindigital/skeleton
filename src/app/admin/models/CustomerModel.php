@@ -76,8 +76,8 @@ class CustomerModel extends BaseModelAdm
     $str_validator->validateRequiredString('address_number', "Número");
     $str_validator->validateRequiredString('address_state', "Estado");
     $str_validator->validateRequiredString('address_city', "Cidade");
-    $str_validator->validateRequiredString('phone_ddd', "DDD");
-    $str_validator->validateRequiredString('phone_number', "Telefone");
+    $str_validator->validateLenghtString('phone_ddd', "DDD", 2);
+    $str_validator->validateLenghtString('phone_number', "Telefone", 8, 9);
     //
     $db_validator = new DBValidator($input, $this->_dao, 'customer');
     $db_validator->validateUniqueValue('email', 'E-mail');
@@ -114,8 +114,8 @@ class CustomerModel extends BaseModelAdm
     $str_validator->validateRequiredString('address_number', "Número");
     $str_validator->validateRequiredString('address_state', "Estado");
     $str_validator->validateRequiredString('address_city', "Cidade");
-    $str_validator->validateRequiredString('phone_ddd', "DDD");
-    $str_validator->validateRequiredString('phone_number', "Telefone");
+    $str_validator->validateLenghtString('phone_ddd', "DDD", 2);
+    $str_validator->validateLenghtString('phone_number', "Telefone", 8, 9);
     //
     $db_validator = new DBValidator($input, $this->_dao, 'customer');
     $db_validator->setId('id_customer', $this->getId());
