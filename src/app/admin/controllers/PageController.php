@@ -70,6 +70,7 @@ class PageController extends BaseControllerAdm
           'id_parent' => Post::aray('id_parent'),
           'title' => Post::text('title'),
           'cover' => Post::upload('cover'),
+          'cover_delete' => Post::checkbox('cover_delete'),
           'content' => Post::text('content'),
           'description' => Post::text('description'),
           'keywords' => Post::text('keywords'),

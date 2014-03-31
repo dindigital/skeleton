@@ -68,6 +68,7 @@ class AudioController extends BaseControllerAdm
           'description' => Post::text('description'),
           'uri' => Post::text('uri'),
           'file' => Post::upload('file'),
+          'file_delete' => Post::checkbox('file_delete'),
           'publish_sc' => Post::checkbox('publish_sc'),
           'republish_sc' => Post::checkbox('republish_sc'),
       );

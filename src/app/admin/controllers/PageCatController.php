@@ -66,6 +66,7 @@ class PageCatController extends BaseControllerAdm
           'active' => Post::checkbox('active'),
           'title' => Post::text('title'),
           'cover' => Post::upload('cover'),
+          'cover_delete' => Post::checkbox('cover_delete'),
           'content' => Post::text('content'),
           'description' => Post::text('description'),
           'keywords' => Post::text('keywords'),

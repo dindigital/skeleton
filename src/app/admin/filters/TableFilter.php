@@ -78,10 +78,13 @@ class TableFilter extends BaseFilter
     $this->deleteUploadFolder($field, $path);
   }
   
-  protected function deleteUploadFolder ($field, $path) {
-    if ($this->getValue("{$field}_delete")) {
+  protected function deleteUploadFolder ($field, $path) 
+  {
+    if (array_key_exists("{$field}_delete", $this->_input) ) {
+      if ($this->getValue("{$field}_delete")) {
         Folder::delete($path);
         $this->_table->{$field} = null;
+      }
     }
   }
 

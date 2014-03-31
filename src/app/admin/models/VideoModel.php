@@ -109,10 +109,8 @@ class VideoModel extends BaseModelAdm
     $filter->setDefaultUri('title', $this->getId());
     
     $mf = new MoveFiles;
-    if ( $has_file ) {
-      $filter->setUploaded('file', "/system/uploads/video/{$this->getId()}/file");
-      $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
-    }
+    $filter->setUploaded('file', "/system/uploads/video/{$this->getId()}/file", $has_file, $mf);
+    //
     $mf->move();
 
     $this->dao_insert();
@@ -146,10 +144,8 @@ class VideoModel extends BaseModelAdm
     $filter->setDefaultUri('title', $this->getId());
     
     $mf = new MoveFiles;
-    if ( $has_file ) {
-      $filter->setUploaded('file', "/system/uploads/video/{$this->getId()}/file");
-      $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
-    }
+    $filter->setUploaded('file', "/system/uploads/video/{$this->getId()}/file", $has_file, $mf);
+    //
     $mf->move();
 
     $this->dao_update();

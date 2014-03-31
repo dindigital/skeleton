@@ -124,10 +124,8 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $seq_filter->setSequence();
     //
     $mf = new MoveFiles;
-    if ( $has_cover ) {
-      $filter->setUploaded('cover', "/system/uploads/news/{$this->getId()}/cover");
-      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
-    }
+    $filter->setUploaded('cover', "/system/uploads/news/{$this->getId()}/cover", $has_cover, $mf);
+    //
     $mf->move();
 
     $this->dao_insert();
@@ -161,10 +159,8 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $filter->setDefaultUri('title', $this->getId(), 'noticias');
     //
     $mf = new MoveFiles;
-    if ( $has_cover ) {
-      $filter->setUploaded('cover', "/system/uploads/news/{$this->getId()}/cover");
-      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
-    }
+    $filter->setUploaded('cover', "/system/uploads/news/{$this->getId()}/cover", $has_cover, $mf);
+    //
     $mf->move();
 
     $this->dao_update();

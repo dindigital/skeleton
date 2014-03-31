@@ -126,12 +126,10 @@ class AudioModel extends BaseModelAdm
     $filter->setString('description');
     $filter->setDate('date');
     $filter->setDefaultUri('title', $this->getId());
-
+    //
     $mf = new MoveFiles;
-    if ( $has_file ) {
-      $filter->setUploaded('file', "/system/uploads/audio/{$this->getId()}/file");
-      $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
-    }
+    $filter->setUploaded('file', "/system/uploads/audio/{$this->getId()}/file", $has_file, $mf);
+    //
     $mf->move();
 
     $this->dao_insert();
@@ -159,14 +157,12 @@ class AudioModel extends BaseModelAdm
     $filter->setString('description');
     $filter->setDate('date');
     $filter->setDefaultUri('title', $this->getId());
-
     //
     $mf = new MoveFiles;
-    if ( $has_file ) {
-      $filter->setUploaded('file', "/system/uploads/audio/{$this->getId()}/file");
-      $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
-    }
+    $filter->setUploaded('file', "/system/uploads/audio/{$this->getId()}/file", $has_file, $mf);
+    //
     $mf->move();
+    
     $this->dao_update();
 
     if ( $input['publish_sc'] == '1' ) {

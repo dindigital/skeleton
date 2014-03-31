@@ -69,12 +69,9 @@ class GaleryModel extends BaseModelAdm
     $filter->setString($this->_id_photo);
     $filter->setString('sequence');
     //
-
     $mf = new MoveFiles;
-    if ( $has_file ) {
-      $filter->setUploaded('file', "/system/uploads/{$this->_photo}/{$input[$this->_id_photo]}/{$this->_photo_item}/{$this->getId()}/file");
-      $mf->addFile($input['file'][0]['tmp_name'], $this->_table->file);
-    }
+    $filter->setUploaded('file', "/system/uploads/{$this->_photo}/{$input[$this->_id_photo]}/{$this->_photo_item}/{$this->getId()}/file", $has_file, $mf);
+    //
     $mf->move();
 
     $this->_dao->insert($this->_table);

@@ -39,6 +39,7 @@ class ConfigController extends BaseControllerAdm
           'email' => Post::text('email'),
           'password' => Post::text('password'),
           'avatar' => Post::upload('avatar'),
+          'avatar_delete' => Post::checkbox('avatar_delete'),
       );
 
       $this->_model->setId($id);

@@ -137,10 +137,8 @@ class PageModel extends BaseModelAdm
     $seq_filter->setSequence();
     //
     $mf = new MoveFiles;
-    if ( $has_cover ) {
-      $filter->setUploaded('cover', "/system/uploads/page/{$this->getId()}/cover");
-      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
-    }
+    $filter->setUploaded('cover', "/system/uploads/page/{$this->getId()}/cover", $has_cover, $mf);
+    //
     $mf->move();
 
     $this->dao_insert();
@@ -171,12 +169,10 @@ class PageModel extends BaseModelAdm
     $filter->setNavUri('title', $page_cat->getTitle($this->_table->id_page_cat));
     //
     $mf = new MoveFiles;
-    if ( $has_cover ) {
-      $filter->setUploaded('cover', "/system/uploads/page/{$this->getId()}/cover");
-      $mf->addFile($input['cover'][0]['tmp_name'], $this->_table->cover);
-    }
+    $filter->setUploaded('cover', "/system/uploads/page/{$this->getId()}/cover", $has_cover, $mf);
+    //
     $mf->move();
-
+    
     $this->dao_update();
   }
 

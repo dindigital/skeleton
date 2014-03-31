@@ -70,6 +70,7 @@ class NewsController extends BaseControllerAdm
           'head' => Post::text('head'),
           'body' => Post::text('body'),
           'uri' => Post::text('uri'),
+          'cover_delete' => Post::checkbox('cover_delete'),
           'cover' => Post::upload('cover'),
           'r_news_photo' => Post::aray('r_news_photo'),
           'r_news_video' => Post::aray('r_news_video'),

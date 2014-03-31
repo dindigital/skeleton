@@ -65,6 +65,7 @@ class PublicationController extends BaseControllerAdm
           'title' => Post::text('title'),
           'uri' => Post::text('uri'),
           'file' => Post::upload('file'),
+          'file_delete' => Post::checkbox('file_delete'),
           'publish_issuu' => Post::checkbox('publish_issuu'),
           'republish_issuu' => Post::checkbox('republish_issuu'),
       );

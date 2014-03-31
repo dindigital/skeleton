@@ -68,10 +68,8 @@ class AdminModel extends BaseModelAdm
     $filter->setJson('permission');
     //
     $mf = new MoveFiles;
-    if ( $has_avatar ) {
-      $filter->setUploaded('avatar', "/system/uploads/admin/{$this->getId()}/avatar");
-      $mf->addFile($input['avatar'][0]['tmp_name'], $this->_table->avatar);
-    }
+    $filter->setUploaded('avatar', "/system/uploads/admin/{$this->getId()}/avatar", $has_avatar, $mf);
+    //
     $mf->move();
     //
     $this->dao_insert();
@@ -100,10 +98,8 @@ class AdminModel extends BaseModelAdm
     $filter->setJson('permission');
     //
     $mf = new MoveFiles;
-    if ( $has_avatar ) {
-      $filter->setUploaded('avatar', "/system/uploads/admin/{$this->getId()}/avatar");
-      $mf->addFile($input['avatar'][0]['tmp_name'], $this->_table->avatar);
-    }
+    $filter->setUploaded('avatar', "/system/uploads/admin/{$this->getId()}/avatar", $has_avatar, $mf);
+    //
     $mf->move();
     //
     $this->dao_update();
