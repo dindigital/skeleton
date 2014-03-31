@@ -45,36 +45,16 @@ class PublicationModel extends BaseModelAdm
 
     return $table;
   }
-
-  public function getRow ( $id = null )
+  
+  public function onGetById ( Select $select )
   {
-    if ( $id ) {
-      $this->setId($id);
-    }
-
-    $arrCriteria = array(
-        'a.id_publication = ?' => $this->getId()
-    );
-
-    $select = new Select('publication');
-    $select->addAllFields();
-
+      
     $select->left_join('id_issuu', Select::construct('issuu')
                     ->addFField('has_issuu', 'IF (b.id_issuu IS NOT NULL, 1, 0)')
                     ->addField('link', 'issuu_link')
                     ->addField('document_id', 'issuu_document_id')
     );
-
-    $select->where($arrCriteria);
-
-    $result = $this->_dao->select($select);
-
-    if ( !count($result) )
-      throw new Exception('Registro não encontrado.');
-
-    $row = $this->formatTable($result[0]);
-
-    return $row;
+    
   }
 
   public function getList ()

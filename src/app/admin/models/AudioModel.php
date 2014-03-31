@@ -41,6 +41,7 @@ class AudioModel extends BaseModelAdm
 
   public function formatTable ( $table )
   {
+    $this->setSoundCloud();
 
     if ( is_null($table['date']) ) {
       $table['date'] = date('Y-m-d');
@@ -53,7 +54,7 @@ class AudioModel extends BaseModelAdm
     $table['uri'] = Link::formatUri($table['uri']);
 
     if ( isset($table['soundcloud_link']) ) {
-      $table['soundcloud_html'] = '<iframe width="100%" height="400" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F' . $table['track_id'] . '&show_artwork=true"></iframe>';
+      $table['soundcloud_html'] = '<iframe width="80%" height="300" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F' . $table['track_id'] . '&show_artwork=true"></iframe>';
     }
 
     return $table;
@@ -93,38 +94,16 @@ class AudioModel extends BaseModelAdm
 
     return $result;
   }
-
-  public function getRow ( $id = null )
+  
+  public function onGetById ( Select $select )
   {
-    $this->setSoundCloud();
-
-    if ( $id ) {
-      $this->setId($id);
-    }
-
-    $arrCriteria = array(
-        'a.id_audio = ?' => $this->getId()
-    );
-
-    $select = new Select('audio');
-    $select->addAllFields();
-
+      
     $select->left_join('id_soundcloud', Select::construct('soundcloud')
                     ->addFField('has_sc', 'IF (b.id_soundcloud IS NOT NULL, 1, 0)')
                     ->addField('track_id')
                     ->addField('track_permalink', 'soundcloud_link')
     );
-
-    $select->where($arrCriteria);
-
-    $result = $this->_dao->select($select);
-
-    if ( !count($result) )
-      throw new Exception('Registro não encontrado.');
-
-    $row = $this->formatTable($result[0]);
-
-    return $row;
+    
   }
 
   public function insert ( $input )
