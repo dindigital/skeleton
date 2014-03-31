@@ -70,7 +70,7 @@ class VideoController extends BaseControllerAdm
           'uri' => Post::text('uri'),
           'tag' => Post::text('tag'),
           'file' => Post::upload('file'),
-          'has_youtube' => Post::checkbox('has_youtube'),
+          'publish_youtube' => Post::checkbox('publish_youtube'),
           'republish_youtube' => Post::checkbox('republish_youtube'),
       );
 

@@ -153,6 +153,10 @@ class BaseModelAdm
   {
     //
   }
+  
+  public function onGetById(Select $select) {
+    //
+  }
 
   public function getById ( $id = null )
   {
@@ -167,6 +171,8 @@ class BaseModelAdm
     $select = new Select($this->getTableName());
     $select->addAllFields();
     $select->where($arrCriteria);
+    
+    $this->onGetById($select);
 
     $result = $this->_dao->select($select);
 

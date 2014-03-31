@@ -48,6 +48,13 @@ class VideoModel extends BaseModelAdm
 
     return $table;
   }
+  
+  public function onGetById ( Select $select )
+  {
+      
+    $select->addFField('has_youtube', 'IF (id_youtube IS NOT NULL, 1, 0)');
+    
+  }
 
   public function getList ()
   {
@@ -94,7 +101,6 @@ class VideoModel extends BaseModelAdm
     $filter->setNewId('id_video');
     $filter->setTimestamp('inc_date');
     $filter->setIntval('active');
-    $filter->setIntval('has_youtube');
     $filter->setString('title');
     $filter->setString('description');
     $filter->setString('link_youtube');
@@ -113,7 +119,7 @@ class VideoModel extends BaseModelAdm
 
     $this->relationship('tag', $input['tag']);
     
-    if ( $input['has_youtube'] == '1' ) {
+    if ( $input['publish_youtube'] == '1' ) {
         $this->save_youtube();
     }
   }
@@ -132,7 +138,6 @@ class VideoModel extends BaseModelAdm
     //
     $filter = new TableFilter($this->_table, $input);
     $filter->setIntval('active');
-    $filter->setIntval('has_youtube');
     $filter->setString('title');
     $filter->setString('description');
     $filter->setString('link_youtube');
@@ -151,7 +156,9 @@ class VideoModel extends BaseModelAdm
 
     $this->relationship('tag', $input['tag']);
     
-    if ( $input['republish_youtube'] == '1' ) {
+    if ( $input['publish_youtube'] == '1' ) {
+        $this->save_youtube();
+    } else if ( $input['republish_youtube'] == '1' ) {
         $this->save_youtube(true);
     }
     

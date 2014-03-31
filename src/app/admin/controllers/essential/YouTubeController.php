@@ -7,14 +7,6 @@ use Din\Http\Get;
 use Din\Http\Header;
 use src\app\admin\controllers\essential\BaseControllerAdm;
 
-use Exception;
-use Google_Client;
-use Google_Service_YouTube_VideoSnippet;
-use Google_Service_YouTube_Video;
-use Google_Service_YouTube_VideoStatus;
-use Google_Service_YouTube;
-use Google_Service_Exception;
-
 /**
  *
  * @package app.controllers

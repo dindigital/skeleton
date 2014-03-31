@@ -63,19 +63,20 @@
             </div>
           </div>
          
-        <div class="form-group">
-          <label class="col-sm-2 control-label" for="active">Publicar no YouTube</label>
-          <div class="col-sm-10">
-            <label class="checkbox-inline"><input type="checkbox" name="has_youtube" <?php if ( $data['table']['has_youtube'] == '1' ): ?>checked="checked"<?php endif; ?> /></label>
-          </div>
-        </div>
-          <?php if ( $data['table']['has_youtube'] == '1' ): ?>
+          <?php if ( !is_null($data['table']['id_youtube']) ): ?>
             <div class="form-group">
               <label class="col-sm-2 control-label">YouTube</label>
               <div class="col-sm-10">
-                <a href="https://www.youtube.com/watch?v=<?php echo $data['table']['id_youtube']; ?>" target="_blank">Assita no YouTube</a>
-                <br />
                 <label class="checkbox-inline"><input type="checkbox" name="republish_youtube" />Atualizar Publicação YouTube</label>
+                <br />
+                <iframe width="560" height="315" src="//www.youtube.com/embed/<?php echo $data['table']['id_youtube'] ?>?rel=0" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          <?php else: ?>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="active">Publicar no YouTube</label>
+              <div class="col-sm-10">
+                <label class="checkbox-inline"><input type="checkbox" name="publish_youtube" /></label>
               </div>
             </div>
           <?php endif; ?>
