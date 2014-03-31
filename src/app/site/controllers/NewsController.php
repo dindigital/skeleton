@@ -3,6 +3,7 @@
 namespace src\app\site\controllers;
 
 use Din\Http\Header;
+use Din\Http\Get;
 use src\app\site\models as models;
 
 /**
@@ -11,6 +12,13 @@ use src\app\site\models as models;
  */
 class NewsController extends BaseControllerSite
 {
+    
+  protected $_model;
+
+  public function __construct() {
+      parent::__construct();
+      $this->_model = new models\NewsModel();
+  }
 
   public function get_view ( $uri )
   {
@@ -22,8 +30,7 @@ class NewsController extends BaseControllerSite
         /**
          * Últimas notícias
          */
-        $newsModel = new models\NewsModel();
-        $this->_data['news'] = $newsModel->getView($uri);
+        $this->_data['news'] = $this->_model->getView($uri);
         
         /**
          * Define template e exibição
@@ -47,8 +54,13 @@ class NewsController extends BaseControllerSite
         /**
          * Lista de Notícias
          */
-        $newsModel = new models\NewsModel();
-        $this->_data['news'] = $newsModel->getList();
+        $this->_data['news'] = $this->_model->getList(Get::text('pag'));
+        
+        /**
+         * Pega itens da paginação
+         */
+        $paginator = $this->_model->getPaginator();
+        $this->_data['paginator']['numbers'] = $paginator->getNumbers();
         
         /**
          * Define template e exibição

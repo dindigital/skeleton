@@ -8,15 +8,15 @@
 return array(
     'css' => array(
         'site' => array(
-            'uri' => '/assets/site5336dea77da7c.css',
+            'uri' => '/assets/site533943325a11f.css',
             'src' => array(
                 'public/site/vendor/bootstrap/css/bootstrap.css',
+                'public/site/vendor/bootstrap/css/bootstrap-theme.css',
                 'public/site/css/base.css',
-                'public/site/vendor/bootstrap/css/bootstrap-responsive.css',
             )
         ),
         'adm_login' => array(
-            'uri' => '/assets/adm_login5336dea8ddb48.css',
+            'uri' => '/assets/adm_login53394333bab77.css',
             'src' => array(
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
                 'public/admin/fonts/font-awesome-4/css/font-awesome.min.css',
@@ -24,7 +24,7 @@ return array(
             )
         ),
         'adm' => array(
-            'uri' => '/assets/adm5336deaace214.css',
+            'uri' => '/assets/adm533943359d9a9.css',
             'src' => array(
                 'public/admin/css/jquery-ui.css',
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
@@ -36,7 +36,7 @@ return array(
             )
         ),
         'google' => array(
-            'uri' => '/assets/google5336deae29d56.css',
+            'uri' => '/assets/google533943392f8dc.css',
             'src' => array(
                 'public/admin/css/google_open_sans.css',
                 'public/admin/css/google_raleway.css',
@@ -45,21 +45,21 @@ return array(
     ),
     'js' => array(
         'site' => array(
-            'uri' => '/assets/site5336deaea24a9.js',
+            'uri' => '/assets/site53394339ab27f.js',
             'src' => array(
                 'public/site/vendor/bootstrap/js/bootstrap.js',
                 'public/site/js/base.js',
             )
         ),
         'jquery' => array(
-            'uri' => '/assets/jquery5336deaf8a618.js',
+            'uri' => '/assets/jquery5339433ab0eb7.js',
             'src' => array(
                 'public/admin/js/jquery-1.9.1.js',
                 'public/admin/js/jquery-ui.js',
             )
         ),
         'adm_login' => array(
-            'uri' => '/assets/adm_login5336deb235ea2.js',
+            'uri' => '/assets/adm_login5339433da4319.js',
             'src' => array(
                 'public/admin/js/ajaxform/jquery.form.js',
                 'public/admin/js/base.js',
@@ -68,7 +68,7 @@ return array(
             )
         ),
         'adm' => array(
-            'uri' => '/assets/adm5336deb459aed.js',
+            'uri' => '/assets/adm533943403d2b3.js',
             'src' => array(
                 'public/admin/js/plupload/js/plupload.full.js',
                 'public/admin/js/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',

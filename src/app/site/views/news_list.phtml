@@ -24,3 +24,9 @@
 </table>
 
  <hr>
+
+<?php if($data['paginator']['numbers']): ?>
+    <ul class="pagination">
+        <?php echo $data['paginator']['numbers']; ?>
+    </ul>
+<?php endif; ?>

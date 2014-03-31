@@ -5,6 +5,7 @@ namespace src\app\site\models;
 use Din\DataAccessLayer\Select;
 use Din\Filters\Date\DateFormat;
 use Din\Image\Picuri;
+use src\app\site\helpers\PaginatorSite;
 
 class NewsModel extends BaseModelSite
 {
@@ -37,7 +38,7 @@ class NewsModel extends BaseModelSite
         
     }
     
-    public function getList() {
+    public function getList($pag = 1) {
         
         $arrCriteria = array(
             'a.is_del = ?' => '0',
@@ -54,6 +55,9 @@ class NewsModel extends BaseModelSite
 
         $select->inner_join('id_news_cat', Select::construct('news_cat')
                         ->addField('title', 'category'));
+        
+        $this->_paginator = new PaginatorSite(1, $pag);
+        $this->setPaginationSelect($select, 1);
 
         $result = $this->_dao->select($select);
 
