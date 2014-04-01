@@ -24,8 +24,12 @@ class LogModel extends BaseModelAdm
     $this->setEntity('log');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      //
+    }
+
     $table['description'] = Html::scape($table['description']);
     $table['inc_date'] = DateFormat::filter_date($table['inc_date'], 'd/m/Y \à\s H:i:s');
     $table['action'] = Arrays::$logAcao[$table['action']];

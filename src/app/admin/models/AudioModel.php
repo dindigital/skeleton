@@ -39,8 +39,14 @@ class AudioModel extends BaseModelAdm
     $this->setEntity('audio');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      $table['file'] = null;
+      $table['has_sc'] = 0;
+      $table['uri'] = null;
+    }
+
     $this->setSoundCloud();
 
     if ( is_null($table['date']) ) {
@@ -94,16 +100,15 @@ class AudioModel extends BaseModelAdm
 
     return $result;
   }
-  
+
   public function onGetById ( Select $select )
   {
-      
+
     $select->left_join('id_soundcloud', Select::construct('soundcloud')
                     ->addFField('has_sc', 'IF (b.id_soundcloud IS NOT NULL, 1, 0)')
                     ->addField('track_id')
                     ->addField('track_permalink', 'soundcloud_link')
     );
-    
   }
 
   public function insert ( $input )
@@ -162,7 +167,7 @@ class AudioModel extends BaseModelAdm
     $filter->setUploaded('file', "/system/uploads/audio/{$this->getId()}/file", $has_file, $mf);
     //
     $mf->move();
-    
+
     $this->dao_update();
 
     if ( $input['publish_sc'] == '1' ) {

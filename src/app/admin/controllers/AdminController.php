@@ -45,13 +45,7 @@ class AdminController extends BaseControllerAdm
 
   public function get_save ( $id = null )
   {
-    $this->_model->setId($id);
-    $exclude_previous = array(
-        'avatar'
-    );
-    $this->_data['table'] = $id ? $this->_model->getRow() : $this->getPrevious($exclude_previous);
-
-    $this->setSaveTemplate('admin_save.phtml');
+    $this->defaultSavePage('admin_save.phtml', $id);
   }
 
   public function post_save ( $id = null )

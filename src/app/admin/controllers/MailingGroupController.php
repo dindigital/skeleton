@@ -44,11 +44,7 @@ class MailingGroupController extends BaseControllerAdm
 
   public function get_save ( $id = null )
   {
-    $this->_model->setId($id);
-
-    $this->_data['table'] = $id ? $this->_model->getRow() : $this->getPrevious();
-
-    $this->setSaveTemplate('mailing_group_save.phtml');
+    $this->defaultSavePage('mailing_group_save.phtml', $id);
   }
 
   public function post_save ( $id = null )

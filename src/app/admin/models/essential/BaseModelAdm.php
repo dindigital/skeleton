@@ -153,9 +153,17 @@ class BaseModelAdm
   {
     //
   }
-  
-  public function onGetById(Select $select) {
+
+  public function onGetById ( Select $select )
+  {
     //
+  }
+
+  public function getNewUsingRecord ( $id )
+  {
+    $row = $this->formatTable($this->getById($id), true);
+
+    return $row;
   }
 
   public function getById ( $id = null )
@@ -171,7 +179,7 @@ class BaseModelAdm
     $select = new Select($this->getTableName());
     $select->addAllFields();
     $select->where($arrCriteria);
-    
+
     $this->onGetById($select);
 
     $result = $this->_dao->select($select);
@@ -206,8 +214,14 @@ class BaseModelAdm
     return $table;
   }
 
-  protected function formatTable ( $table )
+  protected function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      // set the upload fields to null
+    }
+
+    // do normal formating and return
+
     return $table;
   }
 

@@ -32,8 +32,12 @@ class PageModel extends BaseModelAdm
     $this->setEntity('page');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      $table['cover'] = null;
+      $table['uri'] = null;
+    }
 
     $page_cat = new PageCatModel;
     $page_cat_dropdown = $page_cat->getListArray();
@@ -172,7 +176,7 @@ class PageModel extends BaseModelAdm
     $filter->setUploaded('cover', "/system/uploads/page/{$this->getId()}/cover", $has_cover, $mf);
     //
     $mf->move();
-    
+
     $this->dao_update();
   }
 

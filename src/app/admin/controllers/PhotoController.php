@@ -44,15 +44,7 @@ class PhotoController extends BaseControllerAdm
 
   public function get_save ( $id = null )
   {
-    $this->_model->setId($id);
-
-    $excluded_fields = array(
-        'gallery',
-        'uri'
-    );
-    $this->_data['table'] = $id ? $this->_model->getRow() : $this->getPrevious($excluded_fields);
-
-    $this->setSaveTemplate('photo_save.phtml');
+    $this->defaultSavePage('photo_save.phtml', $id);
   }
 
   public function post_save ( $id = null )

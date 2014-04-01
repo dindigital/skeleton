@@ -24,8 +24,12 @@ class TagModel extends BaseModelAdm
     $this->setEntity('tag');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      //
+    }
+
     $table['title'] = Html::scape($table['title']);
 
     return $table;

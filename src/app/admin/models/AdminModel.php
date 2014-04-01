@@ -31,8 +31,12 @@ class AdminModel extends BaseModelAdm
     $this->setEntity('admin');
   }
 
-  protected function formatTable ( $table )
+  protected function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      $table['avatar'] = null;
+    }
+
     $table['name'] = Html::scape($table['name']);
     $table['avatar_uploader'] = Form::Upload('avatar', $table['avatar'], 'image');
 

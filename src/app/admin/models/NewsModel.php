@@ -35,8 +35,13 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $this->setEntity('news');
   }
 
-  protected function formatTable ( $table )
+  protected function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      $table['cover'] = null;
+      $table['uri'] = null;
+    }
+
     $news_cat = new NewsCatModel;
     $news_cat_dropdown = $news_cat->getListArray();
 
@@ -167,7 +172,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
 
     $this->relationship('photo', $input['photo']);
     $this->relationship('video', $input['video']);
-    
+
     $cache = new essential\CacheModel();
     $cache->delete($this->_table->uri);
   }

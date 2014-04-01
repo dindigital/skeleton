@@ -44,11 +44,7 @@ class TagController extends BaseControllerAdm
 
   public function get_save ( $id = null )
   {
-    $this->_model->setId($id);
-
-    $this->_data['table'] = $id ? $this->_model->getRow() : $this->getPrevious();
-
-    $this->setSaveTemplate('tag_save.phtml');
+    $this->defaultSavePage('tag_save.phtml', $id);
   }
 
   public function post_save ( $id = null )

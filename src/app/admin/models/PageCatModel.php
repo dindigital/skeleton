@@ -30,8 +30,13 @@ class PageCatModel extends BaseModelAdm
     $this->setEntity('page_cat');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      $table['cover'] = null;
+      $table['uri'] = null;
+    }
+
     $table['title'] = Html::scape($table['title']);
     $table['content'] = Form::Ck('content', $table['content']);
     $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
@@ -159,21 +164,22 @@ class PageCatModel extends BaseModelAdm
 
     return $arrOptions;
   }
-  
-  public function getTitle($id_page_cat) {
+
+  public function getTitle ( $id_page_cat )
+  {
 
     $arrCriteria = array(
         'a.id_page_cat = ?' => $id_page_cat
     );
-    
+
     $select = new Select('page_cat');
     $select->addField('title');
     $select->where($arrCriteria);
 
     $result = $this->_dao->select($select);
-    
-    if (count($result)) {
-        return $result[0]['title'];
+
+    if ( count($result) ) {
+      return $result[0]['title'];
     }
   }
 

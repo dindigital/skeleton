@@ -21,8 +21,12 @@ class SettingsModel extends BaseModelAdm
     $this->setEntity('settings');
   }
 
-  protected function formatTable ( $table )
+  protected function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      //
+    }
+
     $table['home_title'] = Html::scape($table['home_title']);
     $table['home_description'] = Html::scape($table['home_description']);
     $table['home_keywords'] = Html::scape($table['home_keywords']);

@@ -23,11 +23,15 @@ class MailingModel extends BaseModelAdm
   public function __construct ()
   {
     parent::__construct();
-    $this->setTable('mailing');
+    $this->setEntity('mailing');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      //
+    }
+
     $table['name'] = Html::scape($table['name']);
     $table['email'] = Html::scape($table['email']);
 

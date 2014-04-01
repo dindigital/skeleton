@@ -24,8 +24,12 @@ class CustomerModel extends BaseModelAdm
     $this->setEntity('customer');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      //
+    }
+
     $table['business_name'] = Html::scape($table['business_name']);
     $table['name'] = Html::scape($table['name']);
     $table['document'] = Html::scape($table['document']);

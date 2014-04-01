@@ -24,8 +24,12 @@ class MailingGroupModel extends BaseModelAdm
     $this->setEntity('mailing_group');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      //
+    }
+
     $table['name'] = Html::scape($table['name']);
 
     return $table;

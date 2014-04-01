@@ -46,15 +46,7 @@ class PageCatController extends BaseControllerAdm
 
   public function get_save ( $id = null )
   {
-    $this->_model->setId($id);
-
-    $excluded_fields = array(
-        'cover',
-        'uri'
-    );
-    $this->_data['table'] = $id ? $this->_model->getRow() : $this->getPrevious($excluded_fields);
-
-    $this->setSaveTemplate('pagecat_save.phtml');
+    $this->defaultSavePage('pagecat_save.phtml', $id);
   }
 
   public function post_save ( $id = null )

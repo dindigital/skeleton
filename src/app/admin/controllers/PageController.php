@@ -47,16 +47,7 @@ class PageController extends BaseControllerAdm
 
   public function get_save ( $id = null )
   {
-    $this->_model->setId($id);
-
-    $exclude_previous = array(
-        'cover',
-        'uri'
-    );
-
-    $this->_data['table'] = $id ? $this->_model->getRow() : $this->getPrevious($exclude_previous);
-
-    $this->setSaveTemplate('page_save.phtml');
+    $this->defaultSavePage('page_save.phtml', $id);
   }
 
   public function post_save ( $id = null )

@@ -9,14 +9,12 @@ use src\app\admin\helpers\MoveFiles;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Form;
 use src\app\admin\helpers\Link;
-use Din\File\Folder;
 use src\app\admin\models\essential\IssuuModel;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
 use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
 use Din\Filters\String\Uri;
-use Exception;
 use Din\Filters\String\LimitChars;
 
 /**
@@ -32,8 +30,14 @@ class PublicationModel extends BaseModelAdm
     $this->setEntity('publication');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      $table['file'] = null;
+      $table['has_issuu'] = 0;
+      $table['uri'] = null;
+    }
+
     $table['title'] = Html::scape($table['title']);
     $table['file_uploader'] = Form::Upload('file', $table['file'], 'document');
     $table['uri'] = Link::formatUri($table['uri']);
@@ -45,16 +49,15 @@ class PublicationModel extends BaseModelAdm
 
     return $table;
   }
-  
+
   public function onGetById ( Select $select )
   {
-      
+
     $select->left_join('id_issuu', Select::construct('issuu')
                     ->addFField('has_issuu', 'IF (b.id_issuu IS NOT NULL, 1, 0)')
                     ->addField('link', 'issuu_link')
                     ->addField('document_id', 'issuu_document_id')
     );
-    
   }
 
   public function getList ()

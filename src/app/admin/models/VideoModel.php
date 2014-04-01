@@ -31,9 +31,14 @@ class VideoModel extends BaseModelAdm
     $this->setEntity('video');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
-      
+    if ( $exclude_upload ) {
+      $table['file'] = null;
+      $table['id_youtube'] = null;
+      $table['uri'] = null;
+    }
+
     $youTubeModel = new YouTubeModel();
     $youTubeModel->getYouTubeLogin();
 
@@ -48,12 +53,11 @@ class VideoModel extends BaseModelAdm
 
     return $table;
   }
-  
+
   public function onGetById ( Select $select )
   {
-      
+
     $select->addFField('has_youtube', 'IF (id_youtube IS NOT NULL, 1, 0)');
-    
   }
 
   public function getList ()
@@ -107,7 +111,7 @@ class VideoModel extends BaseModelAdm
     $filter->setString('link_vimeo');
     $filter->setDate('date');
     $filter->setDefaultUri('title', $this->getId());
-    
+
     $mf = new MoveFiles;
     $filter->setUploaded('file', "/system/uploads/video/{$this->getId()}/file", $has_file, $mf);
     //
@@ -116,9 +120,9 @@ class VideoModel extends BaseModelAdm
     $this->dao_insert();
 
     $this->relationship('tag', $input['tag']);
-    
+
     if ( $input['publish_youtube'] == '1' ) {
-        $this->save_youtube();
+      $this->save_youtube();
     }
   }
 
@@ -142,7 +146,7 @@ class VideoModel extends BaseModelAdm
     $filter->setString('link_vimeo');
     $filter->setDate('date');
     $filter->setDefaultUri('title', $this->getId());
-    
+
     $mf = new MoveFiles;
     $filter->setUploaded('file', "/system/uploads/video/{$this->getId()}/file", $has_file, $mf);
     //
@@ -151,13 +155,12 @@ class VideoModel extends BaseModelAdm
     $this->dao_update();
 
     $this->relationship('tag', $input['tag']);
-    
+
     if ( $input['publish_youtube'] == '1' ) {
-        $this->save_youtube();
+      $this->save_youtube();
     } else if ( $input['republish_youtube'] == '1' ) {
-        $this->save_youtube(true);
+      $this->save_youtube(true);
     }
-    
   }
 
   private function relationship ( $tbl, $array )
@@ -167,34 +170,34 @@ class VideoModel extends BaseModelAdm
     $relationshipModel->setForeignEntity($tbl);
     $relationshipModel->insert($this->getId(), $array);
   }
-  
-  private function save_youtube($delete = false) {
-      
+
+  private function save_youtube ( $delete = false )
+  {
+
     $youTubeModel = new YouTubeModel;
-      
+
     $row = $this->getById();
 
     if ( !$file = $this->_table->file ) {
       $file = $row['file'];
     }
-    
-    if ($delete && !is_null($row['id_youtube'])) {
-        $youTubeModel->delete($row['id_youtube']);
+
+    if ( $delete && !is_null($row['id_youtube']) ) {
+      $youTubeModel->delete($row['id_youtube']);
     }
-    
+
     $id_youtube = $youTubeModel->insert($row);
-    
-    if ($id_youtube) {
-        
-        $input = array(
+
+    if ( $id_youtube ) {
+
+      $input = array(
           'id_youtube' => $id_youtube
-        );
-        
-        $filter = new TableFilter($this->_table, $input);
-        $filter->setString('id_youtube');
-        $this->dao_update();
+      );
+
+      $filter = new TableFilter($this->_table, $input);
+      $filter->setString('id_youtube');
+      $this->dao_update();
     }
-      
   }
 
   public function formatFilters ()
@@ -202,7 +205,7 @@ class VideoModel extends BaseModelAdm
     $this->_filters['title'] = Html::scape($this->_filters['title']);
     return $this->_filters;
   }
-  
+
   public function delete ( $itens )
   {
     foreach ( $itens as $item ) {

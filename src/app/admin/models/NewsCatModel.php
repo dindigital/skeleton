@@ -31,8 +31,13 @@ class NewsCatModel extends BaseModelAdm
     $this->setEntity('news_cat');
   }
 
-  protected function formatTable ( $table )
+  protected function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      $table['cover'] = null;
+      $table['uri'] = null;
+    }
+
     $table['title'] = Html::scape($table['title']);
     $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
     $table['uri'] = Link::formatUri($table['uri']);

@@ -36,10 +36,14 @@ class PhotoModel extends BaseModelAdm
     $this->setEntity('photo');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      $table['gallery'] = array();
+      $table['uri'] = null;
+    }
 
-    if ( !is_null($table['id_photo']) ) {
+    if ( $table['id_photo'] && !$exclude_upload ) {
       $table['gallery'] = $this->_gallery->getList(array('id_photo = ?' => $table['id_photo']));
     } else {
       $table['date'] = date('Y-m-d');

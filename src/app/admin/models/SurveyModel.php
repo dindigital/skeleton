@@ -27,8 +27,11 @@ class SurveyModel extends BaseModelAdm
     $this->setEntity('survey');
   }
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_upload = false )
   {
+    if ( $exclude_upload ) {
+      $table['uri'] = null;
+    }
 
     if ( is_null($table['id_survey']) ) {
       $table['question'] = array();

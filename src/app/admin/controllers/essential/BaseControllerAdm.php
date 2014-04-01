@@ -13,6 +13,7 @@ use src\app\admin\models\essential\PermissionModel;
 use Din\ViewHelpers\JsonViewHelper;
 use src\app\admin\models\essential\TrashModel;
 use Din\AssetRead\AssetRead;
+use Din\Http\Get;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -171,33 +172,10 @@ abstract class BaseControllerAdm extends BaseController
     }
 
     if ( Post::text('redirect') == 'previous' ) {
-      $session = new Session('adm_session');
-      $session->set('previous_id', $id);
-      $redirect = '/admin/' . $entity->getTbl() . '/save/';
+      $redirect = '/admin/' . $entity->getTbl() . '/save/?using_record=' . $id;
     }
 
     JsonViewHelper::redirect($redirect);
-  }
-
-  protected function getPrevious ( $exclude = array() )
-  {
-    $session = new Session('adm_session');
-
-    if ( $session->is_set('previous_id') ) {
-      $this->_model->setId($session->get('previous_id'));
-      $row = $this->_model->getById($session->get('previous_id'));
-
-      foreach ( $exclude as $field ) {
-        $row[$field] = null;
-      }
-
-      $session->un_set('previous_id');
-    } else {
-      $row = $this->_model->getNew();
-    }
-
-
-    return $row;
   }
 
   public function post_delete ()
@@ -217,6 +195,22 @@ abstract class BaseControllerAdm extends BaseController
     } catch (Exception $e) {
       $this->setErrorSession($e->getMessage());
     }
+  }
+
+  protected function defaultSavePage ( $filename, $id )
+  {
+    $this->_model->setId($id);
+    $template_id = Get::text('using_record');
+
+    if ( $id ) {
+      $this->_data['table'] = $this->_model->getRow();
+    } else if ( $template_id ) {
+      $this->_data['table'] = $this->_model->getNewUsingRecord($template_id);
+    } else {
+      $this->_data['table'] = $this->_model->getNew();
+    }
+
+    $this->setSaveTemplate($filename);
   }
 
 }
