@@ -6,7 +6,6 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Exception;
 use Facebook;
 use src\app\admin\models\SocialmediaCredentialsModel;
-use src\app\admin\helpers\Entities;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\filters\TableFilter;
@@ -34,9 +33,9 @@ class FacepostModel extends BaseModelAdm
 
   protected function setModel ( $section, $id )
   {
-    $entity = Entities::getEntityByName($section);
+    $entity = $this->_entities->getEntity($section);
 
-    $this->_model = new $entity['model'];
+    $this->_model = $entity->getModel();
     $this->_model->setId($id);
   }
 
@@ -121,7 +120,6 @@ class FacepostModel extends BaseModelAdm
     $this->_dao->insert($this->_table);
     //_# AVISA O MODEL
     $this->_model->sentPost($this->_table->id_facepost);
-
   }
 
   public function getPosts ()

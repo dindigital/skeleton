@@ -5,6 +5,8 @@ namespace src\app\admin\controllers\essential;
 use src\app\admin\models\essential\SoundCloudModel as model;
 use Din\Http\Get;
 use src\app\admin\controllers\essential\BaseControllerAdm;
+use Din\Session\Session;
+use Din\Http\Header;
 
 /**
  *
@@ -26,6 +28,11 @@ class SoundCloudController extends BaseControllerAdm
     $this->_model->saveToken(array(
         'code' => Get::text('code')
     ));
+
+    $session = new Session('adm_session');
+    $session->set('saved_msg', 'Atenticado no SoundCloud com sucesso');
+
+    Header::redirect($session->get('referer'));
   }
 
 }

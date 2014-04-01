@@ -12,6 +12,7 @@ use Google_Service_YouTube_VideoStatus;
 use Google_Service_YouTube;
 use Google_Service_Exception;
 use Din\Http\Header;
+use Din\Session\Session;
 
 /**
  *
@@ -39,30 +40,31 @@ class YouTubeModel extends BaseModelAdm
     $this->_youtube_client->setApprovalPrompt('force');
     $this->_youtube = new Google_Service_YouTube($this->_youtube_client);
   }
-  
+
   public function setToken ()
   {
     if ( !is_null($this->_sm_credentials->row['youtube_token']) && $this->_sm_credentials->row['youtube_token'] ) {
       $this->_youtube_client->setAccessToken($this->_sm_credentials->row['youtube_token']);
     }
   }
-  
-  protected function refreshToken() {
-    if (!is_null($this->_sm_credentials->row['youtube_token']) && $this->_sm_credentials->row['youtube_token']) {
-       $json = json_decode($this->_sm_credentials->row['youtube_token']);
-       if (isset($json->refresh_token)) {
+
+  protected function refreshToken ()
+  {
+    if ( !is_null($this->_sm_credentials->row['youtube_token']) && $this->_sm_credentials->row['youtube_token'] ) {
+      $json = json_decode($this->_sm_credentials->row['youtube_token']);
+      if ( isset($json->refresh_token) ) {
         $this->_youtube_client->refreshToken($json->refresh_token);
         $token = $this->_youtube_client->getAccessToken();
         $this->_sm_credentials->updateYouTubeAccessToken($token);
-       }
+      }
     }
   }
 
   public function getYouTubeLogin ()
   {
     $this->setToken();
-    if ($this->_youtube_client->isAccessTokenExpired()) {
-        $this->refreshToken();
+    if ( $this->_youtube_client->isAccessTokenExpired() ) {
+      $this->refreshToken();
     }
     if ( $this->_youtube_client->isAccessTokenExpired() ) {
       $this->getLoginUrl();
@@ -79,6 +81,9 @@ class YouTubeModel extends BaseModelAdm
 
   protected function getLoginUrl ()
   {
+    $session = new Session('adm_session');
+    $session->set('referer', Header::getUri());
+
     Header::redirect($this->_youtube_client->createAuthUrl());
   }
 
@@ -124,15 +129,16 @@ class YouTubeModel extends BaseModelAdm
       return false;
     }
   }
-  
-  public function delete($id) {
-      try {
-        $this->setToken();
-        $this->_youtube->videos->delete($id);
-        return true;
-      } catch (Exception $e) {
-          return false;
-      }
+
+  public function delete ( $id )
+  {
+    try {
+      $this->setToken();
+      $this->_youtube->videos->delete($id);
+      return true;
+    } catch (Exception $e) {
+      return false;
+    }
   }
 
 }

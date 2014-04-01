@@ -6,6 +6,7 @@ use src\app\admin\models\essential\YouTubeModel as model;
 use Din\Http\Get;
 use Din\Http\Header;
 use src\app\admin\controllers\essential\BaseControllerAdm;
+use Din\Session\Session;
 
 /**
  *
@@ -21,7 +22,11 @@ class YouTubeController extends BaseControllerAdm
     $this->_model = new model();
     $code = Get::text('code');
     $this->_model->auth($code);
-    Header::redirect('/admin/index/index/');
+
+    $session = new Session('adm_session');
+    $session->set('saved_msg', 'Atenticado no Youtube com sucesso');
+
+    Header::redirect($session->get('referer'));
   }
 
 }

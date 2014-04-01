@@ -8,6 +8,7 @@ use Soundcloud\Service;
 use src\app\admin\models\SocialmediaCredentialsModel;
 use Din\Http\Header;
 use src\app\admin\filters\TableFilter;
+use Din\Session\Session;
 
 /**
  *
@@ -52,6 +53,9 @@ class SoundCloudModel extends BaseModelAdm
       $authorize_url = $this->_api->getAuthorizeUrl(array(
           'scope' => 'non-expiring'
       ));
+
+      $session = new Session('adm_session');
+      $session->set('referer', Header::getUri());
 
       Header::redirect($authorize_url);
     }

@@ -26,6 +26,9 @@ class FacepostController extends BaseControllerAdm
 
   public function get_edit ( $section, $id )
   {
+    $session = new Session('adm_session');
+    $session->set('referer', Header::getReferer());
+
     $this->setModel($section, $id);
 
     $fb_login = $this->_model->getFacebookLogin();
@@ -33,7 +36,9 @@ class FacepostController extends BaseControllerAdm
       Header::redirect($fb_login);
     }
 
-    $this->_data['redirect'] = Header::getReferer();
+    $session->set('saved_msg', 'Atenticado no Facebook com sucesso');
+
+    $this->_data['redirect'] = $session->get('referer');
     $this->_data['post'] = $this->_model->generatePost();
 
     $this->setSaveTemplate('essential/facepost_edit.phtml');
