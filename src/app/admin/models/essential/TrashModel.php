@@ -173,9 +173,9 @@ class TrashModel extends BaseModelAdm
 
       $model = $entity->getModel();
 
-      //_# Se ele não possui lixeira, chama o deletar proprio do model
+      //_# Se ele não possui lixeira, ignora
       if ( !$entity->hasTrash() ) {
-        $model->delete(array(array('id' => $entity_id)));
+        //ignore
       } else {
 
         if ( count($entity_sequence) ) {
@@ -208,14 +208,6 @@ class TrashModel extends BaseModelAdm
       $entity = $this->_entities->getEntity($item['name']);
 
       $model = $entity->getModel();
-      $row = $model->getById($item['id']);
-
-      //
-      if ( $parent_title = $this->hasParentOnTrash($entity, $row) ) {
-        throw new Exception('Favor excluir o ítem ' . $parent_title . ' primeiro');
-      }
-      //
-
       $model->delete(array(array(
               'id' => $item['id']
       )));

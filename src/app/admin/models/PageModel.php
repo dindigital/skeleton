@@ -284,4 +284,23 @@ class PageModel extends BaseModelAdm
     return $result[0];
   }
 
+  public function beforeDelete ( $tableHistory )
+  {
+    $id_page = $tableHistory['id_page'];
+
+    $select = new Select($this->_table);
+    $select->addField('id_page');
+    $select->where(array(
+        'id_parent = ?' => $id_page
+    ));
+
+    $result = $this->_dao->select($select);
+
+    foreach ( $result as $row ) {
+      $this->delete(array(array(
+              'id' => $row['id_page']
+      )));
+    }
+  }
+
 }
