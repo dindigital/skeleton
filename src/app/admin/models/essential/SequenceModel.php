@@ -59,7 +59,7 @@ class SequenceModel extends BaseModelAdm
     }
 
     if ( $sequence_new == 0 ) {
-      $arrCriteria['sequence >= ?'] = $sequence_old;
+      $arrCriteria['sequence > ?'] = $sequence_old;
       $result = $this->operateSequence('-', $arrCriteria);
     } else if ( $sequence_old == 0 ) {
       $arrCriteria['sequence >= ?'] = $sequence_new;
