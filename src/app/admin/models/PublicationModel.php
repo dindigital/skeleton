@@ -31,9 +31,9 @@ class PublicationModel extends BaseModelAdm
     $this->setEntity('publication');
   }
 
-  public function formatTable ( $table, $exclude_upload = false )
+  public function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $exclude_upload ) {
+    if ( $exclude_fields ) {
       $table['file'] = null;
       $table['has_issuu'] = 0;
       $table['uri'] = null;

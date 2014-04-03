@@ -31,9 +31,9 @@ class AdminModel extends BaseModelAdm
     $this->setEntity('admin');
   }
 
-  protected function formatTable ( $table, $exclude_upload = false )
+  protected function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $exclude_upload ) {
+    if ( $exclude_fields ) {
       $table['avatar'] = null;
     }
 
