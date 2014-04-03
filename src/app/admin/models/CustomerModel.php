@@ -24,9 +24,9 @@ class CustomerModel extends BaseModelAdm
     $this->setEntity('customer');
   }
 
-  public function formatTable ( $table, $exclude_upload = false )
+  public function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $exclude_upload ) {
+    if ( $exclude_fields ) {
       //
     }
 

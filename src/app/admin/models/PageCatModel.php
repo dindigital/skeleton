@@ -30,9 +30,9 @@ class PageCatModel extends BaseModelAdm
     $this->setEntity('page_cat');
   }
 
-  public function formatTable ( $table, $exclude_upload = false )
+  public function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $exclude_upload ) {
+    if ( $exclude_fields ) {
       $table['cover'] = null;
       $table['uri'] = null;
     }

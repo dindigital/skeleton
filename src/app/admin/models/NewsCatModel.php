@@ -31,9 +31,9 @@ class NewsCatModel extends BaseModelAdm
     $this->setEntity('news_cat');
   }
 
-  protected function formatTable ( $table, $exclude_upload = false )
+  protected function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $exclude_upload ) {
+    if ( $exclude_fields ) {
       $table['cover'] = null;
       $table['uri'] = null;
     }

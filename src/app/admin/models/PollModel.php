@@ -27,9 +27,9 @@ class PollModel extends BaseModelAdm
     $this->setEntity('poll');
   }
 
-  public function formatTable ( $table, $exclude_upload = false )
+  public function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $exclude_upload ) {
+    if ( $exclude_fields ) {
       $table['uri'] = null;
     }
 

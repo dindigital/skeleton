@@ -24,9 +24,9 @@ class LogModel extends BaseModelAdm
     $this->setEntity('log');
   }
 
-  public function formatTable ( $table, $exclude_upload = false )
+  public function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $exclude_upload ) {
+    if ( $exclude_fields ) {
       //
     }
 

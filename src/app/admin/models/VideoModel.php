@@ -31,9 +31,9 @@ class VideoModel extends BaseModelAdm
     $this->setEntity('video');
   }
 
-  public function formatTable ( $table, $exclude_upload = false )
+  public function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $exclude_upload ) {
+    if ( $exclude_fields ) {
       $table['file'] = null;
       $table['id_youtube'] = null;
       $table['uri'] = null;
