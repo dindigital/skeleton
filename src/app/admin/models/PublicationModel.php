@@ -16,6 +16,7 @@ use src\app\admin\filters\TableFilter;
 use Din\Exception\JsonException;
 use Din\Filters\String\Uri;
 use Din\Filters\String\LimitChars;
+use src\app\admin\helpers\Embed;
 
 /**
  *
@@ -43,8 +44,7 @@ class PublicationModel extends BaseModelAdm
     $table['uri'] = Link::formatUri($table['uri']);
 
     if ( $table['has_issuu'] ) {
-      $issuu_embed = new essential\IssuuEmbedModel;
-      $table['issuu_embed'] = $issuu_embed->get('publication_save_' . $table['id_publication'], $table['id_issuu'], $table['issuu_document_id'], '400', '400');
+      $table['issuu_embed'] = Embed::issuu($table['issuu_document_id'], 500, 400);
     }
 
     return $table;
