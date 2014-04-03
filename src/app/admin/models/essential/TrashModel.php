@@ -133,10 +133,34 @@ class TrashModel extends BaseModelAdm
     }
   }
 
-  public function deleteChildren ( Entity $entity, $id )
+  public function deleteChildrens ( Entity $entity, $id, $tableHistory )
   {
     $entity_id = $entity->getId();
+    $entity_tbl = $entity->getTbl();
     $children = $entity->getChildren();
+
+    // verificia se é página infinita para deletar uma filha dela caso exista
+    if ( array_key_exists('id_parent', $tableHistory) ) {
+      $model = $entity->getModel();
+
+      $select = new Select($entity_tbl);
+      $select->addField($entity_id, 'id');
+      $select->where(array(
+          'id_parent = ?' => $tableHistory[$entity_id]
+      ));
+      $result = $this->_dao->select($select);
+
+      $arr_delete = array();
+      foreach ( $result as $row ) {
+        $arr_delete[] = array(
+            'name' => $entity_tbl,
+            'id' => $row['id'],
+        );
+      }
+
+      $this->delete($arr_delete);
+    }
+    //
 
     foreach ( $children as $child ) {
       $child_entity = $this->_entities->getEntity($child);
@@ -187,8 +211,8 @@ class TrashModel extends BaseModelAdm
           ));
         }
 
-        $this->deleteChildren($entity, $item['id']);
         $tableHistory = $model->getById($item['id']);
+        $this->deleteChildrens($entity, $item['id'], $tableHistory);
 
         $table = new Table($entity_tbl);
         $filter = new TableFilter($table, array(
