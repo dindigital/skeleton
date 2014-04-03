@@ -27,9 +27,9 @@ class SurveyModel extends BaseModelAdm
     $this->setEntity('survey');
   }
 
-  public function formatTable ( $table, $exclude_fields = false )
+  public function formatTable ( $table, $excluded_fields = false )
   {
-    if ( $exclude_fields ) {
+    if ( $excluded_fields ) {
       $table['uri'] = null;
     }
 

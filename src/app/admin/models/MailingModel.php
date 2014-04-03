@@ -26,9 +26,9 @@ class MailingModel extends BaseModelAdm
     $this->setEntity('mailing');
   }
 
-  public function formatTable ( $table, $exclude_fields = false )
+  public function formatTable ( $table, $excluded_fields = false )
   {
-    if ( $exclude_fields ) {
+    if ( $excluded_fields ) {
       //
     }
 
