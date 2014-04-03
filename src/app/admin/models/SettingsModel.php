@@ -21,9 +21,9 @@ class SettingsModel extends BaseModelAdm
     $this->setEntity('settings');
   }
 
-  protected function formatTable ( $table, $excluded_fields = false )
+  protected function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $excluded_fields ) {
+    if ( $exclude_fields ) {
       //
     }
 

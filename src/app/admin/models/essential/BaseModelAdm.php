@@ -214,9 +214,9 @@ class BaseModelAdm
     return $table;
   }
 
-  protected function formatTable ( $table, $excluded_fields = false )
+  protected function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $excluded_fields ) {
+    if ( $exclude_fields ) {
       // set the upload fields to null
     }
 

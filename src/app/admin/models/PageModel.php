@@ -32,9 +32,9 @@ class PageModel extends BaseModelAdm
     $this->setEntity('page');
   }
 
-  public function formatTable ( $table, $excluded_fields = false )
+  public function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $excluded_fields ) {
+    if ( $exclude_fields ) {
       $table['cover'] = null;
       $table['uri'] = null;
     }
@@ -48,7 +48,7 @@ class PageModel extends BaseModelAdm
     $table['uri'] = Link::formatNavUri($table['uri'], true);
     $table['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $table['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 
-    $table['id_parent'] = $this->loadInfinity(!$excluded_fields);
+    $table['id_parent'] = $this->loadInfinity(!$exclude_fields);
 
     $infinite_drop = array();
     foreach ( (array) $table['id_parent'] as $i => $drop ) {

@@ -24,9 +24,9 @@ class TagModel extends BaseModelAdm
     $this->setEntity('tag');
   }
 
-  public function formatTable ( $table, $excluded_fields = false )
+  public function formatTable ( $table, $exclude_fields = false )
   {
-    if ( $excluded_fields ) {
+    if ( $exclude_fields ) {
       //
     }
 
