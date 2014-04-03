@@ -48,7 +48,7 @@ class PageModel extends BaseModelAdm
     $table['uri'] = Link::formatNavUri($table['uri'], true);
     $table['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $table['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 
-    $table['id_parent'] = $this->loadInfinity();
+    $table['id_parent'] = $this->loadInfinity(!$exclude_upload);
 
     $infinite_drop = array();
     foreach ( (array) $table['id_parent'] as $i => $drop ) {
@@ -225,7 +225,7 @@ class PageModel extends BaseModelAdm
     return $arrOptions;
   }
 
-  public function loadInfinity ()
+  public function loadInfinity ( $exclude_self = true )
   {
     $r = array();
 
@@ -237,8 +237,10 @@ class PageModel extends BaseModelAdm
 
     $id_cat = $first['id_page_cat'];
 
+    $exclude_id = $exclude_self ? $first['id_page'] : null;
+
     $r[] = array(
-        'dropdown' => $this->getListArray($id_cat, $first['id_parent'], $first['id_page']),
+        'dropdown' => $this->getListArray($id_cat, $first['id_parent'], $exclude_id),
         'selected' => null
     );
 
