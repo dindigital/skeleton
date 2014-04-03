@@ -39,9 +39,9 @@ class AudioModel extends BaseModelAdm
     $this->setEntity('audio');
   }
 
-  public function formatTable ( $table, $exclude_fields = false )
+  public function formatTable ( $table, $excluded_fields = false )
   {
-    if ( $exclude_fields ) {
+    if ( $excluded_fields ) {
       $table['file'] = null;
       $table['has_sc'] = 0;
       $table['uri'] = null;

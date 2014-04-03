@@ -35,9 +35,9 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $this->setEntity('news');
   }
 
-  protected function formatTable ( $table, $exclude_fields = false )
+  protected function formatTable ( $table, $excluded_fields = false )
   {
-    if ( $exclude_fields ) {
+    if ( $excluded_fields ) {
       $table['cover'] = null;
       $table['uri'] = null;
     }
