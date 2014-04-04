@@ -13,7 +13,8 @@ use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
 use Din\Exception\JsonException;
-use src\app\admin\filters\TableFilter;
+//use src\app\admin\filters\TableFilter;
+use src\app\admin\filters\Composite as TableFilter;
 use src\app\admin\filters\SequenceFilter;
 use src\app\admin\helpers\SequenceResult;
 
@@ -96,7 +97,7 @@ class PageCatModel extends BaseModelAdm
     $filter->setString('content');
     $filter->setString('description');
     $filter->setString('keywords');
-    $filter->setNavUri('title');
+    $filter->setDefaultUri('title');
     //
     $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
     $seq_filter->setSequence();
@@ -129,7 +130,7 @@ class PageCatModel extends BaseModelAdm
     $filter->setString('content');
     $filter->setString('description');
     $filter->setString('keywords');
-    $filter->setNavUri('title');
+    $filter->setDefaultUri('title');
     //
     $mf = new MoveFiles;
     $filter->setUploaded('cover', "/system/uploads/page_cat/{$this->getId()}/cover", $has_cover, $mf);

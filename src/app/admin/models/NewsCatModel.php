@@ -13,9 +13,8 @@ use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
-use src\app\admin\filters\SequenceFilter;
 use src\app\admin\helpers\SequenceResult;
 
 /**
@@ -103,14 +102,12 @@ class NewsCatModel extends BaseModelAdm
     $filter->setTimestamp('inc_date');
     $filter->setString('title');
     $filter->setDefaultUri('title', $this->getId(), 'news');
+    $filter->setSequence('sequence', $this->_dao, $this->_entity);
     //
     $mf = new MoveFiles;
     $filter->setUploaded('cover', "/system/uploads/news_cat/{$this->getId()}/cover", $has_cover, $mf);
     //
     $mf->move();
-
-    $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
-    $seq_filter->setSequence();
 
     $this->dao_insert();
   }

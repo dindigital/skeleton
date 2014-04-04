@@ -1,13 +1,13 @@
 <?php
 
-namespace src\app\admin\filters;
+namespace src\app\admin\custom_filter\filters;
 
-class FileFilter extends BaseFilter
+use Din\TableFilter\AbstractFilter;
+
+class LabelCredit extends AbstractFilter
 {
 
-  // FILTERS ___________________________________________________________________
-
-  public function setLabelCredit ( $field )
+  public function filter ( $field )
   {
     $file = $this->getValue($field);
     $file = 'tmp/' . $file[0]['tmp_name'];

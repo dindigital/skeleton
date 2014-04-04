@@ -6,8 +6,7 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\validators\UploadValidator;
-use src\app\admin\filters\TableFilter;
-use src\app\admin\filters\FileFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
 use Din\File\Folder;
 
@@ -61,10 +60,8 @@ class GaleryModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $file_filter = new FileFilter($this->_table, $input);
-    $file_filter->setLabelCredit('file');
-    //
     $filter = new TableFilter($this->_table, $input);
+    $filter->setLabelCredit('file');
     $filter->setNewId($this->_id_photo_item);
     $filter->setString($this->_id_photo);
     $filter->setString('sequence');

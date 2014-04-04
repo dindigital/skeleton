@@ -17,7 +17,7 @@ use Din\DataAccessLayer\Table\Table;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
 use src\app\admin\validators\DBValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
 use src\app\admin\filters\SequenceFilter;
 use src\app\admin\helpers\SequenceResult;

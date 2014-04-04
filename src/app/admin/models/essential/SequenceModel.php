@@ -3,7 +3,7 @@
 namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\BaseModelAdm;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\DataAccessLayer\Table\Table;
 
 class SequenceModel extends BaseModelAdm

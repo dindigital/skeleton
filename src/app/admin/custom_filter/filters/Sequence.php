@@ -1,27 +1,25 @@
 <?php
 
-namespace src\app\admin\filters;
+namespace src\app\admin\custom_filter\filters;
 
-use Din\DataAccessLayer\Table\Table;
+use Din\TableFilter\AbstractFilter;
 use Din\DataAccessLayer\DAO;
 use src\app\admin\helpers\Entity;
 use Din\DataAccessLayer\Select;
 
-class SequenceFilter extends BaseFilter
+class Sequence extends AbstractFilter
 {
 
   protected $_dao;
   protected $_entity;
 
-  public function __construct ( Table $table, DAO $dao, Entity $entity )
+  public function setOptions ( DAO $dao, Entity $entity )
   {
-    $this->setTable($table);
     $this->_dao = $dao;
     $this->_entity = $entity;
   }
 
-  // FILTERS ___________________________________________________________________
-  public function setSequence ()
+  public function filter ( $input )
   {
 
     $entity_sequence = $this->_entity->getSequence();

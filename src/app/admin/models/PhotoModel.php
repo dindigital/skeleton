@@ -11,7 +11,7 @@ use src\app\admin\helpers\Gallery;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
 use src\app\admin\models\essential\GaleryModel;
 
