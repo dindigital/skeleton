@@ -13,13 +13,13 @@ class Sequence extends AbstractFilter
   protected $_dao;
   protected $_entity;
 
-  public function setOptions ( DAO $dao, Entity $entity )
+  public function __construct ( DAO $dao, Entity $entity )
   {
     $this->_dao = $dao;
     $this->_entity = $entity;
   }
 
-  public function filter ( $input )
+  public function filter ( $field )
   {
 
     $entity_sequence = $this->_entity->getSequence();
@@ -39,7 +39,7 @@ class Sequence extends AbstractFilter
       $sequence = $this->getMaxSequence($arrCriteria) + 1;
     }
 
-    $this->_table->sequence = $sequence;
+    $this->_table->{$field} = $sequence;
   }
 
   protected function getMaxSequence ( $arrCriteria = array() )

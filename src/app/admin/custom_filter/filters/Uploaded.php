@@ -14,7 +14,7 @@ class Uploaded extends AbstractFilter
   protected $_has_upload;
   protected $_mf;
 
-  public function setOptions ( $path, $has_upload, MoveFiles $mf )
+  public function __construct ( $path, $has_upload, MoveFiles $mf )
   {
     $this->_path = $path;
     $this->_has_upload = $has_upload;

@@ -19,7 +19,6 @@ use src\app\admin\validators\UploadValidator;
 use src\app\admin\validators\DBValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
-use src\app\admin\filters\SequenceFilter;
 use src\app\admin\helpers\SequenceResult;
 
 /**
@@ -115,25 +114,24 @@ class NewsModel extends BaseModelAdm implements Facepostable
     JsonException::throwException();
     //
     $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_news');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('id_news_cat');
-    $filter->setString('title');
-    $filter->setDate('date');
-    $filter->setString('head');
-    $filter->setString('body');
-    $filter->setDefaultUri('title', $this->getId(), 'noticias');
-    //
-    $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
-    $seq_filter->setSequence();
-    //
+    $filter->newId()->filter('id_news');
+    $filter->timestamp()->filter('inc_date');
+    $filter->intval()->filter('active');
+    $filter->string()->filter('id_news_cat');
+    $filter->string()->filter('title');
+    $filter->date()->filter('date');
+    $filter->string()->filter('head');
+    $filter->string()->filter('body');
+    $filter->defaultUri('title', $this->getId(), 'noticias')->filter('uri');
+    $filter->sequence($this->_dao, $this->_entity)->filter('sequence');
     $mf = new MoveFiles;
-    $filter->setUploaded('cover', "/system/uploads/news/{$this->getId()}/cover", $has_cover, $mf);
+    $filter->uploaded("/system/uploads/news/{$this->getId()}/cover", $has_cover
+            , $mf)->filter('cover');
     //
-    $mf->move();
 
     $this->dao_insert();
+
+    $mf->move();
 
     $this->relationship('photo', $input['photo']);
     $this->relationship('video', $input['video']);
@@ -155,16 +153,17 @@ class NewsModel extends BaseModelAdm implements Facepostable
     JsonException::throwException();
     //
     $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setString('id_news_cat');
-    $filter->setString('title');
-    $filter->setDate('date');
-    $filter->setString('head');
-    $filter->setString('body');
-    $filter->setDefaultUri('title', $this->getId(), 'noticias');
+    $filter->intval()->filter('active');
+    $filter->string()->filter('id_news_cat');
+    $filter->string()->filter('title');
+    $filter->date()->filter('date');
+    $filter->string()->filter('head');
+    $filter->string()->filter('body');
+    $filter->defaultUri('title', $this->getId(), 'noticias')->filter('uri');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('cover', "/system/uploads/news/{$this->getId()}/cover", $has_cover, $mf);
+    $filter->uploaded("/system/uploads/news/{$this->getId()}/cover"
+            , $has_cover, $mf)->filter('cover');
     //
     $mf->move();
 

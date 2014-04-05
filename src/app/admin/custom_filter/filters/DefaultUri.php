@@ -9,19 +9,22 @@ use Din\Filters\String\Uri;
 class DefaultUri extends AbstractFilter
 {
 
+  protected $_title;
   protected $_id;
   protected $_prefix;
 
-  public function setOptions ( $id = '', $prefix = '' )
+  public function __construct ( $title, $id = '', $prefix = '' )
   {
+    $this->_title = $title;
     $this->_id = $id;
     $this->_prefix = $prefix;
   }
 
-  public function filter ( $title_field )
+  public function filter ( $field )
   {
-    $title = $this->getValue($title_field);
-    $uri = $this->getValue('uri');
+    $title = $this->getValue($this->_title);
+    $uri = $this->getValue($field);
+
     $this->_id = substr($this->_id, 0, 4);
 
     $uri = $uri == '' ? Uri::format($title) : Uri::format($uri);

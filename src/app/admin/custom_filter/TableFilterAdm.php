@@ -3,23 +3,29 @@
 namespace src\app\admin\custom_filter;
 
 use Din\TableFilter\TableFilter;
+use Exception;
 
 /**
- * @method setDefaultUri($field,$id = '', $prefix = '' )
- * @method setIdParent($field)
- * @method setLabelCredit($field)
- * @method setSequence($field,DAO $dao, Entity $entity)
- * @method setShortenerLink($field)
- * @method setUploaded($field,$path, $has_upload, MoveFiles $mf)
+ * @method \Din\TableFilter\FilterInterface defaultUri($title,$id = '', $prefix = '' )
+ * @method \Din\TableFilter\FilterInterface idParent()
+ * @method \Din\TableFilter\FilterInterface labelCredit()
+ * @method \Din\TableFilter\FilterInterface sequence(DAO $dao, Entity $entity)
+ * @method \Din\TableFilter\FilterInterface shortenerLink()
+ * @method \Din\TableFilter\FilterInterface uploaded($path, $has_upload, MoveFiles $mf)
  */
 class TableFilterAdm extends TableFilter
 {
 
-  protected function getCustomFilter ( $classname )
+  public function instanciateFilter ( $namespace, $classname, $arguments )
   {
-    $this->_fqn = __NAMESPACE__ . '\filters\\' . $classname;
+    try {
 
-    return true;
+      return parent::instanciateFilter($namespace, $classname, $arguments);
+    } catch (Exception $ex) {
+      $namespace = __NAMESPACE__ . '\filters\\';
+
+      return parent::instanciateFilter($namespace, $classname, $arguments);
+    }
   }
 
 }
