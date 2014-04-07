@@ -14,7 +14,7 @@ use src\app\admin\helpers\Form;
 use src\app\admin\validators\UploadValidator;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\models\essential\SoundCloudModel;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 
 /**
  *
@@ -123,17 +123,18 @@ class AudioModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_audio');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setString('description');
-    $filter->setDate('date');
-    $filter->setDefaultUri('title', $this->getId());
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_audio');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->string()->filter('description');
+    $f->string()->filter('date');
+    $f->defaultUri('title', $this->getId())->filter('uri');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('file', "/system/uploads/audio/{$this->getId()}/file", $has_file, $mf);
+    $f->uploaded("/system/uploads/audio/{$this->getId()}/file", $has_file
+            , $mf)->filter('file');
     //
     $mf->move();
 
@@ -156,15 +157,16 @@ class AudioModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setString('description');
-    $filter->setDate('date');
-    $filter->setDefaultUri('title', $this->getId());
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->string()->filter('description');
+    $f->string()->filter('date');
+    $f->defaultUri('title', $this->getId())->filter('uri');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('file', "/system/uploads/audio/{$this->getId()}/file", $has_file, $mf);
+    $f->uploaded("/system/uploads/audio/{$this->getId()}/file", $has_file
+            , $mf)->filter('file');
     //
     $mf->move();
 

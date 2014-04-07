@@ -5,7 +5,7 @@ namespace src\app\admin\models;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\validators\StringValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 
 /**
  *
@@ -41,11 +41,11 @@ class SurveyQuestionModel extends BaseModelAdm
           'sequence' => $sequence + 1
       );
 
-      $filter = new TableFilter($this->_table, $input);
-      $filter->setNewId('id_survey_question');
-      $filter->setString('id_survey');
-      $filter->setString('question');
-      $filter->setString('sequence');
+      $f = new TableFilter($this->_table, $input);
+      $f->newId()->filter('id_survey_question');
+      $f->string()->filter('id_survey');
+      $f->string()->filter('question');
+      $f->string()->filter('sequence');
 
       $this->_dao->insert($this->_table);
     }
@@ -58,8 +58,8 @@ class SurveyQuestionModel extends BaseModelAdm
           'question' => $question
       );
 
-      $filter = new TableFilter($this->_table, $input);
-      $filter->setString('question');
+      $f = new TableFilter($this->_table, $input);
+      $f->string()->filter('question');
 
       $this->_dao->update($this->_table, array(
           'id_survey_question = ?' => $id_survey_question

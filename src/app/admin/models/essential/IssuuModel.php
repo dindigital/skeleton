@@ -7,7 +7,7 @@ use Din\DataAccessLayer\Table\Table;
 use Din\API\Issuu\Issuu;
 use src\app\admin\models\SocialmediaCredentialsModel;
 use Exception;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 
 /**
  *
@@ -69,16 +69,16 @@ class IssuuModel extends BaseModelAdm
     $response = $this->_api->document_url_upload($input['url'], $input['name'], $input['title']);
 
     // insere na tabela issuu
-    $filter = new TableFilter($this->_table, array(
+    $f = new TableFilter($this->_table, array(
         'document_id' => $response['document_id'],
         'name' => $response['name'],
         'link' => $response['link'],
     ));
 
-    $filter->setNewId('id_issuu');
-    $filter->setString('name');
-    $filter->setString('link');
-    $filter->setString('document_id');
+    $f->newId()->filter('id_issuu');
+    $f->string()->filter('name');
+    $f->string()->filter('link');
+    $f->string()->filter('document_id');
 
     $this->_dao->insert($this->_table);
 

@@ -6,7 +6,7 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use Din\Filters\String\Html;
-use src\app\admin\filters\TableFilter as filter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use src\app\admin\validators\DBValidator;
 use src\app\admin\validators\StringValidator;
 use Din\Exception\JsonException;
@@ -71,11 +71,11 @@ class TagModel extends BaseModelAdm
 
     JsonException::throwException();
 
-    $filter = new filter($this->_table, $input);
-    $filter->setNewId('id_tag');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('title');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_tag');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
 
     $this->dao_insert();
   }
@@ -91,9 +91,9 @@ class TagModel extends BaseModelAdm
 
     JsonException::throwException();
 
-    $filter = new filter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setString('title');
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
 
     $this->dao_update();
   }
@@ -114,11 +114,11 @@ class TagModel extends BaseModelAdm
 
     JsonException::throwException();
 
-    $filter = new filter($this->_table, $input);
-    $filter->setNewId('id_tag');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('title');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_tag');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
 
     $this->dao_insert();
   }

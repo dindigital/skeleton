@@ -7,7 +7,7 @@ use Exception;
 use Soundcloud\Service;
 use src\app\admin\models\SocialmediaCredentialsModel;
 use Din\Http\Header;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Session\Session;
 
 /**
@@ -103,13 +103,13 @@ class SoundCloudModel extends BaseModelAdm
     if ( json_last_error() )
       throw new Exception('Não foi possível converter pra JSON: ' . $response_text);
 
-    $filter = new TableFilter($this->_table, array(
+    $f = new TableFilter($this->_table, array(
         'track_id' => $response_json->id,
         'track_permalink' => $response_json->permalink_url
     ));
-    $filter->setNewId('id_soundcloud');
-    $filter->setString('track_id');
-    $filter->setString('track_permalink');
+    $f->newId()->filter('id_soundcloud');
+    $f->string()->filter('track_id');
+    $f->string()->filter('track_permalink');
 
     $this->_dao->insert($this->_table);
 

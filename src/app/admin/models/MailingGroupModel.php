@@ -9,7 +9,7 @@ use Din\Filters\String\Html;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\DBValidator;
 use Din\Exception\JsonException;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 
 /**
  *
@@ -69,9 +69,9 @@ class MailingGroupModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_mailing_group');
-    $filter->setString('name');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_mailing_group');
+    $f->string()->filter('name');
     //
     $this->dao_insert();
   }
@@ -87,8 +87,8 @@ class MailingGroupModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setString('name');
+    $f = new TableFilter($this->_table, $input);
+    $f->string()->filter('name');
     //
     $this->dao_update();
   }
@@ -107,9 +107,9 @@ class MailingGroupModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_mailing_group');
-    $filter->setString('name');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_mailing_group');
+    $f->string()->filter('name');
     //
     $this->dao_insert();
   }

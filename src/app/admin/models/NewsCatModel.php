@@ -95,17 +95,18 @@ class NewsCatModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_news_cat');
-    $filter->setIntval('active');
-    $filter->setIntval('is_home');
-    $filter->setTimestamp('inc_date');
-    $filter->setString('title');
-    $filter->setDefaultUri('title', $this->getId(), 'news');
-    $filter->setSequence('sequence', $this->_dao, $this->_entity);
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_news_cat');
+    $f->intval()->filter('active');
+    $f->intval()->filter('is_home');
+    $f->timestamp()->filter('inc_date');
+    $f->string()->filter('title');
+    $f->defaultUri('title', $this->getId(), 'news')->filter('uri');
+    $f->sequence($this->_dao, $this->_entity)->filter('sequence');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('cover', "/system/uploads/news_cat/{$this->getId()}/cover", $has_cover, $mf);
+    $f->uploaded("/system/uploads/news_cat/{$this->getId()}/cover", $has_cover
+            , $mf)->filter('cover');
     //
     $mf->move();
 
@@ -122,14 +123,15 @@ class NewsCatModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setIntval('is_home');
-    $filter->setString('title');
-    $filter->setDefaultUri('title', $this->getId(), 'news', 'uri');
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->intval()->filter('is_home');
+    $f->string()->filter('title');
+    $f->defaultUri('title', $this->getId(), 'news')->filter('uri');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('cover', "/system/uploads/news_cat/{$this->getId()}/cover", $has_cover, $mf);
+    $f->uploaded("/system/uploads/news_cat/{$this->getId()}/cover", $has_cover
+            , $mf)->filter('cover');
     //
     $mf->move();
     //

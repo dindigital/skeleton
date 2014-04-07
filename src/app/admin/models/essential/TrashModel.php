@@ -10,7 +10,7 @@ use src\app\admin\models\essential\SequenceModel;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use Din\Filters\String\Html;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use src\app\admin\helpers\Entity;
 use Din\DataAccessLayer\Table\Table;
 use src\app\admin\filters\SequenceFilter;
@@ -116,17 +116,16 @@ class TrashModel extends BaseModelAdm
       //
 
       $table = new Table($entity_tbl);
-
-      if ( count($entity_sequence) ) {
-        $seq_filter = new SequenceFilter($table, $this->_dao, $entity);
-        $seq_filter->setSequence();
-      }
-
-      $filter = new TableFilter($table, array(
+      $f = new TableFilter($table, array(
           'is_del' => '0'
       ));
-      $filter->setIntval('is_del');
-      $filter->setNull('del_date');
+
+      if ( count($entity_sequence) ) {
+        $f->sequence($this->_dao, $entity)->filter('sequence');
+      }
+
+      $f->intval()->filter('is_del');
+      $f->null()->filter('del_date');
       $this->_dao->update($table, array($entity_id . ' = ?' => $item['id']));
 
       $this->log('R', $tableHistory[$entity_title], $table);
@@ -215,11 +214,11 @@ class TrashModel extends BaseModelAdm
         $this->deleteChildrens($entity, $item['id'], $tableHistory);
 
         $table = new Table($entity_tbl);
-        $filter = new TableFilter($table, array(
+        $f = new TableFilter($table, array(
             'is_del' => '1'
         ));
-        $filter->setTimestamp('del_date');
-        $filter->setIntval('is_del');
+        $f->timestamp()->filter('del_date');
+        $f->intval()->filter('is_del');
         $this->_dao->update($table, array($entity_id . ' = ?' => $item['id']));
         $this->log('T', $tableHistory[$entity_title], $table, $tableHistory);
       }

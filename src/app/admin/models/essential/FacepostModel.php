@@ -8,7 +8,7 @@ use Facebook;
 use src\app\admin\models\SocialmediaCredentialsModel;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\validators\StringValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
 
 /**
@@ -108,14 +108,14 @@ class FacepostModel extends BaseModelAdm
       Throw new Exception('Ocorreu um erro ao postar no Facebook, favor tentar novamente mais tarde.');
     }
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_facepost');
-    $filter->setTimestamp('date');
-    $filter->setString('name');
-    $filter->setString('link');
-    $filter->setString('picture');
-    $filter->setString('description');
-    $filter->setString('message');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_facepost');
+    $f->timestamp()->filter('date');
+    $f->string()->filter('name');
+    $f->string()->filter('link');
+    $f->string()->filter('picture');
+    $f->string()->filter('description');
+    $f->string()->filter('message');
     //
     $this->_dao->insert($this->_table);
     //_# AVISA O MODEL

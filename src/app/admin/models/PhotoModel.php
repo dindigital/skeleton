@@ -95,13 +95,13 @@ class PhotoModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_photo');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setDate('date');
-    $filter->setDefaultUri('title', $this->getId(), 'fotos');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_photo');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->date()->filter('date');
+    $f->defaultUri('title', $this->getId(), 'fotos')->filter('uri');
     //
     $this->dao_insert();
 
@@ -116,11 +116,11 @@ class PhotoModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setDate('date');
-    $filter->setDefaultUri('title', $this->getId(), 'fotos');
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->date()->filter('date');
+    $f->defaultUri('title', $this->getId(), 'fotos')->filter('uri');
     //
     $this->dao_update();
 

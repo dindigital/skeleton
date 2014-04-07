@@ -9,7 +9,7 @@ use src\app\admin\models\essential\TweetableEntity;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\validators\StringValidator;
 use Din\Exception\JsonException;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use src\app\admin\models\SocialmediaCredentialsModel;
 
 /**
@@ -72,10 +72,10 @@ class TweetModel extends BaseModelAdm
       }
     }
 
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_tweet');
-    $filter->setTimestamp('date');
-    $filter->setString('msg');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_tweet');
+    $f->timestamp()->filter('date');
+    $f->string()->filter('msg');
     //
     $this->_dao->insert($this->_table);
 

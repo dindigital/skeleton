@@ -60,14 +60,16 @@ class GaleryModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setLabelCredit('file');
-    $filter->setNewId($this->_id_photo_item);
-    $filter->setString($this->_id_photo);
-    $filter->setString('sequence');
+    $f = new TableFilter($this->_table, $input);
+    $f->labelCredit()->filter('file');
+    $f->newId()->filter($this->_id_photo_item);
+    $f->string()->filter($this->_id_photo);
+    $f->string()->filter('sequence');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('file', "/system/uploads/{$this->_photo}/{$input[$this->_id_photo]}/{$this->_photo_item}/{$this->getId()}/file", $has_file, $mf);
+    $f->uploaded("/system/uploads/{$this->_photo}/{$input[$this->_id_photo]}/{$this->_photo_item}/{$this->getId()}/file"
+            , $has_file
+            , $mf)->filter('file');
     //
     $mf->move();
 
@@ -77,10 +79,10 @@ class GaleryModel extends BaseModelAdm
   public function update ( $input )
   {
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setString('sequence');
-    $filter->setString('label');
-    $filter->setString('credit');
+    $f = new TableFilter($this->_table, $input);
+    $f->string()->filter('sequence');
+    $f->string()->filter('label');
+    $f->string()->filter('credit');
     //
     $this->_dao->update($this->_table, array(
         $this->_id_photo_item . ' = ?' => $this->getId()

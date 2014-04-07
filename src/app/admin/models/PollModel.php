@@ -12,7 +12,7 @@ use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\ArrayValidator;
 use Din\Exception\JsonException;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 
 /**
  *
@@ -86,12 +86,12 @@ class PollModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_poll');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('question');
-    $filter->setDefaultUri('question', $this->getId(), 'enquete');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_poll');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('question');
+    $f->defaultUri('question', $this->getId(), 'enquete')->filter('uri');
     //
     $this->dao_insert();
 
@@ -111,10 +111,10 @@ class PollModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setString('question');
-    $filter->setDefaultUri('question', $this->getId(), 'enquete');
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->string()->filter('question');
+    $f->defaultUri('question', $this->getId(), 'enquete')->filter('uri');
     //
     $this->dao_update();
 

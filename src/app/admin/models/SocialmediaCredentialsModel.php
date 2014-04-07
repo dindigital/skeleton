@@ -4,7 +4,7 @@ namespace src\app\admin\models;
 
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
 
 /**
@@ -24,23 +24,23 @@ class SocialmediaCredentialsModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setString('fb_app_id');
-    $filter->setString('fb_app_secret');
-    $filter->setString('fb_page');
-    $filter->setString('fb_access_token');
-    $filter->setString('tw_consumer_key');
-    $filter->setString('tw_consumer_secret');
-    $filter->setString('tw_access_token');
-    $filter->setString('tw_access_secret');
-    $filter->setString('issuu_key');
-    $filter->setString('issuu_secret');
-    $filter->setString('sc_client_id');
-    $filter->setString('sc_client_secret');
-    $filter->setString('sc_token');
-    $filter->setString('youtube_id');
-    $filter->setString('youtube_secret');
-    $filter->setString('youtube_token');
+    $f = new TableFilter($this->_table, $input);
+    $f->string()->filter('fb_app_id');
+    $f->string()->filter('fb_app_secret');
+    $f->string()->filter('fb_page');
+    $f->string()->filter('fb_access_token');
+    $f->string()->filter('tw_consumer_key');
+    $f->string()->filter('tw_consumer_secret');
+    $f->string()->filter('tw_access_token');
+    $f->string()->filter('tw_access_secret');
+    $f->string()->filter('issuu_key');
+    $f->string()->filter('issuu_secret');
+    $f->string()->filter('sc_client_id');
+    $f->string()->filter('sc_client_secret');
+    $f->string()->filter('sc_token');
+    $f->string()->filter('youtube_id');
+    $f->string()->filter('youtube_secret');
+    $f->string()->filter('youtube_token');
 
     JsonException::throwException();
 

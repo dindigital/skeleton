@@ -13,7 +13,7 @@ use src\app\admin\helpers\Form;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\DBValidator;
 use src\app\admin\validators\UploadValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
 
 /**
@@ -62,17 +62,18 @@ class AdminModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_admin');
-    $filter->setIntval('active');
-    $filter->setTimestamp('inc_date');
-    $filter->setString('name');
-    $filter->setString('email');
-    $filter->setCrypted('password');
-    $filter->setJson('permission');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_admin');
+    $f->intval()->filter('active');
+    $f->timestamp()->filter('inc_date');
+    $f->string()->filter('name');
+    $f->string()->filter('email');
+    $f->crypted()->filter('password');
+    $f->json()->filter('permission');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('avatar', "/system/uploads/admin/{$this->getId()}/avatar", $has_avatar, $mf);
+    $f->uploaded("/system/uploads/admin/{$this->getId()}/avatar", $has_avatar
+            , $mf)->filter('avatar');
     //
     $mf->move();
     //
@@ -94,15 +95,16 @@ class AdminModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setString('name');
-    $filter->setString('email');
-    $filter->setCrypted('password');
-    $filter->setJson('permission');
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->string()->filter('name');
+    $f->string()->filter('email');
+    $f->crypted()->filter('password');
+    $f->json()->filter('permission');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('avatar', "/system/uploads/admin/{$this->getId()}/avatar", $has_avatar, $mf);
+    $f->uploaded("/system/uploads/admin/{$this->getId()}/avatar", $has_avatar
+            , $mf)->filter('avatar');
     //
     $mf->move();
     //

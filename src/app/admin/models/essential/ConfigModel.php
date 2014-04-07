@@ -8,7 +8,7 @@ use src\app\admin\helpers\MoveFiles;
 use src\app\admin\helpers\Form;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
 
 /**
@@ -18,7 +18,7 @@ use Din\Exception\JsonException;
 class ConfigModel extends AdminModel
 {
 
-  public function formatTable ( $table )
+  public function formatTable ( $table, $exclude_fields = false )
   {
     $table['avatar_uploader'] = Form::Upload('avatar', $table['avatar'], 'image', false);
 
@@ -36,13 +36,14 @@ class ConfigModel extends AdminModel
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setString('name');
-    $filter->setString('email');
-    $filter->setCrypted('password');
+    $f = new TableFilter($this->_table, $input);
+    $f->string()->filter('name');
+    $f->string()->filter('email');
+    $f->crypted()->filter('password');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('avatar', "/system/uploads/admin/{$this->getId()}/avatar", $has_avatar, $mf);
+    $f->uploaded("/system/uploads/admin/{$this->getId()}/avatar", $has_avatar
+            , $mf)->filter('avatar');
     //
     $mf->move();
     //

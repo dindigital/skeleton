@@ -11,7 +11,7 @@ use src\app\admin\helpers\Form;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\DBValidator;
 use Din\Exception\JsonException;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 
 /**
  *
@@ -86,12 +86,12 @@ class MailingModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_mailing');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('name');
-    $filter->setString('email');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_mailing');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('name');
+    $f->string()->filter('email');
 
     $this->dao_insert();
 
@@ -111,9 +111,9 @@ class MailingModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setString('name');
-    $filter->setString('email');
+    $f = new TableFilter($this->_table, $input);
+    $f->string()->filter('name');
+    $f->string()->filter('email');
 
     $this->dao_update();
 

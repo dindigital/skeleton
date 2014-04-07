@@ -12,7 +12,7 @@ use src\app\admin\helpers\Link;
 use src\app\admin\models\essential\IssuuModel;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
 use Din\Filters\String\Uri;
 use Din\Filters\String\LimitChars;
@@ -101,15 +101,16 @@ class PublicationModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_publication');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setDefaultUri('title', $this->getId());
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_publication');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->defaultUri('title', $this->getId())->filter('uri');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('file', "/system/uploads/publication/{$this->getId()}/file", $has_file, $mf);
+    $f->uploaded("/system/uploads/publication/{$this->getId()}/file", $has_file
+            , $mf)->filter('file');
     //
     $mf->move();
 
@@ -128,13 +129,14 @@ class PublicationModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setDefaultUri('title', $this->getId());
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->defaultUri('title', $this->getId())->filter('uri');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('file', "/system/uploads/publication/{$this->getId()}/file", $has_file, $mf);
+    $f->uploaded("/system/uploads/publication/{$this->getId()}/file", $has_file
+            , $mf)->filter('file');
     //
     $mf->move();
 

@@ -9,7 +9,7 @@ use Din\Filters\String\Html;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\DBValidator;
 use Din\Exception\JsonException;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 
 /**
  *
@@ -88,21 +88,21 @@ class CustomerModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_customer');
-    $filter->setTimestamp('inc_date');
-    $filter->setString('name');
-    $filter->setString('document');
-    $filter->setString('email');
-    $filter->setString('address_postcode');
-    $filter->setString('address_street');
-    $filter->setString('address_number');
-    $filter->setString('address_state');
-    $filter->setString('address_city');
-    $filter->setString('phone_ddd');
-    $filter->setString('phone_number');
-    $filter->setString('address_complement');
-    $filter->setString('business_name');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_customer');
+    $f->timestamp()->filter('inc_date');
+    $f->string()->filter('name');
+    $f->string()->filter('document');
+    $f->string()->filter('email');
+    $f->string()->filter('address_postcode');
+    $f->string()->filter('address_street');
+    $f->string()->filter('address_number');
+    $f->string()->filter('address_state');
+    $f->string()->filter('address_city');
+    $f->string()->filter('phone_ddd');
+    $f->string()->filter('phone_number');
+    $f->string()->filter('address_complement');
+    $f->string()->filter('business_name');
 
     $this->dao_insert();
   }
@@ -127,19 +127,19 @@ class CustomerModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setString('name');
-    $filter->setString('document');
-    $filter->setString('email');
-    $filter->setString('address_postcode');
-    $filter->setString('address_street');
-    $filter->setString('address_number');
-    $filter->setString('address_state');
-    $filter->setString('address_city');
-    $filter->setString('phone_ddd');
-    $filter->setString('phone_number');
-    $filter->setString('address_complement');
-    $filter->setString('business_name');
+    $f = new TableFilter($this->_table, $input);
+    $f->string()->filter('name');
+    $f->string()->filter('document');
+    $f->string()->filter('email');
+    $f->string()->filter('address_postcode');
+    $f->string()->filter('address_street');
+    $f->string()->filter('address_number');
+    $f->string()->filter('address_state');
+    $f->string()->filter('address_city');
+    $f->string()->filter('phone_ddd');
+    $f->string()->filter('phone_number');
+    $f->string()->filter('address_complement');
+    $f->string()->filter('business_name');
 
     $this->dao_update();
   }

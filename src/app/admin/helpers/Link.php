@@ -5,7 +5,7 @@ namespace src\app\admin\helpers;
 class Link
 {
 
-  public static function formatUri ( $uri )
+  public static function formatUri ( $uri, $separate_id = true )
   {
     if ( is_null($uri) )
       return null;
@@ -15,7 +15,12 @@ class Link
     $link = array_pop($arrayUri);
     $arrayLink = explode('-', $link);
 
-    $id = array_pop($arrayLink);
+    if ( $separate_id ) {
+      $id = array_pop($arrayLink);
+    } else {
+      $id = null;
+    }
+
     $prefix = implode('/', $arrayUri);
     $uri = implode('-', $arrayLink);
 
@@ -32,12 +37,12 @@ class Link
   {
     if ( is_null($uri) )
       return null;
-    
-    if (!is_null($prefix)) {
-        $uri = explode('/', $uri);
-        $prefix = "/$uri[1]";
-        unset($uri[1]);
-        $uri = implode('/', $uri);
+
+    if ( !is_null($prefix) ) {
+      $uri = explode('/', $uri);
+      $prefix = "/$uri[1]";
+      unset($uri[1]);
+      $uri = implode('/', $uri);
     }
 
     $r = array(
@@ -45,7 +50,7 @@ class Link
         'uri' => $uri,
         'id' => null
     );
-    
+
     return $r;
   }
 

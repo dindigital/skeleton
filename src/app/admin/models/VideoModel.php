@@ -11,7 +11,7 @@ use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
 use src\app\admin\models\essential\YouTubeModel;
 use src\app\admin\helpers\Form;
@@ -101,19 +101,20 @@ class VideoModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_video');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setString('description');
-    $filter->setString('link_youtube');
-    $filter->setString('link_vimeo');
-    $filter->setDate('date');
-    $filter->setDefaultUri('title', $this->getId());
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_video');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->string()->filter('description');
+    $f->string()->filter('link_youtube');
+    $f->string()->filter('link_vimeo');
+    $f->date()->filter('date');
+    $f->defaultUri('title', $this->getId())->filter('uri');
 
     $mf = new MoveFiles;
-    $filter->setUploaded('file', "/system/uploads/video/{$this->getId()}/file", $has_file, $mf);
+    $f->uploaded("/system/uploads/video/{$this->getId()}/file", $has_file
+            , $mf)->filter('file');
     //
     $mf->move();
 
@@ -138,17 +139,18 @@ class VideoModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setString('description');
-    $filter->setString('link_youtube');
-    $filter->setString('link_vimeo');
-    $filter->setDate('date');
-    $filter->setDefaultUri('title', $this->getId());
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->string()->filter('description');
+    $f->string()->filter('link_youtube');
+    $f->string()->filter('link_vimeo');
+    $f->date()->filter('date');
+    $f->defaultUri('title', $this->getId())->filter('uri');
 
     $mf = new MoveFiles;
-    $filter->setUploaded('file', "/system/uploads/video/{$this->getId()}/file", $has_file, $mf);
+    $f->uploaded("/system/uploads/video/{$this->getId()}/file", $has_file
+            , $mf)->filter('file');
     //
     $mf->move();
 

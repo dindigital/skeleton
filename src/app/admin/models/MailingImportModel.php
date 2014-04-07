@@ -71,7 +71,7 @@ class MailingImportModel extends BaseModelAdm
 
     $report = "Importou {$total_inserts} emails, {$total_fails} falhas";
 
-    $this->log('I', $report, 'mailing');
+    $this->log('I', $report, $mailing->getTable());
 
     return $report;
   }

@@ -11,7 +11,7 @@ use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\ArrayValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
 
 /**
@@ -86,12 +86,12 @@ class SurveyModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_survey');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setDefaultUri('title', $this->getId(), 'opine');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_survey');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->defaultUri('title', $this->getId(), 'opine')->filter('uri');
     //
     $this->dao_insert();
 
@@ -111,10 +111,10 @@ class SurveyModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setDefaultUri('title', $this->getId(), 'opine');
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->defaultUri('title', $this->getId(), 'opine')->filter('uri');
     //
     $this->dao_update();
 

@@ -14,9 +14,8 @@ use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
 use src\app\admin\validators\DBValidator;
 use Din\Exception\JsonException;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Exception;
-use src\app\admin\filters\SequenceFilter;
 use src\app\admin\helpers\SequenceResult;
 
 /**
@@ -45,7 +44,7 @@ class PageModel extends BaseModelAdm
     $table['title'] = Html::scape($table['title']);
     $table['content'] = Form::Ck('content', $table['content']);
     $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
-    $table['uri'] = Link::formatNavUri($table['uri'], true);
+    $table['uri'] = Link::formatUri($table['uri'], false);
     $table['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $table['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 
     $table['id_parent'] = $this->loadInfinity(!$exclude_fields);
@@ -124,24 +123,23 @@ class PageModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_page');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('id_page_cat');
-    $filter->setIdParent();
-    $filter->setString('title');
-    $filter->setString('content');
-    $filter->setString('description');
-    $filter->setString('keywords');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_page');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('id_page_cat');
+    $f->idParent()->filter('id_parent');
+    $f->string()->filter('title');
+    $f->string()->filter('content');
+    $f->string()->filter('description');
+    $f->string()->filter('keywords');
     $page_cat = new PageCatModel;
-    $filter->setNavUri('title', $page_cat->getTitle($this->_table->id_page_cat));
-    //
-    $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
-    $seq_filter->setSequence();
+    $prefix = $page_cat->getTitle($this->_table->id_page_cat);
+    $f->defaultUri('title', $this->getId(), $prefix)->filter('uri');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('cover', "/system/uploads/page/{$this->getId()}/cover", $has_cover, $mf);
+    $f->uploaded("/system/uploads/page/{$this->getId()}/cover", $has_cover
+            , $mf)->filter('cover');
     //
     $mf->move();
 
@@ -161,19 +159,21 @@ class PageModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setString('id_page_cat');
-    $filter->setIdParent();
-    $filter->setString('title');
-    $filter->setString('content');
-    $filter->setString('description');
-    $filter->setString('keywords');
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->string()->filter('id_page_cat');
+    $f->idParent()->filter('id_parent');
+    $f->string()->filter('title');
+    $f->string()->filter('content');
+    $f->string()->filter('description');
+    $f->string()->filter('keywords');
     $page_cat = new PageCatModel;
-    $filter->setNavUri('title', $page_cat->getTitle($this->_table->id_page_cat));
+    $prefix = $page_cat->getTitle($this->_table->id_page_cat);
+    $f->defaultUri('title', '', $prefix)->filter('uri');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('cover', "/system/uploads/page/{$this->getId()}/cover", $has_cover, $mf);
+    $f->uploaded("/system/uploads/page/{$this->getId()}/cover", $has_cover
+            , $mf)->filter('cover');
     //
     $mf->move();
 

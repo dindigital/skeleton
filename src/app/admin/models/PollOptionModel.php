@@ -5,7 +5,7 @@ namespace src\app\admin\models;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\validators\StringValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 
 /**
  *
@@ -41,11 +41,11 @@ class PollOptionModel extends BaseModelAdm
           'sequence' => $sequence + 1
       );
 
-      $filter = new TableFilter($this->_table, $input);
-      $filter->setNewId('id_poll_option');
-      $filter->setString('id_poll');
-      $filter->setString('option');
-      $filter->setString('sequence');
+      $f = new TableFilter($this->_table, $input);
+      $f->newId()->filter('id_poll_option');
+      $f->string()->filter('id_poll');
+      $f->string()->filter('option');
+      $f->string()->filter('sequence');
 
       $this->_dao->insert($this->_table);
     }
@@ -58,8 +58,8 @@ class PollOptionModel extends BaseModelAdm
           'option' => $option
       );
 
-      $filter = new TableFilter($this->_table, $input);
-      $filter->setString('option');
+      $f = new TableFilter($this->_table, $input);
+      $f->string()->filter('option');
 
       $this->_dao->update($this->_table, array(
           'id_poll_option = ?' => $id_poll_option

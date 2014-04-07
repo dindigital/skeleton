@@ -13,9 +13,7 @@ use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\UploadValidator;
 use Din\Exception\JsonException;
-//use src\app\admin\filters\TableFilter;
-use src\app\admin\filters\Composite as TableFilter;
-use src\app\admin\filters\SequenceFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use src\app\admin\helpers\SequenceResult;
 
 /**
@@ -41,7 +39,7 @@ class PageCatModel extends BaseModelAdm
     $table['title'] = Html::scape($table['title']);
     $table['content'] = Form::Ck('content', $table['content']);
     $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
-    $table['uri'] = Link::formatNavUri($table['uri']);
+    $table['uri'] = Link::formatUri($table['uri'], false);
 
     return $table;
   }
@@ -89,27 +87,23 @@ class PageCatModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setNewId('id_page_cat');
-    $filter->setTimestamp('inc_date');
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setString('content');
-    $filter->setString('description');
-    $filter->setString('keywords');
-    $filter->setDefaultUri('title');
-    //
-    $seq_filter = new SequenceFilter($this->_table, $this->_dao, $this->_entity);
-    $seq_filter->setSequence();
-
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_page_cat');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->string()->filter('content');
+    $f->string()->filter('description');
+    $f->string()->filter('keywords');
+    $f->defaultUri('title')->filter('uri');
+    $f->sequence($this->_dao, $this->_entity)->filter('sequence');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('cover', "/system/uploads/page_cat/{$this->getId()}/cover", $has_cover, $mf);
+    $f->uploaded("/system/uploads/page_cat/{$this->getId()}/cover", $has_cover
+            , $mf)->filter('cover');
     //
     $mf->move();
 
-//    $seq = new SequenceModel($this);
-//    $seq->setSequence();
 
     $this->dao_insert();
   }
@@ -124,16 +118,17 @@ class PageCatModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setIntval('active');
-    $filter->setString('title');
-    $filter->setString('content');
-    $filter->setString('description');
-    $filter->setString('keywords');
-    $filter->setDefaultUri('title');
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->string()->filter('title');
+    $f->string()->filter('content');
+    $f->string()->filter('description');
+    $f->string()->filter('keywords');
+    $f->defaultUri('title')->filter('uri');
     //
     $mf = new MoveFiles;
-    $filter->setUploaded('cover', "/system/uploads/page_cat/{$this->getId()}/cover", $has_cover, $mf);
+    $f->uploaded("/system/uploads/page_cat/{$this->getId()}/cover", $has_cover
+            , $mf)->filter('cover');
     //
     $mf->move();
 

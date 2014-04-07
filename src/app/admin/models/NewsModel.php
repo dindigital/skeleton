@@ -113,19 +113,19 @@ class NewsModel extends BaseModelAdm implements Facepostable
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->newId()->filter('id_news');
-    $filter->timestamp()->filter('inc_date');
-    $filter->intval()->filter('active');
-    $filter->string()->filter('id_news_cat');
-    $filter->string()->filter('title');
-    $filter->date()->filter('date');
-    $filter->string()->filter('head');
-    $filter->string()->filter('body');
-    $filter->defaultUri('title', $this->getId(), 'noticias')->filter('uri');
-    $filter->sequence($this->_dao, $this->_entity)->filter('sequence');
+    $f = new TableFilter($this->_table, $input);
+    $f->newId()->filter('id_news');
+    $f->timestamp()->filter('inc_date');
+    $f->intval()->filter('active');
+    $f->string()->filter('id_news_cat');
+    $f->string()->filter('title');
+    $f->date()->filter('date');
+    $f->string()->filter('head');
+    $f->string()->filter('body');
+    $f->defaultUri('title', $this->getId(), 'noticias')->filter('uri');
+    $f->sequence($this->_dao, $this->_entity)->filter('sequence');
     $mf = new MoveFiles;
-    $filter->uploaded("/system/uploads/news/{$this->getId()}/cover", $has_cover
+    $f->uploaded("/system/uploads/news/{$this->getId()}/cover", $has_cover
             , $mf)->filter('cover');
     //
 
@@ -152,17 +152,17 @@ class NewsModel extends BaseModelAdm implements Facepostable
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->intval()->filter('active');
-    $filter->string()->filter('id_news_cat');
-    $filter->string()->filter('title');
-    $filter->date()->filter('date');
-    $filter->string()->filter('head');
-    $filter->string()->filter('body');
-    $filter->defaultUri('title', $this->getId(), 'noticias')->filter('uri');
+    $f = new TableFilter($this->_table, $input);
+    $f->intval()->filter('active');
+    $f->string()->filter('id_news_cat');
+    $f->string()->filter('title');
+    $f->date()->filter('date');
+    $f->string()->filter('head');
+    $f->string()->filter('body');
+    $f->defaultUri('title', $this->getId(), 'noticias')->filter('uri');
     //
     $mf = new MoveFiles;
-    $filter->uploaded("/system/uploads/news/{$this->getId()}/cover"
+    $f->uploaded("/system/uploads/news/{$this->getId()}/cover"
             , $has_cover, $mf)->filter('cover');
     //
     $mf->move();

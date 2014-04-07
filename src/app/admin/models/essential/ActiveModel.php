@@ -4,7 +4,7 @@ namespace src\app\admin\models\essential;
 
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Table\Table;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 
 /**
  *
@@ -25,11 +25,11 @@ class ActiveModel extends BaseModelAdm
   public function toggleActive ( $id, $active )
   {
     $table = new Table($this->_model->getTableName());
-    $filter = new TableFilter($table, array(
+    $f = new TableFilter($table, array(
         'active' => $active
     ));
 
-    $filter->setIntval('active');
+    $f->intval()->filter('active');
 
     $title = $this->_model->_entity->getTitle();
 

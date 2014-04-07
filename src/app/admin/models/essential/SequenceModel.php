@@ -83,10 +83,10 @@ class SequenceModel extends BaseModelAdm
     $entity_tbl = $this->_entity->getTbl();
 
     $table = new Table($entity_tbl);
-    $filter = new TableFilter($table, array(
+    $f = new TableFilter($table, array(
         'sequence' => $sequence
     ));
-    $filter->setIntval('sequence');
+    $f->intval()->filter('sequence');
 
     $this->_dao->update($table, array($entity_id . ' = ? ' => $id));
   }

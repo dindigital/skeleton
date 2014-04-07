@@ -5,7 +5,7 @@ namespace src\app\admin\models;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\Filters\String\Html;
 use src\app\admin\validators\StringValidator;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\Exception\JsonException;
 
 /**
@@ -49,13 +49,13 @@ class SettingsModel extends BaseModelAdm
 
     JsonException::throwException();
 
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setString('home_title');
-    $filter->setString('home_description');
-    $filter->setString('home_keywords');
-    $filter->setString('title');
-    $filter->setString('description');
-    $filter->setString('keywords');
+    $f = new TableFilter($this->_table, $input);
+    $f->string()->filter('home_title');
+    $f->string()->filter('home_description');
+    $f->string()->filter('home_keywords');
+    $f->string()->filter('title');
+    $f->string()->filter('description');
+    $f->string()->filter('keywords');
 
     $this->dao_update();
   }

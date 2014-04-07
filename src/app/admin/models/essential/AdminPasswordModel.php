@@ -9,7 +9,7 @@ use Din\Email\SendEmail\SendEmail;
 use src\app\admin\validators\StringValidator;
 use src\app\admin\validators\DBValidator;
 use Din\Exception\JsonException;
-use src\app\admin\filters\TableFilter;
+use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 
 /**
  *
@@ -34,8 +34,8 @@ class AdminPasswordModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setTimestamp('password_change_date');
+    $f = new TableFilter($this->_table, $input);
+    $f->timestamp()->filter('password_change_date');
     //
     $this->_dao->update($this->_table, array(
         'email = ?' => $input['email']
@@ -66,9 +66,9 @@ class AdminPasswordModel extends BaseModelAdm
     //
     JsonException::throwException();
     //
-    $filter = new TableFilter($this->_table, $input);
-    $filter->setCrypted('password');
-    $filter->setNull('password_change_date');
+    $f = new TableFilter($this->_table, $input);
+    $f->crypted()->filter('password');
+    $f->null()->filter('password_change_date');
     //
 
     $this->_dao->update($this->_table, array(
