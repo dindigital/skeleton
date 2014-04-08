@@ -1,49 +1,26 @@
 <?php
 
-ob_start();
-
-function errHandle ( $errNo, $errStr, $errFile, $errLine )
-{
-  if ( error_reporting() == 0 ) {
-    // @ suppression used, don't worry about it
-    return;
-  }
-
-  $msg = "$errStr in $errFile on line $errLine";
-  throw new ErrorException($msg, $errNo);
-}
-
-set_error_handler('errHandle');
-
 require_once 'vendor/autoload.php';
-
-use Din\Router\GroupRouter;
-use Din\Mvc\Controller\FrontController;
-use Din\Config\Config;
-
 require_once 'config/init.php';
 
 try {
 
-  $config = new Config(array(
-      'config/config.local.php',
-      'config/config.global.php',
-  ));
-  $config->define();
+  $c = new Respect\Config\Container();
+  $c->loadFile('config/routes.ini');
+  $c->loadFile('config/config.ini');
 
-  $router = new GroupRouter(array(
-      'config/essential_routes.php',
-      'config/routes.php'
-  ));
-  $router->route();
+  $c->dinconfig->define();
 
-  $fc = new FrontController($router);
+  $r = $c->router;
 
-  $fc->dispatch();
+  // _# Rotas mágicas do painel adm
+  include 'admin_routes.php';
+
+  // _# Erro 404
+  $r->any('/**', 'src\app\admin\controllers\Error404Controller');
+
+  die($r->run());
 } catch (Exception $e) {
-  ob_clean();
-  $erro = new \src\app\admin\controllers\essential\Erro500Controller;
-  $erro->get_display($e->getMessage());
+  $erro = new \src\app\admin\controllers\Erro500Controller;
+  $erro->get($e->getMessage());
 }
-
-ob_end_flush();
