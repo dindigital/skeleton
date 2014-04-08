@@ -10,7 +10,7 @@ use src\app\site\models as models;
  *
  * @package app.controllers
  */
-class NewsController extends BaseControllerSite
+class NewsListController extends BaseControllerSite
 {
 
   protected $_model;
@@ -21,7 +21,7 @@ class NewsController extends BaseControllerSite
     $this->_model = new models\NewsModel();
   }
 
-  public function get ( $uri )
+  public function get ()
   {
     $cache_name = Header::getUri();
     $html = $this->_viewcache->get($cache_name);
@@ -29,15 +29,21 @@ class NewsController extends BaseControllerSite
     if ( is_null($html) ) {
 
       /**
-       * Últimas notícias
+       * Lista de Notícias
        */
-      $this->_data['news'] = $this->_model->getView($uri);
+      $this->_data['news'] = $this->_model->getList(Get::text('pag'));
+
+      /**
+       * Pega itens da paginação
+       */
+      $paginator = $this->_model->getPaginator();
+      $this->_data['paginator']['numbers'] = $paginator->getNumbers();
 
       /**
        * Define template e exibição
        */
       $this->setBasicTemplate();
-      $this->_view->addFile('src/app/site/views/news.phtml', '{$CONTENT}');
+      $this->_view->addFile('src/app/site/views/news_list.phtml', '{$CONTENT}');
       $html = $this->return_html();
       $this->_viewcache->save($cache_name, $html);
     }
