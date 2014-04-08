@@ -12,10 +12,12 @@
     "Respect/Validation": "dev-master",
     "phpoffice/phpexcel": "dev-master",
     "dg/twitter-php": "dev-master",
-    "kriswallsmith/assetic" : "dev-master",
+    "kriswallsmith/assetic": "dev-master",
     "facebook/php-sdk": "@stable",
     "ise/php-soundcloud": "3.*",
     "google/apiclient": "dev-master",
-    "doctrine/cache": "dev-master"
+    "doctrine/cache": "dev-master",
+    "respect/rest": "dev-develop",
+    "respect/config": "dev-develop"
   }
 }
