@@ -18,12 +18,22 @@ $tcn = (function($controller) {
   return $classname;
 });
 
-$r->get('/admin/*/list/', function($controller) use ($r, $tcn) {
+use Respect\Rest\Router;
+
+$r->get('/admin/*/list/', function($controller) use ($tcn) {
+  $r = new Router;
   $r->get('/admin/*/list/', $tcn($controller));
   return $r->run();
 });
 
-$r->any('/admin/*/save/*/', function($controller, $id = null) use ($r, $tcn) {
+$r->any('/admin/*/save/*/', function($controller, $id = null) use ($tcn) {
+  $r = new Router;
   $r->any('/admin/*/save/*/', $tcn($controller . '_save'), array($id));
+  return $r->run();
+});
+
+$r->any('/admin/*/', function($controller, $id = null) use ($tcn) {
+  $r = new Router;
+  $r->any('/admin/*/', $tcn($controller), array($id));
   return $r->run();
 });
