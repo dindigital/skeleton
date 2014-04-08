@@ -1,5 +1,18 @@
 <?php
 
+function errHandle ( $errNo, $errStr, $errFile, $errLine )
+{
+  if ( error_reporting() == 0 ) {
+// @ suppression used, don't worry about it
+    return;
+  }
+
+  $msg = "$errStr in $errFile on line $errLine";
+  throw new ErrorException($msg, $errNo);
+}
+
+set_error_handler('errHandle');
+
 if ( !ini_get('safe_mode') ) {
   ini_set('max_execution_time', 0);
   ini_set('max_input_time', 0);
