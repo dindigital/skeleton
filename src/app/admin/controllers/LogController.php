@@ -1,9 +1,8 @@
 <?php
 
-namespace src\app\admin\controllers\essential;
+namespace src\app\admin\controllers;
 
 use Din\Http\Get;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\essential\LogModel as model;
 
 /**
@@ -21,7 +20,7 @@ class LogController extends BaseControllerAdm
     $this->_model = new model;
   }
 
-  public function get_list ()
+  public function get ()
   {
     $arrFilters = array(
         'admin' => Get::text('admin'),
@@ -36,12 +35,6 @@ class LogController extends BaseControllerAdm
     $this->_data['search'] = $this->_model->formatFilters();
 
     $this->setListTemplate('essential/log_list.phtml');
-  }
-
-  public function get_save ( $id )
-  {
-    $this->_data['table'] = $this->_model->getById($id);
-    $this->setSaveTemplate('essential/log_view.phtml');
   }
 
 }

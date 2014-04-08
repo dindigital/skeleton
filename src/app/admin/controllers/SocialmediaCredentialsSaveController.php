@@ -2,7 +2,6 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\SocialmediaCredentialsModel as model;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
@@ -12,7 +11,7 @@ use Exception;
  *
  * @package app.controllers
  */
-class SocialmediaCredentialsController extends BaseControllerAdm
+class SocialmediaCredentialsSaveController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -25,13 +24,13 @@ class SocialmediaCredentialsController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_save ()
+  public function get ()
   {
     $this->_data['table'] = $this->_model->getById('1');
     $this->setSaveTemplate('socialmedia_credentials_save.phtml');
   }
 
-  public function post_save ()
+  public function post ()
   {
     try {
 

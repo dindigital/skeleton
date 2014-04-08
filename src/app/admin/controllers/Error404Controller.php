@@ -1,18 +1,19 @@
 <?php
 
-namespace src\app\admin\controllers\essential;
+namespace src\app\admin\controllers;
 
 use Din\Http\Header;
 use Din\Mvc\View\View;
+use Respect\Rest\Routable;
 
 /**
  *
  * @package app.controllers
  */
-class Erro404Controller
+class Error404Controller implements Routable
 {
 
-  public function get_display ()
+  public function get ()
   {
     Header::set404();
     $view = new View;

@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers\essential;
+namespace src\app\admin\controllers;
 
 /**
  *
@@ -9,7 +9,7 @@ namespace src\app\admin\controllers\essential;
 class IndexController extends BaseControllerAdm
 {
 
-  public function get_index ()
+  public function get ()
   {
     $this->setBasicTemplate();
     $this->_view->addFile('src/app/admin/views/essential/index.phtml', '{$CONTENT}');

@@ -16,7 +16,7 @@ $(document).ready(function() {
 
 function select2_ajax(element, currentSection, relationshipSection) {
 
-  var url = '/admin/relashionship/ajax/';
+  var url = '/admin/relashionship/';
 
   $(element).select2({
     placeholder: "Selecionar",
@@ -66,7 +66,7 @@ function select2_ajax(element, currentSection, relationshipSection) {
 
 function select2_static(element, currentSection, relationshipSection, url) {
 
-  var url = '/admin/relashionship/ajax/';
+  var url = '/admin/relashionship/';
 
   $.ajax({
     url: url,

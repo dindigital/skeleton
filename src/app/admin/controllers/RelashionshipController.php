@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers\essential;
+namespace src\app\admin\controllers;
 
 use src\app\admin\models\essential\RelationshipModel as model;
 use Din\Http\Get;
@@ -11,7 +11,7 @@ use Din\ViewHelpers\JsonViewHelper;
  *
  * @package app.controllers
  */
-class RelashionshipController
+class RelashionshipController implements \Respect\Rest\Routable
 {
 
   protected $_model;
@@ -21,7 +21,7 @@ class RelashionshipController
     $this->_model = new model;
   }
 
-  public function get_ajax ()
+  public function get ()
   {
     $this->_model->setForeignEntity(Get::text('relationshipSection'));
     $result = $this->_model->getAjax(Get::text('q'));
@@ -29,7 +29,7 @@ class RelashionshipController
     JsonViewHelper::display($result);
   }
 
-  public function post_ajax ()
+  public function post ()
   {
     $this->_model->setCurrentEntity(Post::text('currentSection'));
     $this->_model->setForeignEntity(Post::text('relationshipSection'));

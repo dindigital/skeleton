@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers\essential;
+namespace src\app\admin\controllers;
 
 use Din\Mvc\Controller\BaseController;
 use src\app\admin\models\essential\AdminAuthModel;
@@ -168,7 +168,7 @@ abstract class BaseControllerAdm extends BaseController
 
     $redirect = '/admin/' . $entity->getTbl() . '/save/' . $id . '/';
     if ( Post::text('redirect') == 'list' ) {
-      $redirect = '/admin/' . $entity->getTbl() . '/list/';
+      $redirect = '/admin/' . $entity->getTbl() . '/';
     }
 
     if ( Post::text('redirect') == 'previous' ) {

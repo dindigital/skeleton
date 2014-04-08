@@ -83,7 +83,7 @@ $(document).ready(function() {
 
   $('.setActive').change(function() {
     var active = ($(this).is(':checked')) ? '1' : '0';
-    var action = '/admin/active/change/';
+    var action = '/admin/active/save/';
     var id = $(this).parents('tr').attr('id');
     var name = $(this).parents('tr').attr('name');
 
@@ -172,6 +172,7 @@ $(document).ready(function() {
 
     if (id != '0') {
       var exclude_id = $('#id').val();
+      alert($('#link_prefix').val());
       var url = $('#link_prefix').val() + 'ajax_intinify_cat/';
 
       $.get(url, {

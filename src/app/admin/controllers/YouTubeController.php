@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers\essential;
+namespace src\app\admin\controllers;
 
 use src\app\admin\models\essential\YouTubeModel as model;
 use Din\Http\Get;

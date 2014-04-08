@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers\essential;
+namespace src\app\admin\controllers;
 
 use Din\Mvc\Controller\BaseController;
 use src\app\admin\models\essential\AdminPasswordModel as model;

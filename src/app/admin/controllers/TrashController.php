@@ -2,14 +2,14 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\PageModel as model;
 use Din\Http\Get;
+use src\app\admin\models\essential\TrashModel as model;
 
 /**
  *
  * @package app.controllers
  */
-class PageController extends BaseControllerAdm
+class TrashController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -17,18 +17,14 @@ class PageController extends BaseControllerAdm
   public function __construct ()
   {
     parent::__construct();
-
     $this->_model = new model;
-    $this->setEntityData();
-    $this->require_permission();
   }
 
   public function get ()
   {
-
     $arrFilters = array(
         'title' => Get::text('title'),
-        'id_page_cat' => Get::text('id_page_cat'),
+        'section' => Get::text('section'),
         'pag' => Get::text('pag'),
     );
 
@@ -38,7 +34,7 @@ class PageController extends BaseControllerAdm
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('page_list.phtml');
+    $this->setListTemplate('essential/trash_list.phtml');
   }
 
 }

@@ -4,10 +4,6 @@ namespace src\app\admin\controllers;
 
 use src\app\admin\models\PageCatModel as model;
 use Din\Http\Get;
-use Din\Http\Post;
-use Din\ViewHelpers\JsonViewHelper;
-use Exception;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 
 /**
  *
@@ -27,7 +23,7 @@ class PageCatController extends BaseControllerAdm
     //$this->require_permission();
   }
 
-  public function get_list ()
+  public function get ()
   {
 
     $arrFilters = array(
@@ -42,33 +38,6 @@ class PageCatController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('pagecat_list.phtml');
-  }
-
-  public function get_save ( $id = null )
-  {
-    $this->defaultSavePage('pagecat_save.phtml', $id);
-  }
-
-  public function post_save ( $id = null )
-  {
-    try {
-      $this->_model->setId($id);
-
-      $info = array(
-          'active' => Post::checkbox('active'),
-          'title' => Post::text('title'),
-          'cover' => Post::upload('cover'),
-          'cover_delete' => Post::checkbox('cover_delete'),
-          'content' => Post::text('content'),
-          'description' => Post::text('description'),
-          'keywords' => Post::text('keywords'),
-          'uri' => Post::text('uri'),
-      );
-
-      $this->saveAndRedirect($info);
-    } catch (Exception $e) {
-      JsonViewHelper::display_error_message($e);
-    }
   }
 
 }

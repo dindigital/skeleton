@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers\essential;
+namespace src\app\admin\controllers;
 
 use src\app\admin\models\essential\ConfigModel as model;
 use Din\Http\Post;
@@ -11,7 +11,7 @@ use Exception;
  *
  * @package app.controllers
  */
-class ConfigController extends BaseControllerAdm
+class ConfigSaveController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -22,14 +22,14 @@ class ConfigController extends BaseControllerAdm
     $this->_model = new model;
   }
 
-  public function get_save ()
+  public function get ()
   {
     $this->_data['table'] = $this->_model->formatTable($this->_data['admin']);
 
     $this->setSaveTemplate('essential/config_save.phtml');
   }
 
-  public function post_save ()
+  public function post ()
   {
     try {
       $id = $this->_data['admin']['id_admin'];

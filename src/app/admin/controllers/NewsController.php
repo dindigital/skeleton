@@ -4,10 +4,6 @@ namespace src\app\admin\controllers;
 
 use src\app\admin\models\NewsModel as model;
 use Din\Http\Get;
-use Din\Http\Post;
-use Din\ViewHelpers\JsonViewHelper;
-use Exception;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 
 /**
  *
@@ -26,7 +22,7 @@ class NewsController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_list ()
+  public function get ()
   {
     $arrFilters = array(
         'title' => Get::text('title'),
@@ -41,38 +37,6 @@ class NewsController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('news_list.phtml');
-  }
-
-  public function get_save ( $id = null )
-  {
-    $this->defaultSavePage('news_save.phtml', $id);
-  }
-
-  public function post_save ( $id = null )
-  {
-    try {
-      $this->_model->setId($id);
-
-      $info = array(
-          'active' => Post::checkbox('active'),
-          'id_news_cat' => Post::text('id_news_cat'),
-          'title' => Post::text('title'),
-          'date' => Post::text('date'),
-          'head' => Post::text('head'),
-          'body' => Post::text('body'),
-          'uri' => Post::text('uri'),
-          'cover_delete' => Post::checkbox('cover_delete'),
-          'cover' => Post::upload('cover'),
-          'r_news_photo' => Post::aray('r_news_photo'),
-          'r_news_video' => Post::aray('r_news_video'),
-          'photo' => Post::text('photo'),
-          'video' => Post::text('video')
-      );
-
-      $this->saveAndRedirect($info);
-    } catch (Exception $e) {
-      JsonViewHelper::display_error_message($e);
-    }
   }
 
 }

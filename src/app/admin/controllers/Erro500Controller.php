@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers\essential;
+namespace src\app\admin\controllers;
 
 use Din\Http\Header;
 use Din\Mvc\View\View;
@@ -12,7 +12,7 @@ use Din\Mvc\View\View;
 class Erro500Controller
 {
 
-  public function get_display ( $msg )
+  public function get ( $msg )
   {
     Header::set500();
 

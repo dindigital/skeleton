@@ -4,10 +4,6 @@ namespace src\app\admin\controllers;
 
 use src\app\admin\models\NewsCatModel as model;
 use Din\Http\Get;
-use Din\Http\Post;
-use Din\ViewHelpers\JsonViewHelper;
-use Exception;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 
 /**
  *
@@ -27,7 +23,7 @@ class NewsCatController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_list ()
+  public function get ()
   {
 
     $arrFilters = array(
@@ -43,31 +39,6 @@ class NewsCatController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('newscat_list.phtml');
-  }
-
-  public function get_save ( $id = null )
-  {
-    $this->defaultSavePage('newscat_save.phtml', $id);
-  }
-
-  public function post_save ( $id = null )
-  {
-    try {
-      $this->_model->setId($id);
-
-      $info = array(
-          'active' => Post::checkbox('active'),
-          'title' => Post::text('title'),
-          'is_home' => Post::checkbox('is_home'),
-          'uri' => Post::text('uri'),
-          'cover' => Post::upload('cover'),
-          'cover_delete' => Post::checkbox('cover_delete')
-      );
-
-      $this->saveAndRedirect($info);
-    } catch (Exception $e) {
-      JsonViewHelper::display_error_message($e);
-    }
   }
 
 }

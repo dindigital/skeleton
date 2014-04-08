@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers\essential;
+namespace src\app\admin\controllers;
 
 use Din\Mvc\Controller\BaseController;
 use src\app\admin\models\essential\AdminAuthModel as model;
@@ -15,7 +15,7 @@ use Din\AssetRead\AssetRead;
  *
  * @package app.controllers
  */
-class AdminAuthController extends BaseController
+class AdminAuthController extends BaseController implements \Respect\Rest\Routable
 {
 
   protected $_model;
@@ -44,14 +44,14 @@ class AdminAuthController extends BaseController
     $this->_view->addFile('src/app/admin/views/layouts/login.phtml');
   }
 
-  public function get_index ()
+  public function get ()
   {
     $this->setAuthTemplate();
     $this->_view->addFile('src/app/admin/views/essential/login.phtml', '{$CONTENT}');
     $this->display_html();
   }
 
-  public function post_index ()
+  public function post ()
   {
     $email = Post::text('email');
     $password = Post::text('password');
@@ -62,7 +62,7 @@ class AdminAuthController extends BaseController
       JsonViewHelper::display_error_message($e);
     }
 
-    JsonViewHelper::redirect('/admin/index/index/');
+    JsonViewHelper::redirect('/admin/index/');
   }
 
   public function get_logout ()

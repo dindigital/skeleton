@@ -2,7 +2,6 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\SettingsModel as model;
 use Din\Http\Post;
 use Din\ViewHelpers\JsonViewHelper;
@@ -12,7 +11,7 @@ use Exception;
  *
  * @package app.controllers
  */
-class SettingsController extends BaseControllerAdm
+class SettingsSaveController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -25,13 +24,13 @@ class SettingsController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_save ()
+  public function get ()
   {
     $this->_data['table'] = $this->_model->getRow('1');
     $this->setSaveTemplate('settings_save.phtml');
   }
 
-  public function post_save ()
+  public function post ()
   {
     try {
 

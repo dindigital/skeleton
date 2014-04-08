@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\controllers\essential;
+namespace src\app\admin\controllers;
 
 use src\app\admin\models\essential\CacheModel as model;
 use Din\Http\Post;
@@ -11,7 +11,7 @@ use Exception;
  *
  * @package app.controllers
  */
-class CacheController extends BaseControllerAdm
+class CacheSaveController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -22,15 +22,16 @@ class CacheController extends BaseControllerAdm
     $this->_model = new model;
   }
 
-  public function get_save ()
+  public function get ()
   {
     $this->setSaveTemplate('essential/cache_save.phtml');
   }
 
-  public function post_save ()
+  public function post ()
   {
     try {
-        
+
+
       $input = array(
           'all' => Post::checkbox('all'),
           'home' => Post::checkbox('home'),
@@ -40,7 +41,7 @@ class CacheController extends BaseControllerAdm
       $this->_model->clear($input);
 
       $this->setSavedMsgSession();
-      JsonViewHelper::redirect('/admin/cache/save/');
+      JsonViewHelper::redirect('/admin/cache/');
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
