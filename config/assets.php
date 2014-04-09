@@ -8,7 +8,7 @@
 return array(
     'css' => array(
         'site' => array(
-            'uri' => '/assets/site533943325a11f.css',
+            'uri' => '/system/assets/site534589b52140e.css',
             'src' => array(
                 'public/site/vendor/bootstrap/css/bootstrap.css',
                 'public/site/vendor/bootstrap/css/bootstrap-theme.css',
@@ -16,7 +16,7 @@ return array(
             )
         ),
         'adm_login' => array(
-            'uri' => '/assets/adm_login53394333bab77.css',
+            'uri' => '/system/assets/adm_login534589b6ce65d.css',
             'src' => array(
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
                 'public/admin/fonts/font-awesome-4/css/font-awesome.min.css',
@@ -24,7 +24,7 @@ return array(
             )
         ),
         'adm' => array(
-            'uri' => '/assets/adm533943359d9a9.css',
+            'uri' => '/system/assets/adm534589b8bebda.css',
             'src' => array(
                 'public/admin/css/jquery-ui.css',
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
@@ -36,7 +36,7 @@ return array(
             )
         ),
         'google' => array(
-            'uri' => '/assets/google533943392f8dc.css',
+            'uri' => '/system/assets/google534589bc8a392.css',
             'src' => array(
                 'public/admin/css/google_open_sans.css',
                 'public/admin/css/google_raleway.css',
@@ -45,21 +45,21 @@ return array(
     ),
     'js' => array(
         'site' => array(
-            'uri' => '/assets/site53394339ab27f.js',
+            'uri' => '/system/assets/site534589bd12b0a.js',
             'src' => array(
                 'public/site/vendor/bootstrap/js/bootstrap.js',
                 'public/site/js/base.js',
             )
         ),
         'jquery' => array(
-            'uri' => '/assets/jquery5339433ab0eb7.js',
+            'uri' => '/system/assets/jquery534589be0e41a.js',
             'src' => array(
                 'public/admin/js/jquery-1.9.1.js',
                 'public/admin/js/jquery-ui.js',
             )
         ),
         'adm_login' => array(
-            'uri' => '/assets/adm_login5339433da4319.js',
+            'uri' => '/system/assets/adm_login534589c129911.js',
             'src' => array(
                 'public/admin/js/ajaxform/jquery.form.js',
                 'public/admin/js/base.js',
@@ -68,7 +68,7 @@ return array(
             )
         ),
         'adm' => array(
-            'uri' => '/assets/adm533943403d2b3.js',
+            'uri' => '/system/assets/adm534589c37b5d0.js',
             'src' => array(
                 'public/admin/js/plupload/js/plupload.full.js',
                 'public/admin/js/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',
