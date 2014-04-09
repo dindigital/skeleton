@@ -27,20 +27,20 @@ $(document).ready(function() {
   var link_prefix = $('#link_prefix').val();
 
   $('.btn_list').click(function() {
-    var action = link_prefix + 'list/';
+    var action = link_prefix + '/';
     location.href = action;
     return false;
   });
 
   $('.btn_save').click(function() {
-    var action = link_prefix + 'save/';
+    var action = link_prefix + '/save/';
     location.href = action;
     return false;
   });
 
   $('.btn_edit').click(function() {
     var id = $(this).parents('tr').attr('id');
-    var action = link_prefix + 'save/' + id + '/';
+    var action = link_prefix + '/save/' + id + '/';
     location.href = action;
     return false;
   });
@@ -110,7 +110,7 @@ $(document).ready(function() {
       form.append('<input type="hidden" name="itens[' + i + '][name]" value="' + name + '" />');
     });
 
-    var action = link_prefix + 'restore/';
+    var action = link_prefix + '_restore/';
 
     form.attr('action', action);
     form.submit();
@@ -141,7 +141,12 @@ $(document).ready(function() {
         form.append('<input type="hidden" name="itens[' + i + '][name]" value="' + name + '" />');
       });
 
-      var action = link_prefix + 'delete/';
+      if (link_prefix == '/admin/trash') {
+        var action = link_prefix + '_delete/';
+      } else {
+        var action = link_prefix + '/delete/';
+      }
+
 
       form.attr('action', action);
       form.submit();
@@ -172,8 +177,7 @@ $(document).ready(function() {
 
     if (id != '0') {
       var exclude_id = $('#id').val();
-      alert($('#link_prefix').val());
-      var url = $('#link_prefix').val() + 'ajax_intinify_cat/';
+      var url = link_prefix + '_infinity_cat/';
 
       $.get(url, {
         id_page_cat: id,
@@ -188,38 +192,38 @@ $(document).ready(function() {
 
   intinity_event();
 
+  function intinity_event()
+  {
+    $('.ajax_infinity').unbind();
+    $('.ajax_infinity').change(function() {
+      var id = $(this).val();
+      var duplication_container = $(this).parents('.drop_infinity_line');
+
+      duplication_container.nextAll('.drop_infinity_line').remove();
+      if (id != '0') {
+        var exclude_id = $('#id').val();
+        var url = link_prefix + '_infinity/';
+
+        $.get(url, {
+          id_parent: id,
+          exclude_id: exclude_id
+        }, function(data) {
+          var clone = duplication_container.clone();
+          clone.find('.drop_infinity_container').html(data);
+          clone.addClass('other');
+
+          duplication_container.after(clone);
+
+          intinity_event();
+        });
+      }
+    });
+
+  }
+
 });
 
 function newForm()
 {
   return $('<form method="POST"></form>').appendTo('body');
-}
-
-function intinity_event()
-{
-  $('.ajax_infinity').unbind();
-  $('.ajax_infinity').change(function() {
-    var id = $(this).val();
-    var duplication_container = $(this).parents('.drop_infinity_line');
-
-    duplication_container.nextAll('.drop_infinity_line').remove();
-    if (id != '0') {
-      var exclude_id = $('#id').val();
-      var url = $('#link_prefix').val() + 'ajax_infinity/';
-
-      $.get(url, {
-        id_parent: id,
-        exclude_id: exclude_id
-      }, function(data) {
-        var clone = duplication_container.clone();
-        clone.find('.drop_infinity_container').html(data);
-        clone.addClass('other');
-
-        duplication_container.after(clone);
-
-        intinity_event();
-      });
-    }
-  });
-
 }
