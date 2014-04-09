@@ -8,7 +8,7 @@ use src\app\admin\helpers\PaginatorAdmin;
 use src\app\admin\helpers\MoveFiles;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
-use src\app\admin\helpers\Arrays;
+use src\helpers\Arrays;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
 use src\app\admin\validators\StringValidator;

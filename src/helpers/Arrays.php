@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\admin\helpers;
+namespace src\helpers;
 
 class Arrays
 {
@@ -9,6 +9,7 @@ class Arrays
       '1' => 'Sim',
       '2' => 'Não',
   );
+  
   public static $logAcao = array(
       'C' => 'Cadastrar',
       'U' => 'Atualizar',
