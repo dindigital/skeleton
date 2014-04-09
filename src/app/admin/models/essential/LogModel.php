@@ -8,7 +8,7 @@ use Exception;
 use src\app\admin\helpers\PaginatorAdmin;
 use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
-use src\app\admin\helpers\Arrays;
+use src\helpers\Arrays;
 use Din\Filters\String\Html;
 
 /**
