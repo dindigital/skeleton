@@ -49,7 +49,7 @@ $(document).ready(function() {
     var id = $(this).parents('tr').attr('id');
     var name = $(this).parents('tr').attr('name');
 
-    location.href = '/admin/tweet/edit/' + name + '/' + id + '/';
+    location.href = '/admin/tweetSave/?section=' + name + '&id=' + id;
 
     return false;
   });
@@ -58,7 +58,7 @@ $(document).ready(function() {
     var id = $(this).parents('tr').attr('id');
     var name = $(this).parents('tr').attr('name');
 
-    location.href = '/admin/tweet/view/' + name + '/' + id + '/';
+    location.href = '/admin/tweet/?section=' + name + '&id=' + id;
 
     return false;
   });
@@ -67,7 +67,7 @@ $(document).ready(function() {
     var id = $(this).parents('tr').attr('id');
     var name = $(this).parents('tr').attr('name');
 
-    location.href = '/admin/facepost/edit/' + name + '/' + id + '/';
+    location.href = '/admin/facepostSave/?section=' + name + '&id=' + id;
 
     return false;
   });
@@ -76,7 +76,7 @@ $(document).ready(function() {
     var id = $(this).parents('tr').attr('id');
     var name = $(this).parents('tr').attr('name');
 
-    location.href = '/admin/facepost/view/' + name + '/' + id + '/';
+    location.href = '/admin/facepost/?section=' + name + '&id=' + id;
 
     return false;
   });
