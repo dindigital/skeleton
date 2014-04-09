@@ -3,8 +3,6 @@
 namespace src\app\admin\controllers;
 
 use Din\Http\Post;
-use src\app\admin\helpers\Entities;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 use Exception;
 use Din\Http\Header;
 use src\app\admin\models\essential\SequenceModel;
@@ -16,7 +14,7 @@ use src\app\admin\models\essential\SequenceModel;
 class SequenceController extends BaseControllerAdm
 {
 
-  public function post_change ()
+  public function post ()
   {
     try {
 

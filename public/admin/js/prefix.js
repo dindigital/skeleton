@@ -157,7 +157,7 @@ $(document).ready(function() {
     var sequence = $(this).val();
     var id = $(this).attr('id');
     var name = $(this).parents('tr').attr('name');
-    var link = '/admin/sequence/change/';
+    var link = '/admin/sequence/';
 
     var form = newForm();
 
