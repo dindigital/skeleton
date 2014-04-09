@@ -178,25 +178,6 @@ abstract class BaseControllerAdm extends BaseController
     JsonViewHelper::redirect($redirect);
   }
 
-  public function post_delete ()
-  {
-    try {
-      $itens = Post::aray('itens');
-
-      $entity = $this->_model->_entity;
-      if ( $entity->hasTrash() ) {
-        $trash = new TrashModel();
-        $trash->delete($itens);
-      } else {
-        $this->_model->delete($itens);
-      }
-
-      Header::redirect(Header::getReferer());
-    } catch (Exception $e) {
-      $this->setErrorSession($e->getMessage());
-    }
-  }
-
   protected function defaultSavePage ( $filename, $id )
   {
     $this->_model->setId($id);
