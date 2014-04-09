@@ -30,7 +30,7 @@ class SoundCloudModel extends BaseModelAdm
 
     $client_id = $this->_sm_credentials->row['sc_client_id'];
     $client_secret = $this->_sm_credentials->row['sc_client_secret'];
-    $redirect_uri = URL . '/admin/soundcloud/auth/';
+    $redirect_uri = URL . '/admin/sound_cloud/';
 
     $this->_api = new Service($client_id, $client_secret, $redirect_uri);
   }

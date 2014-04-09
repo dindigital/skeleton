@@ -4,7 +4,6 @@ namespace src\app\admin\controllers;
 
 use src\app\admin\models\essential\SoundCloudModel as model;
 use Din\Http\Get;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 use Din\Session\Session;
 use Din\Http\Header;
 
@@ -23,7 +22,7 @@ class SoundCloudController extends BaseControllerAdm
     $this->_model = new model;
   }
 
-  public function get_auth ()
+  public function get ()
   {
     $this->_model->saveToken(array(
         'code' => Get::text('code')

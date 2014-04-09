@@ -34,7 +34,7 @@ class YouTubeModel extends BaseModelAdm
     $this->_youtube_client = new Google_Client();
     $this->_youtube_client->setClientId($this->_sm_credentials->row['youtube_id']);
     $this->_youtube_client->setClientSecret($this->_sm_credentials->row['youtube_secret']);
-    $this->_youtube_client->setRedirectUri(URL . '/admin/youtube/auth/');
+    $this->_youtube_client->setRedirectUri(URL . '/admin/youtube/');
     $this->_youtube_client->addScope(array("https://www.googleapis.com/auth/youtube"));
     $this->_youtube_client->setAccessType('offline');
     $this->_youtube_client->setApprovalPrompt('force');

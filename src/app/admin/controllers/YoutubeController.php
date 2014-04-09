@@ -5,19 +5,18 @@ namespace src\app\admin\controllers;
 use src\app\admin\models\essential\YouTubeModel as model;
 use Din\Http\Get;
 use Din\Http\Header;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 use Din\Session\Session;
 
 /**
  *
  * @package app.controllers
  */
-class YouTubeController extends BaseControllerAdm
+class YoutubeController extends BaseControllerAdm
 {
 
   protected $_model;
 
-  public function get_auth ()
+  public function get ()
   {
     $this->_model = new model();
     $code = Get::text('code');

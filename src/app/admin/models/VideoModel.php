@@ -196,8 +196,8 @@ class VideoModel extends BaseModelAdm
           'id_youtube' => $id_youtube
       );
 
-      $filter = new TableFilter($this->_table, $input);
-      $filter->setString('id_youtube');
+      $f = new TableFilter($this->_table, $input);
+      $f->string()->filter('id_youtube');
       $this->dao_update();
     }
   }
