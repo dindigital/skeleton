@@ -4,7 +4,6 @@ namespace src\app\admin\controllers;
 
 use Din\Http\Post;
 use Exception;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 use src\app\admin\models\essential\TrashModel as model;
 use Din\Http\Header;
 
