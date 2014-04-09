@@ -13,6 +13,12 @@ use Din\Report\Excel\ExportExcel;
 class MailingExportModel extends BaseModelAdm
 {
 
+  public function __construct ()
+  {
+    parent::__construct();
+    $this->setTable('mailing');
+  }
+
   public function getXls ( $arrFilters = array() )
   {
     $arrCriteria = array(
@@ -36,7 +42,7 @@ class MailingExportModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     $total = count($result);
-    $this->log('E', "Exportou {$total} e-mails", 'mailing');
+    $this->log('E', "Exportou {$total} e-mails", $this->_table);
 
     $xls = new ExportExcel('mailing_' . date('ymd-His'));
     $xls->setResult($result);

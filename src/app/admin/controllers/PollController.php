@@ -4,10 +4,6 @@ namespace src\app\admin\controllers;
 
 use src\app\admin\models\PollModel as model;
 use Din\Http\Get;
-use Din\Http\Post;
-use Din\ViewHelpers\JsonViewHelper;
-use Exception;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 
 /**
  *
@@ -27,7 +23,7 @@ class PollController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_list ()
+  public function get ()
   {
 
     $arrFilters = array(
@@ -42,29 +38,6 @@ class PollController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('poll_list.phtml');
-  }
-
-  public function get_save ( $id = null )
-  {
-    $this->defaultSavePage('poll_save.phtml', $id);
-  }
-
-  public function post_save ( $id = null )
-  {
-    try {
-      $this->_model->setId($id);
-
-      $info = array(
-          'active' => Post::checkbox('active'),
-          'question' => Post::text('question'),
-          'uri' => Post::text('uri'),
-          'option' => Post::aray('option'),
-      );
-
-      $this->saveAndRedirect($info);
-    } catch (Exception $e) {
-      JsonViewHelper::display_error_message($e);
-    }
   }
 
 }

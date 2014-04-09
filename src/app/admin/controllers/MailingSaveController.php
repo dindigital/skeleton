@@ -2,9 +2,8 @@
 
 namespace src\app\admin\controllers;
 
-use src\app\admin\models\MailingImportModel as model;
+use src\app\admin\models\MailingModel as model;
 use Din\Http\Post;
-use Din\Session\Session;
 use Din\ViewHelpers\JsonViewHelper;
 use Exception;
 
@@ -12,39 +11,38 @@ use Exception;
  *
  * @package app.controllers
  */
-class MailingImportController extends BaseControllerAdm
+class MailingSaveController extends BaseControllerAdm
 {
 
   protected $_model;
+  protected $_id;
 
-  public function __construct ()
+  public function __construct ( $id )
   {
+    $this->_id = $id;
     parent::__construct();
     $this->_model = new model;
+    $this->setEntityData();
     $this->require_permission();
   }
 
   public function get ()
   {
-    $this->_data['table'] = $this->_model->createFields();
-
-    $this->setSaveTemplate('mailing_import.phtml');
+    $this->defaultSavePage('mailing_save.phtml', $this->_id);
   }
 
   public function post ()
   {
     try {
+      $this->_model->setId($this->_id);
+
       $info = array(
-          'xls' => Post::upload('xls'),
+          'name' => Post::text('name'),
+          'email' => Post::text('email'),
           'mailing_group' => Post::text('mailing_group'),
       );
 
-      $report = $this->_model->import_xls($info);
-
-      $session = new Session('adm_session');
-      $session->set('saved_msg', $report);
-
-      JsonViewHelper::redirect('/admin/mailing/list/');
+      $this->saveAndRedirect($info);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }

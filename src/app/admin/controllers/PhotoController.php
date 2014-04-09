@@ -4,10 +4,6 @@ namespace src\app\admin\controllers;
 
 use src\app\admin\models\PhotoModel as model;
 use Din\Http\Get;
-use Din\Http\Post;
-use Din\ViewHelpers\JsonViewHelper;
-use Exception;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 
 /**
  *
@@ -26,7 +22,7 @@ class PhotoController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_list ()
+  public function get ()
   {
     $arrFilters = array(
         'title' => Get::text('title'),
@@ -40,33 +36,6 @@ class PhotoController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('photo_list.phtml');
-  }
-
-  public function get_save ( $id = null )
-  {
-    $this->defaultSavePage('photo_save.phtml', $id);
-  }
-
-  public function post_save ( $id = null )
-  {
-    try {
-      $this->_model->setId($id);
-
-      $info = array(
-          'active' => Post::checkbox('active'),
-          'title' => Post::text('title'),
-          'date' => Post::text('date'),
-          'gallery_uploader' => Post::upload('gallery_uploader'),
-          'sequence' => Post::text('gallery_sequence'),
-          'label' => Post::aray('label'),
-          'credit' => Post::aray('credit'),
-          'uri' => Post::text('uri'),
-      );
-
-      $this->saveAndRedirect($info);
-    } catch (Exception $e) {
-      JsonViewHelper::display_error_message($e);
-    }
   }
 
 }

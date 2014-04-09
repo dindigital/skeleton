@@ -4,10 +4,6 @@ namespace src\app\admin\controllers;
 
 use src\app\admin\models\MailingGroupModel as model;
 use Din\Http\Get;
-use Din\Http\Post;
-use Din\ViewHelpers\JsonViewHelper;
-use Exception;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 
 /**
  *
@@ -26,7 +22,7 @@ class MailingGroupController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_list ()
+  public function get ()
   {
     $arrFilters = array(
         'name' => Get::text('name'),
@@ -40,26 +36,6 @@ class MailingGroupController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('mailing_group_list.phtml');
-  }
-
-  public function get_save ( $id = null )
-  {
-    $this->defaultSavePage('mailing_group_save.phtml', $id);
-  }
-
-  public function post_save ( $id = null )
-  {
-    try {
-      $this->_model->setId($id);
-
-      $info = array(
-          'name' => Post::text('name'),
-      );
-
-      $this->saveAndRedirect($info);
-    } catch (Exception $e) {
-      JsonViewHelper::display_error_message($e);
-    }
   }
 
 }

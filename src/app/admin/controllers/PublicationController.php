@@ -4,10 +4,6 @@ namespace src\app\admin\controllers;
 
 use src\app\admin\models\PublicationModel as model;
 use Din\Http\Get;
-use Din\Http\Post;
-use Din\ViewHelpers\JsonViewHelper;
-use Exception;
-use src\app\admin\controllers\essential\BaseControllerAdm;
 
 /**
  *
@@ -26,7 +22,7 @@ class PublicationController extends BaseControllerAdm
     $this->require_permission();
   }
 
-  public function get_list ()
+  public function get ()
   {
     $arrFilters = array(
         'title' => Get::text('title'),
@@ -40,32 +36,6 @@ class PublicationController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('publication_list.phtml');
-  }
-
-  public function get_save ( $id = null )
-  {
-    $this->defaultSavePage('publication_save.phtml', $id);
-  }
-
-  public function post_save ( $id = null )
-  {
-    try {
-      $this->_model->setId($id);
-
-      $info = array(
-          'active' => Post::checkbox('active'),
-          'title' => Post::text('title'),
-          'uri' => Post::text('uri'),
-          'file' => Post::upload('file'),
-          'file_delete' => Post::checkbox('file_delete'),
-          'publish_issuu' => Post::checkbox('publish_issuu'),
-          'republish_issuu' => Post::checkbox('republish_issuu'),
-      );
-
-      $this->saveAndRedirect($info);
-    } catch (Exception $e) {
-      JsonViewHelper::display_error_message($e);
-    }
   }
 
 }
