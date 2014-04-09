@@ -37,3 +37,9 @@ $r->any('/admin/*/', function($controller, $id = null) use ($tcn) {
   $r->any('/admin/*/', $tcn($controller), array($id));
   return $r->run();
 });
+
+$r->any('/admin/*/delete/', function($controller) use ($tcn) {
+  $r = new Router;
+  $r->any('/admin/*/delete/', $tcn('delete'), array($controller));
+  return $r->run();
+});
