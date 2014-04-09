@@ -11,11 +11,9 @@ use src\app\admin\helpers\Form;
 use src\helpers\Arrays;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\UploadValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
-use Din\Exception\JsonException;
 use src\app\admin\helpers\SequenceResult;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -87,13 +85,11 @@ class NewsCatModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', 'Título');
+    $v = new InputValidator($input);
+    $v->stringRequired()->validate('title', 'Título');
+    $has_cover = $v->uploadRequired()->validate('cover', 'Capa');
     //
-    $upl_validator = new UploadValidator($input);
-    $has_cover = $upl_validator->validateFile('cover');
-    //
-    JsonException::throwException();
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_news_cat');
@@ -115,13 +111,11 @@ class NewsCatModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', 'Título');
+    $v = new InputValidator($input);
+    $v->stringRequired()->validate('title', 'Título');
+    $has_cover = $v->uploadRequired()->validate('cover', 'Capa');
     //
-    $upl_validator = new UploadValidator($input);
-    $has_cover = $upl_validator->validateFile('cover');
-    //
-    JsonException::throwException();
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('active');
