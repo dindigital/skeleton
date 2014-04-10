@@ -6,10 +6,8 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use Din\Filters\String\Html;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\DBValidator;
-use Din\Exception\JsonException;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -71,22 +69,19 @@ class CustomerModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('name', "Título");
-    $str_validator->validateRequiredString('document', "Documento");
-    $str_validator->validateRequiredEmail('email', "email");
-    $str_validator->validateRequiredString('address_postcode', "CEP");
-    $str_validator->validateRequiredString('address_street', "Rua");
-    $str_validator->validateRequiredString('address_number', "Número");
-    $str_validator->validateRequiredString('address_state', "Estado");
-    $str_validator->validateRequiredString('address_city', "Cidade");
-    $str_validator->validateLenghtString('phone_ddd', "DDD", 2);
-    $str_validator->validateLenghtString('phone_number', "Telefone", 8, 9);
-    //
-    $db_validator = new DBValidator($input, $this->_dao, 'customer');
-    $db_validator->validateUniqueValue('email', 'E-mail');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('name', 'Nome');
+    $v->string()->validate('document', 'Documento');
+    $v->stringEmail()->validate('email', 'E-mail');
+    $v->stringLenght(9)->validate('address_postcode', 'CEP');
+    $v->string()->validate('address_street', 'Rua');
+    $v->string()->validate('address_number', 'Número');
+    $v->string()->validate('address_state', 'Estado');
+    $v->string()->validate('address_city', 'Cidade');
+    $v->stringLenght(2)->validate('phone_ddd', 'DDD');
+    $v->stringLenght(8,9)->validate('phone_number', 'Telefone');
+    $v->dbUnique($this->_dao,'customer')->validate('email', 'E-mail');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_customer');
@@ -109,23 +104,19 @@ class CustomerModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('name', "Título");
-    $str_validator->validateRequiredString('document', "Documento");
-    $str_validator->validateRequiredEmail('email', "email");
-    $str_validator->validateRequiredString('address_postcode', "CEP");
-    $str_validator->validateRequiredString('address_street', "Rua");
-    $str_validator->validateRequiredString('address_number', "Número");
-    $str_validator->validateRequiredString('address_state', "Estado");
-    $str_validator->validateRequiredString('address_city', "Cidade");
-    $str_validator->validateLenghtString('phone_ddd', "DDD", 2);
-    $str_validator->validateLenghtString('phone_number', "Telefone", 8, 9);
-    //
-    $db_validator = new DBValidator($input, $this->_dao, 'customer');
-    $db_validator->setId('id_customer', $this->getId());
-    $db_validator->validateUniqueValue('email', 'E-mail');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('name', 'Nome');
+    $v->string()->validate('document', 'Documento');
+    $v->stringEmail()->validate('email', 'E-mail');
+    $v->stringLenght(9)->validate('address_postcode', 'CEP');
+    $v->string()->validate('address_street', 'Rua');
+    $v->string()->validate('address_number', 'Número');
+    $v->string()->validate('address_state', 'Estado');
+    $v->string()->validate('address_city', 'Cidade');
+    $v->stringLenght(2)->validate('phone_ddd', 'DDD');
+    $v->stringLenght(8,9)->validate('phone_number', 'Telefone');
+    $v->dbUnique($this->_dao,'customer','id_customer', $this->getId())->validate('email', 'E-mail');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->string()->filter('name');
