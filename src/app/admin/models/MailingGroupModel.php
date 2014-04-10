@@ -6,10 +6,8 @@ use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use Din\Filters\String\Html;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\DBValidator;
-use Din\Exception\JsonException;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -61,13 +59,10 @@ class MailingGroupModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('name', 'Nome');
-    //
-    $db_validator = new DBValidator($input, $this->_dao, 'mailing_group');
-    $db_validator->validateUniqueValue('name', 'Nome');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('name', 'Nome');
+    $v->dbUnique($this->_dao,'mailing_group')->validate('name', 'Nome');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_mailing_group');
@@ -78,14 +73,10 @@ class MailingGroupModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('name', 'Nome');
-    //
-    $db_validator = new DBValidator($input, $this->_dao, 'mailing_group');
-    $db_validator->setId('id_mailing_group', $this->getId());
-    $db_validator->validateUniqueValue('name', 'Nome');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('name', 'Nome');
+    $v->dbUnique($this->_dao,'mailing_group','id_mailing_group', $this->getId())->validate('name', 'Nome');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->string()->filter('name');
@@ -99,13 +90,10 @@ class MailingGroupModel extends BaseModelAdm
         'name' => $name
     );
 
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('name', 'Nome');
-    //
-    $db_validator = new DBValidator($input, $this->_dao, 'mailing_group');
-    $db_validator->validateUniqueValue('name', 'Nome');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('name', 'Nome');
+    $v->dbUnique($this->_dao,'mailing_group')->validate('name', 'Nome');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_mailing_group');
