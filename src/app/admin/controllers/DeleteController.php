@@ -31,7 +31,7 @@ class DeleteController extends BaseControllerAdm
         $trash = new TrashModel();
         $trash->delete($itens);
       } else {
-        $this->_model->delete($itens);
+        $this->_entity->getModel()->delete($itens);
       }
 
       Header::redirect(Header::getReferer());
