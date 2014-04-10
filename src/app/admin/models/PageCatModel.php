@@ -10,10 +10,8 @@ use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\UploadValidator;
-use Din\Exception\JsonException;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
+use Din\InputValidator\InputValidator;
 use src\app\admin\helpers\SequenceResult;
 
 /**
@@ -79,13 +77,10 @@ class PageCatModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', "Título");
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_cover = $upl_validator->validateFile('cover');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $has_cover = $v->upload()->validate('cover', 'Capa');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_page_cat');
@@ -110,13 +105,10 @@ class PageCatModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', "Título");
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_cover = $upl_validator->validateFile('cover');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $has_cover = $v->upload()->validate('cover', 'Capa');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('active');
