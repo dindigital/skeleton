@@ -18,28 +18,18 @@ $tcn = (function($controller) {
   return $classname;
 });
 
-use Respect\Rest\Router;
-
-$r->get('/admin/*/list/', function($controller) use ($tcn) {
-  $r = new Router;
-  $r->get('/admin/*/list/', $tcn($controller));
-  return $r->run();
+$r->get('/admin/*/list/', function($controller) use ($r, $tcn) {
+  return $r->get("/admin/{$controller}/list/", $tcn($controller));
 });
 
-$r->any('/admin/*/save/*/', function($controller, $id = null) use ($tcn) {
-  $r = new Router;
-  $r->any('/admin/*/save/*/', $tcn($controller . '_save'), array($id));
-  return $r->run();
+$r->any('/admin/*/save/*/', function($controller, $id = null) use ($r, $tcn) {
+  return $r->any("/admin/{$controller}/save/{$id}/", $tcn($controller . '_save'), array($id));
 });
 
-$r->any('/admin/*/', function($controller, $id = null) use ($tcn) {
-  $r = new Router;
-  $r->any('/admin/*/', $tcn($controller), array($id));
-  return $r->run();
+$r->any('/admin/*/', function($controller, $id = null) use ($r, $tcn) {
+  return $r->any("/admin/{$controller}/", $tcn($controller), array($id));
 });
 
-$r->any('/admin/*/delete/', function($controller) use ($tcn) {
-  $r = new Router;
-  $r->any('/admin/*/delete/', $tcn('delete'), array($controller));
-  return $r->run();
+$r->any('/admin/*/delete/', function($controller) use ($r, $tcn) {
+  return $r->any("/admin/{$controller}/delete/", $tcn('delete'), array($controller));
 });
