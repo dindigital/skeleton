@@ -48,7 +48,7 @@ class AdminModel extends BaseModelAdm
   {
     $v = new InputValidator($input);
     $v->string()->validate('name', 'Nome');
-    $v->string()->validate('email', 'E-mail');
+    $v->stringEmail()->validate('email', 'E-mail');
     $v->string()->validate('password', 'Senha');
     $v->dbUnique($this->_dao,'admin')->validate('email', 'E-mail');
     $has_avatar = $v->upload()->validate('avatar', 'Avatar');
@@ -76,7 +76,7 @@ class AdminModel extends BaseModelAdm
   {
     $v = new InputValidator($input);
     $v->string()->validate('name', 'Nome');
-    $v->string()->validate('email', 'E-mail');
+    $v->stringEmail()->validate('email', 'E-mail');
     $v->dbUnique($this->_dao,'admin','id_admin', $this->getId())->validate('email', 'E-mail');
     $has_avatar = $v->upload()->validate('avatar', 'Avatar');
     $v->throwException();
