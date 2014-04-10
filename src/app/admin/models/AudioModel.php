@@ -8,13 +8,11 @@ use src\app\admin\helpers\PaginatorAdmin;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
-use src\app\admin\validators\StringValidator;
-use Din\Exception\JsonException;
 use src\app\admin\helpers\Form;
-use src\app\admin\validators\UploadValidator;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\models\essential\SoundCloudModel;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -113,15 +111,12 @@ class AudioModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', "Título");
-    $str_validator->validateRequiredString('description', "Descrição");
-    $str_validator->validateRequiredDate('date', "Data");
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_file = $upl_validator->validateFile('file');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $v->stringLenght(10,156)->validate('description', 'Descrição');
+    $v->date()->validate('date', 'Data');
+    $has_file = $v->upload()->validate('file', 'Arquivo de Áudio');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_audio');
@@ -129,7 +124,7 @@ class AudioModel extends BaseModelAdm
     $f->intval()->filter('active');
     $f->string()->filter('title');
     $f->string()->filter('description');
-    $f->string()->filter('date');
+    $f->date()->filter('date');
     $f->defaultUri('title', $this->getId())->filter('uri');
     //
     $mf = new MoveFiles;
@@ -147,21 +142,18 @@ class AudioModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', "Título");
-    $str_validator->validateRequiredString('description', "Descrição");
-    $str_validator->validateRequiredDate('date', "Data");
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_file = $upl_validator->validateFile('file');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $v->stringLenght(10,156)->validate('description', 'Descrição');
+    $v->date()->validate('date', 'Data');
+    $has_file = $v->upload()->validate('file', 'Arquivo de Áudio');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('active');
     $f->string()->filter('title');
     $f->string()->filter('description');
-    $f->string()->filter('date');
+    $f->date()->filter('date');
     $f->defaultUri('title', $this->getId())->filter('uri');
     //
     $mf = new MoveFiles;

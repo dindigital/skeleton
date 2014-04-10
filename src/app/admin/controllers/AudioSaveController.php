@@ -31,7 +31,7 @@ class AudioSaveController extends BaseControllerAdm
     $this->defaultSavePage('audio_save.phtml', $this->_id);
   }
 
-  public function save ()
+  public function post ()
   {
     try {
       $this->_model->setId($this->_id);
