@@ -5,9 +5,8 @@ namespace src\app\admin\models\essential;
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\MoveFiles;
-use src\app\admin\validators\UploadValidator;
+use Din\InputValidator\InputValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
-use Din\Exception\JsonException;
 use Din\File\Folder;
 
 /**
@@ -54,11 +53,10 @@ class GaleryModel extends BaseModelAdm
   public function insert ( $input )
   {
     $input['file'] = array($input['file']);
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_file = $upl_validator->validateFile('file');
-    //
-    JsonException::throwException();
+    
+    $v = new InputValidator($input);
+    $has_file = $v->upload()->validate('file', 'Foto');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->labelCredit()->filter('file');

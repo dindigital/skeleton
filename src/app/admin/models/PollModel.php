@@ -9,10 +9,8 @@ use src\app\admin\models\PollOptionModel;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\ArrayValidator;
-use Din\Exception\JsonException;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -75,16 +73,14 @@ class PollModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validtor = new StringValidator($input);
-    $str_validtor->validateRequiredString('question', 'Pergunta');
-    //
-    $arr_validator = new ArrayValidator($input);
-    $arr_validator->validateArrayNotEmpty('question', 'Pergunta');
+    $v = new InputValidator($input);
+    $v->string()->validate('question', 'Pergunta');
+    $v->arrayNotEmpty()->validate('question', 'Pergunta');
     //
     $opt = new PollOptionModel;
     $opt->batch_validate($input['option']);
     //
-    JsonException::throwException();
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_poll');
@@ -100,16 +96,14 @@ class PollModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validtor = new StringValidator($input);
-    $str_validtor->validateRequiredString('question', 'Pergunta');
-    //
-    $arr_validator = new ArrayValidator($input);
-    $arr_validator->validateArrayNotEmpty('question', 'Pergunta');
+    $v = new InputValidator($input);
+    $v->string()->validate('question', 'Pergunta');
+    $v->arrayNotEmpty()->validate('question', 'Pergunta');
     //
     $opt = new PollOptionModel;
     $opt->batch_validate($input['option']);
     //
-    JsonException::throwException();
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('active');
