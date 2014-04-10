@@ -6,10 +6,8 @@ use src\app\admin\models\essential\AdminAuthModel;
 use src\app\admin\models\AdminModel;
 use src\app\admin\helpers\MoveFiles;
 use src\app\admin\helpers\Form;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\UploadValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
-use Din\Exception\JsonException;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -20,6 +18,10 @@ class ConfigModel extends AdminModel
 
   public function formatTable ( $table, $exclude_fields = false )
   {
+    if ( $exclude_fields ) {
+      $table['avatar'] = null;
+    }
+      
     $table['avatar_uploader'] = Form::Upload('avatar', $table['avatar'], 'image', false);
 
     return $table;
@@ -27,14 +29,11 @@ class ConfigModel extends AdminModel
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('name', "Nome");
-    $str_validator->validateRequiredEmail('email', "E-mail");
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_avatar = $upl_validator->validateFile('avatar');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('name', 'Nome');
+    $v->stringEmail()->validate('email', 'E-mail');
+    $has_avatar = $v->upload()->validate('avatar', 'Avatar');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->string()->filter('name');

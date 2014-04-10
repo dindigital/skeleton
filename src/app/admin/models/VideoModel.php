@@ -9,10 +9,8 @@ use src\app\admin\models\essential\RelationshipModel;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\UploadValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
-use Din\Exception\JsonException;
+use Din\InputValidator\InputValidator;
 use src\app\admin\models\essential\YouTubeModel;
 use src\app\admin\helpers\Form;
 use src\app\admin\helpers\MoveFiles;
@@ -91,15 +89,12 @@ class VideoModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', "Título");
-    $str_validator->validateRequiredString('description', "Descrição");
-    $str_validator->validateRequiredDate('date', "Data");
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_file = $upl_validator->validateFile('file');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $v->date()->validate('date', 'Data');
+    $v->stringLenght(10,156)->validate('description', 'Descrição');
+    $has_file = $v->upload()->validate('file', 'Arquivo de Vídeo');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_video');
@@ -129,15 +124,12 @@ class VideoModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', "Título");
-    $str_validator->validateRequiredString('description', "Descrição");
-    $str_validator->validateRequiredDate('date', "Data");
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_file = $upl_validator->validateFile('file');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $v->date()->validate('date', 'Data');
+    $v->stringLenght(10,156)->validate('description', 'Descrição');
+    $has_file = $v->upload()->validate('file', 'Arquivo de Vídeo');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('active');

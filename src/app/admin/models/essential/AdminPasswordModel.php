@@ -6,9 +6,7 @@ use Din\DataAccessLayer\Select;
 use Din\Mvc\View\View;
 use Din\Email\Email;
 use Din\Email\SendEmail\SendEmail;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\DBValidator;
-use Din\Exception\JsonException;
+use Din\InputValidator\InputValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 
 /**
@@ -26,13 +24,10 @@ class AdminPasswordModel extends BaseModelAdm
 
   public function recover_password ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredEmail('email', "E-mail");
-    //
-    $db_validator = new DBValidator($input, $this->_dao, 'admin');
-    $db_validator->validateRequiredRecord('email', "E-mail");
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->stringEmail()->validate('email', 'E-mail');
+    $v->dbRecord($this->_dao,'admin')->validate('email', 'E-mail');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->timestamp()->filter('password_change_date');
@@ -57,14 +52,12 @@ class AdminPasswordModel extends BaseModelAdm
 
   public function update_password ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('password', 'Senha');
-    $str_validator->validateRequiredString('password2', 'Confirmação de Senha');
-    $str_validator->validateEqualValues('password', 'password2', 'Senha');
+    $v = new InputValidator($input);
+    $v->stringEqual('password2')->validate('password', 'Senha');
     //
-    $this->validateToken($input['token']);
+    $this->validateToken($input['token'], $v);
     //
-    JsonException::throwException();
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->crypted()->filter('password');
@@ -101,15 +94,15 @@ class AdminPasswordModel extends BaseModelAdm
     $sendmail->send();
   }
 
-  protected function validateToken ( $id )
+  protected function validateToken ( $id, $v )
   {
     $select = new Select('admin');
     $select->addField('password_change_date');
     $select->where(array('id_admin = ?' => $id));
     $result = $this->_dao->select($select);
-
+    
     if ( !count($result) )
-      return JsonException::addException('Token inválido, por favor gere um novo link de recuperação');
+      return $v->addException('Token inválido, por favor gere um novo link de recuperação');
 
     $time_inicial = strtotime(date('Y-m-d'));
     $time_final = strtotime($result[0]['password_change_date']);
@@ -118,7 +111,7 @@ class AdminPasswordModel extends BaseModelAdm
     $dias = (int) floor($diferenca / (60 * 60 * 24));
 
     if ( $dias !== 0 )
-      return JsonException::addException('Token expirado, por favor gere um novo link de recuperação');
+      return $v->addException('Token expirado, por favor gere um novo link de recuperação');
   }
 
 }

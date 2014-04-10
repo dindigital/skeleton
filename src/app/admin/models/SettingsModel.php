@@ -4,9 +4,8 @@ namespace src\app\admin\models;
 
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\Filters\String\Html;
-use src\app\admin\validators\StringValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
-use Din\Exception\JsonException;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -39,16 +38,15 @@ class SettingsModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('home_title', 'Título Home');
-    $str_validator->validateRequiredString('home_description', 'Description Home');
-    $str_validator->validateRequiredString('home_keywords', 'Keywords Home');
-    $str_validator->validateRequiredString('title', 'Título Internas');
-    $str_validator->validateRequiredString('description', 'Description Internas');
-    $str_validator->validateRequiredString('keywords', 'Keywords Internas');
-
-    JsonException::throwException();
-
+    $v = new InputValidator($input);
+    $v->string()->validate('home_title', 'Título Home');
+    $v->string()->validate('home_description', 'Description Home');
+    $v->string()->validate('home_keywords', 'Keywords Home');
+    $v->string()->validate('title', 'Título Internas');
+    $v->string()->validate('description', 'Description Internas');
+    $v->string()->validate('keywords', 'Keywords Internas');
+    $v->throwException();
+    //
     $f = new TableFilter($this->_table, $input);
     $f->string()->filter('home_title');
     $f->string()->filter('home_description');

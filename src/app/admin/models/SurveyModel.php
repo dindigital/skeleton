@@ -9,10 +9,8 @@ use src\app\admin\models\SurveyQuestionModel;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\ArrayValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
-use Din\Exception\JsonException;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -75,16 +73,14 @@ class SurveyModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validtor = new StringValidator($input);
-    $str_validtor->validateRequiredString('title', 'Título');
-    //
-    $arr_validator = new ArrayValidator($input);
-    $arr_validator->validateArrayNotEmpty('question', 'Questão');
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $v->arrayNotEmpty()->validate('question', 'Pergunta');
     //
     $sq = new SurveyQuestionModel;
     $sq->batch_validate($input['question']);
     //
-    JsonException::throwException();
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_survey');
@@ -100,16 +96,14 @@ class SurveyModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validtor = new StringValidator($input);
-    $str_validtor->validateRequiredString('title', 'Título');
-    //
-    $arr_validator = new ArrayValidator($input);
-    $arr_validator->validateArrayNotEmpty('question', 'Questão');
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $v->arrayNotEmpty()->validate('question', 'Pergunta');
     //
     $sq = new SurveyQuestionModel;
     $sq->batch_validate($input['question']);
     //
-    JsonException::throwException();
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('active');

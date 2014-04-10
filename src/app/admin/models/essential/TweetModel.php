@@ -7,9 +7,8 @@ use Twitter;
 use Exception;
 use src\app\admin\models\essential\TweetableEntity;
 use Din\Filters\Date\DateFormat;
-use src\app\admin\validators\StringValidator;
-use Din\Exception\JsonException;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
+use Din\InputValidator\InputValidator;
 use src\app\admin\models\SocialmediaCredentialsModel;
 
 /**
@@ -50,10 +49,9 @@ class TweetModel extends BaseModelAdm
         'msg' => $msg
     );
 
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('msg', "Mensagem");
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('msg', 'Mensagem');
+    $v->throwException();
 
     $consumer_key = $this->_sm_credentials->row['tw_consumer_key'];
     $consumer_secret = $this->_sm_credentials->row['tw_consumer_secret'];

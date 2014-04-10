@@ -7,9 +7,7 @@ use Din\DataAccessLayer\Select;
 use src\app\admin\helpers\PaginatorAdmin;
 use Din\Filters\String\Html;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
-use src\app\admin\validators\DBValidator;
-use src\app\admin\validators\StringValidator;
-use Din\Exception\JsonException;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -63,14 +61,11 @@ class TagModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', 'Título');
-
-    $db_validator = new DBValidator($input, $this->_dao, 'tag');
-    $db_validator->validateUniqueValue('title', 'Título');
-
-    JsonException::throwException();
-
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $v->dbUnique($this->_dao,'tag')->validate('title', 'Título');
+    $v->throwException();
+    //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_tag');
     $f->timestamp()->filter('inc_date');
@@ -82,15 +77,11 @@ class TagModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', 'Título');
-
-    $db_validator = new DBValidator($input, $this->_dao, 'tag');
-    $db_validator->setId('id_tag', $this->getId());
-    $db_validator->validateUniqueValue('title', 'Título');
-
-    JsonException::throwException();
-
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $v->dbUnique($this->_dao,'tag','id_tag', $this->getId())->validate('title', 'Título');
+    $v->throwException();
+    //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('active');
     $f->string()->filter('title');
@@ -106,14 +97,11 @@ class TagModel extends BaseModelAdm
         'title' => $title
     );
 
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', 'Título');
-
-    $db_validator = new DBValidator($input, $this->_dao, 'tag');
-    $db_validator->validateUniqueValue('title', 'Título');
-
-    JsonException::throwException();
-
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $v->dbUnique($this->_dao,'tag')->validate('title', 'Título');
+    $v->throwException();
+    //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_tag');
     $f->timestamp()->filter('inc_date');

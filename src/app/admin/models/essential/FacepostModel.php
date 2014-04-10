@@ -7,9 +7,8 @@ use Exception;
 use Facebook;
 use src\app\admin\models\SocialmediaCredentialsModel;
 use Din\Filters\Date\DateFormat;
-use src\app\admin\validators\StringValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
-use Din\Exception\JsonException;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -83,11 +82,10 @@ class FacepostModel extends BaseModelAdm
 
   public function post ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('name', "Nome");
-    $str_validator->validateRequiredString('link', "Link");
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('name', 'Nome');
+    $v->string()->validate('link', 'Link');
+    $v->throwException();
     //
     $this->setFacebook();
     //

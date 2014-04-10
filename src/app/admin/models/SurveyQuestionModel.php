@@ -4,8 +4,8 @@ namespace src\app\admin\models;
 
 use src\app\admin\models\essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
-use src\app\admin\validators\StringValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -26,9 +26,9 @@ class SurveyQuestionModel extends BaseModelAdm
       $input = array(
           'question' => $question
       );
-
-      $str_validator = new StringValidator($input);
-      $str_validator->validateRequiredString('question', 'Questão');
+      
+      $v = new InputValidator($input);
+      $v->string()->validate('question', 'Questão');
     }
   }
 
