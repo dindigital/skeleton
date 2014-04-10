@@ -6,7 +6,7 @@ use Din\Mvc\Controller\BaseController;
 use src\app\admin\models\essential\AdminPasswordModel as model;
 use Din\Http\Post;
 use Exception;
-use Din\ViewHelpers\JsonViewHelper;
+use src\helpers\JsonViewHelper;
 use Din\Session\Session;
 use Din\AssetRead\AssetRead;
 

@@ -5,7 +5,7 @@ namespace src\app\admin\controllers;
 use src\app\admin\models\MailingImportModel as model;
 use Din\Http\Post;
 use Din\Session\Session;
-use Din\ViewHelpers\JsonViewHelper;
+use src\helpers\JsonViewHelper;
 use Exception;
 
 /**

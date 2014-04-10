@@ -10,7 +10,7 @@ use Din\Image\Picuri;
 use Din\Http\Post;
 use Din\Http\Header;
 use src\app\admin\models\essential\PermissionModel;
-use Din\ViewHelpers\JsonViewHelper;
+use src\helpers\JsonViewHelper;
 use src\app\admin\models\essential\TrashModel;
 use Din\AssetRead\AssetRead;
 use Din\Http\Get;

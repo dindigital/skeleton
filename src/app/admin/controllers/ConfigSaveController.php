@@ -4,7 +4,7 @@ namespace src\app\admin\controllers;
 
 use src\app\admin\models\essential\ConfigModel as model;
 use Din\Http\Post;
-use Din\ViewHelpers\JsonViewHelper;
+use src\helpers\JsonViewHelper;
 use Exception;
 
 /**

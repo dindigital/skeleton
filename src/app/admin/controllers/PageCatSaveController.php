@@ -5,7 +5,7 @@ namespace src\app\admin\controllers;
 use src\app\admin\models\PageCatModel as model;
 use Din\Http\Get;
 use Din\Http\Post;
-use Din\ViewHelpers\JsonViewHelper;
+use src\helpers\JsonViewHelper;
 use Exception;
 
 /**
