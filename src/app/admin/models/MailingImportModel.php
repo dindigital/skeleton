@@ -7,10 +7,8 @@ use Din\Report\Excel\ImportExcel;
 use src\app\admin\models\MailingModel;
 use Exception;
 use src\app\admin\helpers\Form;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\UploadValidator;
-use Din\Exception\JsonException;
 use Din\File\Files;
+use Din\InputValidator\InputValidator;
 
 /**
  *
@@ -27,22 +25,19 @@ class MailingImportModel extends BaseModelAdm
 
   public function import_xls ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('mailing_group', 'Grupo');
+    $extensions = array('xls', 'xlsx');
+    $mimes = array(
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=binary',
+      'application/vnd.ms-excel; charset=binary',
+      'application/vnd.ms-office; charset=binary',
+      'application/zip; charset=binary'
+    );
+    
+    $v = new InputValidator($input);
+    $v->string()->validate('mailing_group', 'Grupo');
+    $v->upload($extensions, $mimes)->validate('xls', 'Arquivo de Mailing');
+    $v->throwException();
     //
-    $upl_validator = new UploadValidator($input);
-    $upl_validator->validateFile('xls', array(
-        'xls', 'xlsx'
-            ), array(
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=binary',
-        'application/vnd.ms-excel; charset=binary',
-        'application/vnd.ms-office; charset=binary',
-        'application/zip; charset=binary',
-    ));
-    //
-    JsonException::throwException();
-    //
-
     $xls_result = $this->getXlsContents($input['xls']);
 
     $mailing = new MailingModel;
