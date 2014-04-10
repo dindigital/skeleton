@@ -10,11 +10,8 @@ use src\app\admin\models\essential\PermissionModel;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Form;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\DBValidator;
-use src\app\admin\validators\UploadValidator;
+use Din\InputValidator\InputValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
-use Din\Exception\JsonException;
 
 /**
  *
@@ -49,18 +46,13 @@ class AdminModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('name', 'Nome');
-    $str_validator->validateRequiredEmail('email', 'E-mail');
-    $str_validator->validateRequiredString('password', 'Senha');
-    //
-    $db_validator = new DBValidator($input, $this->_dao, 'admin');
-    $db_validator->validateUniqueValue('email', 'E-mail');
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_avatar = $upl_validator->validateFile('avatar');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('name', 'Nome');
+    $v->string()->validate('email', 'E-mail');
+    $v->string()->validate('password', 'Senha');
+    $v->dbUnique($this->_dao,'admin')->validate('email', 'E-mail');
+    $has_avatar = $v->upload()->validate('avatar', 'Avatar');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_admin');
@@ -82,18 +74,12 @@ class AdminModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('name', 'Nome');
-    $str_validator->validateRequiredEmail('email', 'E-mail');
-    //
-    $db_validator = new DBValidator($input, $this->_dao, 'admin');
-    $db_validator->setId('id_admin', $this->getId());
-    $db_validator->validateUniqueValue('email', 'E-mail');
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_avatar = $upl_validator->validateFile('avatar');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('name', 'Nome');
+    $v->string()->validate('email', 'E-mail');
+    $v->dbUnique($this->_dao,'admin','id_admin', $this->getId())->validate('email', 'E-mail');
+    $has_avatar = $v->upload()->validate('avatar', 'Avatar');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('active');
