@@ -35,9 +35,13 @@ class MailingImportModel extends BaseModelAdm
     
     $v = new InputValidator($input);
     $v->string()->validate('mailing_group', 'Grupo');
-    $v->upload($extensions, $mimes)->validate('xls', 'Arquivo de Mailing');
+    $has_file = $v->upload($extensions, $mimes)->validate('xls', 'Arquivo de Mailing');
+    
+    if (!$has_file)
+      $v->addException('Arquivo inválido');
+    
     $v->throwException();
-    //
+    
     $xls_result = $this->getXlsContents($input['xls']);
 
     $mailing = new MailingModel;
@@ -56,7 +60,7 @@ class MailingImportModel extends BaseModelAdm
 
         $total_inserts++;
       } catch (Exception $e) {
-        JsonException::clearExceptions();
+        //JsonException::clearExceptions();
         $total_fails++;
         //ignore exceptions
       }
