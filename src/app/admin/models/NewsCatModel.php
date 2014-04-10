@@ -86,9 +86,8 @@ class NewsCatModel extends BaseModelAdm
   public function insert ( $input )
   {
     $v = new InputValidator($input);
-    $v->stringRequired()->validate('title', 'Título');
-    $has_cover = $v->uploadRequired()->validate('cover', 'Capa');
-    //
+    $v->string()->validate('title', 'Título');
+    $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -112,9 +111,8 @@ class NewsCatModel extends BaseModelAdm
   public function update ( $input )
   {
     $v = new InputValidator($input);
-    $v->stringRequired()->validate('title', 'Título');
-    $has_cover = $v->uploadRequired()->validate('cover', 'Capa');
-    //
+    $v->string()->validate('title', 'Título');
+    $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);

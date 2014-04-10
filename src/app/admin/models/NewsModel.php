@@ -98,13 +98,11 @@ class NewsModel extends BaseModelAdm implements Facepostable
   public function insert ( $input )
   {
     $v = new InputValidator($input);
-    $v->stringRequired()->validate('title', 'Título');
-    $v->dateRequired()->validate('date', 'Data');
-    $v->stringRequired()->validate('body', 'Conteúdo');
+    $v->string()->validate('title', 'Título');
+    $v->date()->validate('date', 'Data');
+    $v->string()->validate('body', 'Conteúdo');
     $v->dbFk($this->_dao,'news_cat')->validate('id_news_cat', 'Categoria');
-    //
-    $has_cover = $v->uploadRequired()->validate('cover', 'Capa');
-    //
+    $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -134,13 +132,11 @@ class NewsModel extends BaseModelAdm implements Facepostable
   public function update ( $input )
   {
     $v = new InputValidator($input);
-    $v->stringRequired()->validate('title', 'Título');
-    $v->dateRequired()->validate('date', 'Data');
-    $v->stringRequired()->validate('body', 'Conteúdo');
+    $v->string()->validate('title', 'Título');
+    $v->date()->validate('date', 'Data');
+    $v->string()->validate('body', 'Conteúdo');
     $v->dbFk($this->_dao,'news_cat')->validate('id_news_cat', 'Categoria');
-    //
-    $has_cover = $v->uploadRequired()->validate('cover', 'Capa');
-    //
+    $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
