@@ -10,11 +10,8 @@ use Din\Filters\Date\DateFormat;
 use src\app\admin\helpers\Form;
 use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\UploadValidator;
-use src\app\admin\validators\DBValidator;
-use Din\Exception\JsonException;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
+use Din\InputValidator\InputValidator;
 use Exception;
 use src\app\admin\helpers\SequenceResult;
 
@@ -112,16 +109,11 @@ class PageModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', "Título");
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_cover = $upl_validator->validateFile('cover');
-    //
-    $db_validator = new DBValidator($input, $this->_dao, 'page');
-    $db_validator->validateFk('id_page_cat', 'Menu', 'page_cat');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $v->dbFk($this->_dao,'page_cat')->validate('id_page_cat', 'Menu');
+    $has_cover = $v->upload()->validate('cover', 'Capa');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_page');
@@ -148,16 +140,11 @@ class PageModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', "Título");
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_cover = $upl_validator->validateFile('cover');
-    //
-    $db_validator = new DBValidator($input, $this->_dao, 'page');
-    $db_validator->validateFk('id_page_cat', 'Menu', 'page_cat');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $v->dbFk($this->_dao,'page_cat')->validate('id_page_cat', 'Menu');
+    $has_cover = $v->upload()->validate('cover', 'Capa');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('active');
