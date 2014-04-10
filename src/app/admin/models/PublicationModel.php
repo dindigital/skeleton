@@ -10,10 +10,8 @@ use Din\Filters\String\Html;
 use src\app\admin\helpers\Form;
 use src\app\admin\helpers\Link;
 use src\app\admin\models\essential\IssuuModel;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\UploadValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
-use Din\Exception\JsonException;
+use Din\InputValidator\InputValidator;
 use Din\Filters\String\Uri;
 use Din\Filters\String\LimitChars;
 use src\app\admin\helpers\Embed;
@@ -93,13 +91,10 @@ class PublicationModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', 'Título');
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_file = $upl_validator->validateFile('file');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $has_file = $v->upload()->validate('file', 'Arquivo');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_publication');
@@ -121,13 +116,10 @@ class PublicationModel extends BaseModelAdm
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', 'Título');
-    //
-    $upl_validator = new UploadValidator($input);
-    $has_file = $upl_validator->validateFile('file');
-    //
-    JsonException::throwException();
+    $v = new InputValidator($input);
+    $v->string()->validate('title', 'Título');
+    $has_file = $v->upload()->validate('file', 'Arquivo');
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('active');
