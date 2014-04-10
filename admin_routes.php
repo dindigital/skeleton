@@ -18,6 +18,8 @@ $tcn = (function($controller) {
   return $classname;
 });
 
+$r->any('/admin/', 'src\app\admin\controllers\AdminAuthController');
+
 $r->get('/admin/*/list/', function($controller) use ($r, $tcn) {
   return $r->get("/admin/{$controller}/list/", $tcn($controller));
 });
