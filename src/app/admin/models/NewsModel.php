@@ -14,11 +14,8 @@ use Din\Filters\String\Html;
 use src\app\admin\helpers\Link;
 use Din\Image\Picuri;
 use Din\DataAccessLayer\Table\Table;
-use src\app\admin\validators\StringValidator;
-use src\app\admin\validators\UploadValidator;
-use src\app\admin\validators\DBValidator;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
-use Din\Exception\JsonException;
+use Din\InputValidator\InputValidator;
 use src\app\admin\helpers\SequenceResult;
 
 /**
@@ -100,18 +97,15 @@ class NewsModel extends BaseModelAdm implements Facepostable
 
   public function insert ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', 'Título');
-    $str_validator->validateRequiredDate('date', 'Data');
-    $str_validator->validateRequiredString('body', 'Corpo');
+    $v = new InputValidator($input);
+    $v->stringRequired()->validate('title', 'Título');
+    $v->dateRequired()->validate('date', 'Data');
+    $v->stringRequired()->validate('body', 'Conteúdo');
+    $v->dbFk($this->_dao,'news_cat')->validate('id_news_cat', 'Categoria');
     //
-    $db_validator = new DBValidator($input, $this->_dao, 'news');
-    $db_validator->validateFk('id_news_cat', 'Categoria', 'news_cat');
+    $has_cover = $v->uploadRequired()->validate('cover', 'Capa');
     //
-    $upl_validator = new UploadValidator($input);
-    $has_cover = $upl_validator->validateFile('cover');
-    //
-    JsonException::throwException();
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_news');
@@ -139,18 +133,15 @@ class NewsModel extends BaseModelAdm implements Facepostable
 
   public function update ( $input )
   {
-    $str_validator = new StringValidator($input);
-    $str_validator->validateRequiredString('title', 'Título');
-    $str_validator->validateRequiredDate('date', 'Data');
-    $str_validator->validateRequiredString('body', 'Corpo');
+    $v = new InputValidator($input);
+    $v->stringRequired()->validate('title', 'Título');
+    $v->dateRequired()->validate('date', 'Data');
+    $v->stringRequired()->validate('body', 'Conteúdo');
+    $v->dbFk($this->_dao,'news_cat')->validate('id_news_cat', 'Categoria');
     //
-    $db_validator = new DBValidator($input, $this->_dao, 'news');
-    $db_validator->validateFk('id_news_cat', 'Categoria', 'news_cat');
+    $has_cover = $v->uploadRequired()->validate('cover', 'Capa');
     //
-    $upl_validator = new UploadValidator($input);
-    $has_cover = $upl_validator->validateFile('cover');
-    //
-    JsonException::throwException();
+    $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('active');
