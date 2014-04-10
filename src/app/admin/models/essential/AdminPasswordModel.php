@@ -74,9 +74,9 @@ class AdminPasswordModel extends BaseModelAdm
     $token = $this->getTokenByEmail($user_email);
 
     $data = array(
-        'link' => URL . '/admin/admin_password/update/' . $token . '/'
+        'link' => URL . '/admin/admin_password/save/' . $token . '/'
     );
-
+    
     $email_html = new View;
     $email_html->addFile('src/app/admin/views/email/recover_password.phtml');
     $email_html->setData($data);

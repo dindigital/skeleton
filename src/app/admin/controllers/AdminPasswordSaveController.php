@@ -14,33 +14,20 @@ use Din\AssetRead\AssetRead;
  *
  * @package app.controllers
  */
-class AdminPasswordController extends BaseController
+class AdminPasswordSaveController extends BaseController
 {
 
-  private $_model;
+  protected $_model;
+  protected $_token;
 
-  public function __construct ()
+  public function __construct ($token = null)
   {
     parent::__construct();
     $this->_model = new model;
+    $this->_token = $token;
   }
 
-  public function post_recover_password ()
-  {
-    $input = array(
-        'email' => Post::text('email')
-    );
-
-    try {
-      $this->_model->recover_password($input);
-    } catch (Exception $e) {
-      JsonViewHelper::display_error_message($e);
-    }
-
-    JsonViewHelper::display_success_message('E-mail enviado com sucesso, por favor acesse sua conta de e-mail para gerar uma nova senha');
-  }
-
-  public function get_update ()
+  public function get ()
   {
     $assetRead = new AssetRead('config/assets.php');
     $assetRead->setMode(ASSETS);
@@ -54,10 +41,10 @@ class AdminPasswordController extends BaseController
     $this->display_html();
   }
 
-  public function post_update ( $token )
+  public function post ()
   {
     $input = array(
-        'token' => $token,
+        'token' => $this->_token,
         'password' => Post::text('password'),
         'password2' => Post::text('password2')
     );

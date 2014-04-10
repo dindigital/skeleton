@@ -2,7 +2,7 @@ $(document).ready(function() {
 
   $('.btn_lostpass').click(function() {
     $('.ajaxform').ajaxSubmit({
-      url: '/admin/admin_password/recover_password/',
+      url: '/admin/admin_password_recover/',
       dataType: 'json',
       beforeSubmit: function() {
         ajaxformBeforeSubmit();
