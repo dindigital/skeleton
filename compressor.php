@@ -15,9 +15,9 @@ use Din\Assets\Compressor\Css;
 use Din\Http\Get;
 
 $group = array();
-$gp = Get::text('gp');
-if ( $gp ) {
-  $group = explode(',', $gp);
+$g = Get::text('g');
+if ( $g ) {
+  $group = explode(',', $g);
 }
 
 $config = new AssetsConfig('config/assets.php');

@@ -28,12 +28,13 @@ class AdminAuthController extends BaseController implements \Respect\Rest\Routab
 
   private function setAuthTemplate ()
   {
-    $assetRead = new AssetRead('config/assets.php');
-    $assetRead->setMode(ASSETS);
-    $assetRead->setReplace(PATH_REPLACE);
-    $assetRead->setGroup('css', array('adm_login', 'google'));
-    $assetRead->setGroup('js', array('jquery', 'adm_login'));
-    $this->_data['assets'] = $assetRead->getAssets();
+    $config = new AssetsConfig('config/assets.php');
+    $assetsRead = new AssetsRead($config);
+    $assetsRead->setMode(ASSETS);
+    $assetsRead->setReplace(PATH_REPLACE);
+    $assetsRead->setGroup('css', array('adm_login', 'google'));
+    $assetsRead->setGroup('js', array('jquery', 'adm_login'));
+    $this->_data['assets'] = $assetsRead->getAssets();
 
     $session = new Session('adm_session');
     if ( $session->is_set('saved_msg') ) {

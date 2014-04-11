@@ -11,8 +11,8 @@ use Din\Http\Post;
 use Din\Http\Header;
 use src\app\admin\models\essential\PermissionModel;
 use src\helpers\JsonViewHelper;
-use src\app\admin\models\essential\TrashModel;
-use Din\AssetRead\AssetRead;
+use Din\Assets\AssetsConfig;
+use Din\Assets\AssetsRead;
 use Din\Http\Get;
 
 /**
@@ -41,12 +41,13 @@ abstract class BaseControllerAdm extends BaseController
    */
   protected function setAssetsData ()
   {
-    $assetRead = new AssetRead('config/assets.php');
-    $assetRead->setMode(ASSETS);
-    $assetRead->setReplace(PATH_REPLACE);
-    $assetRead->setGroup('css', array('adm', 'google'));
-    $assetRead->setGroup('js', array('jquery', 'adm'));
-    $this->_data['assets'] = $assetRead->getAssets();
+    $config = new AssetsConfig('config/assets.php');
+    $assetsRead = new AssetsRead($config);
+    $assetsRead->setMode(ASSETS);
+    $assetsRead->setReplace(PATH_REPLACE);
+    $assetsRead->setGroup('css', array('adm', 'google'));
+    $assetsRead->setGroup('js', array('jquery', 'adm'));
+    $this->_data['assets'] = $assetsRead->getAssets();
   }
 
   /**

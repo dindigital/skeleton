@@ -4,7 +4,8 @@ namespace src\app\site\controllers;
 
 use Din\Mvc\Controller\BaseController;
 use src\app\site\models as models;
-use Din\AssetRead\AssetRead;
+use Din\Assets\AssetsConfig;
+use Din\Assets\AssetsRead;
 use Din\Cache\ViewCache;
 
 /**
@@ -26,12 +27,13 @@ abstract class BaseControllerSite extends BaseController
    */
   protected function setAssetsData ()
   {
-    $assetRead = new AssetRead('config/assets.php');
-    $assetRead->setMode(ASSETS);
-    $assetRead->setReplace(PATH_REPLACE);
-    $assetRead->setGroup('css', array('site'));
-    $assetRead->setGroup('js', array('jquery', 'site'));
-    $this->_data['assets'] = $assetRead->getAssets();
+    $config = new AssetsConfig('config/assets.php');
+    $assetsRead = new AssetsRead($config);
+    $assetsRead->setMode(ASSETS);
+    $assetsRead->setReplace(PATH_REPLACE);
+    $assetsRead->setGroup('css', array('site'));
+    $assetsRead->setGroup('js', array('jquery', 'site'));
+    $this->_data['assets'] = $assetsRead->getAssets();
   }
 
   /**
