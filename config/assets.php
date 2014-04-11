@@ -1,14 +1,9 @@
 <?php
 
-/**
- * Exemplo de Uso:
- * Gerando tudo $ php compressor.php
- * Gerando específico $ php5-cgi compressor.php css=adm_login,adm js=adm_login
- */
 return array(
     'css' => array(
         'site' => array(
-            'uri' => '/system/assets/site534589b52140e.css',
+            'uri' => '/system/assets/site534818ce35174.css',
             'src' => array(
                 'public/site/vendor/bootstrap/css/bootstrap.css',
                 'public/site/vendor/bootstrap/css/bootstrap-theme.css',
@@ -16,7 +11,7 @@ return array(
             )
         ),
         'adm_login' => array(
-            'uri' => '/system/assets/adm_login534589b6ce65d.css',
+            'uri' => '/system/assets/adm_login534818d01e7e2.css',
             'src' => array(
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
                 'public/admin/fonts/font-awesome-4/css/font-awesome.min.css',
@@ -24,7 +19,7 @@ return array(
             )
         ),
         'adm' => array(
-            'uri' => '/system/assets/adm534589b8bebda.css',
+            'uri' => '/system/assets/adm534818d2aa762.css',
             'src' => array(
                 'public/admin/css/jquery-ui.css',
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
@@ -36,7 +31,7 @@ return array(
             )
         ),
         'google' => array(
-            'uri' => '/system/assets/google534589bc8a392.css',
+            'uri' => '/system/assets/google534818d7493dd.css',
             'src' => array(
                 'public/admin/css/google_open_sans.css',
                 'public/admin/css/google_raleway.css',
@@ -45,21 +40,21 @@ return array(
     ),
     'js' => array(
         'site' => array(
-            'uri' => '/system/assets/site534589bd12b0a.js',
+            'uri' => '/system/assets/site534818b8e1a06.js',
             'src' => array(
                 'public/site/vendor/bootstrap/js/bootstrap.js',
                 'public/site/js/base.js',
             )
         ),
         'jquery' => array(
-            'uri' => '/system/assets/jquery534589be0e41a.js',
+            'uri' => '/system/assets/jquery534818ba39e82.js',
             'src' => array(
                 'public/admin/js/jquery-1.9.1.js',
                 'public/admin/js/jquery-ui.js',
             )
         ),
         'adm_login' => array(
-            'uri' => '/system/assets/adm_login534589c129911.js',
+            'uri' => '/system/assets/adm_login534818be03624.js',
             'src' => array(
                 'public/admin/js/ajaxform/jquery.form.js',
                 'public/admin/js/base.js',
@@ -68,7 +63,7 @@ return array(
             )
         ),
         'adm' => array(
-            'uri' => '/system/assets/adm534589c37b5d0.js',
+            'uri' => '/system/assets/adm534818c0d7f72.js',
             'src' => array(
                 'public/admin/js/plupload/js/plupload.full.js',
                 'public/admin/js/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',

@@ -1,21 +1,22 @@
 <?php
 
+/**
+ * Exemplo de Uso:
+ * Gerando tudo $ php compressor.php
+ * Gerando específico $ php5-cgi compressor.php g=site,adm
+ */
 chdir(getcwd() . '/');
 require_once 'vendor/autoload.php';
 
-use Din\AssetMin\AssetMin;
+use Din\Assets\Compressor\CompressorCreator;
+use Din\Assets\Compressor\Js;
+use Din\Assets\Compressor\Css;
 
-$asset = new AssetMin('config/assets.php');
-
-if ( !count($_GET) ) {
-  $asset->compressorAll();
-} else {
-  if ( isset($_GET['css']) && count($_GET['css']) ) {
-    $css = explode(',', $_GET['css']);
-    $asset->compressor('css', $css);
-  }
-  if ( isset($_GET['js']) && count($_GET['js']) ) {
-    $js = explode(',', $_GET['js']);
-    $asset->compressor('js', $js);
-  }
+$group = array();
+if ( isset($_GET['g']) && count($_GET['g']) ) {
+  $group = explode(',', $_GET['g']);
 }
+
+$compressor = new CompressorCreator('config/assets.php', $group);
+$compressor->factoryMethod(new Js());
+$compressor->factoryMethod(new Css());
