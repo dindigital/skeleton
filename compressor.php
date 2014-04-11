@@ -8,6 +8,7 @@
 chdir(getcwd() . '/');
 require_once 'vendor/autoload.php';
 
+use Din\Assets\AssetsConfig;
 use Din\Assets\Compressor\CompressorCreator;
 use Din\Assets\Compressor\Js;
 use Din\Assets\Compressor\Css;
@@ -17,6 +18,7 @@ if ( isset($_GET['g']) && count($_GET['g']) ) {
   $group = explode(',', $_GET['g']);
 }
 
-$compressor = new CompressorCreator('config/assets.php', $group);
+$config = new AssetsConfig('config/assets.php');
+$compressor = new CompressorCreator($config, $group);
 $compressor->factoryMethod(new Js());
 $compressor->factoryMethod(new Css());
