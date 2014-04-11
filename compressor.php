@@ -12,10 +12,12 @@ use Din\Assets\AssetsConfig;
 use Din\Assets\Compressor\CompressorCreator;
 use Din\Assets\Compressor\Js;
 use Din\Assets\Compressor\Css;
+use Din\Http\Get;
 
 $group = array();
-if ( isset($_GET['g']) && count($_GET['g']) ) {
-  $group = explode(',', $_GET['g']);
+$gp = Get::text('gp');
+if ( $gp ) {
+  $group = explode(',', $gp);
 }
 
 $config = new AssetsConfig('config/assets.php');
