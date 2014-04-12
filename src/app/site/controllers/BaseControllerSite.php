@@ -24,7 +24,7 @@ abstract class BaseControllerSite extends BaseController
     $this->_cache = new Cache();
     if ( defined('CACHE_PATH') && is_dir(CACHE_PATH) ) {
       $this->_cache->setCacheDriver(new FilesystemCache(CACHE_PATH));
-    } else if ( defined('CACHE_MEMCACHE') && defined('CACHE_MEMCACHE_PORT') ) {
+    } else if ( defined('CACHE_MEMCACHE') && defined('CACHE_MEMCACHE_PORT') && CACHE_MEMCACHE ) {
       $this->_cache->setCacheDriver(new MemcacheCache());
       $this->_cache->setMemcache(CACHE_MEMCACHE, CACHE_MEMCACHE_PORT);
     }
