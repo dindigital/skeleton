@@ -1,11 +1,11 @@
 <?php
 
-namespace src\app\site\models;
+namespace Site\Models;
 
 use Din\DataAccessLayer\Select;
 use Din\Filters\Date\DateFormat;
 use Din\Image\Picuri;
-use src\app\site\helpers\PaginatorSite;
+use Site\Helpers\PaginatorSite;
 use Exception;
 
 class NewsModel extends BaseModelSite

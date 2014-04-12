@@ -1,9 +1,9 @@
 <?php
 
-namespace src\app\site\controllers;
+namespace Site\Controllers;
 
 use Din\Mvc\Controller\BaseController;
-use src\app\site\models as models;
+use Site\Models as models;
 use Din\Assets\AssetsConfig;
 use Din\Assets\AssetsRead;
 use Din\Cache\Cache;
@@ -54,9 +54,9 @@ abstract class BaseControllerSite extends BaseController
     $this->setAssetsData();
     $this->setSettings();
     $this->setNav();
-    $this->_view->addFile('src/app/site/views/layouts/layout.phtml');
-    $this->_view->addFile('src/app/site/views/includes/header.phtml', '{$HEADER}');
-    $this->_view->addFile('src/app/site/views/includes/footer.phtml', '{$FOOTER}');
+    $this->_view->addFile('src/app/Site/Views/layouts/layout.phtml');
+    $this->_view->addFile('src/app/Site/Views/includes/header.phtml', '{$HEADER}');
+    $this->_view->addFile('src/app/Site/Views/includes/footer.phtml', '{$FOOTER}');
 
   }
 

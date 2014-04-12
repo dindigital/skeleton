@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\site\models;
+namespace Site\Models;
 
 use Din\DataAccessLayer\Select;
 

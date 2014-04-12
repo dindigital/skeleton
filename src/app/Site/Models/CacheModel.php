@@ -1,9 +1,9 @@
 <?php
 
-namespace src\app\site\models;
+namespace Site\Models;
 
 use Din\Cache\Cache;
-use src\app\site\models\BaseModelSite;
+use Site\Models\BaseModelSite;
 
 class CacheModel
 {

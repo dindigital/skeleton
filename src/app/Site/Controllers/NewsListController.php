@@ -1,10 +1,10 @@
 <?php
 
-namespace src\app\site\controllers;
+namespace Site\Controllers;
 
 use Din\Http\Header;
 use Din\Http\Get;
-use src\app\site\models as models;
+use Site\Models as models;
 
 /**
  *
@@ -36,7 +36,7 @@ class NewsListController extends BaseControllerSite
        * Define template e exibição
        */
       $this->setBasicTemplate();
-      $this->_view->addFile('src/app/site/views/news_list.phtml', '{$CONTENT}');
+      $this->_view->addFile('src/app/Site/Views/news_list.phtml', '{$CONTENT}');
       $html = $this->return_html();
       $this->_cache->save($cache_name, $html);
     }

@@ -19,5 +19,11 @@
     "doctrine/cache": "dev-master",
     "respect/rest": "dev-develop",
     "respect/config": "dev-develop"
+  },
+  "autoload": {
+    "psr-0": {
+      "Site\\": "src\/app\/",
+      "Admin\\": "src\/app\/"
+    }
   }
 }

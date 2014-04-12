@@ -1,15 +1,15 @@
 <?php
 
-namespace src\app\site\controllers;
+namespace Site\Controllers;
 
 use Din\Http\Header;
-use src\app\site\models as models;
+use Site\Models as models;
 
 /**
  *
  * @package app.controllers
  */
-class NewsController extends BaseControllerSite
+class PageCatController extends BaseControllerSite
 {
 
   public function get ( $uri )
@@ -22,14 +22,14 @@ class NewsController extends BaseControllerSite
       /**
        * Últimas notícias
        */
-      $newsModel = new models\CacheModel(new models\NewsModel(), $this->_cache, 180);
-      $this->_data['news'] = $newsModel->getView($uri);
+      $pageCatModel = new models\CacheModel(new models\PageCatModel(), $this->_cache, 180);
+      $this->_data['page'] = $pageCatModel->getView($uri);
 
       /**
        * Define template e exibição
        */
       $this->setBasicTemplate();
-      $this->_view->addFile('src/app/site/views/news.phtml', '{$CONTENT}');
+      $this->_view->addFile('src/app/Site/Views/page.phtml', '{$CONTENT}');
       $html = $this->return_html();
       $this->_cache->save($cache_name, $html);
     }

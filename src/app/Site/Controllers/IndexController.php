@@ -1,8 +1,8 @@
 <?php
 
-namespace src\app\site\controllers;
+namespace Site\Controllers;
 
-use src\app\site\models as models;
+use Site\Models as models;
 
 /**
  *
@@ -28,7 +28,7 @@ class IndexController extends BaseControllerSite
        * Define template e exibição
        */
       $this->setBasicTemplate();
-      $this->_view->addFile('src/app/site/views/index.phtml', '{$CONTENT}');
+      $this->_view->addFile('src/app/Site/Views/index.phtml', '{$CONTENT}');
       $html = $this->return_html();
       $this->_cache->save($cache_name, $html);
     }

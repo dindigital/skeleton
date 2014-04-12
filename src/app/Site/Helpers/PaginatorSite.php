@@ -1,6 +1,6 @@
 <?php
 
-namespace src\app\site\helpers;
+namespace Site\Helpers;
 
 use Din\Paginator\Paginator;
 
