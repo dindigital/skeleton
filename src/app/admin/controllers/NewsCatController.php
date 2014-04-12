@@ -21,6 +21,7 @@ class NewsCatController extends BaseControllerAdm
     $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
+
   }
 
   public function get ()
@@ -39,6 +40,7 @@ class NewsCatController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('newscat_list.phtml');
+
   }
 
 }

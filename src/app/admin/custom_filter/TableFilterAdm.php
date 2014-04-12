@@ -26,6 +26,7 @@ class TableFilterAdm extends TableFilter
 
       return parent::instanciateFilter($namespace, $classname, $arguments);
     }
+
   }
 
 }

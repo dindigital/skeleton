@@ -3,7 +3,6 @@
 namespace src\app\admin\controllers;
 
 use src\app\admin\models\PageCatModel as model;
-use Din\Http\Get;
 use Din\Http\Post;
 use src\helpers\JsonViewHelper;
 use Exception;
@@ -25,12 +24,14 @@ class PageCatSaveController extends BaseControllerAdm
 
     $this->_model = new model;
     $this->setEntityData();
-    //$this->require_permission();
+    $this->require_permission();
+
   }
 
   public function get ()
   {
     $this->defaultSavePage('pagecat_save.phtml', $this->_id);
+
   }
 
   public function post ()
@@ -47,12 +48,15 @@ class PageCatSaveController extends BaseControllerAdm
           'description' => Post::text('description'),
           'keywords' => Post::text('keywords'),
           'uri' => Post::text('uri'),
+          'url' => Post::text('url'),
+          'target' => Post::text('target'),
       );
 
       $this->saveAndRedirect($info);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+
   }
 
 }

@@ -70,6 +70,7 @@ class TrashModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   private function hasParentOnTrash ( Entity $entity, $row )
@@ -95,6 +96,7 @@ class TrashModel extends BaseModelAdm
         return $result[0]['title'];
       }
     }
+
   }
 
   public function restore ( $itens )
@@ -130,6 +132,7 @@ class TrashModel extends BaseModelAdm
 
       $this->log('R', $tableHistory[$entity_title], $table);
     }
+
   }
 
   public function deleteChildrens ( Entity $entity, $id, $tableHistory )
@@ -183,6 +186,7 @@ class TrashModel extends BaseModelAdm
 
       $this->delete($arr_delete);
     }
+
   }
 
   public function delete ( $itens )
@@ -223,6 +227,7 @@ class TrashModel extends BaseModelAdm
         $this->log('T', $tableHistory[$entity_title], $table, $tableHistory);
       }
     }
+
   }
 
   public function delete_permanent ( $itens )
@@ -235,6 +240,7 @@ class TrashModel extends BaseModelAdm
               'id' => $item['id']
       )));
     }
+
   }
 
   public function getListArray ()
@@ -246,6 +252,7 @@ class TrashModel extends BaseModelAdm
     }
 
     return $arrOptions;
+
   }
 
   public function formatFilters ()
@@ -255,6 +262,7 @@ class TrashModel extends BaseModelAdm
     $this->_filters['section'] = Form::Dropdown('section', $dropdown_section, $this->_filters['section'], 'Filtro por Seção');
 
     return $this->_filters;
+
   }
 
 }

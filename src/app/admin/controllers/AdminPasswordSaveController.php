@@ -20,11 +20,12 @@ class AdminPasswordSaveController extends BaseController
   protected $_model;
   protected $_token;
 
-  public function __construct ($token = null)
+  public function __construct ( $token = null )
   {
     parent::__construct();
     $this->_model = new model;
     $this->_token = $token;
+
   }
 
   public function get ()
@@ -39,6 +40,7 @@ class AdminPasswordSaveController extends BaseController
     $this->_view->addFile('src/app/admin/views/layouts/login.phtml');
     $this->_view->addFile('src/app/admin/views/essential/recover_password.phtml', '{$CONTENT}');
     $this->display_html();
+
   }
 
   public function post ()
@@ -59,6 +61,7 @@ class AdminPasswordSaveController extends BaseController
     $session->set('saved_msg', 'Senha alterada com sucesso');
 
     JsonViewHelper::redirect('/admin/');
+
   }
 
 }

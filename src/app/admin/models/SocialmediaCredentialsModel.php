@@ -20,6 +20,7 @@ class SocialmediaCredentialsModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('socialmedia_credentials');
+
   }
 
   public function update ( $input )
@@ -45,6 +46,7 @@ class SocialmediaCredentialsModel extends BaseModelAdm
     JsonException::throwException();
 
     $this->dao_update(false);
+
   }
 
   public function fetchAll ()
@@ -55,24 +57,28 @@ class SocialmediaCredentialsModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     $this->row = $result[0];
+
   }
 
   public function updateFbAccessToken ( $fb_access_token )
   {
     $this->_table->fb_access_token = $fb_access_token;
     $this->_dao->update($this->_table, array());
+
   }
 
   public function updateSoundCoudAccessToken ( $sc_token )
   {
     $this->_table->sc_token = $sc_token;
     $this->_dao->update($this->_table, array());
+
   }
 
   public function updateYouTubeAccessToken ( $youtube_token )
   {
     $this->_table->youtube_token = $youtube_token;
     $this->_dao->update($this->_table, array());
+
   }
 
 }

@@ -21,10 +21,11 @@ class ConfigModel extends AdminModel
     if ( $exclude_fields ) {
       $table['avatar'] = null;
     }
-      
+
     $table['avatar_uploader'] = Form::Upload('avatar', $table['avatar'], 'image', false);
 
     return $table;
+
   }
 
   public function update ( $input )
@@ -48,6 +49,7 @@ class ConfigModel extends AdminModel
     //
     $this->dao_update();
     $this->relogin();
+
   }
 
   public function relogin ()
@@ -56,6 +58,7 @@ class ConfigModel extends AdminModel
 
     $aam = new AdminAuthModel;
     $aam->login($admin['email'], $admin['password'], true);
+
   }
 
 }

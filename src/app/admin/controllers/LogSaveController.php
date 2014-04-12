@@ -19,12 +19,14 @@ class LogSaveController extends BaseControllerAdm
     $this->_id = $id;
     parent::__construct();
     $this->_model = new model;
+
   }
 
   public function get ()
   {
     $this->_data['table'] = $this->_model->getById($this->_id);
     $this->setSaveTemplate('essential/log_view.phtml');
+
   }
 
 }

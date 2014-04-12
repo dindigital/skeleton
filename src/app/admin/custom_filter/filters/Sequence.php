@@ -17,6 +17,7 @@ class Sequence extends AbstractFilter
   {
     $this->_dao = $dao;
     $this->_entity = $entity;
+
   }
 
   public function filter ( $field )
@@ -40,6 +41,7 @@ class Sequence extends AbstractFilter
     }
 
     $this->_table->{$field} = $sequence;
+
   }
 
   protected function getMaxSequence ( $arrCriteria = array() )
@@ -55,6 +57,7 @@ class Sequence extends AbstractFilter
     $select->where($arrCriteria);
 
     return $this->_dao->select_count($select);
+
   }
 
 }

@@ -1,41 +1,27 @@
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Navegação</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/"><?php echo $data['settings']['title'] ?></a>
-    </div>
-    <?php if(isset($data['nav']) && count($data['nav'])): ?>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <?php foreach ($data['nav'] as $row): ?>
-                <li class="<?php echo $row['class']; ?>">
-                    <?php if(isset($row['dropdown']) && count($row['dropdown'])): ?>
-                        <a title="<?php echo $row['title']; ?>" href="<?php echo $row['uri']; ?>" class="dropdown-toggle" data-toggle="dropdown">
-                            <?php echo $row['title']; ?> <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <?php foreach ($row['dropdown'] as $row_dropdown): ?>
-                                <li>
-                                    <a title="<?php echo $row_dropdown['title']; ?>" href="<?php echo $row_dropdown['uri']; ?>">
-                                        <?php echo $row_dropdown['title']; ?>
-                                    </a>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php else: ?>
-                        <a title="<?php echo $row['title']; ?>" href="<?php echo $row['uri']; ?>">
-                            <?php echo $row['title']; ?>
-                        </a>
-                    <?php endif; ?>
-                </li>
+<h1><?php echo $data['settings']['title'] ?></h1>
+<?php if ( isset($data['nav']) && count($data['nav']) ): ?>
+  <ul>
+    <?php foreach ( $data['nav'] as $row ): ?>
+      <li class="<?php echo $row['class']; ?>">
+        <?php if ( isset($row['dropdown']) && count($row['dropdown']) ): ?>
+          <a title="<?php echo $row['title']; ?>" href="<?php echo $row['link']; ?>" target="<?php echo $row['target']; ?>">
+            <?php echo $row['title']; ?>
+          </a>
+          <ul>
+            <?php foreach ( $row['dropdown'] as $row_dropdown ): ?>
+              <li>
+                <a title="<?php echo $row_dropdown['title']; ?>" href="<?php echo $row_dropdown['link']; ?>" target="<?php echo $row_dropdown['target']; ?>">
+                  <?php echo $row_dropdown['title']; ?>
+                </a>
+              </li>
             <?php endforeach; ?>
           </ul>
-        </div><!--/.nav-collapse -->
-    <?php endif; ?>
-  </div>
-</div>
+        <?php else: ?>
+          <a title="<?php echo $row['title']; ?>" href="<?php echo $row['link']; ?>" target="<?php echo $row['target']; ?>">
+            <?php echo $row['title']; ?>
+          </a>
+        <?php endif; ?>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+<?php endif; ?>

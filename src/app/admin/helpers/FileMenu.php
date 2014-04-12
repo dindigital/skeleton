@@ -14,6 +14,7 @@ class FileMenu
   public function __construct ( $file )
   {
     $this->setFile($file);
+
   }
 
   public function setFile ( $file )
@@ -22,11 +23,13 @@ class FileMenu
       throw new Exception('Arquivo de menu não encontrado: ' . $file);
 
     $this->_file = $file;
+
   }
 
   protected function setMenuArray ()
   {
     $this->_menu_array = Files::get_return($this->_file);
+
   }
 
   public function getArray ()
@@ -34,6 +37,7 @@ class FileMenu
     $this->setMenuArray();
 
     return $this->_menu_array;
+
   }
 
 }

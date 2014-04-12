@@ -23,6 +23,7 @@ class FacepostController extends BaseControllerAdm
     $id = Get::text('id');
 
     $this->_model = new model($section, $id);
+
   }
 
   public function get ()
@@ -31,6 +32,7 @@ class FacepostController extends BaseControllerAdm
     $this->_data['posts'] = $this->_model->getPosts();
 
     $this->setSaveTemplate('essential/facepost_view.phtml');
+
   }
 
 }

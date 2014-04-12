@@ -25,6 +25,7 @@ class PaginatorAdmin extends Paginator
     $this->_last = '<li class="next {$disabled}"><a href="{$link}">Última&nbsp;<span class="fa fa-angle-right"></span><span class="fa fa-angle-right"></span></a></li>';
 
     $this->_order = '{$_first}{$_prev}{$_numbers}{$_next}{$_last}';
+
   }
 
 }

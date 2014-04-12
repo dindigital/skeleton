@@ -28,6 +28,7 @@ abstract class LogAbstract
         $this->deleteRestore($action);
         break;
     }
+
   }
 
 }

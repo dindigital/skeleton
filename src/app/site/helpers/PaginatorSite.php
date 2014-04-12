@@ -25,6 +25,7 @@ class PaginatorSite extends Paginator
     $this->_last = null;
 
     $this->_order = '{$_prev}{$_numbers}{$_next}';
+
   }
 
 }

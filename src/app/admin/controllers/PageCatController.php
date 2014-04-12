@@ -20,7 +20,8 @@ class PageCatController extends BaseControllerAdm
 
     $this->_model = new model;
     $this->setEntityData();
-    //$this->require_permission();
+    $this->require_permission();
+
   }
 
   public function get ()
@@ -38,6 +39,7 @@ class PageCatController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('pagecat_list.phtml');
+
   }
 
 }

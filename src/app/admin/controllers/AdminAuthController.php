@@ -34,8 +34,8 @@ class AdminAuthController extends BaseController implements \Respect\Rest\Routab
     $assetsRead = new AssetsRead($config);
     $assetsRead->setMode(ASSETS);
     $assetsRead->setReplace(PATH_REPLACE);
-    $assetsRead->setGroup('css', array('adm_login', 'google'));
-    $assetsRead->setGroup('js', array('jquery', 'adm_login'));
+    $assetsRead->setGroup('css', array('css_admlogin', 'css_admgoogle'));
+    $assetsRead->setGroup('js', array('js_admjquery', 'js_admlogin'));
     $this->_data['assets'] = $assetsRead->getAssets();
 
     $session = new Session('adm_session');

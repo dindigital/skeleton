@@ -23,6 +23,7 @@ class Form
     $ck = new Ckeditor($name);
 
     return $ck->getElement($value);
+
   }
 
   /**
@@ -43,6 +44,7 @@ class Form
       $o->setClassTextfield($class);
 
     return $o->getElement();
+
   }
 
   /**
@@ -74,6 +76,7 @@ class Form
       $d->setId($id);
 
     return $d->getElement();
+
   }
 
   public static function Listbox ( $name, $array, $selected = array(), $class = '' )
@@ -85,6 +88,7 @@ class Form
     $d->setSelected($selected);
 
     return $d->getElement();
+
   }
 
   public static function Upload ( $fieldname, $value, $type, $multiple = false, $preview = true )
@@ -95,6 +99,7 @@ class Form
     }
 
     return $upl;
+
   }
 
 }

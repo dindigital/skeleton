@@ -20,6 +20,7 @@ class PublicationController extends BaseControllerAdm
     $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
+
   }
 
   public function get ()
@@ -36,6 +37,7 @@ class PublicationController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('publication_list.phtml');
+
   }
 
 }

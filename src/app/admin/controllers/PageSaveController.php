@@ -25,11 +25,13 @@ class PageSaveController extends BaseControllerAdm
     $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
+
   }
 
   public function get ()
   {
     $this->defaultSavePage('page_save.phtml', $this->_id);
+
   }
 
   public function post ()
@@ -48,12 +50,15 @@ class PageSaveController extends BaseControllerAdm
           'description' => Post::text('description'),
           'keywords' => Post::text('keywords'),
           'uri' => Post::text('uri'),
+          'url' => Post::text('url'),
+          'target' => Post::text('target'),
       );
 
       $this->saveAndRedirect($info);
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+
   }
 
 }

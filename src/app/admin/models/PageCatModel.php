@@ -13,6 +13,7 @@ use src\app\admin\helpers\Link;
 use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\InputValidator\InputValidator;
 use src\app\admin\helpers\SequenceResult;
+use src\helpers\Arrays;
 
 /**
  *
@@ -25,6 +26,7 @@ class PageCatModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('page_cat');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -32,14 +34,17 @@ class PageCatModel extends BaseModelAdm
     if ( $exclude_fields ) {
       $table['cover'] = null;
       $table['uri'] = null;
+      $table['url'] = null;
     }
 
     $table['title'] = Html::scape($table['title']);
     $table['content'] = Form::Ck('content', $table['content']);
     $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
     $table['uri'] = Link::formatUri($table['uri'], false);
+    $table['target'] = Form::Dropdown('target', Arrays::$target, $table['target']);
 
     return $table;
+
   }
 
   public function getList ()
@@ -56,6 +61,7 @@ class PageCatModel extends BaseModelAdm
     $select->addField('inc_date');
     $select->addField('sequence');
     $select->addField('uri');
+    $select->addField('url');
     $select->where($arrCriteria);
     $select->order_by('sequence');
 
@@ -73,12 +79,14 @@ class PageCatModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
   {
     $v = new InputValidator($input);
     $v->string()->validate('title', 'Título');
+    $v->arrayKeyExists(Arrays::$target)->validate('target', 'Target');
     $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
@@ -90,6 +98,8 @@ class PageCatModel extends BaseModelAdm
     $f->string()->filter('content');
     $f->string()->filter('description');
     $f->string()->filter('keywords');
+    $f->string()->filter('url');
+    $f->string()->filter('target');
     $f->defaultUri('title')->filter('uri');
     $f->sequence($this->_dao, $this->_entity)->filter('sequence');
     //
@@ -101,12 +111,14 @@ class PageCatModel extends BaseModelAdm
 
 
     $this->dao_insert();
+
   }
 
   public function update ( $input )
   {
     $v = new InputValidator($input);
     $v->string()->validate('title', 'Título');
+    $v->arrayKeyExists(Arrays::$target)->validate('target', 'Target');
     $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
@@ -116,6 +128,8 @@ class PageCatModel extends BaseModelAdm
     $f->string()->filter('content');
     $f->string()->filter('description');
     $f->string()->filter('keywords');
+    $f->string()->filter('url');
+    $f->string()->filter('target');
     $f->defaultUri('title')->filter('uri');
     //
     $mf = new MoveFiles;
@@ -125,6 +139,7 @@ class PageCatModel extends BaseModelAdm
     $mf->move();
 
     $this->dao_update();
+
   }
 
   public function formatFilters ()
@@ -132,6 +147,7 @@ class PageCatModel extends BaseModelAdm
     $this->_filters['title'] = Html::scape($this->_filters['title']);
 
     return $this->_filters;
+
   }
 
   public function getListArray ()
@@ -151,6 +167,7 @@ class PageCatModel extends BaseModelAdm
     }
 
     return $arrOptions;
+
   }
 
   public function getTitle ( $id_page_cat )
@@ -169,6 +186,7 @@ class PageCatModel extends BaseModelAdm
     if ( count($result) ) {
       return $result[0]['title'];
     }
+
   }
 
 }

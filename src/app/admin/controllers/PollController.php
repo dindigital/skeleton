@@ -21,6 +21,7 @@ class PollController extends BaseControllerAdm
     $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
+
   }
 
   public function get ()
@@ -38,6 +39,7 @@ class PollController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('poll_list.phtml');
+
   }
 
 }

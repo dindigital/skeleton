@@ -18,6 +18,7 @@ class DefaultUri extends AbstractFilter
     $this->_title = $title;
     $this->_id = $id;
     $this->_prefix = $prefix;
+
   }
 
   public function filter ( $field )
@@ -38,6 +39,7 @@ class DefaultUri extends AbstractFilter
     } else {
       $this->_table->uri = "{$this->_prefix}/{$uri}/";
     }
+
   }
 
 }

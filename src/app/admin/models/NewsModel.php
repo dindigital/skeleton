@@ -29,6 +29,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
   {
     parent::__construct();
     $this->setEntity('news');
+
   }
 
   protected function formatTable ( $table, $exclude_fields = false )
@@ -50,6 +51,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $table['id_news_cat'] = Form::Dropdown('id_news_cat', $news_cat_dropdown, $table['id_news_cat'], 'Selecione uma Categoria');
 
     return $table;
+
   }
 
   public function getList ()
@@ -93,6 +95,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
@@ -101,7 +104,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $v->string()->validate('title', 'Título');
     $v->date()->validate('date', 'Data');
     $v->string()->validate('body', 'Conteúdo');
-    $v->dbFk($this->_dao,'news_cat')->validate('id_news_cat', 'Categoria');
+    $v->dbFk($this->_dao, 'news_cat')->validate('id_news_cat', 'Categoria');
     $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
@@ -127,6 +130,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
 
     $this->relationship('photo', $input['photo']);
     $this->relationship('video', $input['video']);
+
   }
 
   public function update ( $input )
@@ -135,7 +139,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $v->string()->validate('title', 'Título');
     $v->date()->validate('date', 'Data');
     $v->string()->validate('body', 'Conteúdo');
-    $v->dbFk($this->_dao,'news_cat')->validate('id_news_cat', 'Categoria');
+    $v->dbFk($this->_dao, 'news_cat')->validate('id_news_cat', 'Categoria');
     $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
@@ -161,6 +165,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
 
     $cache = new essential\CacheModel();
     $cache->delete($this->_table->uri);
+
   }
 
   private function relationship ( $tbl, $array )
@@ -169,6 +174,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $relationshipModel->setCurrentEntity('news');
     $relationshipModel->setForeignEntity($tbl);
     $relationshipModel->smartInsert($this->getId(), $array);
+
   }
 
   public function generatePost ()
@@ -199,6 +205,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     }
 
     return $post;
+
   }
 
   public function sentPost ( $id_facepost )
@@ -211,6 +218,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $table->id_news = $this->getId();
     $table->id_facepost = $id_facepost;
     $this->_dao->insert($table);
+
   }
 
   public function getPosts ()
@@ -234,6 +242,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $result = $this->_dao->select($select);
 
     return $result;
+
   }
 
   public function formatFilters ()
@@ -245,6 +254,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $this->_filters['id_news_cat'] = Form::Dropdown('id_news_cat', $news_cat_dropdown, $this->_filters['id_news_cat'], 'Filtro por Categoria');
 
     return $this->_filters;
+
   }
 
 }

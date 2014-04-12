@@ -29,12 +29,14 @@ class AudioModel extends BaseModelAdm
       $this->_sc = new SoundCloudModel;
       $this->_sc->makeLogin();
     }
+
   }
 
   public function __construct ()
   {
     parent::__construct();
     $this->setEntity('audio');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -62,6 +64,7 @@ class AudioModel extends BaseModelAdm
     }
 
     return $table;
+
   }
 
   public function getList ()
@@ -97,6 +100,7 @@ class AudioModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function onGetById ( Select $select )
@@ -107,13 +111,14 @@ class AudioModel extends BaseModelAdm
                     ->addField('track_id')
                     ->addField('track_permalink', 'soundcloud_link')
     );
+
   }
 
   public function insert ( $input )
   {
     $v = new InputValidator($input);
     $v->string()->validate('title', 'Título');
-    $v->stringLenght(10,156)->validate('description', 'Descrição');
+    $v->stringLenght(10, 156)->validate('description', 'Descrição');
     $v->date()->validate('date', 'Data');
     $has_file = $v->upload()->validate('file', 'Arquivo de Áudio');
     $v->throwException();
@@ -138,13 +143,14 @@ class AudioModel extends BaseModelAdm
     if ( $input['publish_sc'] == '1' ) {
       $this->save_soundcloud();
     }
+
   }
 
   public function update ( $input )
   {
     $v = new InputValidator($input);
     $v->string()->validate('title', 'Título');
-    $v->stringLenght(10,156)->validate('description', 'Descrição');
+    $v->stringLenght(10, 156)->validate('description', 'Descrição');
     $v->date()->validate('date', 'Data');
     $has_file = $v->upload()->validate('file', 'Arquivo de Áudio');
     $v->throwException();
@@ -169,12 +175,14 @@ class AudioModel extends BaseModelAdm
     } else if ( $input['republish_sc'] == '1' ) {
       $this->save_soundcloud(true);
     }
+
   }
 
   public function formatFilters ()
   {
     $this->_filters['title'] = Html::scape($this->_filters['title']);
     return $this->_filters;
+
   }
 
   protected function save_soundcloud ( $delete_previous = false )
@@ -219,6 +227,7 @@ class AudioModel extends BaseModelAdm
     }
 
     $this->_table->id_audio = $id_audio; //pra nao bugar no redirecionamento
+
   }
 
   public function beforeDelete ( $tableHistory )
@@ -234,6 +243,7 @@ class AudioModel extends BaseModelAdm
 
     $this->_sc->deletePrevious($tableHistory['id_soundcloud']);
     //
+
   }
 
 }

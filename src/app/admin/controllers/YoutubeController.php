@@ -26,6 +26,7 @@ class YoutubeController extends BaseControllerAdm
     $session->set('saved_msg', 'Atenticado no Youtube com sucesso');
 
     Header::redirect($session->get('referer'));
+
   }
 
 }

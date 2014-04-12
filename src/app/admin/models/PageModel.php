@@ -14,6 +14,7 @@ use src\app\admin\custom_filter\TableFilterAdm as TableFilter;
 use Din\InputValidator\InputValidator;
 use Exception;
 use src\app\admin\helpers\SequenceResult;
+use src\helpers\Arrays;
 
 /**
  *
@@ -26,6 +27,7 @@ class PageModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('page');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -45,6 +47,7 @@ class PageModel extends BaseModelAdm
     $table['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $table['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 
     $table['id_parent'] = $this->loadInfinity(!$exclude_fields);
+    $table['target'] = Form::Dropdown('target', Arrays::$target, $table['target']);
 
     $infinite_drop = array();
     foreach ( (array) $table['id_parent'] as $i => $drop ) {
@@ -55,6 +58,7 @@ class PageModel extends BaseModelAdm
     $table['id_parent'] = $infinite_drop;
 
     return $table;
+
   }
 
   public function formatInfiniteDropdown ( $dropdown, $selected = null )
@@ -62,6 +66,7 @@ class PageModel extends BaseModelAdm
     $dropdown = Form::Dropdown('id_parent[]', $dropdown, $selected, 'Subnível de Página', null, 'ajax_infinity');
 
     return $dropdown;
+
   }
 
   public function getList ()
@@ -82,6 +87,7 @@ class PageModel extends BaseModelAdm
     $select->addField('inc_date');
     $select->addField('sequence');
     $select->addField('uri');
+    $select->addField('url');
     $select->where($arrCriteria);
     $select->order_by('a.sequence=0,a.sequence,a.title');
 
@@ -105,13 +111,15 @@ class PageModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
   {
     $v = new InputValidator($input);
     $v->string()->validate('title', 'Título');
-    $v->dbFk($this->_dao,'page_cat')->validate('id_page_cat', 'Menu');
+    $v->arrayKeyExists(Arrays::$target)->validate('target', 'Target');
+    $v->dbFk($this->_dao, 'page_cat')->validate('id_page_cat', 'Menu');
     $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
@@ -125,9 +133,11 @@ class PageModel extends BaseModelAdm
     $f->string()->filter('content');
     $f->string()->filter('description');
     $f->string()->filter('keywords');
+    $f->string()->filter('url');
+    $f->string()->filter('target');
     $page_cat = new PageCatModel;
     $prefix = $page_cat->getTitle($this->_table->id_page_cat);
-    $f->defaultUri('title', $this->getId(), $prefix)->filter('uri');
+    $f->defaultUri('title', '', $prefix)->filter('uri');
     //
     $mf = new MoveFiles;
     $f->uploaded("/system/uploads/page/{$this->getId()}/cover", $has_cover
@@ -136,13 +146,15 @@ class PageModel extends BaseModelAdm
     $mf->move();
 
     $this->dao_insert();
+
   }
 
   public function update ( $input )
   {
     $v = new InputValidator($input);
     $v->string()->validate('title', 'Título');
-    $v->dbFk($this->_dao,'page_cat')->validate('id_page_cat', 'Menu');
+    $v->arrayKeyExists(Arrays::$target)->validate('target', 'Target');
+    $v->dbFk($this->_dao, 'page_cat')->validate('id_page_cat', 'Menu');
     $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
@@ -154,6 +166,8 @@ class PageModel extends BaseModelAdm
     $f->string()->filter('content');
     $f->string()->filter('description');
     $f->string()->filter('keywords');
+    $f->string()->filter('url');
+    $f->string()->filter('target');
     $page_cat = new PageCatModel;
     $prefix = $page_cat->getTitle($this->_table->id_page_cat);
     $f->defaultUri('title', '', $prefix)->filter('uri');
@@ -165,6 +179,7 @@ class PageModel extends BaseModelAdm
     $mf->move();
 
     $this->dao_update();
+
   }
 
   public function formatFilters ()
@@ -176,6 +191,7 @@ class PageModel extends BaseModelAdm
     $this->_filters['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $this->_filters['id_page_cat'], 'Filtro por Menu');
 
     return $this->_filters;
+
   }
 
   public function getListArray ( $id_page_cat = null, $id_parent = '', $exclude_id = '' )
@@ -210,6 +226,7 @@ class PageModel extends BaseModelAdm
     }
 
     return $arrOptions;
+
   }
 
   public function loadInfinity ( $exclude_self = true )
@@ -247,6 +264,7 @@ class PageModel extends BaseModelAdm
     }
 
     return $r;
+
   }
 
   protected function getInfinityMembers ( $id = null )
@@ -271,6 +289,7 @@ class PageModel extends BaseModelAdm
       throw new Exception('Registro não encontrado.');
 
     return $result[0];
+
   }
 
   public function beforeDelete ( $tableHistory )
@@ -290,6 +309,7 @@ class PageModel extends BaseModelAdm
               'id' => $row['id_page']
       )));
     }
+
   }
 
 }

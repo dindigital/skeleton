@@ -20,13 +20,14 @@ class AdminPasswordModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setTable('admin');
+
   }
 
   public function recover_password ( $input )
   {
     $v = new InputValidator($input);
     $v->stringEmail()->validate('email', 'E-mail');
-    $v->dbRecord($this->_dao,'admin')->validate('email', 'E-mail');
+    $v->dbRecord($this->_dao, 'admin')->validate('email', 'E-mail');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -37,6 +38,7 @@ class AdminPasswordModel extends BaseModelAdm
     ));
 
     $this->send_email($input['email']);
+
   }
 
   protected function getTokenByEmail ( $email )
@@ -48,6 +50,7 @@ class AdminPasswordModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return $result[0]['id_admin'];
+
   }
 
   public function update_password ( $input )
@@ -67,6 +70,7 @@ class AdminPasswordModel extends BaseModelAdm
     $this->_dao->update($this->_table, array(
         'id_admin = ?' => $input['token']
     ));
+
   }
 
   protected function send_email ( $user_email )
@@ -76,7 +80,7 @@ class AdminPasswordModel extends BaseModelAdm
     $data = array(
         'link' => URL . '/admin/admin_password/save/' . $token . '/'
     );
-    
+
     $email_html = new View;
     $email_html->addFile('src/app/admin/views/email/recover_password.phtml');
     $email_html->setData($data);
@@ -92,6 +96,7 @@ class AdminPasswordModel extends BaseModelAdm
     $sendmail->setUser(SMTP_USER);
     $sendmail->setPass(SMTP_PASS);
     $sendmail->send();
+
   }
 
   protected function validateToken ( $id, $v )
@@ -100,7 +105,7 @@ class AdminPasswordModel extends BaseModelAdm
     $select->addField('password_change_date');
     $select->where(array('id_admin = ?' => $id));
     $result = $this->_dao->select($select);
-    
+
     if ( !count($result) )
       return $v->addException('Token inválido, por favor gere um novo link de recuperação');
 
@@ -112,6 +117,7 @@ class AdminPasswordModel extends BaseModelAdm
 
     if ( $dias !== 0 )
       return $v->addException('Token expirado, por favor gere um novo link de recuperação');
+
   }
 
 }

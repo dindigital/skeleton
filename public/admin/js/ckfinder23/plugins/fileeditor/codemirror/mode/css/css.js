@@ -1,10 +1,16 @@
 ﻿CodeMirror.defineMode("css", function(config) {
   var indentUnit = config.indentUnit, type;
-  function ret(style, tp) {type = tp; return style;}
+  function ret(style, tp) {
+    type = tp;
+    return style;
+  }
 
   function tokenBase(stream, state) {
     var ch = stream.next();
-    if (ch == "@") {stream.eatWhile(/[\w\\\-]/); return ret("meta", stream.current());}
+    if (ch == "@") {
+      stream.eatWhile(/[\w\\\-]/);
+      return ret("meta", stream.current());
+    }
     else if (ch == "/" && stream.eat("*")) {
       state.tokenize = tokenCComment;
       return tokenCComment(stream, state);
@@ -13,8 +19,10 @@
       state.tokenize = tokenSGMLComment;
       return tokenSGMLComment(stream, state);
     }
-    else if (ch == "=") ret(null, "compare");
-    else if ((ch == "~" || ch == "|") && stream.eat("=")) return ret(null, "compare");
+    else if (ch == "=")
+      ret(null, "compare");
+    else if ((ch == "~" || ch == "|") && stream.eat("="))
+      return ret(null, "compare");
     else if (ch == "\"" || ch == "'") {
       state.tokenize = tokenString(ch);
       return state.tokenize(stream, state);
@@ -75,7 +83,8 @@
           break;
         escaped = !escaped && ch == "\\";
       }
-      if (!escaped) state.tokenize = tokenBase;
+      if (!escaped)
+        state.tokenize = tokenBase;
       return ret("string", "string");
     };
   }
@@ -83,40 +92,46 @@
   return {
     startState: function(base) {
       return {tokenize: tokenBase,
-              baseIndent: base || 0,
-              stack: []};
+        baseIndent: base || 0,
+        stack: []};
     },
-
     token: function(stream, state) {
-      if (stream.eatSpace()) return null;
+      if (stream.eatSpace())
+        return null;
       var style = state.tokenize(stream, state);
 
-      var context = state.stack[state.stack.length-1];
-      if (type == "hash" && context != "rule") style = "string-2";
+      var context = state.stack[state.stack.length - 1];
+      if (type == "hash" && context != "rule")
+        style = "string-2";
       else if (style == "variable") {
-        if (context == "rule") style = "number";
-        else if (!context || context == "@media{") style = "tag";
+        if (context == "rule")
+          style = "number";
+        else if (!context || context == "@media{")
+          style = "tag";
       }
 
       if (context == "rule" && /^[\{\};]$/.test(type))
         state.stack.pop();
       if (type == "{") {
-        if (context == "@media") state.stack[state.stack.length-1] = "@media{";
-        else state.stack.push("{");
+        if (context == "@media")
+          state.stack[state.stack.length - 1] = "@media{";
+        else
+          state.stack.push("{");
       }
-      else if (type == "}") state.stack.pop();
-      else if (type == "@media") state.stack.push("@media");
-      else if (context == "{" && type != "comment") state.stack.push("rule");
+      else if (type == "}")
+        state.stack.pop();
+      else if (type == "@media")
+        state.stack.push("@media");
+      else if (context == "{" && type != "comment")
+        state.stack.push("rule");
       return style;
     },
-
     indent: function(state, textAfter) {
       var n = state.stack.length;
       if (/^\}/.test(textAfter))
-        n -= state.stack[state.stack.length-1] == "rule" ? 2 : 1;
+        n -= state.stack[state.stack.length - 1] == "rule" ? 2 : 1;
       return state.baseIndent + n * indentUnit;
     },
-
     electricChars: "}"
   };
 });

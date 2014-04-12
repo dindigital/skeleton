@@ -27,6 +27,7 @@ class PublicationModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('publication');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -46,6 +47,7 @@ class PublicationModel extends BaseModelAdm
     }
 
     return $table;
+
   }
 
   public function onGetById ( Select $select )
@@ -56,6 +58,7 @@ class PublicationModel extends BaseModelAdm
                     ->addField('link', 'issuu_link')
                     ->addField('document_id', 'issuu_document_id')
     );
+
   }
 
   public function getList ()
@@ -87,6 +90,7 @@ class PublicationModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
@@ -112,6 +116,7 @@ class PublicationModel extends BaseModelAdm
     $this->dao_insert();
 
     $this->afterSave($input);
+
   }
 
   public function update ( $input )
@@ -135,6 +140,7 @@ class PublicationModel extends BaseModelAdm
     $this->dao_update();
 
     $this->afterSave($input);
+
   }
 
   public function afterSave ( $input )
@@ -174,6 +180,7 @@ class PublicationModel extends BaseModelAdm
         ));
       }
     }
+
   }
 
   public function formatFilters ()
@@ -181,6 +188,7 @@ class PublicationModel extends BaseModelAdm
     $this->_filters['title'] = Html::scape($this->_filters['title']);
 
     return $this->_filters;
+
   }
 
   public function beforeDelete ( $tableHistory )
@@ -192,6 +200,7 @@ class PublicationModel extends BaseModelAdm
         'parent_id_field' => 'id_publication',
         'parent_id_value' => $tableHistory['id_publication']
     ));
+
   }
 
 }

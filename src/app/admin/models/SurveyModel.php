@@ -23,6 +23,7 @@ class SurveyModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('survey');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -42,6 +43,7 @@ class SurveyModel extends BaseModelAdm
     $table['uri'] = Link::formatUri($table['uri']);
 
     return $table;
+
   }
 
   public function getList ()
@@ -69,6 +71,7 @@ class SurveyModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
@@ -92,6 +95,7 @@ class SurveyModel extends BaseModelAdm
     $this->dao_insert();
 
     $sq->batch_insert($this->getId(), $input['question']);
+
   }
 
   public function update ( $input )
@@ -113,6 +117,7 @@ class SurveyModel extends BaseModelAdm
     $this->dao_update();
 
     $sq->batch_update($input['question']);
+
   }
 
   public function getListArray ()
@@ -132,6 +137,7 @@ class SurveyModel extends BaseModelAdm
     }
 
     return $arrOptions;
+
   }
 
   public function formatFilters ()
@@ -139,6 +145,7 @@ class SurveyModel extends BaseModelAdm
     $this->_filters['title'] = Html::scape($this->_filters['title']);
 
     return $this->_filters;
+
   }
 
 }

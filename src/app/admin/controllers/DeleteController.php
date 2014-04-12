@@ -20,6 +20,7 @@ class DeleteController extends BaseControllerAdm
 
     $entities = new Entities('config/entities.php');
     $this->_entity = $entities->getEntity($entity_name);
+
   }
 
   public function post ()
@@ -38,6 +39,7 @@ class DeleteController extends BaseControllerAdm
     } catch (Exception $e) {
       $this->setErrorSession($e->getMessage());
     }
+
   }
 
 }

@@ -21,6 +21,7 @@ class AdminPasswordRecoverController extends BaseController
   {
     parent::__construct();
     $this->_model = new model;
+
   }
 
   public function post ()
@@ -36,6 +37,7 @@ class AdminPasswordRecoverController extends BaseController
     }
 
     JsonViewHelper::display_success_message('E-mail enviado com sucesso, por favor acesse sua conta de e-mail para gerar uma nova senha');
+
   }
 
 }

@@ -29,11 +29,13 @@ abstract class BaseControllerAdm extends BaseController
 
     $this->setUserData();
     $this->setDefaultHeaders();
+
   }
 
   protected function setDefaultHeaders ()
   {
     Header::setNoCache();
+
   }
 
   /**
@@ -45,9 +47,10 @@ abstract class BaseControllerAdm extends BaseController
     $assetsRead = new AssetsRead($config);
     $assetsRead->setMode(ASSETS);
     $assetsRead->setReplace(PATH_REPLACE);
-    $assetsRead->setGroup('css', array('adm', 'google'));
-    $assetsRead->setGroup('js', array('jquery', 'adm'));
+    $assetsRead->setGroup('css', array('css_adm', 'css_admgoogle'));
+    $assetsRead->setGroup('js', array('js_admjquery', 'js_adm'));
     $this->_data['assets'] = $assetsRead->getAssets();
+
   }
 
   /**
@@ -58,6 +61,7 @@ abstract class BaseControllerAdm extends BaseController
     $this->setAssetsData();
     $this->_view->addFile('src/app/admin/views/layouts/layout.phtml');
     $this->_view->addFile('src/app/admin/views/includes/nav.phtml', '{$NAV}');
+
   }
 
   protected function setSaveTemplate ( $filename )
@@ -71,6 +75,7 @@ abstract class BaseControllerAdm extends BaseController
 
     $this->_view->addFile('src/app/admin/views/' . $filename, '{$CONTENT}');
     $this->display_html();
+
   }
 
   protected function setListTemplate ( $filename )
@@ -91,6 +96,7 @@ abstract class BaseControllerAdm extends BaseController
 
     $this->_view->addFile('src/app/admin/views/' . $filename, '{$CONTENT}');
     $this->display_html();
+
   }
 
   /**
@@ -108,12 +114,14 @@ abstract class BaseControllerAdm extends BaseController
 
     $permission = new PermissionModel;
     $this->_data['menu'] = $permission->getMenu($this->_data['admin']);
+
   }
 
   protected function setSavedMsgSession ()
   {
     $session = new Session('adm_session');
     $session->set('saved_msg', 'Registro salvo com sucesso!');
+
   }
 
   protected function setSavedMsgData ()
@@ -123,6 +131,7 @@ abstract class BaseControllerAdm extends BaseController
       $this->_data['saved_msg'] = $session->get('saved_msg');
     }
     $session->un_set('saved_msg');
+
   }
 
   protected function setErrorSession ( $msg )
@@ -131,6 +140,7 @@ abstract class BaseControllerAdm extends BaseController
     $session->set('error', $msg);
 
     Header::redirect(Header::getReferer());
+
   }
 
   protected function setErrorSessionData ()
@@ -140,6 +150,7 @@ abstract class BaseControllerAdm extends BaseController
       $this->_data['error'] = $session->get('error');
     }
     $session->un_set('error');
+
   }
 
   protected function setEntityData ()
@@ -151,12 +162,14 @@ abstract class BaseControllerAdm extends BaseController
         'id' => $this->_entity->getId(),
         'section' => $this->_entity->getSection()
     );
+
   }
 
   protected function require_permission ()
   {
     $permission = new PermissionModel;
     $permission->block($this->_model, $this->_data['admin']);
+
   }
 
   protected function saveAndRedirect ( $info )
@@ -177,6 +190,7 @@ abstract class BaseControllerAdm extends BaseController
     }
 
     JsonViewHelper::redirect($redirect);
+
   }
 
   protected function defaultSavePage ( $filename, $id )
@@ -193,6 +207,7 @@ abstract class BaseControllerAdm extends BaseController
     }
 
     $this->setSaveTemplate($filename);
+
   }
 
 }

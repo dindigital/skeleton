@@ -29,6 +29,7 @@ class SequenceController extends BaseControllerAdm
     } catch (Exception $e) {
       $this->setErrorSession($e->getMessage());
     }
+
   }
 
 }

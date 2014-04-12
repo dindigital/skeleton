@@ -28,6 +28,7 @@ class BaseModelAdm
   {
     $this->_dao = new DAO(PDOBuilder::build(DB_TYPE, DB_HOST, DB_SCHEMA, DB_USER, DB_PASS));
     $this->_entities = new Entities('config/entities.php');
+
   }
 
   /*
@@ -40,16 +41,19 @@ class BaseModelAdm
   {
     $this->_entity = $this->_entities->getEntity($tablename);
     $this->setTable($tablename);
+
   }
 
   public function setTable ( $tablename )
   {
     $this->_table = new Table($tablename);
+
   }
 
   public function getTable ()
   {
     return $this->_table;
+
   }
 
   public function getIdName ()
@@ -57,21 +61,25 @@ class BaseModelAdm
     $property = $this->_entity->getId();
 
     return $property;
+
   }
 
   public function getTableName ()
   {
     return $this->_table->getName();
+
   }
 
   public function setId ( $id )
   {
     $this->_table->{$this->getIdName()} = $id;
+
   }
 
   public function getId ()
   {
     return $this->_table->{$this->getIdName()};
+
   }
 
   /*
@@ -85,11 +93,13 @@ class BaseModelAdm
     $total = $this->_dao->select_count($select);
     $offset = $this->_paginator->getOffset($total);
     $select->setLimit($this->_itens_per_page, $offset);
+
   }
 
   public function getPaginator ()
   {
     return $this->_paginator;
+
   }
 
   /*
@@ -126,6 +136,7 @@ class BaseModelAdm
 
       $child_model->delete($arr_delete);
     }
+
   }
 
   public function delete ( $itens )
@@ -147,16 +158,19 @@ class BaseModelAdm
         $this->log('D', $tableHistory[$title], $this->_table, $tableHistory);
       }
     }
+
   }
 
   public function beforeDelete ( $tableHistory )
   {
     //
+
   }
 
   public function onGetById ( Select $select )
   {
     //
+
   }
 
   public function getNewUsingRecord ( $id )
@@ -164,6 +178,7 @@ class BaseModelAdm
     $row = $this->formatTable($this->getById($id), true);
 
     return $row;
+
   }
 
   public function getById ( $id = null )
@@ -188,6 +203,7 @@ class BaseModelAdm
       throw new Exception('Registro não encontrado.');
 
     return $result[0];
+
   }
 
   public function getRow ( $id = null )
@@ -195,6 +211,7 @@ class BaseModelAdm
     $row = $this->formatTable($this->getById($id));
 
     return $row;
+
   }
 
   public function getNew ()
@@ -212,6 +229,7 @@ class BaseModelAdm
     $table = $this->formatTable($arr_return);
 
     return $table;
+
   }
 
   protected function formatTable ( $table, $exclude_fields = false )
@@ -223,6 +241,7 @@ class BaseModelAdm
     // do normal formating and return
 
     return $table;
+
   }
 
   public function save ( $info )
@@ -234,6 +253,7 @@ class BaseModelAdm
     }
 
     return $this->getId();
+
   }
 
   protected function dao_insert ( $log = true )
@@ -246,6 +266,7 @@ class BaseModelAdm
 
       $this->log('C', $msg, $this->_table);
     }
+
   }
 
   public function dao_update ( $log = true )
@@ -262,6 +283,7 @@ class BaseModelAdm
 
       $this->log('U', $msg, $this->_table, $tableHistory);
     }
+
   }
 
   /*
@@ -276,11 +298,13 @@ class BaseModelAdm
     $admin = $adminAuth->getUser();
 
     log::save($this->_dao, $admin, $action, $msg, $table, $tableHistory);
+
   }
 
   public function setFilters ( Array $filters )
   {
     $this->_filters = $filters;
+
   }
 
 }

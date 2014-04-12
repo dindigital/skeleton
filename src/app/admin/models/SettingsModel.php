@@ -18,6 +18,7 @@ class SettingsModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('settings');
+
   }
 
   protected function formatTable ( $table, $exclude_fields = false )
@@ -34,6 +35,7 @@ class SettingsModel extends BaseModelAdm
     $table['keywords'] = Html::scape($table['keywords']);
 
     return $table;
+
   }
 
   public function update ( $input )
@@ -56,6 +58,7 @@ class SettingsModel extends BaseModelAdm
     $f->string()->filter('keywords');
 
     $this->dao_update();
+
   }
 
 }

@@ -1,32 +1,30 @@
- <div class="jumbotron">
-   <h1>Lista de Notícias</h1>
- </div>
+<h1>Lista de Notícias</h1>
 
-<table class="table table-bordered">
-<thead>
-  <tr>
-    <th width="100">&nbsp;</th>
-    <th width="100">Data</th>
-    <th>Título</th>
-    <th width="100">&nbsp;</th>
-  </tr>
-</thead>
-<tbody>
-  <?php foreach ($this->_data['news'] as $row): ?>
-  <tr>
-    <td><?php echo $row['cover']; ?></td>
-    <td><?php echo $row['date']; ?></td>
-    <td><?php echo $row['title']; ?></td>
-    <td><a class="btn btn-default btn-lg" href="<?php echo $row['uri']; ?>" title="<?php echo $row['title']; ?>">Saiba Mais</a></td>
-  </tr>
-  <?php endforeach; ?>
-</tbody>
+<table>
+  <thead>
+    <tr>
+      <th width="100">&nbsp;</th>
+      <th width="100">Data</th>
+      <th width="300">Título</th>
+      <th width="100">&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach ( $this->_data['news'] as $row ): ?>
+      <tr>
+        <td><?php echo $row['cover']; ?></td>
+        <td><?php echo $row['date']; ?></td>
+        <td><?php echo $row['title']; ?></td>
+        <td><a href="<?php echo $row['uri']; ?>" title="<?php echo $row['title']; ?>">Saiba Mais</a></td>
+      </tr>
+    <?php endforeach; ?>
+  </tbody>
 </table>
 
- <hr>
+<hr>
 
-<?php if($data['paginator']['numbers']): ?>
-    <ul class="pagination">
-        <?php echo $data['paginator']['numbers']; ?>
-    </ul>
+<?php if ( $data['paginator']['numbers'] ): ?>
+  <ul>
+    <?php echo $data['paginator']['numbers']; ?>
+  </ul>
 <?php endif; ?>

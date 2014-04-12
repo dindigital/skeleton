@@ -24,11 +24,13 @@ class AdminSaveController extends BaseControllerAdm
     $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
+
   }
 
   public function get ()
   {
     $this->defaultSavePage('admin_save.phtml', $this->_id);
+
   }
 
   public function post ()
@@ -50,6 +52,7 @@ class AdminSaveController extends BaseControllerAdm
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+
   }
 
 }

@@ -30,6 +30,7 @@ class AdminAuthModel extends Auth
     $ADL = new AuthDataLayer($PDO, $tbl, $login_field, $pass_field, $pk_field, $active_field);
 
     parent::__construct($ADL, new Crypt(), new Session($this->_session_name));
+
   }
 
   public function login ( $email, $password, $is_crypted = false )
@@ -44,12 +45,14 @@ class AdminAuthModel extends Auth
       JsonException::addException("Sua conta ainda não foi ativada. Entre em contato com o Administrador.");
       JsonException::throwException();
     }
+
   }
 
   public function getUser ()
   {
     $session = new Session($this->_session_name);
     return $session->get('user_table');
+
   }
 
 }

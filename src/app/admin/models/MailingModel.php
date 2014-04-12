@@ -22,6 +22,7 @@ class MailingModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('mailing');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -34,6 +35,7 @@ class MailingModel extends BaseModelAdm
     $table['email'] = Html::scape($table['email']);
 
     return $table;
+
   }
 
   public function getList ()
@@ -68,17 +70,18 @@ class MailingModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
   {
     $input['active'] = '1';
-    
+
     $v = new InputValidator($input);
     $v->string()->validate('name', 'Nome');
     $v->stringEmail()->validate('email', 'E-mail');
     $v->string()->validate('mailing_group', 'Grupo');
-    $v->dbUnique($this->_dao,'mailing')->validate('email', 'E-mail');
+    $v->dbUnique($this->_dao, 'mailing')->validate('email', 'E-mail');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -91,6 +94,7 @@ class MailingModel extends BaseModelAdm
     $this->dao_insert();
 
     $this->save_relationship('mailing_group', $input['mailing_group']);
+
   }
 
   public function update ( $input )
@@ -99,8 +103,7 @@ class MailingModel extends BaseModelAdm
     $v->string()->validate('name', 'Nome');
     $v->stringEmail()->validate('email', 'E-mail');
     $v->string()->validate('mailing_group', 'Grupo');
-    $v->dbUnique($this->_dao,'mailing','id_mailing', 
-            $this->getId())->validate('email', 'E-mail');
+    $v->dbUnique($this->_dao, 'mailing', 'id_mailing', $this->getId())->validate('email', 'E-mail');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -110,6 +113,7 @@ class MailingModel extends BaseModelAdm
     $this->dao_update();
 
     $this->save_relationship('mailing_group', $input['mailing_group']);
+
   }
 
   public function formatFilters ()
@@ -122,6 +126,7 @@ class MailingModel extends BaseModelAdm
     $this->_filters['mailing_group'] = Form::Dropdown('mailing_group', $result, $this->_filters['mailing_group'], 'Filtro por Grupo');
 
     return $this->_filters;
+
   }
 
   private function save_relationship ( $tbl, $array )
@@ -130,6 +135,7 @@ class MailingModel extends BaseModelAdm
     $relationshipModel->setCurrentEntity('mailing');
     $relationshipModel->setForeignEntity($tbl);
     $relationshipModel->insert($this->getId(), $array);
+
   }
 
 }

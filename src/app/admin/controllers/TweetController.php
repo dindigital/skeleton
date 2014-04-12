@@ -23,6 +23,7 @@ class TweetController extends BaseControllerAdm
     $id = Get::text('id');
 
     $this->_model = new model($section, $id);
+
   }
 
   public function get ()
@@ -31,6 +32,7 @@ class TweetController extends BaseControllerAdm
     $this->_data['tweets'] = $this->_model->getTweets();
 
     $this->setSaveTemplate('essential/tweet_view.phtml');
+
   }
 
 }

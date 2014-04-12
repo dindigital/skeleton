@@ -49,6 +49,7 @@ class Gallery
     $html .= '</ul>' . PHP_EOL;
 
     return $html;
+
   }
 
 }

@@ -20,6 +20,7 @@ class PhotoController extends BaseControllerAdm
     $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
+
   }
 
   public function get ()
@@ -36,6 +37,7 @@ class PhotoController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('photo_list.phtml');
+
   }
 
 }

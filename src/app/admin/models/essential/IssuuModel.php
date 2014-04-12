@@ -24,6 +24,7 @@ class IssuuModel extends BaseModelAdm
     $this->setTable('issuu');
 
     $this->setApi();
+
   }
 
   protected function setApi ()
@@ -39,11 +40,13 @@ class IssuuModel extends BaseModelAdm
     }
 
     $this->_api = new Issuu($issuu_key, $issu_secret);
+
   }
 
   public function getIdName ()
   {
     return 'id_issuu';
+
   }
 
   /**
@@ -89,6 +92,7 @@ class IssuuModel extends BaseModelAdm
     $this->_dao->update($parent_table, array(
         "{$input['parent_id_field']} = ?" => $input['parent_id_value']
     ));
+
   }
 
   /**
@@ -121,6 +125,7 @@ class IssuuModel extends BaseModelAdm
     $this->_dao->delete('issuu', array(
         'id_issuu = ?' => $input['id_issuu']
     ));
+
   }
 
 }

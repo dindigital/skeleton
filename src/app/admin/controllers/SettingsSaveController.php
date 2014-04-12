@@ -22,12 +22,14 @@ class SettingsSaveController extends BaseControllerAdm
     $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
+
   }
 
   public function get ()
   {
     $this->_data['table'] = $this->_model->getRow('1');
     $this->setSaveTemplate('settings_save.phtml');
+
   }
 
   public function post ()
@@ -48,6 +50,7 @@ class SettingsSaveController extends BaseControllerAdm
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+
   }
 
 }

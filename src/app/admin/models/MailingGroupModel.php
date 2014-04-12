@@ -20,6 +20,7 @@ class MailingGroupModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('mailing_group');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -31,6 +32,7 @@ class MailingGroupModel extends BaseModelAdm
     $table['name'] = Html::scape($table['name']);
 
     return $table;
+
   }
 
   public function getList ()
@@ -55,13 +57,14 @@ class MailingGroupModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
   {
     $v = new InputValidator($input);
     $v->string()->validate('name', 'Nome');
-    $v->dbUnique($this->_dao,'mailing_group')->validate('name', 'Nome');
+    $v->dbUnique($this->_dao, 'mailing_group')->validate('name', 'Nome');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -69,19 +72,21 @@ class MailingGroupModel extends BaseModelAdm
     $f->string()->filter('name');
     //
     $this->dao_insert();
+
   }
 
   public function update ( $input )
   {
     $v = new InputValidator($input);
     $v->string()->validate('name', 'Nome');
-    $v->dbUnique($this->_dao,'mailing_group','id_mailing_group', $this->getId())->validate('name', 'Nome');
+    $v->dbUnique($this->_dao, 'mailing_group', 'id_mailing_group', $this->getId())->validate('name', 'Nome');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->string()->filter('name');
     //
     $this->dao_update();
+
   }
 
   public function short_insert ( $name )
@@ -92,7 +97,7 @@ class MailingGroupModel extends BaseModelAdm
 
     $v = new InputValidator($input);
     $v->string()->validate('name', 'Nome');
-    $v->dbUnique($this->_dao,'mailing_group')->validate('name', 'Nome');
+    $v->dbUnique($this->_dao, 'mailing_group')->validate('name', 'Nome');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -100,6 +105,7 @@ class MailingGroupModel extends BaseModelAdm
     $f->string()->filter('name');
     //
     $this->dao_insert();
+
   }
 
   public function getListArray ()
@@ -116,6 +122,7 @@ class MailingGroupModel extends BaseModelAdm
     }
 
     return $arrOptions;
+
   }
 
   public function formatFilters ()
@@ -123,6 +130,7 @@ class MailingGroupModel extends BaseModelAdm
     $this->_filters['name'] = Html::scape($this->_filters['name']);
 
     return $this->_filters;
+
   }
 
 }

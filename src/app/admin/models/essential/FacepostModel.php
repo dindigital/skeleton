@@ -28,6 +28,7 @@ class FacepostModel extends BaseModelAdm
     $this->setModel($section, $id);
     $this->_sm_credentials = new SocialmediaCredentialsModel();
     $this->_sm_credentials->fetchAll();
+
   }
 
   protected function setModel ( $section, $id )
@@ -36,6 +37,7 @@ class FacepostModel extends BaseModelAdm
 
     $this->_model = $entity->getModel();
     $this->_model->setId($id);
+
   }
 
   protected function setFacebook ()
@@ -58,6 +60,7 @@ class FacepostModel extends BaseModelAdm
     } else {
       $this->_facebook->setAccessToken($this->_sm_credentials->row['fb_access_token']);
     }
+
   }
 
   public function getFacebookLogin ()
@@ -71,6 +74,7 @@ class FacepostModel extends BaseModelAdm
     } catch (Exception $e) {
       return $this->_facebook->getLoginUrl();
     }
+
   }
 
   public function generatePost ()
@@ -78,6 +82,7 @@ class FacepostModel extends BaseModelAdm
     $post = $this->_model->generatePost();
 
     return $post;
+
   }
 
   public function post ( $input )
@@ -118,6 +123,7 @@ class FacepostModel extends BaseModelAdm
     $this->_dao->insert($this->_table);
     //_# AVISA O MODEL
     $this->_model->sentPost($this->_table->id_facepost);
+
   }
 
   public function getPosts ()
@@ -129,6 +135,7 @@ class FacepostModel extends BaseModelAdm
     }
 
     return $tweets;
+
   }
 
 }

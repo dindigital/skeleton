@@ -16,6 +16,7 @@ class SequenceResult
   {
     $this->_entity = $entity;
     $this->_dao = $dao;
+
   }
 
   public function filterResult ( $result, $arrCriteria )
@@ -63,6 +64,7 @@ class SequenceResult
     }
 
     return $result;
+
   }
 
   protected function getMaxSequence ( $arrCriteria )
@@ -83,6 +85,7 @@ class SequenceResult
     $select->where($arrCriteria);
 
     return $this->_dao->select_count($select);
+
   }
 
 }

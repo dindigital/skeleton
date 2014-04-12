@@ -14,6 +14,7 @@ class Entities
   public function __construct ( $file )
   {
     $this->setEntities($file);
+
   }
 
   protected function setEntities ( $file )
@@ -22,6 +23,7 @@ class Entities
       throw new Exception('Arquivo de entidades não encontrado: ' . $file);
 
     $this->_entities = Files::get_return($file);
+
   }
 
   public function getEntity ( $tbl )
@@ -31,6 +33,7 @@ class Entities
     } else {
       throw new Exception('Entidade desconhecida: ' . $tbl);
     }
+
   }
 
   public function getAllEntities ()
@@ -41,6 +44,7 @@ class Entities
     }
 
     return $r;
+
   }
 
   public function getTrashItens ()
@@ -53,6 +57,7 @@ class Entities
     }
 
     return $r;
+
   }
 
   public function getSectionItens ()
@@ -65,6 +70,7 @@ class Entities
     }
 
     return $r;
+
   }
 
 }

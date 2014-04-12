@@ -21,6 +21,7 @@ class PageInfinityController extends BaseControllerAdm
     $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
+
   }
 
   public function get ()
@@ -30,6 +31,7 @@ class PageInfinityController extends BaseControllerAdm
 
     $dropdown = $this->_model->getListArray(null, $id_parent, $exclude_id);
     die($this->_model->formatInfiniteDropdown($dropdown));
+
   }
 
 }

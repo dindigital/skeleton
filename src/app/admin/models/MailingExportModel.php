@@ -17,6 +17,7 @@ class MailingExportModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setTable('mailing');
+
   }
 
   public function getXls ( $arrFilters = array() )
@@ -51,6 +52,7 @@ class MailingExportModel extends BaseModelAdm
         'E-mail',
     ));
     $xls->export();
+
   }
 
 }

@@ -23,6 +23,7 @@ class PermissionModel extends BaseModelAdm
     }
 
     return $arrOptions;
+
   }
 
   public function block ( $model, $user )
@@ -33,6 +34,7 @@ class PermissionModel extends BaseModelAdm
     if ( !array_key_exists($tbl, $permissoes) ) {
       throw new Exception('Permissão negada.');
     }
+
   }
 
   protected function getByAdmin ( $user )
@@ -49,6 +51,7 @@ class PermissionModel extends BaseModelAdm
     $user_permissions = array_fill_keys($user_permissions, '');
 
     return $user_permissions;
+
   }
 
   public function getMenu ( $user )
@@ -80,6 +83,7 @@ class PermissionModel extends BaseModelAdm
     }
 
     return $user_menu;
+
   }
 
 }

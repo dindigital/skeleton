@@ -1,10 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.html or http://ckeditor.com/license
  */
 
-/*! \mainpage CKEditor - PHP server side intergation
+/* ! \mainpage CKEditor - PHP server side intergation
  * \section intro_sec CKEditor
  * Visit <a href="http://ckeditor.com">CKEditor web site</a> to find more information about the editor.
  * \section install_sec Installation
@@ -23,7 +24,7 @@
  * @endcode
  */
 
-if ( !function_exists('version_compare') || version_compare( phpversion(), '5', '<' ) )
-	include_once( 'ckeditor_php4.php' ) ;
+if ( !function_exists('version_compare') || version_compare(phpversion(), '5', '<') )
+  include_once( 'ckeditor_php4.php' );
 else
-	include_once( 'ckeditor_php5.php' ) ;
+  include_once( 'ckeditor_php5.php' );

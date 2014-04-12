@@ -41,6 +41,7 @@ class Preview
     $r = '<div class="preview">' . $r . '</div>';
 
     return $r;
+
   }
 
 }

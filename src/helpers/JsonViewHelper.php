@@ -21,6 +21,7 @@ class JsonViewHelper
         'type' => 'error_message',
         'message' => $msg
     )));
+
   }
 
   public static function display_error_object ( Exception $e )
@@ -29,6 +30,7 @@ class JsonViewHelper
         'type' => 'error_object',
         'objects' => json_decode($e->getMessage(), true)
     )));
+
   }
 
   public static function redirect ( $uri )
@@ -37,6 +39,7 @@ class JsonViewHelper
         'type' => 'redirect',
         'uri' => $uri
     )));
+
   }
 
   public static function display_success_message ( $msg )
@@ -45,11 +48,13 @@ class JsonViewHelper
         'type' => 'success',
         'message' => $msg
     )));
+
   }
 
   public static function display ( $mixed )
   {
     die(json_encode($mixed));
+
   }
 
 }

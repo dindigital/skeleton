@@ -28,12 +28,14 @@ class TweetModel extends BaseModelAdm
     $this->setModel($section, $id);
     $this->_sm_credentials = new SocialmediaCredentialsModel();
     $this->_sm_credentials->fetchAll();
+
   }
 
   protected function setModel ( $section, $id )
   {
     $this->_model = new TweetableEntity($section, $id);
     $this->_model->setId($id);
+
   }
 
   public function generateTweet ()
@@ -41,6 +43,7 @@ class TweetModel extends BaseModelAdm
     $tweet = $this->_model->generateTweet();
 
     return $tweet;
+
   }
 
   public function sendTweet ( $msg )
@@ -79,6 +82,7 @@ class TweetModel extends BaseModelAdm
 
     //_# AVISA O MODEL
     $this->_model->sentTweet($this->_table->id_tweet);
+
   }
 
   public function getTweets ()
@@ -88,6 +92,7 @@ class TweetModel extends BaseModelAdm
       $tweets[$i]['date'] = DateFormat::filter_dateTimeExtensive($row['date']);
     }
     return $tweets;
+
   }
 
 }

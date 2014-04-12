@@ -22,6 +22,7 @@ class Erro500Controller
     ));
     $view->addFile('src/app/admin/views/essential/500.phtml');
     $view->display_html();
+
   }
 
 }

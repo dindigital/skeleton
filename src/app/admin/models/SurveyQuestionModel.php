@@ -18,6 +18,7 @@ class SurveyQuestionModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('survey_question');
+
   }
 
   public function batch_validate ( $array_questions )
@@ -26,10 +27,11 @@ class SurveyQuestionModel extends BaseModelAdm
       $input = array(
           'question' => $question
       );
-      
+
       $v = new InputValidator($input);
       $v->string()->validate('question', 'Questão');
     }
+
   }
 
   public function batch_insert ( $id_survey, $array_questions )
@@ -49,6 +51,7 @@ class SurveyQuestionModel extends BaseModelAdm
 
       $this->_dao->insert($this->_table);
     }
+
   }
 
   public function batch_update ( $array_questions )
@@ -65,6 +68,7 @@ class SurveyQuestionModel extends BaseModelAdm
           'id_survey_question = ?' => $id_survey_question
       ));
     }
+
   }
 
   public function getByIdSurvey ( $id_survey )
@@ -82,6 +86,7 @@ class SurveyQuestionModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return $result;
+
   }
 
 }

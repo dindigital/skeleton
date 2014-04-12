@@ -18,6 +18,7 @@ class MailingExportController extends BaseControllerAdm
   {
     parent::__construct();
     $this->_model = new model;
+
   }
 
   public function get ()
@@ -31,6 +32,7 @@ class MailingExportController extends BaseControllerAdm
     $this->_model->getXls($arrFilters);
 
     $this->setErrorSessionData();
+
   }
 
 }

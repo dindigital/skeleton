@@ -24,11 +24,13 @@ class TagSaveController extends BaseControllerAdm
     $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
+
   }
 
   public function get ()
   {
     $this->defaultSavePage('tag_save.phtml', $this->_id);
+
   }
 
   public function post ()
@@ -45,6 +47,7 @@ class TagSaveController extends BaseControllerAdm
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+
   }
 
 }

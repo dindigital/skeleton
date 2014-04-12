@@ -19,6 +19,7 @@ class AdminAuthLogoutController extends BaseController implements \Respect\Rest\
   {
     parent::__construct();
     $this->_model = new model;
+
   }
 
   public function get ()
@@ -26,6 +27,7 @@ class AdminAuthLogoutController extends BaseController implements \Respect\Rest\
     $this->_model->logout();
 
     Header::redirect('/admin/');
+
   }
 
 }

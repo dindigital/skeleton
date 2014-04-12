@@ -20,6 +20,7 @@ class SoundCloudController extends BaseControllerAdm
   {
     parent::__construct();
     $this->_model = new model;
+
   }
 
   public function get ()
@@ -32,6 +33,7 @@ class SoundCloudController extends BaseControllerAdm
     $session->set('saved_msg', 'Atenticado no SoundCloud com sucesso');
 
     Header::redirect($session->get('referer'));
+
   }
 
 }

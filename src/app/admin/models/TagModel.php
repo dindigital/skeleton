@@ -20,6 +20,7 @@ class TagModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('tag');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -31,6 +32,7 @@ class TagModel extends BaseModelAdm
     $table['title'] = Html::scape($table['title']);
 
     return $table;
+
   }
 
   public function getList ()
@@ -57,13 +59,14 @@ class TagModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
   {
     $v = new InputValidator($input);
     $v->string()->validate('title', 'Título');
-    $v->dbUnique($this->_dao,'tag')->validate('title', 'Título');
+    $v->dbUnique($this->_dao, 'tag')->validate('title', 'Título');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -73,13 +76,14 @@ class TagModel extends BaseModelAdm
     $f->string()->filter('title');
 
     $this->dao_insert();
+
   }
 
   public function update ( $input )
   {
     $v = new InputValidator($input);
     $v->string()->validate('title', 'Título');
-    $v->dbUnique($this->_dao,'tag','id_tag', $this->getId())->validate('title', 'Título');
+    $v->dbUnique($this->_dao, 'tag', 'id_tag', $this->getId())->validate('title', 'Título');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -87,6 +91,7 @@ class TagModel extends BaseModelAdm
     $f->string()->filter('title');
 
     $this->dao_update();
+
   }
 
   public function short_insert ( $title )
@@ -99,7 +104,7 @@ class TagModel extends BaseModelAdm
 
     $v = new InputValidator($input);
     $v->string()->validate('title', 'Título');
-    $v->dbUnique($this->_dao,'tag')->validate('title', 'Título');
+    $v->dbUnique($this->_dao, 'tag')->validate('title', 'Título');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -109,6 +114,7 @@ class TagModel extends BaseModelAdm
     $f->string()->filter('title');
 
     $this->dao_insert();
+
   }
 
   public function formatFilters ()
@@ -116,6 +122,7 @@ class TagModel extends BaseModelAdm
     $this->_filters['title'] = Html::scape($this->_filters['title']);
 
     return $this->_filters;
+
   }
 
 }

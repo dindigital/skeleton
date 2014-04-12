@@ -1,10 +1,10 @@
 ﻿CodeMirror.defineMode("clike", function(config, parserConfig) {
   var indentUnit = config.indentUnit,
-      keywords = parserConfig.keywords || {},
-      blockKeywords = parserConfig.blockKeywords || {},
-      atoms = parserConfig.atoms || {},
-      hooks = parserConfig.hooks || {},
-      multiLineStrings = parserConfig.multiLineStrings;
+          keywords = parserConfig.keywords || {},
+          blockKeywords = parserConfig.blockKeywords || {},
+          atoms = parserConfig.atoms || {},
+          hooks = parserConfig.hooks || {},
+          multiLineStrings = parserConfig.multiLineStrings;
   var isOperatorChar = /[+\-*&%=<>!?|\/]/;
 
   var curPunc;
@@ -13,7 +13,8 @@
     var ch = stream.next();
     if (hooks[ch]) {
       var result = hooks[ch](stream, state);
-      if (result !== false) return result;
+      if (result !== false)
+        return result;
     }
     if (ch == '"' || ch == "'") {
       state.tokenize = tokenString(ch);
@@ -44,10 +45,12 @@
     stream.eatWhile(/[\w\$_]/);
     var cur = stream.current();
     if (keywords.propertyIsEnumerable(cur)) {
-      if (blockKeywords.propertyIsEnumerable(cur)) curPunc = "newstatement";
+      if (blockKeywords.propertyIsEnumerable(cur))
+        curPunc = "newstatement";
       return "keyword";
     }
-    if (atoms.propertyIsEnumerable(cur)) return "atom";
+    if (atoms.propertyIsEnumerable(cur))
+      return "atom";
     return "word";
   }
 
@@ -55,7 +58,10 @@
     return function(stream, state) {
       var escaped = false, next, end = false;
       while ((next = stream.next()) != null) {
-        if (next == quote && !escaped) {end = true; break;}
+        if (next == quote && !escaped) {
+          end = true;
+          break;
+        }
         escaped = !escaped && next == "\\";
       }
       if (end || !(escaped || multiLineStrings))
@@ -104,46 +110,60 @@
         startOfLine: true
       };
     },
-
     token: function(stream, state) {
       var ctx = state.context;
       if (stream.sol()) {
-        if (ctx.align == null) ctx.align = false;
+        if (ctx.align == null)
+          ctx.align = false;
         state.indented = stream.indentation();
         state.startOfLine = true;
       }
-      if (stream.eatSpace()) return null;
+      if (stream.eatSpace())
+        return null;
       curPunc = null;
       var style = (state.tokenize || tokenBase)(stream, state);
-      if (style == "comment" || style == "meta") return style;
-      if (ctx.align == null) ctx.align = true;
+      if (style == "comment" || style == "meta")
+        return style;
+      if (ctx.align == null)
+        ctx.align = true;
 
-      if ((curPunc == ";" || curPunc == ":") && ctx.type == "statement") popContext(state);
-      else if (curPunc == "{") pushContext(state, stream.column(), "}");
-      else if (curPunc == "[") pushContext(state, stream.column(), "]");
-      else if (curPunc == "(") pushContext(state, stream.column(), ")");
+      if ((curPunc == ";" || curPunc == ":") && ctx.type == "statement")
+        popContext(state);
+      else if (curPunc == "{")
+        pushContext(state, stream.column(), "}");
+      else if (curPunc == "[")
+        pushContext(state, stream.column(), "]");
+      else if (curPunc == "(")
+        pushContext(state, stream.column(), ")");
       else if (curPunc == "}") {
-        while (ctx.type == "statement") ctx = popContext(state);
-        if (ctx.type == "}") ctx = popContext(state);
-        while (ctx.type == "statement") ctx = popContext(state);
+        while (ctx.type == "statement")
+          ctx = popContext(state);
+        if (ctx.type == "}")
+          ctx = popContext(state);
+        while (ctx.type == "statement")
+          ctx = popContext(state);
       }
-      else if (curPunc == ctx.type) popContext(state);
+      else if (curPunc == ctx.type)
+        popContext(state);
       else if (ctx.type == "}" || ctx.type == "top" || (ctx.type == "statement" && curPunc == "newstatement"))
         pushContext(state, stream.column(), "statement");
       state.startOfLine = false;
       return style;
     },
-
     indent: function(state, textAfter) {
-      if (state.tokenize != tokenBase && state.tokenize != null) return 0;
+      if (state.tokenize != tokenBase && state.tokenize != null)
+        return 0;
       var ctx = state.context, firstChar = textAfter && textAfter.charAt(0);
-      if (ctx.type == "statement" && firstChar == "}") ctx = ctx.prev;
+      if (ctx.type == "statement" && firstChar == "}")
+        ctx = ctx.prev;
       var closing = firstChar == ctx.type;
-      if (ctx.type == "statement") return ctx.indented + (firstChar == "{" ? 0 : indentUnit);
-      else if (ctx.align) return ctx.column + (closing ? 0 : 1);
-      else return ctx.indented + (closing ? 0 : indentUnit);
+      if (ctx.type == "statement")
+        return ctx.indented + (firstChar == "{" ? 0 : indentUnit);
+      else if (ctx.align)
+        return ctx.column + (closing ? 0 : 1);
+      else
+        return ctx.indented + (closing ? 0 : indentUnit);
     },
-
     electricChars: "{}"
   };
 });
@@ -151,15 +171,17 @@
 (function() {
   function words(str) {
     var obj = {}, words = str.split(" ");
-    for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
+    for (var i = 0; i < words.length; ++i)
+      obj[words[i]] = true;
     return obj;
   }
   var cKeywords = "auto if break int case long char register continue return default short do sizeof " +
-    "double static else struct entry switch extern typedef float union for unsigned " +
-    "goto while enum void const signed volatile";
+          "double static else struct entry switch extern typedef float union for unsigned " +
+          "goto while enum void const signed volatile";
 
   function cppHook(stream, state) {
-    if (!state.startOfLine) return false;
+    if (!state.startOfLine)
+      return false;
     stream.skipToEnd();
     return "meta";
   }
@@ -186,9 +208,9 @@
   CodeMirror.defineMIME("text/x-c++src", {
     name: "clike",
     keywords: words(cKeywords + " asm dynamic_cast namespace reinterpret_cast try bool explicit new " +
-                    "static_cast typeid catch operator template typename class friend private " +
-                    "this using const_cast inline public throw virtual delete mutable protected " +
-                    "wchar_t"),
+            "static_cast typeid catch operator template typename class friend private " +
+            "this using const_cast inline public throw virtual delete mutable protected " +
+            "wchar_t"),
     blockKeywords: words("catch class do else finally for if struct switch try while"),
     atoms: words("true false null"),
     hooks: {"#": cppHook}
@@ -196,10 +218,10 @@
   CodeMirror.defineMIME("text/x-java", {
     name: "clike",
     keywords: words("abstract assert boolean break byte case catch char class const continue default " +
-                    "do double else enum extends final finally float for goto if implements import " +
-                    "instanceof int interface long native new package private protected public " +
-                    "return short static strictfp super switch synchronized this throw throws transient " +
-                    "try void volatile while"),
+            "do double else enum extends final finally float for goto if implements import " +
+            "instanceof int interface long native new package private protected public " +
+            "return short static strictfp super switch synchronized this throw throws transient " +
+            "try void volatile while"),
     blockKeywords: words("catch class do else finally for if switch try while"),
     atoms: words("true false null"),
     hooks: {
@@ -212,12 +234,12 @@
   CodeMirror.defineMIME("text/x-csharp", {
     name: "clike",
     keywords: words("abstract as base bool break byte case catch char checked class const continue decimal" +
-                    " default delegate do double else enum event explicit extern finally fixed float for" +
-                    " foreach goto if implicit in int interface internal is lock long namespace new object" +
-                    " operator out override params private protected public readonly ref return sbyte sealed short" +
-                    " sizeof stackalloc static string struct switch this throw try typeof uint ulong unchecked" +
-                    " unsafe ushort using virtual void volatile while add alias ascending descending dynamic from get" +
-                    " global group into join let orderby partial remove select set value var yield"),
+            " default delegate do double else enum event explicit extern finally fixed float for" +
+            " foreach goto if implicit in int interface internal is lock long namespace new object" +
+            " operator out override params private protected public readonly ref return sbyte sealed short" +
+            " sizeof stackalloc static string struct switch this throw try typeof uint ulong unchecked" +
+            " unsafe ushort using virtual void volatile while add alias ascending descending dynamic from get" +
+            " global group into join let orderby partial remove select set value var yield"),
     blockKeywords: words("catch class do else finally for foreach if struct switch try while"),
     atoms: words("true false null"),
     hooks: {

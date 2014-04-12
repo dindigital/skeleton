@@ -19,6 +19,7 @@ class RelationshipModel extends BaseModelAdm
   public function setCurrentEntity ( $tbl )
   {
     $this->_current_entity = $this->_entities->getEntity($tbl);
+
   }
 
   /**
@@ -28,6 +29,7 @@ class RelationshipModel extends BaseModelAdm
   public function setForeignEntity ( $tbl )
   {
     $this->_foreign_entity = $this->_entities->getEntity($tbl);
+
   }
 
   /**
@@ -57,6 +59,7 @@ class RelationshipModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return $result;
+
   }
 
   /**
@@ -91,6 +94,7 @@ class RelationshipModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return $result;
+
   }
 
   public function insert ( $id, $item )
@@ -112,6 +116,7 @@ class RelationshipModel extends BaseModelAdm
     }
 
     $this->insertRelationship($arrayId, $id);
+
   }
 
   public function smartInsert ( $id, $item )
@@ -126,6 +131,7 @@ class RelationshipModel extends BaseModelAdm
     }
 
     $this->insertRelationship($arrayId, $id);
+
   }
 
   private function count ( $row )
@@ -142,6 +148,7 @@ class RelationshipModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return (bool) count($result);
+
   }
 
   private function getIdByTitle ( $row )
@@ -159,6 +166,7 @@ class RelationshipModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return count($result) ? $result[0]['id'] : false;
+
   }
 
   private function insertRelationship ( $arrayId, $id )
@@ -183,6 +191,7 @@ class RelationshipModel extends BaseModelAdm
       $table_relashionship->sequence = $index;
       $this->_dao->insert($table_relashionship);
     }
+
   }
 
 }

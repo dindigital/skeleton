@@ -24,6 +24,7 @@ class LabelCredit extends AbstractFilter
     if ( isset($exif['Artist']) ) {
       $this->_table->credit = $exif['Artist'];
     }
+
   }
 
 }

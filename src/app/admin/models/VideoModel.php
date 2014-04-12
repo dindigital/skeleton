@@ -27,6 +27,7 @@ class VideoModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('video');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -50,12 +51,14 @@ class VideoModel extends BaseModelAdm
     $table['file_uploader'] = Form::Upload('file', $table['file'], 'video');
 
     return $table;
+
   }
 
   public function onGetById ( Select $select )
   {
 
     $select->addFField('has_youtube', 'IF (id_youtube IS NOT NULL, 1, 0)');
+
   }
 
   public function getList ()
@@ -85,6 +88,7 @@ class VideoModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
@@ -92,7 +96,7 @@ class VideoModel extends BaseModelAdm
     $v = new InputValidator($input);
     $v->string()->validate('title', 'Título');
     $v->date()->validate('date', 'Data');
-    $v->stringLenght(10,156)->validate('description', 'Descrição');
+    $v->stringLenght(10, 156)->validate('description', 'Descrição');
     $has_file = $v->upload()->validate('file', 'Arquivo de Vídeo');
     $v->throwException();
     //
@@ -120,6 +124,7 @@ class VideoModel extends BaseModelAdm
     if ( $input['publish_youtube'] == '1' ) {
       $this->save_youtube();
     }
+
   }
 
   public function update ( $input )
@@ -127,7 +132,7 @@ class VideoModel extends BaseModelAdm
     $v = new InputValidator($input);
     $v->string()->validate('title', 'Título');
     $v->date()->validate('date', 'Data');
-    $v->stringLenght(10,156)->validate('description', 'Descrição');
+    $v->stringLenght(10, 156)->validate('description', 'Descrição');
     $has_file = $v->upload()->validate('file', 'Arquivo de Vídeo');
     $v->throwException();
     //
@@ -155,6 +160,7 @@ class VideoModel extends BaseModelAdm
     } else if ( $input['republish_youtube'] == '1' ) {
       $this->save_youtube(true);
     }
+
   }
 
   private function relationship ( $tbl, $array )
@@ -163,6 +169,7 @@ class VideoModel extends BaseModelAdm
     $relationshipModel->setCurrentEntity('video');
     $relationshipModel->setForeignEntity($tbl);
     $relationshipModel->insert($this->getId(), $array);
+
   }
 
   private function save_youtube ( $delete = false )
@@ -192,12 +199,14 @@ class VideoModel extends BaseModelAdm
       $f->string()->filter('id_youtube');
       $this->dao_update();
     }
+
   }
 
   public function formatFilters ()
   {
     $this->_filters['title'] = Html::scape($this->_filters['title']);
     return $this->_filters;
+
   }
 
   public function delete ( $itens )
@@ -214,6 +223,7 @@ class VideoModel extends BaseModelAdm
       $youTubeModel->delete($tableHistory['id_youtube']);
       //
     }
+
   }
 
 }

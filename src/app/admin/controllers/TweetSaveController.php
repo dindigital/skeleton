@@ -27,6 +27,7 @@ class TweetSaveController extends BaseControllerAdm
     $id = Get::text('id');
 
     $this->_model = new model($section, $id);
+
   }
 
   public function get ()
@@ -35,6 +36,7 @@ class TweetSaveController extends BaseControllerAdm
     $this->_data['tweet'] = $this->_model->generateTweet();
 
     $this->setSaveTemplate('essential/tweet_edit.phtml');
+
   }
 
   public function post ()
@@ -50,6 +52,7 @@ class TweetSaveController extends BaseControllerAdm
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+
   }
 
 }

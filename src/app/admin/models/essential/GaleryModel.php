@@ -30,6 +30,7 @@ class GaleryModel extends BaseModelAdm
     $this->_photo_item = $options['photo_item'];
     $this->_id_photo = $options['id_photo'];
     $this->_id_photo_item = $options['id_photo_item'];
+
   }
 
   public function getList ( $arrCriteria = array() )
@@ -43,17 +44,19 @@ class GaleryModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return $result;
+
   }
 
   public function getIdName ()
   {
     return $this->_id_photo_item;
+
   }
 
   public function insert ( $input )
   {
     $input['file'] = array($input['file']);
-    
+
     $v = new InputValidator($input);
     $has_file = $v->upload()->validate('file', 'Foto');
     $v->throwException();
@@ -72,6 +75,7 @@ class GaleryModel extends BaseModelAdm
     $mf->move();
 
     $this->_dao->insert($this->_table);
+
   }
 
   public function update ( $input )
@@ -85,6 +89,7 @@ class GaleryModel extends BaseModelAdm
     $this->_dao->update($this->_table, array(
         $this->_id_photo_item . ' = ?' => $this->getId()
     ));
+
   }
 
   public function batch_delete ( $id_photo, $gallery_sequence )
@@ -104,6 +109,7 @@ class GaleryModel extends BaseModelAdm
     }
 
     $this->_dao->delete($this->_photo_item, $arr_criteria);
+
   }
 
   public function batch_delete_all ( $id_photo )
@@ -115,6 +121,7 @@ class GaleryModel extends BaseModelAdm
     Folder::delete("public/system/uploads/{$this->_photo}/{$id_photo}/{$this->_photo_item}/");
 
     $this->_dao->delete($this->_photo_item, $arr_criteria);
+
   }
 
   public function saveGalery ( $upload, $id_photo, $gallery_sequence = null, $label = null, $credit = null )
@@ -146,6 +153,7 @@ class GaleryModel extends BaseModelAdm
           'file' => $file
       ));
     }
+
   }
 
 }

@@ -20,6 +20,7 @@ class ConfigSaveController extends BaseControllerAdm
   {
     parent::__construct();
     $this->_model = new model;
+
   }
 
   public function get ()
@@ -27,6 +28,7 @@ class ConfigSaveController extends BaseControllerAdm
     $this->_data['table'] = $this->_model->formatTable($this->_data['admin']);
 
     $this->setSaveTemplate('essential/config_save.phtml');
+
   }
 
   public function post ()
@@ -50,6 +52,7 @@ class ConfigSaveController extends BaseControllerAdm
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+
   }
 
 }

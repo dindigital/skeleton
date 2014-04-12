@@ -23,6 +23,7 @@ class PollModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('poll');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -42,6 +43,7 @@ class PollModel extends BaseModelAdm
     $table['uri'] = Link::formatUri($table['uri']);
 
     return $table;
+
   }
 
   public function getList ()
@@ -69,6 +71,7 @@ class PollModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
@@ -92,6 +95,7 @@ class PollModel extends BaseModelAdm
     $this->dao_insert();
 
     $opt->batch_insert($this->getId(), $input['option']);
+
   }
 
   public function update ( $input )
@@ -113,6 +117,7 @@ class PollModel extends BaseModelAdm
     $this->dao_update();
 
     $opt->batch_update($input['option']);
+
   }
 
   public function formatFilters ()
@@ -120,6 +125,7 @@ class PollModel extends BaseModelAdm
     $this->_filters['question'] = Html::scape($this->_filters['question']);
 
     return $this->_filters;
+
   }
 
 }

@@ -12,13 +12,13 @@ interface Facepostable
 
   /**
    * Retorna o post a ser enviado. Seguindo o padrao:
-     $post = array(
-        'name'=>'',
-        'message'=>'',
-        'link'=>'',
-        'description'=>'',
-        'picture'=>'',
-     );
+    $post = array(
+    'name'=>'',
+    'message'=>'',
+    'link'=>'',
+    'description'=>'',
+    'picture'=>'',
+    );
    */
   public function generatePost ();
 

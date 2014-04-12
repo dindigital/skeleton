@@ -19,6 +19,7 @@ class Uploaded extends AbstractFilter
     $this->_path = $path;
     $this->_has_upload = $has_upload;
     $this->_mf = $mf;
+
   }
 
   public function filter ( $field )
@@ -33,6 +34,7 @@ class Uploaded extends AbstractFilter
     }
 
     $this->deleteUploadFolder($field);
+
   }
 
   protected function deleteUploadFolder ( $field )
@@ -43,6 +45,7 @@ class Uploaded extends AbstractFilter
         $this->_table->{$field} = null;
       }
     }
+
   }
 
 }

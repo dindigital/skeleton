@@ -26,6 +26,7 @@ class NewsCatModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('news_cat');
+
   }
 
   protected function formatTable ( $table, $exclude_fields = false )
@@ -40,6 +41,7 @@ class NewsCatModel extends BaseModelAdm
     $table['uri'] = Link::formatUri($table['uri']);
 
     return $table;
+
   }
 
   public function getList ()
@@ -81,6 +83,7 @@ class NewsCatModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
@@ -106,6 +109,7 @@ class NewsCatModel extends BaseModelAdm
     $mf->move();
 
     $this->dao_insert();
+
   }
 
   public function update ( $input )
@@ -128,6 +132,7 @@ class NewsCatModel extends BaseModelAdm
     $mf->move();
     //
     $this->dao_update();
+
   }
 
   public function getListArray ()
@@ -147,6 +152,7 @@ class NewsCatModel extends BaseModelAdm
     }
 
     return $arrOptions;
+
   }
 
   public function formatFilters ()
@@ -155,6 +161,7 @@ class NewsCatModel extends BaseModelAdm
     $this->_filters['is_home'] = Form::Dropdown('is_home', Arrays::$simNao, $this->_filters['is_home'], 'Home?');
 
     return $this->_filters;
+
   }
 
 }

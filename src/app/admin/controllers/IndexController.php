@@ -14,6 +14,7 @@ class IndexController extends BaseControllerAdm
     $this->setBasicTemplate();
     $this->_view->addFile('src/app/admin/views/essential/index.phtml', '{$CONTENT}');
     $this->display_html();
+
   }
 
 }

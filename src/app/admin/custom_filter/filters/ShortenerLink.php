@@ -17,6 +17,7 @@ class ShortenerLink extends AbstractFilter
         $this->_table->short_link = $bitly;
       }
     }
+
   }
 
 }

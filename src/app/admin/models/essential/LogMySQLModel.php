@@ -13,6 +13,7 @@ class LogMySQLModel extends LogAbstract
   public function __construct ()
   {
     $this->_table = new Table('log');
+
   }
 
   public static function save ( $dao, $admin, $action, $msg, Table $table, $tableHistory )
@@ -25,6 +26,7 @@ class LogMySQLModel extends LogAbstract
     $log->tableHistory = $tableHistory;
 
     $log->logicSave($action);
+
   }
 
   public function insert ()
@@ -37,6 +39,7 @@ class LogMySQLModel extends LogAbstract
     $this->_table->inc_date = date('Y-m-d H:i:s');
 
     $this->_dao->insert($this->_table);
+
   }
 
   public function update ()
@@ -67,6 +70,7 @@ class LogMySQLModel extends LogAbstract
     $this->_table->inc_date = date('Y-m-d H:i:s');
 
     $this->_dao->insert($this->_table);
+
   }
 
   public function deleteRestore ( $action )
@@ -79,6 +83,7 @@ class LogMySQLModel extends LogAbstract
     $this->_table->inc_date = date('Y-m-d H:i:s');
 
     $this->_dao->insert($this->_table);
+
   }
 
 }

@@ -40,8 +40,8 @@ abstract class BaseControllerSite extends BaseController
     $assetsRead = new AssetsRead($config);
     $assetsRead->setMode(ASSETS);
     $assetsRead->setReplace(PATH_REPLACE);
-    $assetsRead->setGroup('css', array('site'));
-    $assetsRead->setGroup('js', array('jquery', 'site'));
+    $assetsRead->setGroup('css', array('css_site'));
+    $assetsRead->setGroup('js', array('js_modernizr', 'js_site'));
     $this->_data['assets'] = $assetsRead->getAssets();
 
   }

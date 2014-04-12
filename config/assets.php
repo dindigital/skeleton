@@ -2,24 +2,23 @@
 
 return array(
     'css' => array(
-        'site' => array(
-            'uri' => '/system/assets/site5348401ac04f4.css',
+        'css_site' => array(
+            'uri' => '/system/assets/css_site534988751befa.css',
             'src' => array(
-                'public/site/vendor/bootstrap/css/bootstrap.css',
-                'public/site/vendor/bootstrap/css/bootstrap-theme.css',
+                'public/site/vendor/normalize/normalize301.css',
                 'public/site/css/base.css',
             )
         ),
-        'adm_login' => array(
-            'uri' => '/system/assets/adm_login53483fa1204f4.css',
+        'css_admlogin' => array(
+            'uri' => '/system/assets/css_admlogin53498875976d1.css',
             'src' => array(
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
                 'public/admin/fonts/font-awesome-4/css/font-awesome.min.css',
                 'public/admin/css/style.css',
             )
         ),
-        'adm' => array(
-            'uri' => '/system/assets/adm534840340dbc8.css',
+        'css_adm' => array(
+            'uri' => '/system/assets/css_adm53498877a8263.css',
             'src' => array(
                 'public/admin/css/jquery-ui.css',
                 'public/admin/js/bootstrap/dist/css/bootstrap.css',
@@ -30,8 +29,8 @@ return array(
                 'public/admin/css/style.css',
             )
         ),
-        'google' => array(
-            'uri' => '/system/assets/google534840091adda.css',
+        'css_admgoogle' => array(
+            'uri' => '/system/assets/css_admgoogle5349887b4d54e.css',
             'src' => array(
                 'public/admin/css/google_open_sans.css',
                 'public/admin/css/google_raleway.css',
@@ -39,22 +38,28 @@ return array(
         ),
     ),
     'js' => array(
-        'site' => array(
-            'uri' => '/system/assets/site53484016d70e1.js',
+        'js_modernizr' => array(
+            'uri' => '/system/assets/js_modernizr53498863147ed.js',
             'src' => array(
-                'public/site/vendor/bootstrap/js/bootstrap.js',
+                'public/site/vendor/modernizr.js',
+            )
+        ),
+        'js_site' => array(
+            'uri' => '/system/assets/js_site53498863b0221.js',
+            'src' => array(
+                'public/site/vendor/jquery/jquery-1.11.0.js',
                 'public/site/js/base.js',
             )
         ),
-        'jquery' => array(
-            'uri' => '/system/assets/jquery53484017e91d2.js',
+        'js_admjquery' => array(
+            'uri' => '/system/assets/js_admjquery53498865909f8.js',
             'src' => array(
                 'public/admin/js/jquery-1.9.1.js',
                 'public/admin/js/jquery-ui.js',
             )
         ),
-        'adm_login' => array(
-            'uri' => '/system/assets/adm_login53483f923aedd.js',
+        'js_admlogin' => array(
+            'uri' => '/system/assets/js_admlogin5349886859092.js',
             'src' => array(
                 'public/admin/js/ajaxform/jquery.form.js',
                 'public/admin/js/base.js',
@@ -62,8 +67,8 @@ return array(
                 'public/admin/js/bootstrap/dist/js/bootstrap.min.js',
             )
         ),
-        'adm' => array(
-            'uri' => '/system/assets/adm53484028f19b2.js',
+        'js_adm' => array(
+            'uri' => '/system/assets/js_adm5349886a8bd7b.js',
             'src' => array(
                 'public/admin/js/plupload/js/plupload.full.js',
                 'public/admin/js/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js',

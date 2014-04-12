@@ -1,24 +1,23 @@
-<div class="jumbotron">
-    <h1><?php echo $data['settings']['home_title'] ?></h1>
-    <p><?php echo $data['settings']['home_description'] ?></p>
-    <p><a href="https://github.com/dindigital/skeleton" target="_blank" class="btn btn-primary btn-large">Github &raquo;</a></p>
+<div>
+  <h1><?php echo $data['settings']['home_title'] ?></h1>
+  <h2><?php echo $data['settings']['home_description'] ?></h2>
+  <h3><?php echo $data['settings']['home_keywords'] ?></h3>
+  <h4><a href="https://github.com/dindigital/skeleton" target="_blank">Github</a></h4>
 </div>
 
 <hr />
 
-<?php if(isset($data['news']) && count($data['news'])): ?>
-    <div class="container">
-        <div class="row">
-            <?php foreach ($data['news'] as $row): ?>
-                <div class="col-md-4">
-                    <h3><?php echo $row['title'] ?></h3>
-                    <h6><?php echo $row['date'] ?></h6>
-                    <p><?php echo $row['category'] ?></p>
-                    <p><a class="btn btn-default" href="<?php echo $row['uri'] ?>" role="button">Saiba mais &raquo;</a></p>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
+<?php if ( isset($data['news']) && count($data['news']) ): ?>
+  <ul>
+    <?php foreach ( $data['news'] as $row ): ?>
+      <li>
+        <h3><?php echo $row['title'] ?></h3>
+        <h6><?php echo $row['date'] ?></h6>
+        <p><?php echo $row['category'] ?></p>
+        <p><a href="<?php echo $row['uri'] ?>" role="button">Saiba mais</a></p>
+      </li>
+    <?php endforeach; ?>
+  </ul>
 <?php endif; ?>
 
 <hr>

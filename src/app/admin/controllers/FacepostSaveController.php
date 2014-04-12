@@ -27,6 +27,7 @@ class FacepostSaveController extends BaseControllerAdm
     $id = Get::text('id');
 
     $this->_model = new model($section, $id);
+
   }
 
   public function get ()
@@ -45,6 +46,7 @@ class FacepostSaveController extends BaseControllerAdm
     $this->_data['post'] = $this->_model->generatePost();
 
     $this->setSaveTemplate('essential/facepost_edit.phtml');
+
   }
 
   public function post ()
@@ -66,6 +68,7 @@ class FacepostSaveController extends BaseControllerAdm
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+
   }
 
 }

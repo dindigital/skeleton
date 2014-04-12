@@ -19,6 +19,7 @@ class RelashionshipController implements \Respect\Rest\Routable
   public function __construct ()
   {
     $this->_model = new model;
+
   }
 
   public function get ()
@@ -27,6 +28,7 @@ class RelashionshipController implements \Respect\Rest\Routable
     $result = $this->_model->getAjax(Get::text('q'));
 
     JsonViewHelper::display($result);
+
   }
 
   public function post ()
@@ -36,6 +38,7 @@ class RelashionshipController implements \Respect\Rest\Routable
     $result = $this->_model->getAjaxCurrent(Post::text('id'));
 
     JsonViewHelper::display($result);
+
   }
 
 }

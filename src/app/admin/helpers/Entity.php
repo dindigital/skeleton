@@ -12,11 +12,13 @@ class Entity
   {
     $this->_tbl = $tbl;
     $this->setEntity($array);
+
   }
 
   protected function setEntity ( $array )
   {
     $this->_entity = $array;
+
   }
 
   protected function returnField ( $field )
@@ -24,6 +26,7 @@ class Entity
     if ( array_key_exists($field, $this->_entity) ) {
       return $this->_entity[$field];
     }
+
   }
 
   public function getModel ()
@@ -31,46 +34,55 @@ class Entity
     $namespace = '\src\app\admin\models\\' . $this->returnField('model');
 
     return new $namespace;
+
   }
 
   public function getSection ()
   {
     return $this->returnField('section');
+
   }
 
   public function getTitle ()
   {
     return $this->returnField('title');
+
   }
 
   public function hasTrash ()
   {
     return $this->returnField('trash') == true;
+
   }
 
   public function getId ()
   {
     return $this->returnField('id');
+
   }
 
   public function getChildren ()
   {
     return (array) $this->returnField('children');
+
   }
 
   public function getParent ()
   {
     return $this->returnField('parent');
+
   }
 
   public function getSequence ()
   {
     return (array) $this->returnField('sequence');
+
   }
 
   public function getTbl ()
   {
     return $this->_tbl;
+
   }
 
 }

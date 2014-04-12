@@ -22,6 +22,7 @@ class MailingImportController extends BaseControllerAdm
     parent::__construct();
     $this->_model = new model;
     $this->require_permission();
+
   }
 
   public function get ()
@@ -29,6 +30,7 @@ class MailingImportController extends BaseControllerAdm
     $this->_data['table'] = $this->_model->createFields();
 
     $this->setSaveTemplate('mailing_import.phtml');
+
   }
 
   public function post ()
@@ -48,6 +50,7 @@ class MailingImportController extends BaseControllerAdm
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+
   }
 
 }

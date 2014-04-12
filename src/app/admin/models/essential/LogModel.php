@@ -22,6 +22,7 @@ class LogModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('log');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -39,6 +40,7 @@ class LogModel extends BaseModelAdm
     $table['tbl'] = $entity->getSection();
 
     return $table;
+
   }
 
   public function getList ()
@@ -81,6 +83,7 @@ class LogModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function getById ( $id = null )
@@ -105,6 +108,7 @@ class LogModel extends BaseModelAdm
     $row = $this->formatTable($result[0]);
 
     return $row;
+
   }
 
   public function formatFilters ()
@@ -115,6 +119,7 @@ class LogModel extends BaseModelAdm
     $this->_filters['tbl'] = Form::Dropdown('tbl', $this->getDropdownName(), $this->_filters['tbl'], 'Filtro por Seção');
 
     return $this->_filters;
+
   }
 
   public function getDropdownName ()
@@ -128,6 +133,7 @@ class LogModel extends BaseModelAdm
     }
 
     return $arrOptions;
+
   }
 
 }

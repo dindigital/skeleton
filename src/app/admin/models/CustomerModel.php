@@ -20,6 +20,7 @@ class CustomerModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('customer');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -43,6 +44,7 @@ class CustomerModel extends BaseModelAdm
     $table['phone_number'] = Html::scape($table['phone_number']);
 
     return $table;
+
   }
 
   public function getList ()
@@ -65,6 +67,7 @@ class CustomerModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return $result;
+
   }
 
   public function insert ( $input )
@@ -79,8 +82,8 @@ class CustomerModel extends BaseModelAdm
     $v->string()->validate('address_state', 'Estado');
     $v->string()->validate('address_city', 'Cidade');
     $v->stringLenght(2)->validate('phone_ddd', 'DDD');
-    $v->stringLenght(8,9)->validate('phone_number', 'Telefone');
-    $v->dbUnique($this->_dao,'customer')->validate('email', 'E-mail');
+    $v->stringLenght(8, 9)->validate('phone_number', 'Telefone');
+    $v->dbUnique($this->_dao, 'customer')->validate('email', 'E-mail');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -100,6 +103,7 @@ class CustomerModel extends BaseModelAdm
     $f->string()->filter('business_name');
 
     $this->dao_insert();
+
   }
 
   public function update ( $input )
@@ -114,8 +118,8 @@ class CustomerModel extends BaseModelAdm
     $v->string()->validate('address_state', 'Estado');
     $v->string()->validate('address_city', 'Cidade');
     $v->stringLenght(2)->validate('phone_ddd', 'DDD');
-    $v->stringLenght(8,9)->validate('phone_number', 'Telefone');
-    $v->dbUnique($this->_dao,'customer','id_customer', $this->getId())->validate('email', 'E-mail');
+    $v->stringLenght(8, 9)->validate('phone_number', 'Telefone');
+    $v->dbUnique($this->_dao, 'customer', 'id_customer', $this->getId())->validate('email', 'E-mail');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
@@ -133,6 +137,7 @@ class CustomerModel extends BaseModelAdm
     $f->string()->filter('business_name');
 
     $this->dao_update();
+
   }
 
   public function formatFilters ()
@@ -141,6 +146,7 @@ class CustomerModel extends BaseModelAdm
     $this->_filters['email'] = Html::scape($this->_filters['email']);
 
     return $this->_filters;
+
   }
 
 }

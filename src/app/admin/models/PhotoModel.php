@@ -33,6 +33,7 @@ class PhotoModel extends BaseModelAdm
         'id_photo_item' => 'id_photo_item',
     ));
     $this->setEntity('photo');
+
   }
 
   public function formatTable ( $table, $exclude_fields = false )
@@ -56,6 +57,7 @@ class PhotoModel extends BaseModelAdm
     $table['uri'] = Link::formatUri($table['uri']);
 
     return $table;
+
   }
 
   public function getList ()
@@ -84,6 +86,7 @@ class PhotoModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function insert ( $input )
@@ -104,6 +107,7 @@ class PhotoModel extends BaseModelAdm
     $this->dao_insert();
 
     $this->_gallery->saveGalery($input['gallery_uploader'], $this->getId());
+
   }
 
   public function update ( $input )
@@ -122,6 +126,7 @@ class PhotoModel extends BaseModelAdm
     $this->dao_update();
 
     $this->_gallery->saveGalery($input['gallery_uploader'], $this->getId(), $input['sequence'], $input['label'], $input['credit']);
+
   }
 
   public function formatFilters ()
@@ -129,6 +134,7 @@ class PhotoModel extends BaseModelAdm
     $this->_filters['title'] = Html::scape($this->_filters['title']);
 
     return $this->_filters;
+
   }
 
 }

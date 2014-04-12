@@ -18,6 +18,7 @@ class PollOptionModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('poll_option');
+
   }
 
   public function batch_validate ( $array_options )
@@ -30,6 +31,7 @@ class PollOptionModel extends BaseModelAdm
       $v = new InputValidator($input);
       $v->string()->validate('option', 'Alternativa');
     }
+
   }
 
   public function batch_insert ( $id_poll, $array_options )
@@ -49,6 +51,7 @@ class PollOptionModel extends BaseModelAdm
 
       $this->_dao->insert($this->_table);
     }
+
   }
 
   public function batch_update ( $array_options )
@@ -65,6 +68,7 @@ class PollOptionModel extends BaseModelAdm
           'id_poll_option = ?' => $id_poll_option
       ));
     }
+
   }
 
   public function getByIdPoll ( $id_poll )
@@ -82,6 +86,7 @@ class PollOptionModel extends BaseModelAdm
     $result = $this->_dao->select($select);
 
     return $result;
+
   }
 
 }

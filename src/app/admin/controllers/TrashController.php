@@ -18,6 +18,7 @@ class TrashController extends BaseControllerAdm
   {
     parent::__construct();
     $this->_model = new model;
+
   }
 
   public function get ()
@@ -35,6 +36,7 @@ class TrashController extends BaseControllerAdm
     $this->setErrorSessionData();
 
     $this->setListTemplate('essential/trash_list.phtml');
+
   }
 
 }

@@ -26,6 +26,7 @@ class AdminModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('admin');
+
   }
 
   protected function formatTable ( $table, $exclude_fields = false )
@@ -42,6 +43,7 @@ class AdminModel extends BaseModelAdm
     $table['permission'] = Form::Listbox('permission', $permission_listbox, json_decode($table['permission']));
 
     return $table;
+
   }
 
   public function insert ( $input )
@@ -50,7 +52,7 @@ class AdminModel extends BaseModelAdm
     $v->string()->validate('name', 'Nome');
     $v->stringEmail()->validate('email', 'E-mail');
     $v->string()->validate('password', 'Senha');
-    $v->dbUnique($this->_dao,'admin')->validate('email', 'E-mail');
+    $v->dbUnique($this->_dao, 'admin')->validate('email', 'E-mail');
     $has_avatar = $v->upload()->validate('avatar', 'Avatar');
     $v->throwException();
     //
@@ -70,6 +72,7 @@ class AdminModel extends BaseModelAdm
     $mf->move();
     //
     $this->dao_insert();
+
   }
 
   public function update ( $input )
@@ -77,7 +80,7 @@ class AdminModel extends BaseModelAdm
     $v = new InputValidator($input);
     $v->string()->validate('name', 'Nome');
     $v->stringEmail()->validate('email', 'E-mail');
-    $v->dbUnique($this->_dao,'admin','id_admin', $this->getId())->validate('email', 'E-mail');
+    $v->dbUnique($this->_dao, 'admin', 'id_admin', $this->getId())->validate('email', 'E-mail');
     $has_avatar = $v->upload()->validate('avatar', 'Avatar');
     $v->throwException();
     //
@@ -95,6 +98,7 @@ class AdminModel extends BaseModelAdm
     $mf->move();
     //
     $this->dao_update();
+
   }
 
   public function getList ()
@@ -124,6 +128,7 @@ class AdminModel extends BaseModelAdm
     }
 
     return $result;
+
   }
 
   public function formatFilters ()
@@ -132,6 +137,7 @@ class AdminModel extends BaseModelAdm
     $this->_filters['email'] = Html::scape($this->_filters['email']);
 
     return $this->_filters;
+
   }
 
 }

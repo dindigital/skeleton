@@ -20,6 +20,7 @@ class TrashRestoreController extends BaseControllerAdm
   {
     parent::__construct();
     $this->_model = new model;
+
   }
 
   public function post ()
@@ -33,6 +34,7 @@ class TrashRestoreController extends BaseControllerAdm
     } catch (Exception $e) {
       $this->setErrorSession($e->getMessage());
     }
+
   }
 
 }

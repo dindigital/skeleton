@@ -21,27 +21,28 @@ class MailingImportModel extends BaseModelAdm
   {
     parent::__construct();
     $this->setEntity('mailing');
+
   }
 
   public function import_xls ( $input )
   {
     $extensions = array('xls', 'xlsx');
     $mimes = array(
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=binary',
-      'application/vnd.ms-excel; charset=binary',
-      'application/vnd.ms-office; charset=binary',
-      'application/zip; charset=binary'
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=binary',
+        'application/vnd.ms-excel; charset=binary',
+        'application/vnd.ms-office; charset=binary',
+        'application/zip; charset=binary'
     );
-    
+
     $v = new InputValidator($input);
     $v->string()->validate('mailing_group', 'Grupo');
     $has_file = $v->upload($extensions, $mimes)->validate('xls', 'Arquivo de Mailing');
-    
-    if (!$has_file)
+
+    if ( !$has_file )
       $v->addException('Arquivo inválido');
-    
+
     $v->throwException();
-    
+
     $xls_result = $this->getXlsContents($input['xls']);
 
     $mailing = new MailingModel;
@@ -73,6 +74,7 @@ class MailingImportModel extends BaseModelAdm
     $this->log('I', $report, $mailing->getTable());
 
     return $report;
+
   }
 
   protected function getXlsContents ( $xls )
@@ -89,6 +91,7 @@ class MailingImportModel extends BaseModelAdm
     }
 
     return $r;
+
   }
 
   public function createFields ()
@@ -98,6 +101,7 @@ class MailingImportModel extends BaseModelAdm
     );
 
     return $row;
+
   }
 
 }

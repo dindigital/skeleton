@@ -21,6 +21,7 @@ class IdParent extends AbstractFilter
         $this->_table->{$field} = end($id_parent);
       }
     }
+
   }
 
 }

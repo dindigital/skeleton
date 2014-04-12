@@ -25,11 +25,13 @@ class TweetableEntity extends BaseModelAdm implements Tweetable
     $entity_tbl = $this->_entity->getTbl();
 
     $this->setTable($entity_tbl);
+
   }
 
   public function getIdName ()
   {
     return $this->_entity->getId();
+
   }
 
   public function generateTweet ()
@@ -67,6 +69,7 @@ class TweetableEntity extends BaseModelAdm implements Tweetable
     $tweet = "{$title} - Saiba mais {$short_url}";
 
     return $tweet;
+
   }
 
   public function sentTweet ( $id_tweet )
@@ -82,6 +85,7 @@ class TweetableEntity extends BaseModelAdm implements Tweetable
     $table->{$entity_id} = $this->getId();
     $table->id_tweet = $id_tweet;
     $this->_dao->insert($table);
+
   }
 
   public function getTweets ()
@@ -104,6 +108,7 @@ class TweetableEntity extends BaseModelAdm implements Tweetable
     $result = $this->_dao->select($select);
 
     return $result;
+
   }
 
 }

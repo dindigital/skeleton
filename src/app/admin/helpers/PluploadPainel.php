@@ -39,6 +39,7 @@ class PluploadPainel implements iUploadBuilder
     $r = $Upl->getButton();
 
     return $r;
+
   }
 
 }

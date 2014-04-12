@@ -15,6 +15,7 @@ class MoveFiles
         'origin' => 'tmp/' . $origin,
         'destiny' => 'public' . $destiny
     );
+
   }
 
   /**
@@ -29,11 +30,13 @@ class MoveFiles
       Folder::make_writable(dirname($file['destiny']));
       rename($file['origin'], $file['destiny']);
     }
+
   }
 
   public function getFiles ()
   {
     return $this->_files;
+
   }
 
 }

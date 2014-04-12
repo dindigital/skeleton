@@ -20,6 +20,7 @@ class ActiveModel extends BaseModelAdm
     $entity = $this->_entities->getEntity($tbl);
     $model = $entity->getModel();
     $this->_model = new $model;
+
   }
 
   public function toggleActive ( $id, $active )
@@ -36,6 +37,7 @@ class ActiveModel extends BaseModelAdm
     $tableHistory = $this->_model->getById($id);
     $this->_dao->update($table, array($this->_model->getIdName() . ' = ?' => $id));
     $this->_model->log('U', $tableHistory[$title], $table, $tableHistory);
+
   }
 
 }

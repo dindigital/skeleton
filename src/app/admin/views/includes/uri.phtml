@@ -10,7 +10,7 @@
         <?php endif; ?>
         <input type="text" name="uri" class="form-control limit_text" maxlength="80" placeholder="Link Interno" value="<?php echo $data['table']['uri']['uri']; ?>">
         <?php if ( !is_null($data['table']['uri']['id']) ): ?>
-            <span class="input-group-addon">-<?php echo $data['table']['uri']['id']; ?>/</span>
+          <span class="input-group-addon">-<?php echo $data['table']['uri']['id']; ?>/</span>
         <?php else: ?>
           <span class="input-group-addon">&nbsp;</span>
         <?php endif; ?>

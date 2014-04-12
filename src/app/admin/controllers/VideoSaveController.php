@@ -24,11 +24,13 @@ class VideoSaveController extends BaseControllerAdm
     $this->_model = new model;
     $this->setEntityData();
     $this->require_permission();
+
   }
 
   public function get ()
   {
     $this->defaultSavePage('video_save.phtml', $this->_id);
+
   }
 
   public function post ()
@@ -55,6 +57,7 @@ class VideoSaveController extends BaseControllerAdm
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+
   }
 
 }

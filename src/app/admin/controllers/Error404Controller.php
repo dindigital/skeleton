@@ -19,6 +19,7 @@ class Error404Controller implements Routable
     $view = new View;
     $view->addFile('src/app/admin/views/essential/404.phtml');
     $view->display_html();
+
   }
 
 }

@@ -22,7 +22,8 @@
   function maybeBackup(stream, pat, style) {
     var cur = stream.current();
     var close = cur.search(pat);
-    if (close > -1) stream.backUp(cur.length - close);
+    if (close > -1)
+      stream.backUp(cur.length - close);
     return style;
   }
   function javascript(stream, state) {
@@ -33,7 +34,7 @@
       return html(stream, state);
     }
     return maybeBackup(stream, /<\/\s*script\s*>/,
-                       jsMode.token(stream, state.localState));
+            jsMode.token(stream, state.localState));
   }
   function css(stream, state) {
     if (stream.match(/^<\/\s*style\s*>/i, false)) {
@@ -43,7 +44,7 @@
       return html(stream, state);
     }
     return maybeBackup(stream, /<\/\s*style\s*>/,
-                       cssMode.token(stream, state.localState));
+            cssMode.token(stream, state.localState));
   }
 
   return {
@@ -51,18 +52,15 @@
       var state = htmlMode.startState();
       return {token: html, localState: null, mode: "html", htmlState: state};
     },
-
     copyState: function(state) {
       if (state.localState)
         var local = CodeMirror.copyState(state.token == css ? cssMode : jsMode, state.localState);
       return {token: state.token, localState: local, mode: state.mode,
-              htmlState: CodeMirror.copyState(htmlMode, state.htmlState)};
+        htmlState: CodeMirror.copyState(htmlMode, state.htmlState)};
     },
-
     token: function(stream, state) {
       return state.token(stream, state);
     },
-
     indent: function(state, textAfter) {
       if (state.token == html || /^\s*<\//.test(textAfter))
         return htmlMode.indent(state.htmlState, textAfter);
@@ -71,13 +69,13 @@
       else
         return cssMode.indent(state.localState, textAfter);
     },
-
     compareStates: function(a, b) {
-      if (a.mode != b.mode) return false;
-      if (a.localState) return CodeMirror.Pass;
+      if (a.mode != b.mode)
+        return false;
+      if (a.localState)
+        return CodeMirror.Pass;
       return htmlMode.compareStates(a.htmlState, b.htmlState);
     },
-
     electricChars: "/{}:"
   }
 }, "xml", "javascript", "css");

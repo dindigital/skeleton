@@ -1,4 +1,5 @@
 <?php
+
 /*
  * CKFinder
  * ========
@@ -11,4 +12,4 @@
  * this file is part of the Source Code of CKFinder.
  */
 
-require_once 'core/ckfinder_php5.php' ;
+require_once 'core/ckfinder_php5.php';

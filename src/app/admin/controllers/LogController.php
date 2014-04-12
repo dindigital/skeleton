@@ -18,6 +18,7 @@ class LogController extends BaseControllerAdm
   {
     parent::__construct();
     $this->_model = new model;
+
   }
 
   public function get ()
@@ -35,6 +36,7 @@ class LogController extends BaseControllerAdm
     $this->_data['search'] = $this->_model->formatFilters();
 
     $this->setListTemplate('essential/log_list.phtml');
+
   }
 
 }

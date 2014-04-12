@@ -39,6 +39,7 @@ class YouTubeModel extends BaseModelAdm
     $this->_youtube_client->setAccessType('offline');
     $this->_youtube_client->setApprovalPrompt('force');
     $this->_youtube = new Google_Service_YouTube($this->_youtube_client);
+
   }
 
   public function setToken ()
@@ -46,6 +47,7 @@ class YouTubeModel extends BaseModelAdm
     if ( !is_null($this->_sm_credentials->row['youtube_token']) && $this->_sm_credentials->row['youtube_token'] ) {
       $this->_youtube_client->setAccessToken($this->_sm_credentials->row['youtube_token']);
     }
+
   }
 
   protected function refreshToken ()
@@ -58,6 +60,7 @@ class YouTubeModel extends BaseModelAdm
         $this->_sm_credentials->updateYouTubeAccessToken($token);
       }
     }
+
   }
 
   public function getYouTubeLogin ()
@@ -69,6 +72,7 @@ class YouTubeModel extends BaseModelAdm
     if ( $this->_youtube_client->isAccessTokenExpired() ) {
       $this->getLoginUrl();
     }
+
   }
 
   public function auth ( $code )
@@ -77,6 +81,7 @@ class YouTubeModel extends BaseModelAdm
     $token = $this->_youtube_client->getAccessToken();
 
     $this->_sm_credentials->updateYouTubeAccessToken($token);
+
   }
 
   protected function getLoginUrl ()
@@ -85,6 +90,7 @@ class YouTubeModel extends BaseModelAdm
     $session->set('referer', Header::getUri());
 
     Header::redirect($this->_youtube_client->createAuthUrl());
+
   }
 
   public function insert ( $input, $privacy = "public" )
@@ -128,6 +134,7 @@ class YouTubeModel extends BaseModelAdm
     } catch (Google_Service_Exception $e) {
       return false;
     }
+
   }
 
   public function delete ( $id )
@@ -139,6 +146,7 @@ class YouTubeModel extends BaseModelAdm
     } catch (Exception $e) {
       return false;
     }
+
   }
 
 }

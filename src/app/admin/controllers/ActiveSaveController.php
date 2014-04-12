@@ -17,12 +17,14 @@ class ActiveSaveController implements \Respect\Rest\Routable
   public function __construct ()
   {
     $this->_model = new model;
+
   }
 
   public function post ()
   {
     $this->_model->setModelByTbl(Post::text('name'));
     $this->_model->toggleActive(Post::text('id'), Post::checkbox('active'));
+
   }
 
 }

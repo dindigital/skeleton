@@ -19,11 +19,13 @@ class SequenceModel extends BaseModelAdm
     $result = $this->_dao->execute($SQL, $arrCriteria);
 
     return $result;
+
   }
 
   protected function setModel ( $model )
   {
     $this->_model = $model;
+
   }
 
   /**
@@ -75,6 +77,7 @@ class SequenceModel extends BaseModelAdm
     }
 
     $this->updateSequence($sequence_new, $input['id']);
+
   }
 
   protected function updateSequence ( $sequence, $id )
@@ -89,6 +92,7 @@ class SequenceModel extends BaseModelAdm
     $f->intval()->filter('sequence');
 
     $this->_dao->update($table, array($entity_id . ' = ? ' => $id));
+
   }
 
 }
