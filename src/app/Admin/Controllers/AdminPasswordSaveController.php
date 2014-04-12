@@ -25,7 +25,6 @@ class AdminPasswordSaveController extends BaseController
     parent::__construct();
     $this->_model = new model;
     $this->_token = $token;
-
   }
 
   public function get ()
@@ -38,9 +37,8 @@ class AdminPasswordSaveController extends BaseController
     $this->_data['assets'] = $assetRead->getAssets();
 
     $this->_view->addFile('src/app/Admin/Views/layouts/login.phtml');
-    $this->_view->addFile('src/app/Admin/Views/Essential/recover_password.phtml', '{$CONTENT}');
+    $this->_view->addFile('src/app/Admin/Views/essential/recover_password.phtml', '{$CONTENT}');
     $this->display_html();
-
   }
 
   public function post ()
@@ -61,7 +59,6 @@ class AdminPasswordSaveController extends BaseController
     $session->set('saved_msg', 'Senha alterada com sucesso');
 
     JsonViewHelper::redirect('/admin/');
-
   }
 
 }

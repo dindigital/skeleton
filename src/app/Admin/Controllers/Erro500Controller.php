@@ -20,9 +20,8 @@ class Erro500Controller
     $view->setData(array(
         'msg' => $msg
     ));
-    $view->addFile('src/app/Admin/Views/Essential/500.phtml');
+    $view->addFile('src/app/Admin/Views/essential/500.phtml');
     $view->display_html();
-
   }
 
 }

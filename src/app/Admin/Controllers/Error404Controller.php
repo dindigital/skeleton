@@ -17,9 +17,8 @@ class Error404Controller implements Routable
   {
     Header::set404();
     $view = new View;
-    $view->addFile('src/app/Admin/Views/Essential/404.phtml');
+    $view->addFile('src/app/Admin/Views/essential/404.phtml');
     $view->display_html();
-
   }
 
 }
