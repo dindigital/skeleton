@@ -23,7 +23,8 @@
   "autoload": {
     "psr-0": {
       "Site\\": "src\/app\/",
-      "Admin\\": "src\/app\/"
+      "Admin\\": "src\/app\/",
+      "Helpers\\": "src\/"
     }
   }
 }

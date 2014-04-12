@@ -17,10 +17,10 @@ try {
   include 'admin_routes.php';
 
   // _# Erro 404
-  $r->any('/**', 'src\app\admin\controllers\Error404Controller');
+  $r->any('/**', 'Admin\Controllers\Error404Controller');
 
   die($r->run());
 } catch (Exception $e) {
-  $erro = new \src\app\admin\controllers\Erro500Controller;
+  $erro = new Admin\Controllers\Erro500Controller;
   $erro->get($e->getMessage());
 }

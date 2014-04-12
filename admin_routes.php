@@ -5,7 +5,7 @@ $tcn = (function($controller) {
   $classname = ucwords($classname);
   $classname = str_replace(' ', '', $classname);
   $classname .= 'Controller';
-  $classname = 'src\app\admin\controllers\\' . $classname;
+  $classname = 'Admin\Controllers\\' . $classname;
 
   try {
     $ref = new ReflectionClass($classname);
@@ -18,7 +18,7 @@ $tcn = (function($controller) {
   return $classname;
 });
 
-$r->any('/admin/', 'src\app\admin\controllers\AdminAuthController');
+$r->any('/admin/', 'Admin\Controllers\AdminAuthController');
 
 $r->get('/admin/*/list/', function($controller) use ($r, $tcn) {
   return $r->get("/admin/{$controller}/list/", $tcn($controller));
