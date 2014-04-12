@@ -1,0 +1,60 @@
+<input type="hidden" id="link_prefix" value="/admin/<?php echo $this->_data['entity']['tbl']; ?>" />
+
+<div class="row">
+  <div class="col-md-12">
+
+    {$ALERT}
+
+    <div class="block-flat">
+      <div class="header">
+        <h3>Lista de <?php echo $this->_data['entity']['section']; ?></h3>
+      </div>
+
+      <div class="content">
+        <form method="get" class="form_search">
+          <div class="col-sm-4 col-md-4 col-lg-2">
+            <input class="form-control" name="name" type="text" placeholder="Busca por nome" value="<?php echo $data['search']['name']; ?>">
+          </div>
+          <input type="button" value="Limpar" class="clean_search btn btn-default btn-rad" />
+          <input type="submit" value="Buscar" class="btn btn-info btn-rad" />
+        </form>
+      </div>
+
+      {$LIST_HEADER_BTN}
+
+      <div class="content">
+        <div class="table-responsive">
+          <table class="table no-border hover">
+            <thead class="no-border">
+              <tr>
+                <th style="width:2%;"><input type="checkbox" name="delete[]" id="delete_all" /></th>
+                <th style="width:25%;"><strong>Titulo</strong></th>
+                <th style="width:15%;" class="text-center"><strong>Ações</strong></th>
+              </tr>
+            </thead>
+            <tbody class="no-border-y">
+              <?php foreach ( $data['list'] as $row ): ?>
+                <tr name="<?php echo $this->_data['entity']['tbl']; ?>" id="<?php echo $row[$this->_data['entity']['id']]; ?>">
+                  <td><input class="delete" type="checkbox" name="delete[]" /></td>
+                  <td><?php echo $row['name']; ?></td>
+                  <td class="text-center">
+                    <a class="label label-default btn_edit" href="#" title="Editar conteúdo">
+                      <i class="fa fa-pencil"></i>
+                    </a>
+                    <a class="label label-danger delete_shortcut" href="#" title="Deletar conteúdo">
+                      <i class="fa fa-times"></i>
+                    </a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+
+          {$PAGINATION}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

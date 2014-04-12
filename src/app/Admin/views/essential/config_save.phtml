@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-md-12">
+
+    {$ALERTS}
+
+    <div class="block-flat">
+      <div class="header">
+        <h3>Meus Dados</h3>
+      </div>
+      <div class="content">
+
+        <form id="main_form" class="ajaxform form-horizontal group-border-dashed" method="post" style="border-radius: 0px;" onsubmit="return false;">
+
+          <div class="form-group form-group-submit">
+            <span class="loadingsubmit"></span>
+            <button type="submit" class="btn btn-default" tabindex="-1">Salvar</button>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Nome</label>
+            <div class="col-sm-10">
+              <input name="name" type="text" value="<?php echo $data['table']['name']; ?>" placeholder="Seu nome" class="limit_text form-control" maxlength="100">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">E-mail</label>
+            <div class="col-sm-10">
+              <input name="email" type="text" value="<?php echo $data['table']['email']; ?>" placeholder="Seu e-mail, ele será usado para o login" class="limit_text form-control" maxlength="50">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Senha</label>
+            <div class="col-sm-10">
+              <input name="password" class="form-control" type="password" value="" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Avatar</label>
+            <div class="col-sm-10">
+              <label><input type="checkbox" name="avatar_delete" /> Remover arquivo</label>
+              <br />
+              <?php echo $data['table']['avatar_uploader'] ?>
+            </div>
+          </div>
+
+          <div class="form-group form-group-submit">
+            <span class="loadingsubmit"></span>
+            <button type="submit" class="btn btn-default" tabindex="-1">Salvar</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

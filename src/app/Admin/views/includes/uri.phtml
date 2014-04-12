@@ -1,0 +1,20 @@
+<?php if ( isset($data['table']['uri']) && !is_null($data['table']['uri']) ): ?>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Link</label>
+    <div class="col-sm-10">
+      <div class="input-group">
+        <?php if ( !is_null($data['table']['uri']['prefix']) ): ?>
+          <span class="input-group-addon"><?php echo $data['table']['uri']['prefix']; ?>/</span>
+        <?php else: ?>
+          <span class="input-group-addon">&nbsp;</span>
+        <?php endif; ?>
+        <input type="text" name="uri" class="form-control limit_text" maxlength="80" placeholder="Link Interno" value="<?php echo $data['table']['uri']['uri']; ?>">
+        <?php if ( !is_null($data['table']['uri']['id']) ): ?>
+          <span class="input-group-addon">-<?php echo $data['table']['uri']['id']; ?>/</span>
+        <?php else: ?>
+          <span class="input-group-addon">&nbsp;</span>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+<?php endif; ?>

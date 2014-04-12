@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<?php echo $data['settings']['description'] ?>">
+    <meta name="author" content="DIN DIGITAL">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:url" content="http://www.meusite.com.br/ola-mundo">
+    <meta property="og:title" content="Título da página ou artigo">
+    <meta property="og:site_name" content="Nome do meu site">
+    <meta property="og:description" content="Minha boa descrição para intrigar os usuários.">
+    <meta property="og:image" content="www.meusite.com.br/imagem.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="600">
+
+    <!-- para páginas insstitucionais -->
+    <meta property="og:type" content="website">
+
+    <!-- para páginas de artigos, notícias -->
+    <meta property="og:type" content="article">
+    <meta property="article:author" content="Autor do artigo">
+    <meta property="article:section" content="Seção do artigo">
+    <meta property="article:tag" content="Tags do artigo">
+    <meta property="article:published_time" content="date_time">
+
+    <title><?php echo $data['settings']['title'] ?></title>
+
+    <?php echo $data['assets']['css']['css_site']; ?>
+    <?php echo $data['assets']['js']['js_modernizr']; ?>
+
+  </head>
+
+  <body role="document">
+
+    {$HEADER}
+
+    <div role="main">
+
+      {$CONTENT}
+
+    </div>
+
+    {$FOOTER}
+
+    <?php echo $data['assets']['js']['js_site']; ?>
+
+    <div id="fb-root"></div>
+
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId: '144825899061855',
+          status: true,
+          xfbml: true
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/pt_BR/all.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+
+  </body>
+
+</html>

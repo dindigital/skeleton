@@ -1,0 +1,25 @@
+<div class="cl-sidebar">
+  <div class="cl-toggle"><i class="fa fa-bars"></i></div>
+  <div class="cl-navblock">
+    <ul class="cl-vnavigation">
+
+      <?php foreach ( $data['menu'] as $section => $specs ): ?>
+        <li>
+          <?php if ( array_key_exists('submenu', $specs) ): ?>
+            <a href="#"><i class="fa fa-bars"></i><?php echo $section; ?></a>
+            <ul class="sub-menu">
+              <?php foreach ( $specs['submenu'] as $subsection => $subspecs ): ?>
+                <li>
+                  <a href="<?php echo $subspecs['index']; ?>"><i class="fa fa-bars"></i><?php echo $subsection; ?></a>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          <?php else: ?>
+            <a href="<?php echo $specs['index']; ?>"><i class="fa fa-bars"></i><?php echo $section; ?></a>
+            <?php endif; ?>
+        </li>
+      <?php endforeach; ?>
+
+    </ul>
+  </div>
+</div>

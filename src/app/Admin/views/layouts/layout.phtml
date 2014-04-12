@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    <title>DIN DIGITAL</title>
+
+    <?php echo $data['assets']['css']['css_admgoogle']; ?>
+    <?php echo $data['assets']['css']['css_adm']; ?>
+
+    <?php echo $data['assets']['js']['js_admjquery']; ?>
+    <?php echo $data['assets']['js']['js_adm']; ?>
+
+    <script type="text/javascript" src="/admin/js/ckeditor365/ckeditor.js"></script>
+    <script type="text/javascript" src="/admin/js/ckeditor365/adapters/jquery.js"></script>
+    <script type="text/javascript" src="/admin/js/ckfinder23/ckfinder.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div id="head-nav" class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="fa fa-gear"></span>
+          </button>
+          <a class="navbar-brand" href="#"><span>DIN DIGITAL</span></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right user-nav">
+            <li class="dropdown profile_menu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <?php echo $data['admin']['avatar_img'] ?>
+                <?php echo $data['admin']['name'] ?> <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="/admin/config/save/">Meus Dados</a></li>
+                <li class="divider"></li>
+                <li><a href="/admin/admin_auth_logout/">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div id="cl-wrapper">
+
+      {$NAV}
+
+      <div class="container-fluid" id="pcont">
+
+        <div class="cl-mcont">
+
+          {$CONTENT}
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="loading_overlay">
+      <div class="loading_message round_bottom">
+        <img src="/admin/images/loading.gif" alt="Carregando" />
+      </div>
+    </div>
+
+  </body>
+</html>
