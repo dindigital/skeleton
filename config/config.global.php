@@ -17,6 +17,7 @@ return array(
     'smtp_user' => 'xxx@xxx.com',
     'smtp_pass' => 'xxx',
     'bitly' => 'xxx',
-    'cache_html' => true,
-    'cache_path' => 'public/system/cache',
+    'cache_path' => 'public/system/cache', // ex: public/system/cache or empty
+    'cache_memcache' => 'localhost', // ex: localhost or empty
+    'cache_memcache_port' => 11211,
 );

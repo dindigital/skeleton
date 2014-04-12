@@ -9,7 +9,8 @@ use Din\Http\Post;
 use Exception;
 use src\helpers\JsonViewHelper;
 use Din\Session\Session;
-use Din\AssetRead\AssetRead;
+use Din\Assets\AssetsConfig;
+use Din\Assets\AssetsRead;
 
 /**
  *
@@ -24,6 +25,7 @@ class AdminAuthController extends BaseController implements \Respect\Rest\Routab
   {
     parent::__construct();
     $this->_model = new model;
+
   }
 
   private function setAuthTemplate ()
@@ -43,6 +45,7 @@ class AdminAuthController extends BaseController implements \Respect\Rest\Routab
     $session->un_set('saved_msg');
 
     $this->_view->addFile('src/app/admin/views/layouts/login.phtml');
+
   }
 
   public function get ()
@@ -50,6 +53,7 @@ class AdminAuthController extends BaseController implements \Respect\Rest\Routab
     $this->setAuthTemplate();
     $this->_view->addFile('src/app/admin/views/essential/login.phtml', '{$CONTENT}');
     $this->display_html();
+
   }
 
   public function post ()
@@ -64,6 +68,7 @@ class AdminAuthController extends BaseController implements \Respect\Rest\Routab
     }
 
     JsonViewHelper::redirect('/admin/index/');
+
   }
 
   public function get_logout ()
@@ -71,6 +76,7 @@ class AdminAuthController extends BaseController implements \Respect\Rest\Routab
     $this->_model->logout();
 
     Header::redirect('/admin/');
+
   }
 
 }

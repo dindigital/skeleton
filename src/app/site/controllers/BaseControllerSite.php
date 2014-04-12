@@ -6,7 +6,9 @@ use Din\Mvc\Controller\BaseController;
 use src\app\site\models as models;
 use Din\Assets\AssetsConfig;
 use Din\Assets\AssetsRead;
-use Din\Cache\ViewCache;
+use Din\Cache\Cache;
+use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\Common\Cache\MemcacheCache;
 
 /**
  * Classe abstrata que será a base de todos os controllers do adm
@@ -14,12 +16,19 @@ use Din\Cache\ViewCache;
 abstract class BaseControllerSite extends BaseController
 {
 
-  protected $_viewcache;
+  protected $_cache;
 
   public function __construct ()
   {
     parent::__construct();
-    $this->_viewcache = new ViewCache(CACHE_HTML, CACHE_PATH);
+    $this->_cache = new Cache();
+    if ( defined('CACHE_PATH') && is_dir(CACHE_PATH) ) {
+      $this->_cache->setCacheDriver(new FilesystemCache(CACHE_PATH));
+    } else if ( defined('CACHE_MEMCACHE') && defined('CACHE_MEMCACHE_PORT') ) {
+      $this->_cache->setCacheDriver(new MemcacheCache());
+      $this->_cache->setMemcache(CACHE_MEMCACHE, CACHE_MEMCACHE_PORT);
+    }
+
   }
 
   /**
@@ -34,6 +43,7 @@ abstract class BaseControllerSite extends BaseController
     $assetsRead->setGroup('css', array('site'));
     $assetsRead->setGroup('js', array('jquery', 'site'));
     $this->_data['assets'] = $assetsRead->getAssets();
+
   }
 
   /**
@@ -47,6 +57,7 @@ abstract class BaseControllerSite extends BaseController
     $this->_view->addFile('src/app/site/views/layouts/layout.phtml');
     $this->_view->addFile('src/app/site/views/includes/header.phtml', '{$HEADER}');
     $this->_view->addFile('src/app/site/views/includes/footer.phtml', '{$FOOTER}');
+
   }
 
   /**
@@ -54,8 +65,9 @@ abstract class BaseControllerSite extends BaseController
    */
   protected function setSettings ()
   {
-    $settingsModels = new models\SettingsModel;
+    $settingsModels = new models\CacheModel(new models\SettingsModel(), $this->_cache, 300);
     $this->_data['settings'] = $settingsModels->getSettings();
+
   }
 
   /**
@@ -63,8 +75,9 @@ abstract class BaseControllerSite extends BaseController
    */
   protected function setNav ()
   {
-    $pageCatModel = new models\PageCatModel;
+    $pageCatModel = new models\CacheModel(new models\PageCatModel(), $this->_cache, 300);
     $this->_data['nav'] = $pageCatModel->getNav();
+
   }
 
 }

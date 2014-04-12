@@ -20,11 +20,13 @@ class CacheSaveController extends BaseControllerAdm
   {
     parent::__construct();
     $this->_model = new model;
+
   }
 
   public function get ()
   {
     $this->setSaveTemplate('essential/cache_save.phtml');
+
   }
 
   public function post ()
@@ -41,10 +43,11 @@ class CacheSaveController extends BaseControllerAdm
       $this->_model->clear($input);
 
       $this->setSavedMsgSession();
-      JsonViewHelper::redirect('/admin/cache/');
+      JsonViewHelper::redirect('/admin/cache/save/');
     } catch (Exception $e) {
       JsonViewHelper::display_error_message($e);
     }
+
   }
 
 }
