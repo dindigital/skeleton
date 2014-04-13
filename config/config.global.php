@@ -18,6 +18,6 @@ return array(
     'smtp_pass' => 'xxx',
     'bitly' => 'xxx',
     'cache_path' => 'public/system/cache', // ex: public/system/cache or empty
-    'cache_memcache' => 'localhost', // ex: localhost or empty
+    'cache_memcache' => '', // ex: localhost or empty
     'cache_memcache_port' => 11211,
 );
