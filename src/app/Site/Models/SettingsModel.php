@@ -3,6 +3,7 @@
 namespace Site\Models;
 
 use Din\DataAccessLayer\Select;
+use Exception;
 
 class SettingsModel extends BaseModelSite
 {
