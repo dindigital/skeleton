@@ -9,7 +9,6 @@ function errHandle ( $errNo, $errStr, $errFile, $errLine )
 
   $msg = "$errStr in $errFile on line $errLine";
   throw new ErrorException($msg, $errNo);
-
 }
 
 set_error_handler('errHandle');
@@ -25,5 +24,4 @@ if ( !ini_get('safe_mode') ) {
   ini_set('default_charset', 'UTF-8');
 }
 
-chdir($_SERVER['DOCUMENT_ROOT']);
-require_once 'vendor/autoload.php';
+chdir('../');
