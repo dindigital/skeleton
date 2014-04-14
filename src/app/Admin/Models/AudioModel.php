@@ -11,7 +11,7 @@ use Admin\Helpers\Link;
 use Admin\Helpers\Form;
 use Admin\Helpers\MoveFiles;
 use Admin\Models\Essential\SoundCloudModel;
-use Admin\Custom_filter\TableFilterAdm as TableFilter;
+use Admin\CustomFilter\TableFilterAdm as TableFilter;
 use Din\InputValidator\InputValidator;
 
 /**

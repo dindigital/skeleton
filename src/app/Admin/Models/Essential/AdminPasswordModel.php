@@ -7,7 +7,7 @@ use Din\Mvc\View\View;
 use Din\Email\Email;
 use Din\Email\SendEmail\SendEmail;
 use Din\InputValidator\InputValidator;
-use Admin\Custom_filter\TableFilterAdm as TableFilter;
+use Admin\CustomFilter\TableFilterAdm as TableFilter;
 
 /**
  *

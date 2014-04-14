@@ -7,7 +7,7 @@ use Exception;
 use Soundcloud\Service;
 use Admin\Models\SocialmediaCredentialsModel;
 use Din\Http\Header;
-use Admin\Custom_filter\TableFilterAdm as TableFilter;
+use Admin\CustomFilter\TableFilterAdm as TableFilter;
 use Din\Session\Session;
 
 /**

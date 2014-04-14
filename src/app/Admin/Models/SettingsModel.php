@@ -4,7 +4,7 @@ namespace Admin\Models;
 
 use Admin\Models\Essential\BaseModelAdm;
 use Din\Filters\String\Html;
-use Admin\Custom_filter\TableFilterAdm as TableFilter;
+use Admin\CustomFilter\TableFilterAdm as TableFilter;
 use Din\InputValidator\InputValidator;
 
 /**

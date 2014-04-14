@@ -10,7 +10,7 @@ use Admin\Models\Essential\SequenceModel;
 use Din\Filters\Date\DateFormat;
 use Admin\Helpers\Form;
 use Din\Filters\String\Html;
-use Admin\Custom_filter\TableFilterAdm as TableFilter;
+use Admin\CustomFilter\TableFilterAdm as TableFilter;
 use Admin\Helpers\Entity;
 use Din\DataAccessLayer\Table\Table;
 use src\app\admin\filters\SequenceFilter;

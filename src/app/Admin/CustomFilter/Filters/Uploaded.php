@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Custom_filter\filters;
+namespace Admin\CustomFilter\Filters;
 
 use Din\TableFilter\AbstractFilter;
 use Admin\Helpers\MoveFiles;

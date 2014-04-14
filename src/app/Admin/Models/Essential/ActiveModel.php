@@ -4,7 +4,7 @@ namespace Admin\Models\Essential;
 
 use Admin\Models\Essential\BaseModelAdm;
 use Din\DataAccessLayer\Table\Table;
-use Admin\Custom_filter\TableFilterAdm as TableFilter;
+use Admin\CustomFilter\TableFilterAdm as TableFilter;
 
 /**
  *

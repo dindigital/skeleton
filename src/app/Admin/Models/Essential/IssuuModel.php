@@ -7,7 +7,7 @@ use Din\DataAccessLayer\Table\Table;
 use Din\API\Issuu\Issuu;
 use Admin\Models\SocialmediaCredentialsModel;
 use Exception;
-use Admin\Custom_filter\TableFilterAdm as TableFilter;
+use Admin\CustomFilter\TableFilterAdm as TableFilter;
 
 /**
  *

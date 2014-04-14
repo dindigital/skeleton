@@ -9,7 +9,7 @@ use Admin\Models\PollOptionModel;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use Admin\Helpers\Link;
-use Admin\Custom_filter\TableFilterAdm as TableFilter;
+use Admin\CustomFilter\TableFilterAdm as TableFilter;
 use Din\InputValidator\InputValidator;
 
 /**

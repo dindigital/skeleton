@@ -7,7 +7,7 @@ use Twitter;
 use Exception;
 use Admin\Models\Essential\TweetableEntity;
 use Din\Filters\Date\DateFormat;
-use Admin\Custom_filter\TableFilterAdm as TableFilter;
+use Admin\CustomFilter\TableFilterAdm as TableFilter;
 use Din\InputValidator\InputValidator;
 use Admin\Models\SocialmediaCredentialsModel;
 

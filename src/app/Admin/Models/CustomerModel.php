@@ -6,7 +6,7 @@ use Admin\Models\Essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Admin\Helpers\PaginatorAdmin;
 use Din\Filters\String\Html;
-use Admin\Custom_filter\TableFilterAdm as TableFilter;
+use Admin\CustomFilter\TableFilterAdm as TableFilter;
 use Din\InputValidator\InputValidator;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Custom_filter;
+namespace Admin\CustomFilter;
 
 use Din\TableFilter\TableFilter;
 use Exception;
@@ -22,7 +22,7 @@ class TableFilterAdm extends TableFilter
 
       return parent::instanciateFilter($namespace, $classname, $arguments);
     } catch (Exception $ex) {
-      $namespace = __NAMESPACE__ . '\filters\\';
+      $namespace = __NAMESPACE__ . '\Filters\\';
 
       return parent::instanciateFilter($namespace, $classname, $arguments);
     }

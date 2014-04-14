@@ -14,7 +14,7 @@ use Din\Filters\String\Html;
 use Admin\Helpers\Link;
 use Din\Image\Picuri;
 use Din\DataAccessLayer\Table\Table;
-use Admin\Custom_filter\TableFilterAdm as TableFilter;
+use Admin\CustomFilter\TableFilterAdm as TableFilter;
 use Din\InputValidator\InputValidator;
 use Admin\Helpers\SequenceResult;
 
