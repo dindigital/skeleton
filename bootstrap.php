@@ -7,14 +7,14 @@ try {
 
   $c = new Respect\Config\Container();
   $c->loadFile('config/routes.ini');
-  $c->loadFile('config/config.ini');
+  $c->loadFile('config/di.ini');
 
   $c->dinconfig->define();
 
   $r = $c->router;
 
   // _# Rotas mágicas do painel adm
-  include 'admin_routes.php';
+  include 'config/admin_routes.php';
 
   // _# Erro 404
   $r->any('/**', 'Admin\Controllers\Error404Controller');
