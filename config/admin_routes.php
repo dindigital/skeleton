@@ -10,7 +10,7 @@ $tcn = (function($controller) {
   try {
     $ref = new ReflectionClass($classname);
   } catch (Exception $e) {
-    $e404 = new src\app\admin\controllers\Error404Controller;
+    $e404 = new \Admin\Controllers\Error404Controller;
     $e404->get();
     exit;
   }
