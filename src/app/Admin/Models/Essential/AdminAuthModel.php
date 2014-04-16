@@ -36,14 +36,12 @@ class AdminAuthModel extends Auth
   public function login ( $email, $password, $is_crypted = false )
   {
     if ( !parent::login($email, $password, $is_crypted) ) {
-      JsonException::addException("Dados inválidos. Usuário não encontrado.");
-      JsonException::throwException();
+      throw new JsonException("Dados inválidos. Usuário não encontrado.");
     }
 
     if ( !$this->is_active() ) {
       $this->logout();
-      JsonException::addException("Sua conta ainda não foi ativada. Entre em contato com o Administrador.");
-      JsonException::throwException();
+      throw new JsonException("Sua conta ainda não foi ativada. Entre em contato com o Administrador.");
     }
 
   }
