@@ -61,19 +61,22 @@ class Form
   public static function Dropdown ( $name, $array, $selected = '', $firstOption = null, $id = null, $class = null )
   {
     $d = new Dropdown($name);
-    if ( $class )
+    if ( $class ) {
       $d->setClass('form-control ' . $class);
-    else
-      $d->setClass('select2');
+    } else {
+      $d->setClass('form-control');
+    }
 
     $d->setSelected($selected);
     $d->setOptionsArray($array);
 
-    if ( $firstOption )
+    if ( $firstOption ) {
       $d->setFirstOpt($firstOption);
+    }
 
-    if ( $id )
+    if ( $id ) {
       $d->setId($id);
+    }
 
     return $d->getElement();
 
