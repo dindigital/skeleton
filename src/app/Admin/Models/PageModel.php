@@ -82,7 +82,7 @@ class PageModel extends BaseModelAdm
 
     $select = new Select('page');
     $select->addField('id_page');
-    $select->addField('active');
+    $select->addField('is_active');
     $select->addField('title');
     $select->addField('inc_date');
     $select->addField('sequence');
@@ -126,7 +126,7 @@ class PageModel extends BaseModelAdm
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_page');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('id_page_cat');
     $f->idParent()->filter('id_parent');
     $f->string()->filter('title');
@@ -159,7 +159,7 @@ class PageModel extends BaseModelAdm
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('id_page_cat');
     $f->idParent()->filter('id_parent');
     $f->string()->filter('title');

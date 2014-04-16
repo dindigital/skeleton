@@ -77,7 +77,7 @@ class AudioModel extends BaseModelAdm
 
     $select = new Select('audio');
     $select->addField('id_audio');
-    $select->addField('active');
+    $select->addField('is_active');
     $select->addField('title');
     $select->addField('date');
     $select->addField('uri');
@@ -126,7 +126,7 @@ class AudioModel extends BaseModelAdm
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_audio');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->string()->filter('description');
     $f->date()->filter('date');
@@ -156,7 +156,7 @@ class AudioModel extends BaseModelAdm
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->string()->filter('description');
     $f->date()->filter('date');

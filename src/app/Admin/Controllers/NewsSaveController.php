@@ -39,7 +39,7 @@ class NewsSaveController extends BaseControllerAdm
       $this->_model->setId($this->_id);
 
       $info = array(
-          'active' => Post::checkbox('active'),
+          'is_active' => Post::checkbox('is_active'),
           'id_news_cat' => Post::text('id_news_cat'),
           'title' => Post::text('title'),
           'date' => Post::text('date'),

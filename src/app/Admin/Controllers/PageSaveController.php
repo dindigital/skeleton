@@ -40,7 +40,7 @@ class PageSaveController extends BaseControllerAdm
       $this->_model->setId($this->_id);
 
       $info = array(
-          'active' => Post::checkbox('active'),
+          'is_active' => Post::checkbox('is_active'),
           'id_page_cat' => Post::text('id_page_cat'),
           'id_parent' => Post::aray('id_parent'),
           'title' => Post::text('title'),

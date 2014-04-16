@@ -1,0 +1,8 @@
+<?php if ( array_key_exists('is_active', $data['table']) ): ?>
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="active">Ativo</label>
+    <div class="col-sm-10">
+      <label class="checkbox-inline"><input type="checkbox" name="is_active" id="active" <?php if ( $data['table']['is_active'] == '1' ): ?>checked="checked"<?php endif; ?> /></label>
+    </div>
+  </div>
+<?php endif; ?>

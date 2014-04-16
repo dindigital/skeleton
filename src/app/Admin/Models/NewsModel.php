@@ -68,7 +68,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $select = new Select('news');
     $select->addField('id_news');
     $select->addField('id_news_cat');
-    $select->addField('active');
+    $select->addField('is_active');
     $select->addField('title');
     $select->addField('date');
     $select->addField('sequence');
@@ -111,7 +111,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_news');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('id_news_cat');
     $f->string()->filter('title');
     $f->date()->filter('date');
@@ -144,7 +144,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('id_news_cat');
     $f->string()->filter('title');
     $f->date()->filter('date');

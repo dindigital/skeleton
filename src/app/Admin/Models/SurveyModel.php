@@ -55,7 +55,7 @@ class SurveyModel extends BaseModelAdm
 
     $select = new Select('survey');
     $select->addField('id_survey');
-    $select->addField('active');
+    $select->addField('is_active');
     $select->addField('title');
     $select->addField('inc_date');
     $select->where($arrCriteria);
@@ -88,7 +88,7 @@ class SurveyModel extends BaseModelAdm
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_survey');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->defaultUri('title', $this->getId(), 'opine')->filter('uri');
     //
@@ -110,7 +110,7 @@ class SurveyModel extends BaseModelAdm
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->defaultUri('title', $this->getId(), 'opine')->filter('uri');
     //

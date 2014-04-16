@@ -70,7 +70,7 @@ class PublicationModel extends BaseModelAdm
 
     $select = new Select('publication');
     $select->addField('id_publication');
-    $select->addField('active');
+    $select->addField('is_active');
     $select->addField('title');
 
     $select->left_join('id_issuu', Select::construct('issuu')
@@ -103,7 +103,7 @@ class PublicationModel extends BaseModelAdm
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_publication');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->defaultUri('title', $this->getId())->filter('uri');
     //
@@ -127,7 +127,7 @@ class PublicationModel extends BaseModelAdm
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->defaultUri('title', $this->getId())->filter('uri');
     //

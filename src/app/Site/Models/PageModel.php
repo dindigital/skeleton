@@ -13,7 +13,7 @@ class PageModel extends BaseModelSite
 
     $arrCriteria = array(
         'a.is_del = ?' => '0',
-        'a.active = ?' => '1',
+        'a.is_active = ?' => '1',
         'a.id_page_cat = ?' => $id_page_cat
     );
 
@@ -42,7 +42,7 @@ class PageModel extends BaseModelSite
 
     $arrCriteria = array(
         'a.is_del = ?' => '0',
-        'a.active = ?' => '1',
+        'a.is_active = ?' => '1',
         'a.uri = ?' => $uri
     );
 

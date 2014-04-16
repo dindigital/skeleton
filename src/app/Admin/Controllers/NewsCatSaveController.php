@@ -40,7 +40,7 @@ class NewsCatSaveController extends BaseControllerAdm
       $this->_model->setId($this->_id);
 
       $info = array(
-          'active' => Post::checkbox('active'),
+          'is_active' => Post::checkbox('is_active'),
           'title' => Post::text('title'),
           'is_home' => Post::checkbox('is_home'),
           'uri' => Post::text('uri'),

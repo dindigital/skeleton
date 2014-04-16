@@ -40,7 +40,7 @@ class PageCatSaveController extends BaseControllerAdm
       $this->_model->setId($this->_id);
 
       $info = array(
-          'active' => Post::checkbox('active'),
+          'is_active' => Post::checkbox('is_active'),
           'title' => Post::text('title'),
           'cover' => Post::upload('cover'),
           'cover_delete' => Post::checkbox('cover_delete'),

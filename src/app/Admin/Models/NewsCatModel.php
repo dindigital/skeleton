@@ -59,7 +59,7 @@ class NewsCatModel extends BaseModelAdm
 
     $select = new Select('news_cat');
     $select->addField('id_news_cat');
-    $select->addField('active');
+    $select->addField('is_active');
     $select->addField('title');
     $select->addField('inc_date');
     $select->addField('sequence');
@@ -95,7 +95,7 @@ class NewsCatModel extends BaseModelAdm
     //
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_news_cat');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->intval()->filter('is_home');
     $f->timestamp()->filter('inc_date');
     $f->string()->filter('title');
@@ -120,7 +120,7 @@ class NewsCatModel extends BaseModelAdm
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->intval()->filter('is_home');
     $f->string()->filter('title');
     $f->defaultUri('title', $this->getId(), 'news')->filter('uri');

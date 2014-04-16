@@ -40,7 +40,7 @@ class PollSaveController extends BaseControllerAdm
       $this->_model->setId($this->_id);
 
       $info = array(
-          'active' => Post::checkbox('active'),
+          'is_active' => Post::checkbox('is_active'),
           'question' => Post::text('question'),
           'uri' => Post::text('uri'),
           'option' => Post::aray('option'),

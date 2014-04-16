@@ -39,7 +39,7 @@ class AdminSaveController extends BaseControllerAdm
       $this->_model->setId($this->_id);
 
       $info = array(
-          'active' => Post::checkbox('active'),
+          'is_active' => Post::checkbox('is_active'),
           'name' => Post::text('name'),
           'email' => Post::text('email'),
           'password' => Post::text('password'),

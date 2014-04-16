@@ -39,7 +39,7 @@ class VideoSaveController extends BaseControllerAdm
       $this->_model->setId($this->_id);
 
       $info = array(
-          'active' => Post::checkbox('active'),
+          'is_active' => Post::checkbox('is_active'),
           'title' => Post::text('title'),
           'date' => Post::text('date'),
           'description' => Post::text('description'),

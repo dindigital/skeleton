@@ -44,7 +44,7 @@ class TagModel extends BaseModelAdm
 
     $select = new Select('tag');
     $select->addField('id_tag');
-    $select->addField('active');
+    $select->addField('is_active');
     $select->addField('title');
     $select->where($arrCriteria);
     $select->order_by('title');
@@ -72,7 +72,7 @@ class TagModel extends BaseModelAdm
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_tag');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
 
     $this->dao_insert();
@@ -87,7 +87,7 @@ class TagModel extends BaseModelAdm
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
 
     $this->dao_update();
@@ -98,7 +98,7 @@ class TagModel extends BaseModelAdm
   {
 
     $input = array(
-        'active' => 1,
+        'is_active' => 1,
         'title' => $title
     );
 
@@ -110,7 +110,7 @@ class TagModel extends BaseModelAdm
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_tag');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
 
     $this->dao_insert();

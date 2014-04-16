@@ -69,7 +69,7 @@ class PhotoModel extends BaseModelAdm
 
     $select = new Select('photo');
     $select->addField('id_photo');
-    $select->addField('active');
+    $select->addField('is_active');
     $select->addField('title');
     $select->addField('date');
     $select->addField('uri');
@@ -99,7 +99,7 @@ class PhotoModel extends BaseModelAdm
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_photo');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->date()->filter('date');
     $f->defaultUri('title', $this->getId(), 'fotos')->filter('uri');
@@ -118,7 +118,7 @@ class PhotoModel extends BaseModelAdm
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->date()->filter('date');
     $f->defaultUri('title', $this->getId(), 'fotos')->filter('uri');

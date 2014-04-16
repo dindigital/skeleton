@@ -55,7 +55,7 @@ class PollModel extends BaseModelAdm
 
     $select = new Select('poll');
     $select->addField('id_poll');
-    $select->addField('active');
+    $select->addField('is_active');
     $select->addField('question');
     $select->addField('inc_date');
     $select->where($arrCriteria);
@@ -88,7 +88,7 @@ class PollModel extends BaseModelAdm
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_poll');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('question');
     $f->defaultUri('question', $this->getId(), 'enquete')->filter('uri');
     //
@@ -110,7 +110,7 @@ class PollModel extends BaseModelAdm
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('question');
     $f->defaultUri('question', $this->getId(), 'enquete')->filter('uri');
     //

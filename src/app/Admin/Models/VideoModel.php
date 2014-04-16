@@ -70,7 +70,7 @@ class VideoModel extends BaseModelAdm
 
     $select = new Select('video');
     $select->addField('id_video');
-    $select->addField('active');
+    $select->addField('is_active');
     $select->addField('title');
     $select->addField('date');
     $select->addField('uri');
@@ -103,7 +103,7 @@ class VideoModel extends BaseModelAdm
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_video');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->string()->filter('description');
     $f->string()->filter('link_youtube');
@@ -137,7 +137,7 @@ class VideoModel extends BaseModelAdm
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->string()->filter('description');
     $f->string()->filter('link_youtube');

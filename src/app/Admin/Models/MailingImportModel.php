@@ -53,7 +53,7 @@ class MailingImportModel extends BaseModelAdm
     foreach ( $xls_result as $xls_row ) {
       try {
         $mailing->insert(array(
-            'active' => '1',
+            'is_active' => '1',
             'name' => $xls_row['name'],
             'email' => $xls_row['email'],
             'mailing_group' => $input['mailing_group'],

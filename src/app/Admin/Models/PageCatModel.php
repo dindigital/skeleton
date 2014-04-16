@@ -56,7 +56,7 @@ class PageCatModel extends BaseModelAdm
 
     $select = new Select('page_cat');
     $select->addField('id_page_cat');
-    $select->addField('active');
+    $select->addField('is_active');
     $select->addField('title');
     $select->addField('inc_date');
     $select->addField('sequence');
@@ -93,7 +93,7 @@ class PageCatModel extends BaseModelAdm
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_page_cat');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->string()->filter('content');
     $f->string()->filter('description');
@@ -123,7 +123,7 @@ class PageCatModel extends BaseModelAdm
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('title');
     $f->string()->filter('content');
     $f->string()->filter('description');

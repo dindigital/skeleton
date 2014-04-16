@@ -75,7 +75,7 @@ class MailingModel extends BaseModelAdm
 
   public function insert ( $input )
   {
-    $input['active'] = '1';
+    $input['is_active'] = '1';
 
     $v = new InputValidator($input);
     $v->string()->validate('name', 'Nome');
@@ -87,7 +87,7 @@ class MailingModel extends BaseModelAdm
     $f = new TableFilter($this->_table, $input);
     $f->newId()->filter('id_mailing');
     $f->timestamp()->filter('inc_date');
-    $f->intval()->filter('active');
+    $f->intval()->filter('is_active');
     $f->string()->filter('name');
     $f->string()->filter('email');
 

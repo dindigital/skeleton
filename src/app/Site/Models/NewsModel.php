@@ -16,7 +16,7 @@ class NewsModel extends BaseModelSite
 
     $arrCriteria = array(
         'a.is_del = ?' => '0',
-        'a.active = ?' => '1'
+        'a.is_active = ?' => '1'
     );
 
     $select = new Select('news');
@@ -45,7 +45,7 @@ class NewsModel extends BaseModelSite
 
     $arrCriteria = array(
         'a.is_del = ?' => '0',
-        'a.active = ?' => '1'
+        'a.is_active = ?' => '1'
     );
 
     $select = new Select('news');
@@ -82,7 +82,7 @@ class NewsModel extends BaseModelSite
 
     $arrCriteria = array(
         'a.is_del = ?' => '0',
-        'a.active = ?' => '1',
+        'a.is_active = ?' => '1',
         'a.uri = ?' => $uri
     );
 
