@@ -37,7 +37,12 @@ class GaleryModel extends BaseModelAdm
   {
 
     $select = new Select($this->_photo_item);
-    $select->addAllFields();
+    $select->addField($this->_id_photo, 'id_photo');
+    $select->addField($this->_id_photo_item, 'id_photo_item');
+    $select->addField('label');
+    $select->addField('credit');
+    $select->addField('file');
+    $select->addField('sequence');
     $select->where($arrCriteria);
     $select->order_by('sequence');
 
