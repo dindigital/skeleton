@@ -10,7 +10,7 @@ use Admin\Helpers\Form;
 use Admin\Helpers\Gallery;
 use Din\Filters\String\Html;
 use Admin\Helpers\Link;
-use Admin\CustomFilter\TableFilterAdm as TableFilter;
+use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;
 use Admin\Models\Essential\GaleryModel;
 

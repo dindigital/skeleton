@@ -6,7 +6,7 @@ use Admin\Models\Essential\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Admin\Helpers\MoveFiles;
 use Din\InputValidator\InputValidator;
-use Admin\CustomFilter\TableFilterAdm as TableFilter;
+use Din\TableFilter\TableFilter;
 use Din\File\Folder;
 
 /**

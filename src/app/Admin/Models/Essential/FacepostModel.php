@@ -7,7 +7,7 @@ use Exception;
 use Facebook;
 use Admin\Models\SocialmediaCredentialsModel;
 use Din\Filters\Date\DateFormat;
-use Admin\CustomFilter\TableFilterAdm as TableFilter;
+use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;
 
 /**

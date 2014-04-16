@@ -11,7 +11,7 @@ use Admin\Helpers\Form;
 use Helpers\Arrays;
 use Din\Filters\String\Html;
 use Admin\Helpers\Link;
-use Admin\CustomFilter\TableFilterAdm as TableFilter;
+use Din\TableFilter\TableFilter;
 use Admin\Helpers\SequenceResult;
 use Din\InputValidator\InputValidator;
 

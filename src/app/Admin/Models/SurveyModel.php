@@ -9,7 +9,7 @@ use Admin\Models\SurveyQuestionModel;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use Admin\Helpers\Link;
-use Admin\CustomFilter\TableFilterAdm as TableFilter;
+use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;
 
 /**
