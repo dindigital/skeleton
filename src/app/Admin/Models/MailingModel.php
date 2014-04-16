@@ -2,12 +2,12 @@
 
 namespace Admin\Models;
 
-use Admin\Models\Essential\BaseModelAdm;
+use Din\Essential\Models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
-use Admin\Helpers\PaginatorAdmin;
-use Admin\Models\Essential\RelationshipModel;
+use Din\Essential\Helpers\PaginatorAdmin;
+use Din\Essential\Models\RelationshipModel;
 use Din\Filters\String\Html;
-use Admin\Helpers\Form;
+use Din\Essential\Helpers\Form;
 use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;
 

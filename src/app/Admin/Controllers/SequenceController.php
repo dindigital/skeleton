@@ -5,7 +5,7 @@ namespace Admin\Controllers;
 use Din\Http\Post;
 use Exception;
 use Din\Http\Header;
-use Admin\Models\Essential\SequenceModel;
+use Din\Essential\Models\SequenceModel;
 
 /**
  *

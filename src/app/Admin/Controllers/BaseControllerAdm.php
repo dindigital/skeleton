@@ -3,13 +3,13 @@
 namespace Admin\Controllers;
 
 use Din\Mvc\Controller\BaseController;
-use Admin\Models\Essential\AdminAuthModel;
+use Din\Essential\Models\AdminAuthModel;
 use Exception;
 use Din\Session\Session;
 use Din\Image\Picuri;
 use Din\Http\Post;
 use Din\Http\Header;
-use Admin\Models\Essential\PermissionModel;
+use Din\Essential\Models\PermissionModel;
 use Helpers\JsonViewHelper;
 use Din\Assets\AssetsConfig;
 use Din\Assets\AssetsRead;

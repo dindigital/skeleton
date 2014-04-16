@@ -2,7 +2,7 @@
 
 namespace Admin\Controllers;
 
-use Admin\Models\Essential\ActiveModel as model;
+use Din\Essential\Models\ActiveModel as model;
 use Din\Http\Post;
 
 /**

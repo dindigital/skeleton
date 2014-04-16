@@ -3,7 +3,7 @@
 namespace Admin\Controllers;
 
 use Din\Http\Get;
-use Admin\Models\Essential\TrashModel as model;
+use Din\Essential\Models\TrashModel as model;
 
 /**
  *

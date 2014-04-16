@@ -2,15 +2,15 @@
 
 namespace Admin\Models;
 
-use Admin\Models\Essential\BaseModelAdm;
+use Din\Essential\Models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
-use Admin\Helpers\PaginatorAdmin;
+use Din\Essential\Helpers\PaginatorAdmin;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
-use Admin\Helpers\Link;
-use Admin\Helpers\Form;
-use Admin\Helpers\MoveFiles;
-use Admin\Models\Essential\SoundCloudModel;
+use Din\Essential\Helpers\Link;
+use Din\Essential\Helpers\Form;
+use Din\File\MoveFiles;
+use Din\Essential\Models\SoundCloudModel;
 use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;
 

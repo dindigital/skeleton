@@ -3,7 +3,7 @@
 namespace Admin\Controllers;
 
 use Din\Mvc\Controller\BaseController;
-use Admin\Models\Essential\AdminAuthModel as model;
+use Din\Essential\Models\AdminAuthModel as model;
 use Din\Http\Header;
 
 /**

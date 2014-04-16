@@ -4,7 +4,7 @@ namespace Admin\Controllers;
 
 use Din\Http\Post;
 use Exception;
-use Admin\Models\Essential\TrashModel as model;
+use Din\Essential\Models\TrashModel as model;
 use Din\Http\Header;
 
 /**

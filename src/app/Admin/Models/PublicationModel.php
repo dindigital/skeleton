@@ -2,19 +2,19 @@
 
 namespace Admin\Models;
 
-use Admin\Models\Essential\BaseModelAdm;
+use Din\Essential\Models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
-use Admin\Helpers\PaginatorAdmin;
-use Admin\Helpers\MoveFiles;
+use Din\Essential\Helpers\PaginatorAdmin;
+use Din\File\MoveFiles;
 use Din\Filters\String\Html;
-use Admin\Helpers\Form;
-use Admin\Helpers\Link;
-use Admin\Models\Essential\IssuuModel;
+use Din\Essential\Helpers\Form;
+use Din\Essential\Helpers\Link;
+use Din\Essential\Models\IssuuModel;
 use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;
 use Din\Filters\String\Uri;
 use Din\Filters\String\LimitChars;
-use Admin\Helpers\Embed;
+use Din\Essential\Helpers\Embed;
 
 /**
  *

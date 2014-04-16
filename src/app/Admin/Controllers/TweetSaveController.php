@@ -2,7 +2,7 @@
 
 namespace Admin\Controllers;
 
-use Admin\Models\Essential\TweetModel as model;
+use Din\Essential\Models\TweetModel as model;
 use Din\Http\Post;
 use Helpers\JsonViewHelper;
 use Exception;

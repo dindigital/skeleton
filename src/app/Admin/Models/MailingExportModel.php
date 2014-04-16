@@ -2,7 +2,7 @@
 
 namespace Admin\Models;
 
-use Admin\Models\Essential\BaseModelAdm;
+use Din\Essential\Models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\Report\Excel\ExportExcel;
 

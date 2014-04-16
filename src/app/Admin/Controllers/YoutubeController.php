@@ -2,7 +2,7 @@
 
 namespace Admin\Controllers;
 
-use Admin\Models\Essential\YouTubeModel as model;
+use Din\Essential\Models\YouTubeModel as model;
 use Din\Http\Get;
 use Din\Http\Header;
 use Din\Session\Session;

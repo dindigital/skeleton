@@ -3,7 +3,7 @@
 namespace Admin\Controllers;
 
 use Din\Mvc\Controller\BaseController;
-use Admin\Models\Essential\AdminPasswordModel as model;
+use Din\Essential\Models\AdminPasswordModel as model;
 use Din\Http\Post;
 use Exception;
 use Helpers\JsonViewHelper;

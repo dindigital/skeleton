@@ -2,7 +2,7 @@
 
 namespace Admin\Controllers;
 
-use Admin\Models\Essential\CacheModel as model;
+use Din\Essential\Models\CacheModel as model;
 use Din\Http\Post;
 use Helpers\JsonViewHelper;
 use Exception;

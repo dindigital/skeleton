@@ -2,9 +2,9 @@
 
 namespace Admin\Models;
 
-use Admin\Models\Essential\BaseModelAdm;
+use Din\Essential\Models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
-use Admin\Helpers\PaginatorAdmin;
+use Din\Essential\Helpers\PaginatorAdmin;
 use Din\Filters\String\Html;
 use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;

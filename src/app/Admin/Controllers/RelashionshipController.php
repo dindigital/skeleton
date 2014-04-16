@@ -2,7 +2,7 @@
 
 namespace Admin\Controllers;
 
-use Admin\Models\Essential\RelationshipModel as model;
+use Din\Essential\Models\RelationshipModel as model;
 use Din\Http\Get;
 use Din\Http\Post;
 use Helpers\JsonViewHelper;

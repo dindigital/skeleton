@@ -2,9 +2,9 @@
 
 namespace Admin\Controllers;
 
-use Admin\Helpers\Entities;
+use Din\Essential\Helpers\Entities;
 use Din\Http\Post;
-use Admin\Models\Essential\TrashModel;
+use Din\Essential\Models\TrashModel;
 use Din\Http\Header;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace Admin\Controllers;
 
-use Admin\Models\Essential\SoundCloudModel as model;
+use Din\Essential\Models\SoundCloudModel as model;
 use Din\Http\Get;
 use Din\Session\Session;
 use Din\Http\Header;

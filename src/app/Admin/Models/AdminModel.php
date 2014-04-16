@@ -2,14 +2,14 @@
 
 namespace Admin\Models;
 
-use Admin\Helpers\PaginatorAdmin;
+use Din\Essential\Helpers\PaginatorAdmin;
 use Din\DataAccessLayer\Select;
-use Admin\Models\Essential\BaseModelAdm;
-use Admin\Helpers\MoveFiles;
-use Admin\Models\Essential\PermissionModel;
+use Din\Essential\Models\BaseModelAdm;
+use Din\File\MoveFiles;
+use Din\Essential\Models\PermissionModel;
 use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
-use Admin\Helpers\Form;
+use Din\Essential\Helpers\Form;
 use Din\InputValidator\InputValidator;
 use Din\TableFilter\TableFilter;
 

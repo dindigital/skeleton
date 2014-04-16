@@ -2,17 +2,17 @@
 
 namespace Admin\Models;
 
-use Admin\Models\Essential\BaseModelAdm;
+use Din\Essential\Models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
-use Admin\Helpers\PaginatorAdmin;
-use Admin\Helpers\MoveFiles;
+use Din\Essential\Helpers\PaginatorAdmin;
+use Din\File\MoveFiles;
 use Din\Filters\Date\DateFormat;
-use Admin\Helpers\Form;
+use Din\Essential\Helpers\Form;
 use Din\Filters\String\Html;
-use Admin\Helpers\Link;
+use Din\Essential\Helpers\Link;
 use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;
-use Admin\Helpers\SequenceResult;
+use Din\Essential\Helpers\SequenceResult;
 use Helpers\Arrays;
 
 /**

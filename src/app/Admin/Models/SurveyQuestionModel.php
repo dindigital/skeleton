@@ -2,7 +2,7 @@
 
 namespace Admin\Models;
 
-use Admin\Models\Essential\BaseModelAdm;
+use Din\Essential\Models\BaseModelAdm;
 use Din\DataAccessLayer\Select;
 use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;

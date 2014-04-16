@@ -3,7 +3,7 @@
 namespace Admin\Controllers;
 
 use Din\Http\Get;
-use Admin\Models\Essential\LogModel as model;
+use Din\Essential\Models\LogModel as model;
 
 /**
  *

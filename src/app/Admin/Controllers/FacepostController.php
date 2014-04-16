@@ -2,7 +2,7 @@
 
 namespace Admin\Controllers;
 
-use Admin\Models\Essential\FacepostModel as model;
+use Din\Essential\Models\FacepostModel as model;
 use Din\Http\Header;
 use Din\Http\Get;
 
