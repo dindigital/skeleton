@@ -8,7 +8,7 @@ use Admin\Helpers\PaginatorAdmin;
 use Admin\Models\Essential\RelationshipModel;
 use Din\Filters\String\Html;
 use Admin\Helpers\Form;
-use Admin\CustomFilter\TableFilterAdm as TableFilter;
+use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;
 
 /**

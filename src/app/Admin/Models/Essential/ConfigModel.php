@@ -6,7 +6,7 @@ use Admin\Models\Essential\AdminAuthModel;
 use Admin\Models\AdminModel;
 use Admin\Helpers\MoveFiles;
 use Admin\Helpers\Form;
-use Admin\CustomFilter\TableFilterAdm as TableFilter;
+use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;
 
 /**

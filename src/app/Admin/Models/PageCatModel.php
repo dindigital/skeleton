@@ -10,7 +10,7 @@ use Din\Filters\Date\DateFormat;
 use Admin\Helpers\Form;
 use Din\Filters\String\Html;
 use Admin\Helpers\Link;
-use Admin\CustomFilter\TableFilterAdm as TableFilter;
+use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;
 use Admin\Helpers\SequenceResult;
 use Helpers\Arrays;

@@ -11,7 +11,7 @@ use Din\Filters\Date\DateFormat;
 use Din\Filters\String\Html;
 use Admin\Helpers\Form;
 use Din\InputValidator\InputValidator;
-use Admin\CustomFilter\TableFilterAdm as TableFilter;
+use Din\TableFilter\TableFilter;
 
 /**
  *
