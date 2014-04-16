@@ -1,15 +1,8 @@
 {
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/dindigital/essential"
-    }
-  ],
   "require": {
     "dindigital/essential": "dev-master",
-    "dindigital/din": "dev-master",
     "imagine/imagine": "dev-master",
     "phpmailer/phpmailer": "dev-master",
     "Respect/Validation": "dev-master",
@@ -29,5 +22,15 @@
       "Admin\\": "src\/app\/",
       "Helpers\\": "src\/"
     }
-  }
+  },
+  "authors": [
+    {
+      "name": "Jair Cueva Junior",
+      "email": "junior@dindigital.com"
+    },
+    {
+      "name": "Mario Mello",
+      "email": "mario@dindigital.com"
+    }
+  ]
 }
