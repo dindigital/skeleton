@@ -1,11 +1,14 @@
 {
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/dindigital/din"
+      "url": "https://github.com/dindigital/essential"
     }
   ],
   "require": {
+    "dindigital/essential": "dev-master",
     "dindigital/din": "dev-master",
     "imagine/imagine": "dev-master",
     "phpmailer/phpmailer": "dev-master",

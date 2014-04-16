@@ -64,7 +64,7 @@ abstract class BaseControllerAdm extends BaseController
 
   }
 
-  protected function setSaveTemplate ( $filename )
+  protected function setSaveTemplate ( $filename, $path = 'src/app/Admin/Views/' )
   {
     $this->setBasicTemplate();
     $this->setSavedMsgData();
@@ -73,7 +73,7 @@ abstract class BaseControllerAdm extends BaseController
     $this->_view->addFile('src/app/Admin/Views/includes/submit.phtml', '{$SUBMIT}');
     $this->_view->addFile('src/app/Admin/Views/includes/uri.phtml', '{$URI}');
 
-    $this->_view->addFile('src/app/Admin/Views/' . $filename, '{$CONTENT}');
+    $this->_view->addFile($path . $filename, '{$CONTENT}');
     $this->display_html();
 
   }
