@@ -54,12 +54,22 @@ return array(
         'id' => 'id_news_cat',
         'title' => 'title',
         'children' => array(
-            'news'
+            'news_sub'
         ),
         'trash' => true,
         'sequence' => array(
             'optional' => false,
         ),
+    ),
+    'news_sub' => array(
+        'model' => 'NewsSubModel',
+        'section' => 'Subcategoria de Notícias',
+        'id' => 'id_news_sub',
+        'title' => 'title',
+        'children' => array(
+            'news'
+        ),
+        'trash' => true,
     ),
     'admin' => array(
         'model' => 'AdminModel',

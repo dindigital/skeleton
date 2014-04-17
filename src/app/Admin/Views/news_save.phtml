@@ -22,7 +22,18 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Categoria</label>
             <div class="col-sm-10">
-              <?php echo $data['table']['id_news_cat']; ?>
+              <div class="ajaxcat" data-response=".ajax-news-sub" data-uri="/admin/news_sub_ajax/">
+                <?php echo $data['table']['id_news_cat']; ?>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Subcategoria</label>
+            <div class="col-sm-10">
+              <div class="ajax-news-sub">
+                <?php echo $data['table']['id_news_sub']; ?>
+              </div>
             </div>
           </div>
 

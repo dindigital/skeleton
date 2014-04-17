@@ -17,6 +17,7 @@ use Din\DataAccessLayer\Table\Table;
 use Din\TableFilter\TableFilter;
 use Din\InputValidator\InputValidator;
 use Din\Essential\Helpers\SequenceResult;
+use Din\Essential\Models\CacheModel;
 
 /**
  *
@@ -48,7 +49,19 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $table['body'] = Form::Ck('body', $table['body']);
     $table['uri'] = Link::formatUri($table['uri']);
     $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
-    $table['id_news_cat'] = Form::Dropdown('id_news_cat', $news_cat_dropdown, $table['id_news_cat'], 'Selecione uma Categoria');
+
+    if ( !is_null($table['id_news_cat']) ) {
+      $news_sub = new NewsSubModel;
+      $arrFilter = array(
+          'id_news_cat' => $table['id_news_cat']
+      );
+      $news_sub_dropdown = $news_sub->getListArray($arrFilter);
+      $table['id_news_sub'] = Form::Dropdown('id_news_sub', $news_sub_dropdown, $table['id_news_sub'], 'Selecione uma Subcategoria', null, 'select2');
+    } else {
+      $table['id_news_sub'] = 'Selecione uma Categoria';
+    }
+
+    $table['id_news_cat'] = Form::Dropdown('id_news_cat', $news_cat_dropdown, $table['id_news_cat'], 'Selecione uma Categoria', null, 'select2');
 
     return $table;
 
@@ -65,9 +78,14 @@ class NewsModel extends BaseModelAdm implements Facepostable
       $arrCriteria['a.id_news_cat = ?'] = $this->_filters['id_news_cat'];
     }
 
+    if ( $this->_filters['id_news_sub'] != '' && $this->_filters['id_news_sub'] != '0' ) {
+      $arrCriteria['a.id_news_sub = ?'] = $this->_filters['id_news_sub'];
+    }
+
     $select = new Select('news');
     $select->addField('id_news');
     $select->addField('id_news_cat');
+    $select->addField('id_news_sub');
     $select->addField('is_active');
     $select->addField('title');
     $select->addField('date');
@@ -105,6 +123,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $v->date()->validate('date', 'Data');
     $v->string()->validate('body', 'Conteúdo');
     $v->dbFk($this->_dao, 'news_cat')->validate('id_news_cat', 'Categoria');
+    $v->dbFk($this->_dao, 'news_sub')->validate('id_news_sub', 'Subcategoria');
     $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
@@ -113,6 +132,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $f->timestamp()->filter('inc_date');
     $f->intval()->filter('is_active');
     $f->string()->filter('id_news_cat');
+    $f->string()->filter('id_news_sub');
     $f->string()->filter('title');
     $f->date()->filter('date');
     $f->string()->filter('head');
@@ -140,12 +160,14 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $v->date()->validate('date', 'Data');
     $v->string()->validate('body', 'Conteúdo');
     $v->dbFk($this->_dao, 'news_cat')->validate('id_news_cat', 'Categoria');
+    $v->dbFk($this->_dao, 'news_sub')->validate('id_news_sub', 'Subcategoria');
     $has_cover = $v->upload()->validate('cover', 'Capa');
     $v->throwException();
     //
     $f = new TableFilter($this->_table, $input);
     $f->intval()->filter('is_active');
     $f->string()->filter('id_news_cat');
+    $f->string()->filter('id_news_sub');
     $f->string()->filter('title');
     $f->date()->filter('date');
     $f->string()->filter('head');
@@ -163,7 +185,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $this->relationship('photo', $input['photo']);
     $this->relationship('video', $input['video']);
 
-    $cache = new essential\CacheModel();
+    $cache = new CacheModel();
     $cache->delete($this->_table->uri);
 
   }
@@ -250,8 +272,12 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $news_cat = new NewsCatModel;
     $news_cat_dropdown = $news_cat->getListArray();
 
+    $news_sub = new NewsSubModel;
+    $news_sub_dropdown = $news_sub->getListArray();
+
     $this->_filters['title'] = Html::scape($this->_filters['title']);
-    $this->_filters['id_news_cat'] = Form::Dropdown('id_news_cat', $news_cat_dropdown, $this->_filters['id_news_cat'], 'Filtro por Categoria');
+    $this->_filters['id_news_cat'] = Form::Dropdown('id_news_cat', $news_cat_dropdown, $this->_filters['id_news_cat'], 'Filtro por Categoria', null, 'select2');
+    $this->_filters['id_news_sub'] = Form::Dropdown('id_news_sub', $news_sub_dropdown, $this->_filters['id_news_sub'], 'Filtro por Subcategoria', null, 'select2');
 
     return $this->_filters;
 

@@ -7,4 +7,13 @@ $(document).ready(function() {
 
     window.open(url);
   });
+
+  $('.ajaxcat').selectajax({
+    onComplete: function(element) {
+      $(".select2").select2("destroy");
+      $(".select2").select2({
+        width: '100%'
+      });
+    }
+  });
 });

@@ -82,6 +82,7 @@ return array(
                 'public/admin/js/counter/jquery.textareaCounter.plugin.js',
                 'public/admin/js/maskMoney/jquery.maskMoney.js',
                 'public/admin/js/postCodeAjax.js',
+                'public/admin/js/selectAjax.js',
                 'public/admin/js/base.js',
                 'public/admin/js/prefix.js',
                 'public/admin/js/form.js',

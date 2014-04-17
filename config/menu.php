@@ -31,6 +31,10 @@ return array(
                 'tbl' => 'news_cat',
                 'index' => 'list',
             ),
+            'Subcategorias' => array(
+                'tbl' => 'news_sub',
+                'index' => 'list',
+            ),
             'Notícias' => array(
                 'tbl' => 'news',
                 'index' => 'list',

@@ -2,14 +2,14 @@
 
 namespace Admin\Controllers;
 
-use Admin\Models\NewsModel as model;
+use Admin\Models\NewsSubModel as model;
 use Din\Http\Get;
 
 /**
  *
  * @package app.controllers
  */
-class NewsController extends BaseControllerAdm
+class NewsSubController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -28,7 +28,6 @@ class NewsController extends BaseControllerAdm
     $arrFilters = array(
         'title' => Get::text('title'),
         'id_news_cat' => Get::text('id_news_cat'),
-        'id_news_sub' => Get::text('id_news_sub'),
         'pag' => Get::text('pag'),
     );
 
@@ -38,7 +37,7 @@ class NewsController extends BaseControllerAdm
 
     $this->setErrorSessionData();
 
-    $this->setListTemplate('news_list.phtml');
+    $this->setListTemplate('newssub_list.phtml');
 
   }
 

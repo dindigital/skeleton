@@ -2,7 +2,7 @@
 
 namespace Admin\Controllers;
 
-use Admin\Models\NewsModel as model;
+use Admin\Models\NewsSubModel as model;
 use Din\Http\Post;
 use Helpers\JsonViewHelper;
 use Exception;
@@ -11,7 +11,7 @@ use Exception;
  *
  * @package app.controllers
  */
-class NewsSaveController extends BaseControllerAdm
+class NewsSubSaveController extends BaseControllerAdm
 {
 
   protected $_model;
@@ -29,7 +29,7 @@ class NewsSaveController extends BaseControllerAdm
 
   public function get ()
   {
-    $this->defaultSavePage('news_save.phtml', $this->_id);
+    $this->defaultSavePage('newssub_save.phtml', $this->_id);
 
   }
 
@@ -41,18 +41,7 @@ class NewsSaveController extends BaseControllerAdm
       $info = array(
           'is_active' => Post::checkbox('is_active'),
           'id_news_cat' => Post::text('id_news_cat'),
-          'id_news_sub' => Post::text('id_news_sub'),
           'title' => Post::text('title'),
-          'date' => Post::text('date'),
-          'head' => Post::text('head'),
-          'body' => Post::text('body'),
-          'uri' => Post::text('uri'),
-          'cover_delete' => Post::checkbox('cover_delete'),
-          'cover' => Post::upload('cover'),
-          'r_news_photo' => Post::aray('r_news_photo'),
-          'r_news_video' => Post::aray('r_news_video'),
-          'photo' => Post::text('photo'),
-          'video' => Post::text('video')
       );
 
       $this->saveAndRedirect($info);

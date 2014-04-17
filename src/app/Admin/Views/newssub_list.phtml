@@ -15,11 +15,8 @@
           <div class="col-sm-4 col-md-4 col-lg-2">
             <input class="form-control" name="title" type="text" placeholder="Busca por titulo" value="<?php echo $data['search']['title']; ?>">
           </div>
-          <div class="col-sm-4 col-md-4 col-lg-2 ajaxcat" data-response=".ajax-news-sub" data-uri="/admin/news_sub_ajax/">
+          <div class="col-sm-4 col-md-4 col-lg-2">
             <?php echo $data['search']['id_news_cat']; ?>
-          </div>
-          <div class="col-sm-4 col-md-4 col-lg-2 ajax-news-sub">
-            <?php echo $data['search']['id_news_sub']; ?>
           </div>
           <input type="button" value="Limpar" class="clean_search btn btn-default btn-rad" />
           <input type="submit" value="Buscar" class="btn btn-info btn-rad" />
@@ -35,8 +32,6 @@
               <tr>
                 <th style="width:2%;"><input type="checkbox" name="delete[]" id="delete_all" /></th>
                 <th style="width:5%;"><strong>Ativo</strong></th>
-                <th style="width:5%;"><strong>Ordem</strong></th>
-                <th style="width:10%;"><strong>Data</strong></th>
                 <th style="width:15%;"><strong>Categoria</strong></th>
                 <th><strong>Titulo</strong></th>
                 <th style="width:25%;" class="text-center"><strong>Ações</strong></th>
@@ -47,38 +42,15 @@
                 <tr name="<?php echo $this->_data['entity']['tbl']; ?>" id="<?php echo $row[$this->_data['entity']['id']]; ?>">
                   <td><input class="delete" type="checkbox" name="delete[]" /></td>
                   <td><input class="setActive" type="checkbox" <?php if ( $row['is_active'] == '1' ): ?> checked="checked"<?php endif; ?> /></td>
-                  <td><?php echo $row['sequence']; ?></td>
-                  <td><?php echo $row['date']; ?></td>
                   <td><?php echo $row['category']; ?></td>
                   <td><?php echo $row['title']; ?></td>
                   <td class="text-center">
-                    <?php if ( $row['has_facepost'] ): ?>
-                      <a class="label label-default btn_facebook_view" href="#" title="Visualizar Post">
-                        <i class="fa fa-facebook-square"></i>
-                      </a>
-                    <?php endif; ?>
-                    <a class="label label-info btn_facebook_send" href="#" title="Postar no Facebook">
-                      <i class="fa fa-facebook"></i>
-                    </a>
-                    <?php if ( $row['has_tweet'] ): ?>
-                      <a class="label label-default btn_twitter_view" href="#" title="Visualizar Tweet">
-                        <i class="fa fa-twitter-square"></i>
-                      </a>
-                    <?php endif; ?>
-                    <a class="label label-info btn_twitter_send" href="#" title="Twittar">
-                      <i class="fa fa-twitter"></i>
-                    </a>
                     <a class="label label-default btn_edit" href="#" title="Editar conteúdo">
                       <i class="fa fa-pencil"></i>
                     </a>
                     <a class="label label-danger delete_shortcut" href="#" title="Deletar conteúdo">
                       <i class="fa fa-times"></i>
                     </a>
-                    <?php if ( isset($row['uri']) ) : ?>
-                      <a class="label label-info" target="_blank" title="Visualizar conteúdo" href="<?php echo $row['uri']; ?>">
-                        <i class="fa fa-link"></i>
-                      </a>
-                    <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
