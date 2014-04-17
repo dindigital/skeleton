@@ -2,7 +2,7 @@
 
 namespace Admin\Controllers;
 
-use Admin\Models\SocialmediaCredentialsModel as model;
+use Din\Essential\Models\SocialmediaCredentialsModel as model;
 use Din\Http\Post;
 use Helpers\JsonViewHelper;
 use Exception;
