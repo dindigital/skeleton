@@ -4,9 +4,11 @@
 
     var settings = $.extend({
       loading: true,
+      defaltValue: '0',
       before: function() {
+        console.log('oi');
       },
-      onComplete: function() {
+      onComplete: function(data) {
       },
       onError: function() {
       }
@@ -32,6 +34,11 @@
       if (uri === undefined || response === undefined)
         return false;
 
+      if (id == settings.defaltValue) {
+        response.html('');
+        return false;
+      }
+
       $.ajax({
         url: uri,
         type: 'get',
@@ -40,15 +47,16 @@
           id: id
         },
         beforeSend: function() {
-          settings.before.call(this);
+          settings.before(this);
           showLoading(response);
         },
         success: function(data) {
-          response.html(data);
-          settings.onComplete.call(this);
+          var jqueryData = $(data);
+          response.html(jqueryData);
+          settings.onComplete(jqueryData);
         },
         error: function() {
-          settings.onError.call(this);
+          settings.onError(this);
         }
       }
       );
