@@ -9,7 +9,7 @@ return array(
     'url' => '',
     'clientname' => 'FRAMEWORK',
     'agencia_nome' => 'DIN DIGITAL',
-    'imagem_padrao' => '/admin/images/avatar1_50.jpg',
+    'default_image' => '/admin/images/avatar1_50.jpg',
     'path_image' => 'public/system/images/',
     'assets' => 'production',
     'path_replace' => 'public',
