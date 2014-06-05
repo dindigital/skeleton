@@ -2,111 +2,70 @@
 
 namespace Site\Models;
 
-use Din\DataAccessLayer\Select;
-use Din\Filters\Date\DateFormat;
-use Din\Image\Picuri;
 use Site\Helpers\PaginatorSite;
-use Exception;
+use Site\Models\Entities\Decorators;
+use Site\Models\DataAccess;
+use Site\Helpers\Metatags;
+use Site\Helpers\EmptyMetatag;
 
 class NewsModel extends BaseModelSite
 {
 
-  public function getListHome ()
+  public function newsList ( $pag )
   {
+    $news_dao = new DataAccess\News;
 
-    $arrCriteria = array(
-        'a.is_del = ?' => '0',
-        'a.is_active = ?' => '1'
-    );
+    $paginator = new PaginatorSite(5, $pag);
 
-    $select = new Select('news');
-    $select->addField('title');
-    $select->addField('date');
-    $select->addField('uri');
-    $select->where($arrCriteria);
-    $select->order_by('a.sequence=0,a.sequence,date DESC');
-    $select->limit(3);
+    $result = $news_dao->getList($paginator);
 
-    $select->inner_join('id_news_cat', Select::construct('news_cat')
-                    ->addField('title', 'category'));
-
-    $result = $this->_dao->select($select);
-
-    foreach ( $result as $i => $row ) {
-      $result[$i]['date'] = DateFormat::filter_date($row['date']);
+    foreach ( $result as $i => $news ) {
+      $result[$i] = new Decorators\NewsList($news);
     }
 
-    return $result;
+    $metatags = new Metatags(new EmptyMetatag('Notícias'), $this->getSettings());
+
+    $this->_return['metatags'] = $metatags;
+    $this->_return['news'] = $result;
+    $this->_return['paginator'] = $paginator->getNumbers();
+
+    return $this->_return;
 
   }
 
-  public function getList ( $pag = 1 )
-  {
-
-    $arrCriteria = array(
-        'a.is_del = ?' => '0',
-        'a.is_active = ?' => '1'
-    );
-
-    $select = new Select('news');
-    $select->addField('title');
-    $select->addField('date');
-    $select->addField('uri');
-    $select->addField('cover');
-    $select->where($arrCriteria);
-    $select->order_by('date DESC');
-
-    $select->inner_join('id_news_cat', Select::construct('news_cat')
-                    ->addField('title', 'category'));
-
-    $this->_paginator = new PaginatorSite(1, $pag);
-    $this->setPaginationSelect($select, 1);
-
-    $result = $this->_dao->select($select);
-
-    foreach ( $result as $i => $row ) {
-      $result[$i]['date'] = DateFormat::filter_date($row['date']);
-      if ( !is_null($row['cover']) ) {
-        $result[$i]['cover'] = Picuri::picUri($row['cover'], 100, 100, true);
-      }
-    }
-
-    return $result;
-
-  }
-
-  public function getView ( $uri )
+  public function newsView ( $uri )
   {
 
     $uri = "/noticias/{$uri}/";
 
-    $arrCriteria = array(
-        'a.is_del = ?' => '0',
-        'a.is_active = ?' => '1',
-        'a.uri = ?' => $uri
-    );
+    $news_dao = new DataAccess\News;
+    $result = $news_dao->getNews($uri);
 
-    $select = new Select('news');
-    $select->addField('title');
-    $select->addField('date');
-    $select->addField('head');
-    $select->addField('body');
-    $select->where($arrCriteria);
+    $news = new Decorators\NewsView($result[0]);
 
-    $select->inner_join('id_news_cat', Select::construct('news_cat')
-                    ->addField('title', 'category'));
+    $metatags = new Metatags($news, $this->getSettings());
+    $metatags->setImage($news->getImage());
+    $metatags->setArticleType('DIN DIGITAL', $news->getCategory(), $news->getEntity()->getDate());
 
-    $result = $this->_dao->select($select);
+    $this->_return['metatags'] = $metatags;
+    $this->_return['news'] = $news;
 
-    if ( !count($result) ) {
-      throw new Exception('Notícia não encontrada');
+    return $this->_return;
+
+  }
+
+  public function newsSitemap ()
+  {
+    $news_dao = new DataAccess\News;
+    $result = $news_dao->getNewsSitemap();
+
+    foreach ( $result as $index => $news ) {
+      $result[$index] = new Decorators\Sitemap($news);
     }
 
-    foreach ( $result as $i => $row ) {
-      $result[$i]['date'] = DateFormat::filter_date($row['date']);
-    }
+    $return = array('sitemap' => $result);
 
-    return $result[0];
+    return $return;
 
   }
 

@@ -1,27 +1,20 @@
-<h1><?php echo $data['settings']['title'] ?></h1>
-<?php if ( isset($data['nav']) && count($data['nav']) ): ?>
-  <ul>
-    <?php foreach ( $data['nav'] as $row ): ?>
-      <li class="<?php echo $row['class']; ?>">
-        <?php if ( isset($row['dropdown']) && count($row['dropdown']) ): ?>
-          <a title="<?php echo $row['title']; ?>" href="<?php echo $row['link']; ?>" target="<?php echo $row['target']; ?>">
-            <?php echo $row['title']; ?>
-          </a>
-          <ul>
-            <?php foreach ( $row['dropdown'] as $row_dropdown ): ?>
-              <li>
-                <a title="<?php echo $row_dropdown['title']; ?>" href="<?php echo $row_dropdown['link']; ?>" target="<?php echo $row_dropdown['target']; ?>">
-                  <?php echo $row_dropdown['title']; ?>
-                </a>
-              </li>
-            <?php endforeach; ?>
-          </ul>
-        <?php else: ?>
-          <a title="<?php echo $row['title']; ?>" href="<?php echo $row['link']; ?>" target="<?php echo $row['target']; ?>">
-            <?php echo $row['title']; ?>
-          </a>
-        <?php endif; ?>
-      </li>
-    <?php endforeach; ?>
-  </ul>
-<?php endif; ?>
+<section class="container_base">
+  <?php if ( isset($data['nav']) && count($data['nav']) ): ?>
+    <ul class="menu_header">
+      <?php foreach ( $data['nav'] as $row ): ?>
+        <li>
+          <a title="<?php echo $row['title']; ?>" href="<?php echo $row['link']; ?>" target="<?php echo $row['target']; ?>"><?php echo $row['title']; ?></a>
+          <?php if ( isset($row['dropdown']) && count($row['dropdown']) ): ?>
+            <ul class="<?php echo $row['class']; ?>">
+              <?php foreach ( $row['dropdown'] as $nav_dropdown ): ?>
+                <li>
+                  <a title="<?php echo $nav_dropdown->getTitle(); ?>" href="<?php echo $nav_dropdown->getLink(); ?>" target="<?php echo $nav_dropdown->getTarget(); ?>"><?php echo $nav_dropdown->getTitle(); ?></a>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          <?php endif; ?>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+  <?php endif; ?>
+</section>

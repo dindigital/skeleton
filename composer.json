@@ -14,7 +14,8 @@
     "google/apiclient": "dev-master",
     "doctrine/cache": "dev-master",
     "respect/rest": "dev-develop",
-    "respect/config": "dev-develop"
+    "respect/config": "dev-develop",
+    "monolog/monolog": "dev-master"
   },
   "autoload": {
     "psr-0": {

@@ -10,12 +10,12 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach ( $this->_data['news'] as $row ): ?>
+    <?php foreach ( $data['news'] as $news ): ?>
       <tr>
-        <td><?php echo $row['cover']; ?></td>
-        <td><?php echo $row['date']; ?></td>
-        <td><?php echo $row['title']; ?></td>
-        <td><a href="<?php echo $row['uri']; ?>" title="<?php echo $row['title']; ?>">Saiba Mais</a></td>
+        <td><?php echo $news->getCover(); ?></td>
+        <td><?php echo $news->getDate(); ?></td>
+        <td><?php echo $news->getTitle(); ?></td>
+        <td><a href="<?php echo $news->getUri(); ?>" title="<?php echo $news->getTitle(); ?>">Saiba Mais</a></td>
       </tr>
     <?php endforeach; ?>
   </tbody>

@@ -1,0 +1,15 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc><?php echo URL; ?></loc>
+    <changefreq>daily</changefreq >
+    <priority>1.0</priority>
+  </url>
+  <?php foreach ( $data['sitemap'] as $row ): ?>
+    <url>
+      <loc><?php echo $row->getLink() ?></loc>
+      <?php if ( !is_null($row->getDate()) ): ?>
+        <lastmod><?php echo $row->getDate(); ?></lastmod>
+      <?php endif; ?>
+    </url>
+  <?php endforeach; ?>
+</urlset>

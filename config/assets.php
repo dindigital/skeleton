@@ -9,6 +9,12 @@ return array(
                 'public/site/css/base.css',
             )
         ),
+        'css_siteindex' => array(
+            'uri' => '/system/assets/css_siteindex534988751befa.css',
+            'src' => array(
+                'public/site/css/index.css',
+            )
+        ),
         'css_admlogin' => array(
             'uri' => '/system/assets/css_admlogin53498875976d1.css',
             'src' => array(

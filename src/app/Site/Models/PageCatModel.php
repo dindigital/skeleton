@@ -2,74 +2,53 @@
 
 namespace Site\Models;
 
-use Din\DataAccessLayer\Select;
+use Site\Models\Entities\Decorators;
+use Site\Models\DataAccess;
+use Site\Helpers\Metatags;
 use Din\Http\Header;
-use Exception;
 
 class PageCatModel extends BaseModelSite
 {
 
-  public function getNav ()
+  public function pageCatView ( $uri )
   {
 
-    $arrCriteria = array(
-        'a.is_del = ?' => '0',
-        'a.is_active = ?' => '1'
-    );
+    $page_cat_dao = new DataAccess\PageCat;
+    $page_cats = $page_cat_dao->getPageCat($uri);
 
-    $select = new Select('page_cat');
-    $select->addField('id_page_cat');
-    $select->addField('title');
-    $select->addField('uri');
-    $select->addField('url');
-    $select->addField('target');
-    $select->where($arrCriteria);
-    $select->order_by('a.sequence=0,a.sequence,title');
-    $select->limit(6);
-
-    $result = $this->_dao->select($select);
-
-    $pageModel = new PageModel();
-
-    foreach ( $result as $index => $row ) {
-
-      $result[$index]['link'] = $row['url'] ? $row['url'] : $row['uri'];
-      $uri = explode('/', Header::getUri());
-      $uri = $uri[1] == '' ? '/' : "/$uri[1]/";
-      $result[$index]['class'] = $result[$index]['link'] == $uri ? 'active' : '';
-      $result[$index]['dropdown'] = $pageModel->getDropdown($row['id_page_cat']);
-      if ( count($result[$index]['dropdown']) ) {
-        $result[$index]['class'] .= ' dropdown';
-      }
+    if ( !count($page_cats) ) {
+      Header::redirect('/404/');
     }
 
-    return $result;
+    $page_cat = new Decorators\PageCatView($page_cats[0]);
+
+    $settings = $this->getSettings();
+
+    $metatags = new Metatags($page_cat, $settings);
+
+    $this->_return['metatags'] = $metatags;
+    $this->_return['page'] = $page_cat;
+
+    return $this->_return;
 
   }
 
-  public function getView ( $uri )
+  public function pageSitemap ()
   {
+    $page_cat_dao = new DataAccess\PageCat;
+    $result = $page_cat_dao->getPageSitemap();
 
-    $uri = "/$uri/";
-
-    $arrCriteria = array(
-        'a.is_del = ?' => '0',
-        'a.is_active = ?' => '1',
-        'a.uri = ?' => $uri
-    );
-
-    $select = new Select('page_cat');
-    $select->addField('title');
-    $select->addField('content');
-    $select->where($arrCriteria);
-
-    $result = $this->_dao->select($select);
-
-    if ( !count($result) ) {
-      throw new Exception('Página não encontrada');
+    $sitemap = array();
+    foreach ( $result as $page ) {
+      $pageDecorator = new Decorators\Sitemap($page);
+      if ( !is_null($pageDecorator->getLink()) ) {
+        $sitemap[] = $pageDecorator;
+      }
     }
 
-    return $result[0];
+    $return = array('sitemap' => $sitemap);
+
+    return $return;
 
   }
 

@@ -23,7 +23,7 @@ class NewsController extends BaseControllerSite
        * Últimas notícias
        */
       $newsModel = new models\CacheModel(new models\NewsModel(), $this->_cache, 180);
-      $this->_data['news'] = $newsModel->getView($uri);
+      $this->_data = $newsModel->newsView($uri);
 
       /**
        * Define template e exibição

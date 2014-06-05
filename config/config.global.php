@@ -7,8 +7,8 @@ return array(
     'db_pass' => 'mysql',
     'db_schema' => 'skeleton',
     'url' => '',
-    'clientname' => 'FRAMEWORK',
-    'agencia_nome' => 'DIN DIGITAL',
+    'agency' => 'FRAMEWORK',
+    'clientname' => 'DIN DIGITAL',
     'default_image' => '/admin/images/avatar1_50.jpg',
     'path_image' => 'public/system/images/',
     'assets' => 'production',
@@ -17,6 +17,7 @@ return array(
     'smtp_user' => 'xxx@xxx.com',
     'smtp_pass' => 'xxx',
     'bitly' => 'xxx',
+    'cache_html' => false,
     'cache_path' => 'public/system/cache', // ex: public/system/cache or empty
     'cache_memcache' => '', // ex: localhost or empty
     'cache_memcache_port' => 11211,

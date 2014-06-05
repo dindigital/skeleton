@@ -1,11 +1,12 @@
 <?php
 
-namespace Site\Models;
+namespace Site\Models\DataAccess;
 
+use Site\Models\DataAccess\AbstractDataAccess;
 use Din\DataAccessLayer\Select;
-use Exception;
+use Site\Models\Entities;
 
-class SettingsModel extends BaseModelSite
+class Settings extends AbstractDataAccess
 {
 
   public function getSettings ()
@@ -20,13 +21,9 @@ class SettingsModel extends BaseModelSite
     $select->addField('keywords');
     $select->limit(1);
 
-    $result = $this->_dao->select($select);
+    $result = $this->_dao->select($select, new Entities\Settings);
 
-    if ( !count($result) ) {
-      throw new Exception('Tabela de configurações está vazia.');
-    }
-
-    return $result[0];
+    return $result;
 
   }
 
