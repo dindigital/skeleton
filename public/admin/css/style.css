@@ -129,11 +129,10 @@ table .danger-emphasis-dark{background-color:#c8432e;border-color:#c8432e;}
 }
 
 .navbar-default  .navbar-brand {
-  padding-left: 45px;
+  padding-left: 5px;
   text-align:left;
-  width: 206px;
+  width: auto;
   color: #FFF;
-  background: url(/admin/images/logo.png) no-repeat 0 center;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   font-weight: 300;
   font-size:19px;
@@ -2760,15 +2759,6 @@ button::-moz-focus-inner {
   }
   .butstyle:first-child{margin-left:0;}
 
-  .navbar-default  .navbar-brand{
-    background-position: 22px 11px;
-    height:50px;
-    width: 90px;
-  }
-  .navbar-default .navbar-brand span{
-    display:none;
-  }
-
   .cl-sidebar {width:100px;}
   .cl-vnavigation li {position:relative;}
   .cl-vnavigation li a{text-align:center; padding:15px 10px 13px;}
@@ -2880,7 +2870,6 @@ button::-moz-focus-inner {
   .navbar-collapse .navbar-nav {margin:0;}
   .profile_menu {margin:0;}
   .profile_menu .dropdown-toggle {padding-left:15px;}
-  .navbar-default .navbar-brand {width:auto;}
   .user-nav{
     margin: 7.5px -15px;
   }
