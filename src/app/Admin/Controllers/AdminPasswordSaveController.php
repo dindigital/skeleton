@@ -8,7 +8,8 @@ use Din\Http\Post;
 use Exception;
 use Helpers\JsonViewHelper;
 use Din\Session\Session;
-use Din\AssetRead\AssetRead;
+use Din\Assets\AssetsConfig;
+use Din\Assets\AssetsRead;
 
 /**
  *
@@ -25,20 +26,23 @@ class AdminPasswordSaveController extends BaseController
     parent::__construct();
     $this->_model = new model;
     $this->_token = $token;
+
   }
 
   public function get ()
   {
-    $assetRead = new AssetRead('config/assets.php');
-    $assetRead->setMode(ASSETS);
-    $assetRead->setReplace(PATH_REPLACE);
-    $assetRead->setGroup('css', array('adm_login', 'google'));
-    $assetRead->setGroup('js', array('jquery', 'adm_login'));
-    $this->_data['assets'] = $assetRead->getAssets();
+    $config = new AssetsConfig('config/assets.php');
+    $assetsRead = new AssetsRead($config);
+    $assetsRead->setMode(ASSETS);
+    $assetsRead->setReplace(PATH_REPLACE);
+    $assetsRead->setGroup('css', array('css_admlogin', 'css_admgoogle'));
+    $assetsRead->setGroup('js', array('js_admjquery', 'js_admlogin'));
+    $this->_data['assets'] = $assetsRead->getAssets();
 
     $this->_view->addFile('src/app/Admin/Views/layouts/login.phtml');
     $this->_view->addFile('src/app/Admin/Views/essential/recover_password.phtml', '{$CONTENT}');
     $this->display_html();
+
   }
 
   public function post ()
@@ -59,6 +63,7 @@ class AdminPasswordSaveController extends BaseController
     $session->set('saved_msg', 'Senha alterada com sucesso');
 
     JsonViewHelper::redirect('/admin/');
+
   }
 
 }
