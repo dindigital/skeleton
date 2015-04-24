@@ -52,7 +52,7 @@ class PhotoModel extends BaseModelAdm
 
     $table['title'] = Html::scape($table['title']);
     $table['date'] = DateFormat::filter_date($table['date']);
-    $uploader = Form::Upload('gallery_uploader', '', 'image', true, false);
+    $uploader = Form::Plupload('gallery_uploader', '', 'image', true, false);
     $table['gallery_uploader'] = $uploader . Gallery::get($table['gallery'], 'gallery');
     $table['uri'] = Link::formatUri($table['uri']);
 

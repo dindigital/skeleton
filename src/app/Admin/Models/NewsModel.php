@@ -48,7 +48,7 @@ class NewsModel extends BaseModelAdm implements Facepostable
     $table['head'] = Html::scape($table['head']);
     $table['body'] = Form::Ck('body', $table['body']);
     $table['uri'] = Link::formatUri($table['uri']);
-    $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
+    $table['cover_uploader'] = Form::Plupload('cover', $table['cover'], 'image');
 
     if ( !is_null($table['id_news_cat']) ) {
       $news_sub = new NewsSubModel;

@@ -39,7 +39,7 @@ class PublicationModel extends BaseModelAdm
     }
 
     $table['title'] = Html::scape($table['title']);
-    $table['file_uploader'] = Form::Upload('file', $table['file'], 'document');
+    $table['file_uploader'] = Form::Plupload('file', $table['file'], 'document');
     $table['uri'] = Link::formatUri($table['uri']);
 
     if ( $table['has_issuu'] ) {

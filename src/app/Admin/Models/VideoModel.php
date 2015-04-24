@@ -48,7 +48,7 @@ class VideoModel extends BaseModelAdm
     $table['title'] = Html::scape($table['title']);
     $table['date'] = DateFormat::filter_date($table['date']);
     $table['uri'] = Link::formatUri($table['uri']);
-    $table['file_uploader'] = Form::Upload('file', $table['file'], 'video');
+    $table['file_uploader'] = Form::Plupload('file', $table['file'], 'video');
 
     return $table;
 

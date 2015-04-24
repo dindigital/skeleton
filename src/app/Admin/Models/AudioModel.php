@@ -53,7 +53,7 @@ class AudioModel extends BaseModelAdm
       $table['date'] = date('Y-m-d');
     }
 
-    $table['file_uploader'] = Form::Upload('file', $table['file'], 'audio');
+    $table['file_uploader'] = Form::Plupload('file', $table['file'], 'audio');
 
     $table['title'] = Html::scape($table['title']);
     $table['date'] = DateFormat::filter_date($table['date']);

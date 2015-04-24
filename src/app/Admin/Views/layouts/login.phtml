@@ -9,8 +9,10 @@
 
     <title><?php echo CLIENTNAME; ?> - Painel de Controle</title>
 
-    <?php echo $data['assets']['css']['css_admgoogle']; ?>
-    <?php echo $data['assets']['css']['css_admlogin']; ?>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300' rel='stylesheet' type='text/css'>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="/backend/assets/css/app.min.css" rel="stylesheet"/>
 
   </head>
 
@@ -18,8 +20,8 @@
 
     {$CONTENT}
 
-    <?php echo $data['assets']['js']['js_admjquery']; ?>
-    <?php echo $data['assets']['js']['js_admlogin']; ?>
+    <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="/backend/assets/js/login.min.js"></script>
 
   </body>
 </html>

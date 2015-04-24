@@ -9,7 +9,7 @@ return array(
     'url' => '', // ex: http://dindigital.dev
     'agency' => 'DIN DIGITAL',
     'clientname' => 'FRAMEWORK',
-    'default_image' => '/admin/images/avatar1_50.jpg',
+    'default_image' => '/backend/images/avatar1_50.jpg',
     'path_image' => 'public/system/images/',
     'assets' => 'development',
     'path_replace' => 'public',

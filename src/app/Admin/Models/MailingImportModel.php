@@ -97,7 +97,7 @@ class MailingImportModel extends BaseModelAdm
   public function createFields ()
   {
     $row = array(
-        'xls_uploader' => Form::Upload('xls', '', 'excel')
+        'xls_uploader' => Form::Plupload('xls', '', 'excel')
     );
 
     return $row;

@@ -2,7 +2,7 @@
 
 namespace Admin\Controllers;
 
-use Din\Essential\Models\ConfigModel as model;
+use Admin\Models\ConfigModel as model;
 use Din\Http\Post;
 use Helpers\JsonViewHelper;
 use Exception;

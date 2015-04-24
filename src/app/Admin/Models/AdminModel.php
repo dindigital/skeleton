@@ -36,7 +36,7 @@ class AdminModel extends BaseModelAdm
     }
 
     $table['name'] = Html::scape($table['name']);
-    $table['avatar_uploader'] = Form::Upload('avatar', $table['avatar'], 'image');
+    $table['avatar_uploader'] = Form::Plupload('avatar', $table['avatar'], 'image');
 
     $permission = new PermissionModel;
     $permission_listbox = $permission->getArrayList();
