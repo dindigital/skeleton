@@ -2,7 +2,6 @@
 
 {% block css %}
 <link rel="stylesheet" href="/system/assets/css/news.min.css">
-<link rel="stylesheet" href="/system/assets/css/news-all.min.css">
 {% endblock %}
 
 {% block js %}
@@ -13,16 +12,12 @@
 
 {% block content %}
 
-{% include 'includes/nav.html' %}
-
 
 <section class="all">
 
     <section id="news">
         <div class="boxin">
-            {% include 'includes/top-news.html' %}
-
-            <h3><a title="Voltar" href="/">&#60; Voltar</a></h3>
+            <h3>Notícias</h3>
 
             <ul class="third">
                 {% if news_list is defined and news_list|length > 0 %}

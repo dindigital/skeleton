@@ -2,8 +2,8 @@
 
 namespace Site\Models;
 
-use Site\Helpers\Metatags;
-use Site\Helpers\EmptyMetatag;
+use Site\Helpers\Metatags\Metatags;
+use Site\Helpers\Metatags\EmptyMetatag;
 
 class NewsListModel extends BaseModelSite
 {
@@ -11,7 +11,6 @@ class NewsListModel extends BaseModelSite
     public function getPage ( $pag, $qtd )
     {
         $this->setSettings();
-        $this->setFeaturedNewsCarousel();
         $this->setPage($pag, $qtd);
         $this->setMetatag();
 
@@ -48,13 +47,6 @@ class NewsListModel extends BaseModelSite
         $settings = $this->_return['settings'];
         $context = new EmptyMetatag($settings->getTitle(), $settings->getDescription(), $settings->getKeywords());
         $this->_return['metatags'] = new Metatags($context);
-
-    }
-
-    public function setFeaturedNewsCarousel ()
-    {
-        $business = new Business\News;
-        $this->_return['featured_news'] = $business->getFeaturedNewsCarousel();
 
     }
 

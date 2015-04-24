@@ -23,7 +23,6 @@ class NewsListController extends AbstractSiteController
         if ( is_null($html) || !CACHE_HTML ) {
 
             $model = new models\NewsListModel;
-            //trago as noticias
             $data = $model->getPage(Get::text('pag'), 10);
 
             $html = $this->_twig->render('news_list.html', $data);
