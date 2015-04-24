@@ -11,7 +11,6 @@ return array(
     'clientname' => 'FRAMEWORK',
     'default_image' => '/backend/images/avatar1_50.jpg',
     'path_image' => 'public/system/images/',
-    'assets' => 'development',
     'path_replace' => 'public',
     'smtp_host' => 'xxx',
     'smtp_user' => 'xxx@xxx.com',
