@@ -13,8 +13,8 @@
     "ise/php-soundcloud": "3.*",
     "google/apiclient": "dev-master",
     "doctrine/cache": "dev-master",
-    "respect/rest": "dev-develop",
-    "respect/config": "dev-develop",
+    "respect/rest": "dev-master",
+    "respect/config": "dev-master",
     "monolog/monolog": "dev-master"
   },
   "autoload": {
