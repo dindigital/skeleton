@@ -19,10 +19,10 @@ class IndexController extends AbstractSiteController
 
         if ( is_null($html) || !CACHE_HTML ) {
 
-            $model = new models\IndexModel;
-
+            //$model = new models\IndexModel;
             //trago os logos dos clientes
-            $data = $model->getPage();
+            $data = array();
+            //$data = $model->getPage();
             $html = $this->_twig->render('index.html', $data);
 
             if ( CACHE_HTML )

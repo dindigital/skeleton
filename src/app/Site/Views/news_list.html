@@ -1,0 +1,59 @@
+{% extends "template.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="/system/assets/css/news.min.css">
+<link rel="stylesheet" href="/system/assets/css/news-all.min.css">
+{% endblock %}
+
+{% block js %}
+<script src="/system/assets/js/news.min.js"></script>
+{% endblock %}
+
+{# CONTENT #}
+
+{% block content %}
+
+{% include 'includes/nav.html' %}
+
+
+<section class="all">
+
+    <section id="news">
+        <div class="boxin">
+            {% include 'includes/top-news.html' %}
+
+            <h3><a title="Voltar" href="/">&#60; Voltar</a></h3>
+
+            <ul class="third">
+                {% if news_list is defined and news_list|length > 0 %}
+                {% for nl in news_list %}
+                <li>
+                    <a href="{{ nl.getUri }}" title="{{ nl.getTitle }}">
+                        <h3>{{ nl.getTitle }}</h3>
+                        <p>{{ nl.getDate }}</p>
+                    </a>
+                </li>
+                {% endfor %}
+                {% else %}
+                <li><strong>Nenhum resultado encontrado.</strong></li>
+                {% endif %}
+
+                {% if paginator is defined and paginator is not null %}
+
+                <div class="pagination">
+                    <ul>
+                        <li>{{ sumary['current'] }} de {{ sumary['total'] }}</li>
+                        {{ paginator|raw }}
+                    </ul>
+                </div>
+                {% endif %}
+
+            </ul>
+        </div>
+        </div>
+    </section>
+
+    {% include 'includes/footer.html' %}
+</section>
+
+{% endblock %}

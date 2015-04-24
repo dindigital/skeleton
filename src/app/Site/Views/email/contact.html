@@ -1,0 +1,24 @@
+{% extends "template.html" %}
+
+{% block content %}
+<p style="font-size:1em;line-height:1.2em; font-family:georgia,'times',serif;">
+    <strong>Nome:</strong> {{entity.getName}}
+</p>
+<p style="font-size:1em;line-height:1.2em; font-family:georgia,'times',serif;">
+    <strong>E-mail:</strong> {{entity.getEmail}}
+</p>
+<p style="font-size:1em;line-height:1.2em; font-family:georgia,'times',serif;">
+    <strong>Telefone:</strong> {{entity.getPhone}}
+</p>
+<p style="font-size:1em;line-height:1.2em; font-family:georgia,'times',serif;">
+    <strong>Mensagem:</strong> {{entity.getMessage}}
+</p>
+
+<p style="font-size:1em;line-height:1.2em; font-family:georgia,'times',serif;">
+    <strong>Currículo:</strong>
+    {% if entity.getFile is not null %}
+    <a href="{{entity.getFile}}" target="_blank">{{entity.getFile}}</a>
+    {% else %}
+    <strong><i>Não enviado.</i></strong>
+    {% endif %}
+    {% endblock %}

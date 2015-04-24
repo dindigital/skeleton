@@ -1,0 +1,59 @@
+<!doctype html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />
+
+        <title>{{metatags.getTitle}}</title>
+        <meta name="description" content="{{metatags.getDescription}}">
+        <meta name="keywords"  content="{{metatags.getKeywords}}">
+        <meta name="author" content="{{metatags.getAuthor}}">
+        <meta name="canonical" content="{{metatags.getUrl}}">
+        <link rel="shortcut icon" href="/favicon.ico">
+
+        <meta property="og:locale" content="{{metatags.getLocale}}">
+        <meta property="og:url" content="{{metatags.getUrl}}">
+        <meta property="og:title" content="{{metatags.getTitle}}">
+        <meta property="og:site_name" content="{{metatags.getName}}">
+        <meta property="og:description" content="{{metatags.getDescription}}">
+        <meta property="og:image" content="{{metatags.getImage}}">
+        <meta property="og:type" content="website">
+
+
+        <link rel="stylesheet" href="/system/assets/css/app.min.css">
+        {% block css %}
+        {% endblock %}
+        <!--Fonts-->
+        <link href='http://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+
+
+
+        <script src="/system/assets/js/modernizr.min.js"></script>
+
+        <!--[if lt IE 9]>
+          <script src="/system/assets/js/ie.min.js"></script>
+        <![endif]-->
+
+    </head>
+
+
+    <body class="{{body_class}}">
+
+        {% block content %}
+        {% endblock %}
+
+
+        <script src="/system/assets/js/app.min.js"></script>
+        {% block js %}
+        {% endblock %}
+
+        {% if settings.getGoogleAnalytcs %}
+        {{settings.getGoogleAnalytcs | raw}}
+        {% endif %}
+
+    </body>
+
+</html>

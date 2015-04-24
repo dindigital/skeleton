@@ -1,0 +1,54 @@
+{% extends "template.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="/system/assets/css/news.min.css">
+<link rel="stylesheet" href="/system/assets/css/news-single.min.css">
+{% endblock %}
+
+{% block js %}
+<script src="/system/assets/js/news.min.js"></script>
+{% endblock %}
+
+{# CONTENT #}
+
+{% block content %}
+
+{% include 'includes/nav.html' %}
+
+<section class="all">
+
+    <section id="news">
+        <div class="boxin">
+            {% include 'includes/top-news.html' %}
+
+            <h3 class="back"><a title="Voltar" href="/">&#60; Voltar</a></h3>
+
+            <div class="post-content">
+                {% if news is defined %}
+                <div class="post-top">
+                    <div class="post-title">
+                        <h3>{{ news.getTitle }}</h3>
+                    </div>
+
+                    <div class="post-date">
+                        <p>{{ news.getDate }}</p>
+                    </div>
+                </div>
+
+                <div class="single-content">
+                    <img src="{{ news.getCover }}" alt="{{ news.getTitle }}" /><br>
+                    {{ news.getBody|raw }}
+                </div>
+            </div>
+            <div class="plusallnews">
+                <a href="/noticias/" title="Todas as notícias">+ Todas notícias</a>
+            </div>
+            {% endif %}
+        </div>
+
+    </section>
+
+    {% include 'includes/footer.html' %}
+</section>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "template.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="/system/assets/css/home.min.css">
+<link rel="stylesheet" href="/system/assets/css/clients.min.css">
+<link rel="stylesheet" href="/system/assets/css/news.min.css">
+<link rel="stylesheet" href="/system/assets/css/contact.min.css">
+{% endblock %}
+
+{% block js %}
+<script src="/system/assets/js/home.min.js"></script>
+{% endblock %}
+
+{# CONTENT #}
+
+{% block content %}
+
+<section class="all">
+
+    {% include 'includes/nav.html' %}
+
+    <div class="hideit">
+
+        <div class="first-one">
+            <div class="all-center">
+                <div class="center">
+                    <a href="/" title="">
+                        <img src="/system/assets/img/logo.png" alt="Mori Advocacia" />
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <section id="clients">
+            <div class="boxin">
+                <h2>Erro 404 - Página não encontrada</h2>
+                <p><a href="/" title="Página inicial">Clique aqui para voltar a página inicial</a></p>
+            </div>
+        </section>
+
+        <br style="clear:both;">
+
+        {% include 'includes/footer.html' %}
+    </div>
+</section>
+
+{% endblock %}
