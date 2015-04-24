@@ -2,7 +2,7 @@
 
 namespace Site\Helpers\Metatags;
 
-use MetatagsInterface;
+use Site\Helpers\Metatags\MetatagsInterface;
 
 class EmptyMetatag implements MetatagsInterface
 {

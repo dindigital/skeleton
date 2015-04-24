@@ -2,44 +2,27 @@
 
 namespace Site\Models;
 
-use Site\Helpers\EmptyMetatag;
-use Site\Helpers\Metatags;
-use Site\Models\DataAccess;
-use Site\Models\Entities\Decorators;
+use Site\Helpers\Metatags\Metatags;
+use Site\Helpers\Metatags\EmptyMetatag;
 
 class IndexModel extends BaseModelSite
 {
 
-  public function getIndex ()
-  {
-    $settings = $this->getSettings();
+    public function getPage ()
+    {
+        $this->setSettings();
+        $this->setMetatag();
 
-    $index_metatag = new EmptyMetatag(
-            $settings->getHomeTitle()
-            , $settings->getHomeDescription()
-            , $settings->getHomeKeywords());
+        return $this->_return;
 
-    $metatags = new Metatags($index_metatag);
-
-    $this->_return['metatags'] = $metatags;
-
-    $this->setLastNews();
-
-    return $this->_return;
-
-  }
-
-  public function setLastNews ()
-  {
-    $news_dao = new DataAccess\News;
-    $result = $news_dao->getLast();
-
-    foreach ( $result as $index => $news ) {
-      $result[$index] = new Decorators\NewsList($news);
     }
 
-    $this->_return['lastnews'] = $result;
+    public function setMetatag ()
+    {
+        $settings = $this->_return['settings'];
+        $context = new EmptyMetatag($settings->getHomeTitle(), $settings->getHomeDescription(), $settings->getHomeKeywords());
+        $this->_return['metatags'] = new Metatags($context);
 
-  }
+    }
 
 }

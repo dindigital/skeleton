@@ -3,168 +3,163 @@
 namespace Site\Helpers\Metatags;
 
 use Din\Http\Header;
+use Site\Helpers\Metatags\MetatagsInterface;
 use Din\Image\Picuri;
 
 class Metatags
 {
 
-  protected $_content;
-  protected $_image = null;
-  protected $_image_width;
-  protected $_image_height;
-  protected $_settings_title = null;
+    protected $_content;
+    protected $_settings;
+    protected $_image = null;
+    protected $_image_width;
+    protected $_image_height;
+    protected $_type = 'website';
+    protected $_type_author;
+    protected $_type_section;
+    protected $_type_date;
 
-  function __construct ( CreateMetatag $content )
-  {
-    $this->_content = $content;
+    function __construct ( MetatagsInterface $content, MetatagsInterface $settings = null )
+    {
+        $this->_content = $content;
+        $this->_settings = $settings;
 
-  }
-
-  public function setSettingsTitle ( $title )
-  {
-    $this->_settings_title = \Din\Filters\String\Html::scape($title);
-
-  }
-
-  public function getTitle ()
-  {
-    $title = is_null($this->_settings_title) ? $this->_content->title : $this->_content->title . ' - ' . $this->_settings_title;
-
-    return $title;
-
-  }
-
-  public function getOgTitle ()
-  {
-    $title = $this->_content->title;
-
-    return htmlspecialchars($title, ENT_COMPAT);
-
-  }
-
-  public function getKeywords ()
-  {
-    return htmlspecialchars($this->_content->keywords, ENT_COMPAT);
-
-  }
-
-  public function getDescription ()
-  {
-    return htmlspecialchars($this->_content->description, ENT_COMPAT);
-
-  }
-
-  public function getAuthor ()
-  {
-    /* $author = 'DIN DIGITAL';
-      if ( defined(AGENCY) ) {
-      $author = AGENCY;
-      } */
-
-    return $this->getName();
-
-  }
-
-  public function getLocale ()
-  {
-    return 'pt_BR';
-
-  }
-
-  public function getUrl ()
-  {
-
-    $uri = !is_null($this->_content->uri) ? $this->_content->uri : Header::getUri();
-
-    return URL . $uri;
-
-  }
-
-  public function getName ()
-  {
-    $name = CLIENTNAME;
-
-    return $name;
-
-  }
-
-  public function isImageUrl ()
-  {
-    return (!is_null($this->_content->image_url));
-
-  }
-
-  public function getImage ()
-  {
-    if ( $this->isImageUrl() )
-      return $this->_content->image_url;
-
-    $this->_image = $this->_content->image;
-
-    if ( is_null($this->_content->image) ) {
-      $this->_image = DEFAULT_IMAGE;
     }
 
-    $this->_image = Picuri::picUri($this->_image, 1200, 630, false, array(), 'path');
+    public function getTitle ()
+    {
 
-    return URL . $this->_image;
+        return is_null($this->_settings) ? $this->_content->getMetaTitle() :
+                $this->_content->getMetaTitle() . ' - ' . $this->_settings->getMetaTitle();
 
-  }
+    }
 
-  public function getImageType ()
-  {
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $type = finfo_file($finfo, PATH_REPLACE . $this->_image);
-    finfo_close($finfo);
-    return $type;
+    public function getKeywords ()
+    {
+        return is_null($this->_settings) ? $this->_content->getMetaKeywords() :
+                $this->_content->getMetaKeywords();
 
-  }
+    }
 
-  protected function getImageSize ()
-  {
-    list($this->_image_width, $this->_image_height) = getimagesize(PATH_REPLACE . $this->_image);
+    public function getDescription ()
+    {
+        return is_null($this->_settings) ? $this->_content->getMetaDescription() :
+                $this->_content->getMetaDescription();
 
-  }
+    }
 
-  public function getImageWidth ()
-  {
+    public function getAuthor ()
+    {
+        $author = 'DIN DIGITAL';
+        if ( defined(AGENCY) ) {
+            $author = AGENCY;
+        }
 
-    $this->getImageSize();
-    return $this->_image_width;
+        return $author;
 
-  }
+    }
 
-  public function getImageheight ()
-  {
-    return $this->_image_height;
+    public function getLocale ()
+    {
+        return 'pt_BR';
 
-  }
+    }
 
-  public function getType ()
-  {
+    public function getUrl ()
+    {
+        return URL . Header::getUri();
 
-    $type = !is_null($this->_content->type) ? $this->_content->type : 'website';
+    }
 
-    return $type;
+    public function getName ()
+    {
+        $name = '';
+        if ( defined(CLIENTNAME) ) {
+            $name = CLIENTNAME;
+        }
 
-  }
+        return $name;
 
-  public function getTypeAuthor ()
-  {
-    return $this->_content->type_author;
+    }
 
-  }
+    public function setImage ( $image )
+    {
 
-  public function getSection ()
-  {
-    return $this->_content->type_section;
+        $this->_image = $image;
 
-  }
+    }
 
-  public function getDate ()
-  {
-    return $this->_content->type_date;
+    public function getImage ()
+    {
+        if ( is_null($this->_image) ) {
+            $this->_image = DEFAULT_IMAGE;
+        }
 
-  }
+        $this->_image = Picuri::picUri($this->_image, 1200, 630, false, array(), 'path');
+
+        return URL . $this->_image;
+
+    }
+
+    public function getImageType ()
+    {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $type = finfo_file($finfo, PATH_REPLACE . $this->_image);
+        finfo_close($finfo);
+        return $type;
+
+    }
+
+    protected function getImageSize ()
+    {
+        list($this->_image_width, $this->_image_height) = getimagesize(PATH_REPLACE . $this->_image);
+
+    }
+
+    public function getImageWidth ()
+    {
+        $this->getImageSize();
+        return $this->_image_width;
+
+    }
+
+    public function getImageheight ()
+    {
+        return $this->_image_height;
+
+    }
+
+    public function setArticleType ( $author, $section, $date )
+    {
+        $this->_type = 'article';
+        $this->_type_author = $author;
+        $this->_type_section = $section;
+        $this->_type_date = date('Y-m-d\TH:i:sO', strtotime($date));
+
+    }
+
+    public function getType ()
+    {
+        return $this->_type;
+
+    }
+
+    public function getTypeAuthor ()
+    {
+        return $this->_type_author;
+
+    }
+
+    public function getSection ()
+    {
+        return $this->_type_section;
+
+    }
+
+    public function getDate ()
+    {
+        return $this->_type_date;
+
+    }
 
 }
