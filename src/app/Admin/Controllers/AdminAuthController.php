@@ -9,8 +9,6 @@ use Din\Http\Post;
 use Exception;
 use Helpers\JsonViewHelper;
 use Din\Session\Session;
-use Din\Assets\AssetsConfig;
-use Din\Assets\AssetsRead;
 
 /**
  *
@@ -29,14 +27,6 @@ class AdminAuthController extends BaseController implements \Respect\Rest\Routab
 
   private function setAuthTemplate ()
   {
-    $config = new AssetsConfig('config/assets.php');
-    $assetsRead = new AssetsRead($config);
-    $assetsRead->setMode(ASSETS);
-    $assetsRead->setReplace(PATH_REPLACE);
-    $assetsRead->setGroup('css', array('css_admlogin', 'css_admgoogle'));
-    $assetsRead->setGroup('js', array('js_admjquery', 'js_admlogin'));
-    $this->_data['assets'] = $assetsRead->getAssets();
-
     $session = new Session('adm_session');
     if ( $session->is_set('saved_msg') ) {
       $this->_data['saved_msg'] = $session->get('saved_msg');
