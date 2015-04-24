@@ -1,2 +1,6 @@
 /vendor/
 composer.lock
+node_modules
+.sass-cache
+/nbproject
+.DS_Store

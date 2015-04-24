@@ -1,37 +1,38 @@
 {
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "require": {
-    "dindigital/essential": "dev-master",
-    "imagine/imagine": "dev-master",
-    "phpmailer/phpmailer": "dev-master",
-    "Respect/Validation": "dev-master",
-    "phpoffice/phpexcel": "dev-master",
-    "dg/twitter-php": "dev-master",
-    "kriswallsmith/assetic": "dev-master",
-    "facebook/php-sdk": "@stable",
-    "ise/php-soundcloud": "3.*",
-    "google/apiclient": "dev-master",
-    "doctrine/cache": "dev-master",
-    "respect/rest": "dev-master",
-    "respect/config": "dev-master",
-    "monolog/monolog": "dev-master"
-  },
-  "autoload": {
-    "psr-0": {
-      "Site\\": "src\/app\/",
-      "Admin\\": "src\/app\/",
-      "Helpers\\": "src\/"
-    }
-  },
-  "authors": [
-    {
-      "name": "Jair Cueva Junior",
-      "email": "junior@dindigital.com"
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "dindigital/essential": "dev-master",
+        "imagine/imagine": "dev-master",
+        "phpmailer/phpmailer": "dev-master",
+        "Respect/Validation": "dev-master",
+        "phpoffice/phpexcel": "dev-master",
+        "dg/twitter-php": "dev-master",
+        "kriswallsmith/assetic": "dev-master",
+        "facebook/php-sdk": "@stable",
+        "ise/php-soundcloud": "3.*",
+        "google/apiclient": "dev-master",
+        "doctrine/cache": "dev-master",
+        "respect/rest": "dev-master",
+        "respect/config": "dev-master",
+        "monolog/monolog": "dev-master",
+        "twig/twig": "~1.0"
     },
-    {
-      "name": "Mario Mello",
-      "email": "mario@dindigital.com"
-    }
-  ]
+    "autoload": {
+        "psr-0": {
+            "Site\\": "src\/app\/",
+            "Admin\\": "src\/app\/",
+            "Helpers\\": "src\/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jair Cueva Junior",
+            "email": "junior@dindigital.com"
+        },
+        {
+            "name": "Mario Mello",
+            "email": "mario@dindigital.com"
+        }
+    ]
 }
