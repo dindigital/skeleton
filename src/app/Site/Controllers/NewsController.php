@@ -2,40 +2,36 @@
 
 namespace Site\Controllers;
 
-use Din\Http\Header;
 use Site\Models as models;
 
 /**
  *
  * @package app.controllers
  */
-class NewsController extends BaseControllerSite
+class NewsController extends AbstractSiteController
 {
 
-  public function get ( $uri )
-  {
-    $cache_name = Header::getUri();
-    $html = $this->_cache->get($cache_name);
+    public function get ( $uri )
+    {
 
-    if ( is_null($html) ) {
+        $url = "/noticias/{$uri}/";
+        $html = $this->_cache->get($url);
 
-      /**
-       * Últimas notícias
-       */
-      $newsModel = new models\CacheModel(new models\NewsModel(), $this->_cache, 180);
-      $this->_data = $newsModel->newsView($uri);
+        if ( is_null($html) || !CACHE_HTML ) {
 
-      /**
-       * Define template e exibição
-       */
-      $this->setBasicTemplate();
-      $this->_view->addFile('src/app/Site/Views/news.phtml', '{$CONTENT}');
-      $html = $this->return_html();
-      $this->_cache->save($cache_name, $html);
+            $model = new models\NewsModel;
+
+            //trago os logos dos clientes
+            $data = $model->getPage($url);
+
+            $html = $this->_twig->render('news.html', $data);
+
+            if ( CACHE_HTML )
+                $this->_cache->save($cache_name, $html, 5 * 60);
+        }
+
+        return $html;
+
     }
-
-    $this->_view->display_html_result($html);
-
-  }
 
 }

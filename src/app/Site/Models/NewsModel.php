@@ -2,71 +2,53 @@
 
 namespace Site\Models;
 
-use Site\Helpers\PaginatorSite;
-use Site\Models\Entities\Decorators;
-use Site\Models\DataAccess;
-use Site\Helpers\Metatags;
-use Site\Helpers\EmptyMetatag;
+use Site\Helpers\Metatags\Metatags;
 
 class NewsModel extends BaseModelSite
 {
 
-  public function newsList ( $pag )
-  {
-    $news_dao = new DataAccess\News;
+    public function getPage ( $uri )
+    {
+        $this->setSettings();
+        $this->setPage($uri);
+        $this->setMetatag();
 
-    $paginator = new PaginatorSite(5, $pag);
+        return $this->_return;
 
-    $result = $news_dao->getList($paginator);
-
-    foreach ( $result as $i => $news ) {
-      $result[$i] = new Decorators\NewsList($news);
     }
 
-    $metatags = new Metatags(new EmptyMetatag('Notícias'), $this->getSettings());
+    public function setPage ( $uri )
+    {
+        $business = new Business\News;
+        $business->setUri($uri);
 
-    $this->_return['metatags'] = $metatags;
-    $this->_return['news'] = $result;
-    $this->_return['paginator'] = $paginator->getNumbers();
+        try {
+            $this->_return['news'] = $business->getEntity();
+        } catch (Business\Exception\ContentNotFoundException $e) {
+            $c = new \Site\Controllers\Error404Controller;
+            $c->get();
+            exit;
+        }
 
-    return $this->_return;
-
-  }
-
-  public function newsView ( $uri )
-  {
-
-    $uri = "/noticias/{$uri}/";
-
-    $news_dao = new DataAccess\News;
-    $result = $news_dao->getNews($uri);
-
-    $news = new Decorators\NewsView($result[0]);
-
-    $metatags = new Metatags($news, $this->getSettings());
-    $metatags->setImage($news->getImage());
-    $metatags->setArticleType('DIN DIGITAL', $news->getCategory(), $news->getEntity()->getDate());
-
-    $this->_return['metatags'] = $metatags;
-    $this->_return['news'] = $news;
-
-    return $this->_return;
-
-  }
-
-  public function newsSitemap ()
-  {
-    $news_dao = new DataAccess\News;
-    $result = $news_dao->getNewsSitemap();
-
-    foreach ( $result as $index => $news ) {
-      $result[$index] = new Decorators\Sitemap($news);
     }
 
-    $return = array('sitemap' => $result);
+    public function setMetatag ()
+    {
+        $settings = $this->_return['settings'];
+        $page = $this->_return['news'];
+        $page_metatags = new Metatags\CreateMetatag();
+        $page_metatags->setTitle($page->getTitle());
+        $page_metatags->setDescription($page->getDescription());
+        $page_metatags->setKeywords($page->getKeywords());
+        $page_metatags->setImageUrl(URL . $page->getCover());
+        $page_metatags->setUri($page->getUri());
 
-    return $return;
 
-  }
+        $metatags = new Metatags\Metatags($page_metatags);
+        $metatags->setSettingsTitle($settings->getTitle());
+
+        $this->_return['metatags'] = $metatags;
+
+    }
 
 }

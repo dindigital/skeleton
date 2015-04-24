@@ -3,26 +3,33 @@
 namespace Site\Controllers;
 
 use Site\Models as models;
-use Din\Mvc\View\View;
-use Respect\Rest\Routable;
 
 /**
  *
  * @package app.controllers
  */
-class NewsSitemapController implements Routable
+class NewsSitemapController extends AbstractSiteController
 {
 
-  public function get ()
-  {
-    $model = new models\NewsModel;
-    $data = $model->newsSitemap();
+    public function get ()
+    {
 
-    $view = new View;
-    $view->setData($data);
-    $view->addFile('src/app/Site/Views/sitemap/sitemap.phtml');
-    $view->display_xml();
+        $cache_name = 'news_sitemap';
+        $html = $this->_cache->get($cache_name);
 
-  }
+        if ( is_null($html) || !CACHE_HTML ) {
+
+            $model = new models\Sitemap\News;
+            $data = $model->getContents();
+
+            $html = $this->_twig->render('sitemap/sitemap.xml', $data);
+
+            if ( CACHE_HTML )
+                $this->_cache->save($cache_name, $html, 5 * 60);
+        }
+
+        return $html;
+
+    }
 
 }
