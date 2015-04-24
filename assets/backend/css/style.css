@@ -3225,6 +3225,7 @@ button::-moz-focus-inner {
 .log_default {
   padding: 7px 0 0 0;
   font-size: 14px;
+  word-break: break-all;
 }
 
 .log_before {
