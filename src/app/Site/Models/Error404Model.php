@@ -2,7 +2,7 @@
 
 namespace Site\Models;
 
-use Site\Helpers\Metatags\Metatags;
+use Site\Helpers\Metatags;
 
 class Error404Model extends BaseModelSite
 {
@@ -20,14 +20,8 @@ class Error404Model extends BaseModelSite
     private function setMetatag ()
     {
 
-        $page_metatags = new Metatags\CreateMetatag();
-        $page_metatags->setTitle('Erro 404');
-        $page_metatags->setDescription('');
-        $page_metatags->setKeywords('');
-
-        $metatags = new Metatags\Metatags($page_metatags);
-
-        $this->_return['metatags'] = $metatags;
+        $context = new Metatags\EmptyMetatag('Erro 404', 'Página não encontrada', '');
+        $this->_return['metatags'] = new Metatags\Metatags($context);
 
     }
 
