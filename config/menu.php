@@ -19,7 +19,7 @@ return array(
         'tbl' => 'socialmedia_credentials',
         'index' => 'save',
     ),
-    'Usuários' => array(
+    'Administradores' => array(
         'tbl' => 'admin',
     ),
     'Notícias' => array(
