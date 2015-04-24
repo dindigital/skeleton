@@ -2,7 +2,7 @@
   <div class="cl-toggle"><i class="fa fa-bars"></i></div>
   <div class="cl-navblock">
     <ul class="cl-vnavigation">
-
+      <li><a href="/admin/index/"><i class="fa fa-bars"></i>Inicial</a></li>
       <?php foreach ( $data['menu'] as $section => $specs ): ?>
         <li>
           <?php if ( array_key_exists('submenu', $specs) ): ?>
@@ -16,7 +16,7 @@
             </ul>
           <?php else: ?>
             <a href="<?php echo $specs['index']; ?>"><i class="fa fa-bars"></i><?php echo $section; ?></a>
-            <?php endif; ?>
+          <?php endif; ?>
         </li>
       <?php endforeach; ?>
 
