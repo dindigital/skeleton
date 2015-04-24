@@ -8,28 +8,29 @@ use Site\Models as models;
  *
  * @package app.controllers
  */
-class IndexController extends BaseControllerSite
+class IndexController extends AbstractSiteController
 {
 
-  public function setCustomAssets ( $assetsRead )
-  {
-    $assetsRead->setGroup('css', array('css_siteindex'));
+    public function get ()
+    {
 
-  }
+        $cache_name = 'index';
+        $html = $this->_cache->get($cache_name);
 
-  public function get ()
-  {
+        if ( is_null($html) || !CACHE_HTML ) {
 
-    $model = new models\IndexModel;
-    $this->_data = $model->getIndex();
+            $model = new models\IndexModel;
 
-    /**
-     * Define template e exibição
-     */
-    $this->setBasicTemplate();
-    $this->_view->addFile('src/app/Site/Views/index.phtml', '{$CONTENT}');
-    $this->display_html();
+            //trago os logos dos clientes
+            $data = $model->getPage();
+            $html = $this->_twig->render('index.html', $data);
 
-  }
+            if ( CACHE_HTML )
+                $this->_cache->save($cache_name, $html, 5 * 60);
+        }
+
+        return $html;
+
+    }
 
 }
