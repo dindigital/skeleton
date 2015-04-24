@@ -50,16 +50,4 @@ abstract class AbstractCollection implements \Iterator, \Countable
 
   }
 
-  public function prepend ( $array )
-  {
-    $this->_itens = array_merge($array, $this->_itens);
-
-  }
-
-  public function append ( $array )
-  {
-    $this->_itens = array_merge($this->_itens, $array);
-
-  }
-
 }

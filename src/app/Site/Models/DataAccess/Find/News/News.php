@@ -2,106 +2,58 @@
 
 namespace Site\Models\DataAccess\Find\News;
 
-use Site\Models\DataAccess\Entity;
 use Din\DataAccessLayer\Select\Select as Select2;
 use Din\DataAccessLayer\Criteria\Criteria;
-use Site\Models\DataAccess\Collection\NewsCollection;
 use Site\Models\DataAccess\Find\AbstractFind;
 
 class News extends AbstractFind
 {
 
-  protected $_criteria = array();
+    public function __construct ()
+    {
+        parent::__construct();
 
-  /**
-   *
-   * @param string $type @see NewsType
-   */
-  public function setType ( $type )
-  {
-    $this->_criteria['type = ?'] = $type;
+        $this->_select = new Select2('news');
+        $this->_select->addField('id_news');
+        $this->_select->addField('title');
+        $this->_select->addField('body');
+        $this->_select->addField('inc_date');
+        $this->_select->addField('head');
+        $this->_select->addField('cover');
+        $this->_select->addField('uri');
+        $this->_select->addField('description');
+        $this->_select->addField('keywords');
 
-  }
+        $this->_select->limit(1);
 
-  /**
-   *
-   * @param \DateTime $home_exp
-   */
-  public function setHomeExp ( \DateTime $home_exp )
-  {
-    $this->_criteria['OR'] = array(
-        'home_exp > ?' => $home_exp->format('Y-m-d H:i:s'),
-        'home_exp IS NULL' => null
-    );
+        $this->_criteria = array(
+            'is_del = ?' => 0,
+            'is_active = ?' => 1
+        );
 
-  }
-
-  public function setSkipId ( array $ids )
-  {
-    if ( count($ids) ) {
-      $this->_criteria['id_news NOT IN (?)'] = $ids;
     }
 
-  }
+    public function setUri ( $uri )
+    {
+        $this->_criteria['uri = ?'] = $uri;
 
-  public function setTerm ( $term )
-  {
-    parent::setTerm($term);
-    $this->_criteria['OR'] = array(
-        'title LIKE ?' => $this->_term_like,
-        'description LIKE ?' => $this->_term_like,
-        'keywords LIKE ?' => $this->_term_like,
-    );
+    }
 
-  }
+    public function prepare ()
+    {
+        $this->_select->where(new Criteria($this->_criteria));
 
-  private function getSelect ()
-  {
-    $select = new Select2('news');
-    $select->addField('id_news');
-    $select->addField('title');
-    $select->addField('title_home');
-    $select->addField('uri');
-    $select->addField('cover');
-    $select->addField('date');
-    $select->addField('head');
+    }
 
-    $select->where(new Criteria(array_merge($this->_criteria, array(
-                'is_active = ?' => 1,
-                'is_del = ?' => 0,
-    ))));
+    public function getEntity ()
+    {
+        $result = $this->_dao->select($this->_select, new \Site\Models\DataAccess\Entity\News);
 
-    return $select;
+        if ( !count($result) )
+            throw new \Site\Models\DataAccess\Find\Exception\ContentNotFoundException('Conteúdo não encontrado.');
 
-  }
+        return $result[0];
 
-  /**
-   *
-   * @return NewsCollection
-   */
-  public function getList ()
-  {
-    $select = $this->getSelect();
-    $select->order_by($this->_order);
-
-    $select->limit($this->_limit, $this->_offset);
-
-    $result = $this->_dao->select_iterator($select, new Entity\News, new NewsCollection);
-
-    return $result;
-
-  }
-
-  /**
-   *
-   * @return int
-   */
-  public function getCount ()
-  {
-    $select = $this->getSelect();
-
-    return $this->_dao->select_count($select);
-
-  }
+    }
 
 }

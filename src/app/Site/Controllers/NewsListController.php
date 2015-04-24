@@ -2,31 +2,38 @@
 
 namespace Site\Controllers;
 
-use Din\Http\Header;
-use Din\Http\Get;
 use Site\Models as models;
+use Din\Http\Get;
+use Din\Http\Header;
 
 /**
  *
  * @package app.controllers
  */
-class NewsListController extends BaseControllerSite
+class NewsListController extends AbstractSiteController
 {
 
-  public function get ()
-  {
+    public function get ()
+    {
 
 
-    $model = new models\NewsModel;
-    $this->_data = $model->newsList(Get::text('pag'));
+        $cache_name = Header::getUrl();
+        $html = $this->_cache->get($cache_name);
 
-    /**
-     * Define template e exibição
-     */
-    $this->setBasicTemplate();
-    $this->_view->addFile('src/app/Site/Views/news_list.phtml', '{$CONTENT}');
-    $this->display_html();
+        if ( is_null($html) || !CACHE_HTML ) {
 
-  }
+            $model = new models\NewsListModel;
+            //trago as noticias
+            $data = $model->getPage(Get::text('pag'), 10);
+
+            $html = $this->_twig->render('news_list.html', $data);
+
+            if ( CACHE_HTML )
+                $this->_cache->save($cache_name, $html, 5 * 60);
+        }
+
+        return $html;
+
+    }
 
 }

@@ -9,21 +9,21 @@ use Din\DataAccessLayer\Criteria\Criteria;
 class News implements AreaInterface
 {
 
-  public function getSelect ()
-  {
-    $select = new Select2('news');
-    $select->addField('uri');
-    $select->addFField('IF (upd_date, upd_date, inc_date)', 'lastmod');
+    public function getSelect ()
+    {
+        $select = new Select2('news');
+        $select->addField('uri');
+        $select->addFField('inc_date', 'lastmod');
 
-    $select->where(new Criteria(array(
-        'is_active = ?' => 1,
-        'is_del = ?' => 0,
-    )));
+        $select->where(new Criteria(array(
+            'is_active = ?' => 1,
+            'is_del = ?' => 0,
+        )));
 
-    $select->order_by('lastmod DESC');
+        $select->order_by('lastmod DESC');
 
-    return $select;
+        return $select;
 
-  }
+    }
 
 }

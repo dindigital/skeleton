@@ -2,65 +2,72 @@
 
 namespace Site\Models\DataAccess\Find\News;
 
-use Site\Models\DataAccess\Entity;
+use Din\DataAccessLayer\Select\Select as Select2;
+use Din\DataAccessLayer\Criteria\Criteria;
 use Site\Models\DataAccess\Find\AbstractFind;
-use Din\DataAccessLayer\Select\Union;
-use Site\Models\DataAccess\Collection;
+use Site\Models\DataAccess\Collection\NewsCollection;
 
 class NewsList extends AbstractFind
 {
 
-  protected $_areas;
+    protected $_offset;
 
-  public function addArea ( AreaInterface $area )
-  {
-    $this->_areas[] = $area;
+    public function __construct ()
+    {
+        parent::__construct();
+        $this->selectAll();
 
-  }
-
-  /**
-   *
-   * @return int
-   */
-  public function getCount ()
-  {
-    return $this->_dao->select_count($this->getUnionSelect());
-
-  }
-
-  /**
-   *
-   * @return SearchResultCollection
-   */
-  public function getList ()
-  {
-    $select = $this->getUnionSelect();
-    $select->limit($this->_limit, $this->_offset);
-
-    $result = $this->_dao->select_iterator($select, new Entity\News, new Collection\NewsCollection);
-
-    return $result;
-
-  }
-
-  protected function getUnionSelect ()
-  {
-    $select = new Union();
-
-    foreach ( $this->_areas as $area ) {
-      if ( !$area instanceof AreaInterface )
-        throw new \Exception('Area must implement AreaInterface');
-
-      $area->setTerm($this->_term);
-      $area->setSkipId($this->_skip_ids);
-
-      $select->addSelect($area->getSelect());
     }
 
-    $select->order_by('date DESC');
+    public function selectAll ()
+    {
+        $this->_select = new Select2('news');
+        $this->_select->addField('id_news');
+        $this->_select->addField('title');
+        $this->_select->addField('body');
+        $this->_select->addField('inc_date');
+        $this->_select->addField('head');
+        $this->_select->addField('cover');
+        $this->_select->addField('uri');
+        $this->_select->order_by('date DESC');
 
-    return $select;
+        $this->_criteria = array(
+            'is_del = ?' => 0,
+            'is_active = ?' => 1
+        );
 
-  }
+    }
+
+    public function getTotal ()
+    {
+        $this->_select->where(new Criteria($this->_criteria));
+        return $this->_dao->select_count($this->_select);
+
+    }
+
+    public function prepare ()
+    {
+        $this->_select->where(new Criteria($this->_criteria));
+
+    }
+
+    public function setLimit ( $limit )
+    {
+        $this->_select->limit($limit, $this->_offset);
+
+    }
+
+    public function setOffset ( $offset )
+    {
+        $this->_offset = $offset;
+
+    }
+
+    public function getAll ()
+    {
+        $collection = $this->_dao->select_iterator($this->_select, new \Site\Models\DataAccess\Entity\News, new NewsCollection);
+        return $collection;
+
+    }
 
 }
