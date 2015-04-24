@@ -11,8 +11,6 @@ use Din\Http\Post;
 use Din\Http\Header;
 use Din\Essential\Models\PermissionModel;
 use Helpers\JsonViewHelper;
-use Din\Assets\AssetsConfig;
-use Din\Assets\AssetsRead;
 use Din\Http\Get;
 
 /**
@@ -39,26 +37,10 @@ abstract class BaseControllerAdm extends BaseController
   }
 
   /**
-   * Seta os assets
-   */
-  protected function setAssetsData ()
-  {
-    $config = new AssetsConfig('config/assets.php');
-    $assetsRead = new AssetsRead($config);
-    $assetsRead->setMode(ASSETS);
-    $assetsRead->setReplace(PATH_REPLACE);
-    $assetsRead->setGroup('css', array('css_adm', 'css_admgoogle'));
-    $assetsRead->setGroup('js', array('js_admjquery', 'js_adm'));
-    $this->_data['assets'] = $assetsRead->getAssets();
-
-  }
-
-  /**
    * Seta os arquivos que compõem o layout do adm
    */
   protected function setBasicTemplate ()
   {
-    $this->setAssetsData();
     $this->_view->addFile('src/app/Admin/Views/layouts/layout.phtml');
     $this->_view->addFile('src/app/Admin/Views/includes/nav.phtml', '{$NAV}');
 

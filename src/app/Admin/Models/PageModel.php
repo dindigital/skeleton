@@ -42,7 +42,7 @@ class PageModel extends BaseModelAdm
 
     $table['title'] = Html::scape($table['title']);
     $table['content'] = Form::Ck('content', $table['content']);
-    $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
+    $table['cover_uploader'] = Form::Plupload('cover', $table['cover'], 'image');
     $table['uri'] = Link::formatUri($table['uri'], false);
     $table['id_page_cat'] = Form::Dropdown('id_page_cat', $page_cat_dropdown, $table['id_page_cat'], 'Selecione um Menu', null, 'ajax_intinify_cat');
 

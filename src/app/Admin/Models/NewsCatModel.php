@@ -37,7 +37,7 @@ class NewsCatModel extends BaseModelAdm
     }
 
     $table['title'] = Html::scape($table['title']);
-    $table['cover_uploader'] = Form::Upload('cover', $table['cover'], 'image');
+    $table['cover_uploader'] = Form::Plupload('cover', $table['cover'], 'image');
     $table['uri'] = Link::formatUri($table['uri']);
 
     return $table;
