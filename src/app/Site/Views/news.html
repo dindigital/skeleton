@@ -2,7 +2,6 @@
 
 {% block css %}
 <link rel="stylesheet" href="/system/assets/css/news.min.css">
-<link rel="stylesheet" href="/system/assets/css/news-single.min.css">
 {% endblock %}
 
 {% block js %}
@@ -13,15 +12,12 @@
 
 {% block content %}
 
-{% include 'includes/nav.html' %}
-
 <section class="all">
 
     <section id="news">
         <div class="boxin">
-            {% include 'includes/top-news.html' %}
 
-            <h3 class="back"><a title="Voltar" href="/">&#60; Voltar</a></h3>
+            <h3 class="back">Interna da notícia</h3>
 
             <div class="post-content">
                 {% if news is defined %}
