@@ -1,0 +1,26 @@
+{% extends "template.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="/system/assets/css/home.min.css">
+{% endblock %}
+
+{% block js %}
+<script src="/system/assets/js/home.min.js"></script>
+{% endblock %}
+
+{# CONTENT #}
+
+{% block content %}
+
+<section>
+    {% include 'includes/header.html' %}
+
+    <section id="news">
+
+    </section>
+
+    {% include 'includes/footer.html' %}
+
+</section>
+
+{% endblock %}
