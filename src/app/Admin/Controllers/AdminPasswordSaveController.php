@@ -8,8 +8,6 @@ use Din\Http\Post;
 use Exception;
 use Helpers\JsonViewHelper;
 use Din\Session\Session;
-use Din\Assets\AssetsConfig;
-use Din\Assets\AssetsRead;
 
 /**
  *
@@ -31,14 +29,6 @@ class AdminPasswordSaveController extends BaseController
 
   public function get ()
   {
-    $config = new AssetsConfig('config/assets.php');
-    $assetsRead = new AssetsRead($config);
-    $assetsRead->setMode(ASSETS);
-    $assetsRead->setReplace(PATH_REPLACE);
-    $assetsRead->setGroup('css', array('css_admlogin', 'css_admgoogle'));
-    $assetsRead->setGroup('js', array('js_admjquery', 'js_admlogin'));
-    $this->_data['assets'] = $assetsRead->getAssets();
-
     $this->_view->addFile('src/app/Admin/Views/layouts/login.phtml');
     $this->_view->addFile('src/app/Admin/Views/essential/recover_password.phtml', '{$CONTENT}');
     $this->display_html();
