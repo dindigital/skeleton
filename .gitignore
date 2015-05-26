@@ -5,5 +5,4 @@ node_modules
 .DS_Store
 bower_components
 /nbproject
-.DS_Store
 /assets/
