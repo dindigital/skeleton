@@ -40,7 +40,7 @@ class FacepostSaveController extends BaseControllerAdm
       Header::redirect($fb_login);
     }
 
-    $session->set('saved_msg', 'Atenticado no Facebook com sucesso');
+    $session->set('saved_msg', 'Autenticado no Facebook com sucesso');
 
     $this->_data['redirect'] = $session->get('referer');
     $this->_data['post'] = $this->_model->generatePost();
