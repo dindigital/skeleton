@@ -85,7 +85,6 @@ $(document).ready(function() {
   $(".sortable").sortable();
 
   $(".color_basic").spectrum({
-    color: "#f00",
     preferredFormat: "hex",
     showInput: true
   });
