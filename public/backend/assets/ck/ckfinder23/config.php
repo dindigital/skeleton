@@ -23,7 +23,7 @@ session_start();
  */
 function CheckAuthentication ()
 {
-  $path = $_SERVER["DOCUMENT_ROOT"];
+	$path = $_SERVER["DOCUMENT_ROOT"];
 	require_once  "{$path}/vendor/autoload.php";
 
 	/*
