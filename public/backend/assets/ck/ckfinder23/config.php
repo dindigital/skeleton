@@ -23,18 +23,32 @@ session_start();
  */
 function CheckAuthentication ()
 {
-  // WARNING : DO NOT simply return "true". By doing so, you are allowing
-  // "anyone" to upload and list the files in your server. You must implement
-  // some kind of session validation here. Even something very simple as...
+  $path = $_SERVER["DOCUMENT_ROOT"];
+	require_once  "{$path}/vendor/autoload.php";
 
-  return true;
-  return isset($_SESSION['IsAuthorized']) && $_SESSION['IsAuthorized'];
+	/*
+	 * Adiciono os arquivos de configuração
+	 * para criar constantes padrão do skeleton
+	 */
+	$confiFiles = array("{$path}/config/config.global.php");
+	$localFile = "{$path}/config/config.local.php";
+	if (is_file($localFile)) { // Adiciono o .local apenas se existe
+		array_unshift($confiFiles, $localFile);
+	}
 
-  // ... where $_SESSION['IsAuthorized'] is set to "true" as soon as the
-  // user logs in your system. To be able to use session variables don't
-  // forget to add session_start() at the top of this file.
-  //return false;
+	/*
+	 * Defino as constantes baseado em array
+	 * de configuração
+	 */
+	$dinConfig = new \Din\Config\Config($confiFiles);
+	$dinConfig->define();
 
+	/*
+	 * Defino autenticação padrão do Skeleton
+	 * e retorno se usuário está logado ou não
+	 */
+	$adminAuthModel = new \Din\Essential\Models\AdminAuthModel();
+	return $adminAuthModel->is_logged();
 }
 
 // LicenseKey : Paste your license key here. If left blank, CKFinder will be
